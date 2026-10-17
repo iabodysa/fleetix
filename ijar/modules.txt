@@ -1,1 +1,7 @@
-Ijar
+Master
+Delivery
+Insurance
+Finance
+Upkeep
+Purchasing
+Traffic

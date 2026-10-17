@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "creation": "2026-10-17 00:00:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "part",
+  "severity",
+  "amount",
+  "image"
+ ],
+ "fields": [
+  {
+   "fieldname": "part",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Damaged Part"
+  },
+  {
+   "default": "Minor",
+   "fieldname": "severity",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Severity",
+   "options": "Minor\nMajor\nTotal Loss"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount"
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Image"
+  }
+ ],
+ "is_submittable": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-10-17 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Insurance",
+ "name": "Damage Line",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

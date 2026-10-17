@@ -1,0 +1,108 @@
+{
+ "app": "ijar",
+ "charts": [],
+ "content": "[{\"id\": \"traffic-sc-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Violation\", \"col\": 3}}, {\"id\": \"traffic-sc-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Problem\", \"col\": 3}}, {\"id\": \"traffic-sp\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"traffic-cd-0\", \"type\": \"card\", \"data\": {\"card_name\": \"Traffic\", \"col\": 4}}, {\"id\": \"traffic-cd-1\", \"type\": \"card\", \"data\": {\"card_name\": \"Reports\", \"col\": 4}}]",
+ "creation": "2026-10-17 00:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "triangle-alert",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Traffic",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Traffic",
+   "link_count": 3,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Violation",
+   "link_count": 0,
+   "link_to": "Violation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transaction",
+   "link_count": 0,
+   "link_to": "Transaction",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Problem",
+   "link_count": 0,
+   "link_to": "Problem",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Violations by Staff",
+   "link_count": 0,
+   "link_to": "Violations by Staff",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Violation",
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-10-17 18:17:00.000000",
+ "modified_by": "Administrator",
+ "module": "Traffic",
+ "name": "Traffic",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Ijar Manager"
+  },
+  {
+   "role": "Ijar Fleet"
+  }
+ ],
+ "sequence_id": 7.0,
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "Violation",
+   "link_to": "Violation",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Problem",
+   "link_to": "Problem",
+   "type": "DocType"
+  }
+ ],
+ "title": "Traffic",
+ "type": "Workspace"
+}

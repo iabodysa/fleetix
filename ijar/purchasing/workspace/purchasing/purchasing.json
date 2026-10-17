@@ -1,0 +1,108 @@
+{
+ "app": "ijar",
+ "charts": [],
+ "content": "[{\"id\": \"purchasing-sc-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Requisition\", \"col\": 3}}, {\"id\": \"purchasing-sc-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Vendor\", \"col\": 3}}, {\"id\": \"purchasing-sp\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"purchasing-cd-0\", \"type\": \"card\", \"data\": {\"card_name\": \"Buying\", \"col\": 4}}, {\"id\": \"purchasing-cd-1\", \"type\": \"card\", \"data\": {\"card_name\": \"Reports\", \"col\": 4}}]",
+ "creation": "2026-10-17 00:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "shopping-cart",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Purchasing",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Buying",
+   "link_count": 3,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Requisition",
+   "link_count": 0,
+   "link_to": "Requisition",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Part",
+   "link_count": 0,
+   "link_to": "Part",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Vendor",
+   "link_count": 0,
+   "link_to": "Vendor",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Vendor Follow-up",
+   "link_count": 0,
+   "link_to": "Vendor Follow-up",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Requisition",
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-10-17 18:17:00.000000",
+ "modified_by": "Administrator",
+ "module": "Purchasing",
+ "name": "Purchasing",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Ijar Manager"
+  },
+  {
+   "role": "Ijar Buyer"
+  }
+ ],
+ "sequence_id": 6.0,
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "Requisition",
+   "link_to": "Requisition",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Vendor",
+   "link_to": "Vendor",
+   "type": "DocType"
+  }
+ ],
+ "title": "Purchasing",
+ "type": "Workspace"
+}

@@ -1,0 +1,201 @@
+{
+ "app": "ijar",
+ "charts": [],
+ "content": "[{\"id\": \"master-sc-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Car\", \"col\": 3}}, {\"id\": \"master-sc-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Staff\", \"col\": 3}}, {\"id\": \"master-sc-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Deal\", \"col\": 3}}, {\"id\": \"master-sp\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"master-cd-0\", \"type\": \"card\", \"data\": {\"card_name\": \"Fleet\", \"col\": 4}}, {\"id\": \"master-cd-1\", \"type\": \"card\", \"data\": {\"card_name\": \"Registrations\", \"col\": 4}}, {\"id\": \"master-cd-2\", \"type\": \"card\", \"data\": {\"card_name\": \"Projects\", \"col\": 4}}, {\"id\": \"master-cd-3\", \"type\": \"card\", \"data\": {\"card_name\": \"Reports\", \"col\": 4}}]",
+ "creation": "2026-10-17 00:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "car",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Master",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Fleet",
+   "link_count": 3,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Car",
+   "link_count": 0,
+   "link_to": "Car",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Plate",
+   "link_count": 0,
+   "link_to": "Plate",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Istimara",
+   "link_count": 0,
+   "link_to": "Istimara",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Registrations",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Firm",
+   "link_count": 0,
+   "link_to": "Firm",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Portal Account",
+   "link_count": 0,
+   "link_to": "Portal Account",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Projects",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Client",
+   "link_count": 0,
+   "link_to": "Client",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Deal",
+   "link_count": 0,
+   "link_to": "Deal",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Deal Type",
+   "link_count": 0,
+   "link_to": "Deal Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Staff",
+   "link_count": 0,
+   "link_to": "Staff",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Fleet Status",
+   "link_count": 0,
+   "link_to": "Fleet Status",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Car",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Istimara Expiry",
+   "link_count": 0,
+   "link_to": "Istimara Expiry",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Istimara",
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-10-17 18:17:00.000000",
+ "modified_by": "Administrator",
+ "module": "Master",
+ "name": "Master",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Ijar Manager"
+  },
+  {
+   "role": "Ijar Fleet"
+  }
+ ],
+ "sequence_id": 1.0,
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "Car",
+   "link_to": "Car",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Staff",
+   "link_to": "Staff",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Deal",
+   "link_to": "Deal",
+   "type": "DocType"
+  }
+ ],
+ "title": "Master",
+ "type": "Workspace"
+}
