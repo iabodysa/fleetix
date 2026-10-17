@@ -1,0 +1,200 @@
+{
+ "actions": [],
+ "autoname": "field:vin",
+ "creation": "2026-10-17 00:00:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "vin",
+  "plate",
+  "firm",
+  "model",
+  "year",
+  "status",
+  "deal",
+  "staff"
+ ],
+ "fields": [
+  {
+   "fieldname": "vin",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "VIN",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "plate",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Plate",
+   "options": "Plate"
+  },
+  {
+   "fieldname": "firm",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Firm",
+   "options": "Firm"
+  },
+  {
+   "fieldname": "model",
+   "fieldtype": "Data",
+   "label": "Model"
+  },
+  {
+   "fieldname": "year",
+   "fieldtype": "Int",
+   "label": "Model Year"
+  },
+  {
+   "default": "Available",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Available\nLeased\nRepair\nAccident\nStopped\nSold"
+  },
+  {
+   "fieldname": "deal",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Deal",
+   "options": "Deal",
+   "read_only": 1
+  },
+  {
+   "fieldname": "staff",
+   "fieldtype": "Link",
+   "label": "Employee or Delegate",
+   "options": "Staff",
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 0,
+ "istable": 0,
+ "links": [
+  {
+   "group": "Master",
+   "link_doctype": "Istimara",
+   "link_fieldname": "car"
+  },
+  {
+   "group": "Delivery",
+   "link_doctype": "Handover",
+   "link_fieldname": "car"
+  },
+  {
+   "group": "Delivery",
+   "link_doctype": "Permit",
+   "link_fieldname": "car"
+  },
+  {
+   "group": "Delivery",
+   "link_doctype": "Receipt",
+   "link_fieldname": "car"
+  },
+  {
+   "group": "Insurance",
+   "link_doctype": "Accident",
+   "link_fieldname": "car"
+  },
+  {
+   "group": "Finance",
+   "is_child_table": 1,
+   "link_doctype": "Rent",
+   "link_fieldname": "car",
+   "parent_doctype": "Rent",
+   "table_fieldname": "lines"
+  },
+  {
+   "group": "Upkeep",
+   "link_doctype": "Repair",
+   "link_fieldname": "car"
+  },
+  {
+   "group": "Upkeep",
+   "link_doctype": "Inspection",
+   "link_fieldname": "car"
+  },
+  {
+   "group": "Purchasing",
+   "link_doctype": "Requisition",
+   "link_fieldname": "car"
+  },
+  {
+   "group": "Traffic",
+   "link_doctype": "Violation",
+   "link_fieldname": "car"
+  },
+  {
+   "group": "Traffic",
+   "link_doctype": "Transaction",
+   "link_fieldname": "car"
+  },
+  {
+   "group": "Traffic",
+   "link_doctype": "Problem",
+   "link_fieldname": "car"
+  }
+ ],
+ "modified": "2026-10-17 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Master",
+ "name": "Car",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Fleet",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Finance",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Buyer",
+   "share": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

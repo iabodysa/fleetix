@@ -8,7 +8,7 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
-        files: "ijar.*"
+        files: "fleetix.*"
         exclude: ".*json$|.*txt$|.*csv|.*md|.*svg"
       - id: check-merge-conflict
       - id: check-ast
@@ -38,11 +38,11 @@ repos:
         # Ignore any files that might contain jinja / bundles
         exclude: |
             (?x)^(
-                ijar/public/dist/.*|
+                fleetix/public/dist/.*|
                 .*node_modules.*|
                 .*boilerplate.*|
-                ijar/templates/includes/.*|
-                ijar/public/js/lib/.*
+                fleetix/templates/includes/.*|
+                fleetix/public/js/lib/.*
             )$
 
 
@@ -55,12 +55,12 @@ repos:
         # Ignore any files that might contain jinja / bundles
         exclude: |
             (?x)^(
-                ijar/public/dist/.*|
+                fleetix/public/dist/.*|
                 cypress/.*|
                 .*node_modules.*|
                 .*boilerplate.*|
-                ijar/templates/includes/.*|
-                ijar/public/js/lib/.*
+                fleetix/templates/includes/.*|
+                fleetix/public/js/lib/.*
             )$
 
 ci:

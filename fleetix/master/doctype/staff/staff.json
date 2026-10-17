@@ -1,0 +1,203 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2026-10-17 00:00:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "full_name",
+  "kind",
+  "iqama",
+  "mobile",
+  "deal",
+  "status"
+ ],
+ "fields": [
+  {
+   "default": "STF-.#####",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "no_copy": 1,
+   "options": "STF-.#####",
+   "print_hide": 1,
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Full Name",
+   "reqd": 1
+  },
+  {
+   "default": "Employee",
+   "fieldname": "kind",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Kind",
+   "options": "Employee\nDelegate"
+  },
+  {
+   "fieldname": "iqama",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Iqama No",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "mobile",
+   "fieldtype": "Data",
+   "label": "Mobile",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "deal",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Deal",
+   "options": "Deal"
+  },
+  {
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Active\nLeft"
+  }
+ ],
+ "is_submittable": 0,
+ "istable": 0,
+ "links": [
+  {
+   "group": "Master",
+   "link_doctype": "Portal Account",
+   "link_fieldname": "holder"
+  },
+  {
+   "group": "Master",
+   "link_doctype": "Car",
+   "link_fieldname": "staff"
+  },
+  {
+   "group": "Delivery",
+   "link_doctype": "Handover",
+   "link_fieldname": "staff"
+  },
+  {
+   "group": "Delivery",
+   "link_doctype": "Permit",
+   "link_fieldname": "staff"
+  },
+  {
+   "group": "Delivery",
+   "link_doctype": "Receipt",
+   "link_fieldname": "staff"
+  },
+  {
+   "group": "Insurance",
+   "link_doctype": "Accident",
+   "link_fieldname": "staff"
+  },
+  {
+   "group": "Finance",
+   "is_child_table": 1,
+   "link_doctype": "Rent",
+   "link_fieldname": "staff",
+   "parent_doctype": "Rent",
+   "table_fieldname": "lines"
+  },
+  {
+   "group": "Finance",
+   "link_doctype": "Bond",
+   "link_fieldname": "staff"
+  },
+  {
+   "group": "Finance",
+   "link_doctype": "Advance",
+   "link_fieldname": "staff"
+  },
+  {
+   "group": "Finance",
+   "link_doctype": "Deduction",
+   "link_fieldname": "staff"
+  },
+  {
+   "group": "Traffic",
+   "link_doctype": "Violation",
+   "link_fieldname": "staff"
+  },
+  {
+   "group": "Traffic",
+   "link_doctype": "Problem",
+   "link_fieldname": "staff"
+  }
+ ],
+ "modified": "2026-10-17 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Master",
+ "name": "Staff",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Fleet",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Finance",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Buyer",
+   "share": 1
+  }
+ ],
+ "search_fields": "full_name",
+ "show_title_field_in_link": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "full_name",
+ "track_changes": 1
+}

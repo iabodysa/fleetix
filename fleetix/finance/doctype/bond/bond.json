@@ -1,0 +1,188 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2026-10-17 00:00:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "staff",
+  "iqama",
+  "bond_date",
+  "reason",
+  "accident",
+  "receipt",
+  "violation",
+  "amount",
+  "staff_sign",
+  "file",
+  "status",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "BND-.YYYY.-.#####",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "no_copy": 1,
+   "options": "BND-.YYYY.-.#####",
+   "print_hide": 1,
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "staff",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Employee or Delegate",
+   "options": "Staff",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "staff.iqama",
+   "fieldname": "iqama",
+   "fieldtype": "Data",
+   "label": "Iqama No",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "bond_date",
+   "fieldtype": "Date",
+   "label": "Bond Date"
+  },
+  {
+   "default": "Damage",
+   "fieldname": "reason",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Reason",
+   "options": "Damage\nAccident\nViolation\nOther"
+  },
+  {
+   "fieldname": "accident",
+   "fieldtype": "Link",
+   "label": "Accident",
+   "options": "Accident"
+  },
+  {
+   "fieldname": "receipt",
+   "fieldtype": "Link",
+   "label": "Receipt",
+   "options": "Receipt"
+  },
+  {
+   "fieldname": "violation",
+   "fieldtype": "Link",
+   "label": "Violation",
+   "options": "Violation"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount"
+  },
+  {
+   "fieldname": "staff_sign",
+   "fieldtype": "Signature",
+   "label": "Signature"
+  },
+  {
+   "fieldname": "file",
+   "fieldtype": "Attach",
+   "label": "File"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Signed",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Signed\nSettled"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Bond",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "is_submittable": 1,
+ "istable": 0,
+ "links": [
+  {
+   "group": "Finance",
+   "link_doctype": "Advance",
+   "link_fieldname": "bond"
+  },
+  {
+   "group": "Finance",
+   "link_doctype": "Deduction",
+   "link_fieldname": "bond"
+  }
+ ],
+ "modified": "2026-10-17 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Finance",
+ "name": "Bond",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Fleet",
+   "share": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Fleetix Finance",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
