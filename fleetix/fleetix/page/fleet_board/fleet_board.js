@@ -95,6 +95,12 @@ frappe.pages["fleet-board"].on_page_load = (wrapper) => {
 							"Call Driver"
 					  )}</a>`
 					: "";
+				const primary =
+					main[0] === "return" && !frappe.model.can_create("Vehicle Handover")
+						? ""
+						: `<button class="fx-btn primary" data-act="${main[0]}" data-vehicle="${e(
+								r.vehicle
+						  )}">${main[1]}</button>`;
 				return `<div class="fx-rcard" data-open-doctype="Vehicle" data-open-name="${e(
 					r.vehicle
 				)}">
@@ -106,9 +112,7 @@ frappe.pages["fleet-board"].on_page_load = (wrapper) => {
 						${fx.chips(r.chips, r)}
 					</div>
 					<div class="late">${r.reason === "open_note" ? "" : fx.late(r.late_hours)}</div>
-					<div class="acts"><button class="fx-btn primary" data-act="${main[0]}" data-vehicle="${e(
-					r.vehicle
-				)}">${main[1]}</button>${call}</div>
+					<div class="acts">${primary}${call}</div>
 				</div>`;
 			}
 

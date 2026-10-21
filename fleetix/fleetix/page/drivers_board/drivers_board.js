@@ -97,9 +97,13 @@ frappe.pages["drivers-board"].on_page_load = (wrapper) => {
 						<div class="meta">${e(__("Return due {0}", [fx.when(r.due)]))}</div>
 					</div>
 					<div class="late">${fx.late(r.late_hours)}</div>
-					<div class="acts"><button class="fx-btn primary" data-act="return" data-driver="${e(
-						r.driver
-					)}">${__("Record Return")}</button>${call}</div>
+					<div class="acts">${
+						frappe.model.can_create("Vehicle Handover")
+							? `<button class="fx-btn primary" data-act="return" data-driver="${e(
+									r.driver
+							  )}">${__("Record Return")}</button>`
+							: ""
+					}${call}</div>
 				</div>`;
 			}
 

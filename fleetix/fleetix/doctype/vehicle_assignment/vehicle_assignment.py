@@ -28,6 +28,7 @@ class VehicleAssignment(Document):
 	def before_update_after_submit(self):
 		self.validate_driver_trained()
 
+	@frappe.whitelist()
 	def set_default_intervals(self):
 		city = frappe.db.get_value("Project", self.project, "city") if self.project else None
 		region, tire_interval = frappe.db.get_value("City", city, ["region", "default_tire_interval_km"]) or (
