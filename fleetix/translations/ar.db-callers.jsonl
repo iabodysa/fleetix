@@ -7,3 +7,7 @@
 {"key": "Charge", "caller": "Workflow Action Master fixture"}
 {"key": "Estimate Cost", "caller": "Workflow Action Master fixture"}
 {"key": "Set Responsibility", "caller": "Workflow Action Master fixture"}
+{"key": "{} waiting", "caller": "Fleetix workspace shortcut format"}
+{"key": "{} active", "caller": "Fleetix workspace shortcut format"}
+{"key": "{} open", "caller": "Fleetix workspace shortcut format"}
+{"key": "{} due", "caller": "Fleetix workspace shortcut format"}

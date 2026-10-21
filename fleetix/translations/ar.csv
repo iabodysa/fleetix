@@ -9520,3 +9520,64 @@ Is Group,هل هو حساب رئيسي,Account
 Lists,القوائم
 Blocked,معلّق
 List,قائمة
+Fleet Board,لوحة الأسطول
+Drivers Board,لوحة السائقين
+Assignment Timeline,جدول الإسناد
+City Grid,شبكة المدن
+Morning Brief,ملخص الصباح
+Fleetix,الأسطول
+Board,اللوحة
+Drivers,السائقين
+Cities,المدن
+Brief,الملخص
+Due for Handover,لازم تتسلم
+Periodic Maintenance Missed,فاتتها الصيانة الدورية
+"Idle, No Assignment",واقفة بدون إسناد
+Idle Without Assignment,واقفة بدون إسناد
+All Clear,سليمة
+Plate or Driver,اللوحة أو السائق
+Driver or Plate,السائق أو اللوحة
+Return due {0},موعد الإرجاع {0}
+Delivery due {0},موعد التسليم {0}
+Open accident or damage,حادث أو ضرر مفتوح
+Record Return,سجّل الإرجاع
+Open Request,افتح الطلب
+Open Note,ملاحظة مفتوحة
+Call Driver,اتصل بالسائق
+Book Maintenance,احجز صيانة
+Idle {0} days,واقفة {0} يوم
+In Workshop,في الورشة
+Training,تدريب
+Expires in {0} days,تنتهي خلال {0} يوم
+days late,يوم تأخير
+hours late,ساعة تأخير
+hours left,ساعة متبقية
+No vehicles,لا توجد مركبات
+No drivers,لا يوجد سائقين
+Vehicle Due Back,مركبته لازم ترجع
+Training Not Done,ما أكمل التدريب
+"Trained, No Vehicle",مدرّب بدون مركبة
+On Duty,على رأس العمل
+No City,بدون مدينة
+Waiting Requests,طلبات بالانتظار
+First Three Things Today,أول ثلاث مهام اليوم
+Longest Idle,الأطول وقوفاً
+Expiring in 7 Days,تنتهي خلال 7 أيام
+Since Yesterday,من أمس
+Handovers,التسليمات
+Accidents,الحوادث
+Vehicle Requests,طلبات المركبات
+"Good morning, {0}",صباح الخير يا {0}
+Late,متأخر
+Pages,الصفحات
+Numbers,الأرقام
+Records and Settings,السجلات والإعدادات
+Handover and Return,التسليم والإرجاع
+Inspections,الفحوصات
+{} waiting,{} بالانتظار
+{} active,{} نشط
+{} open,{} مفتوح
+{} due,{} مستحق
+Requests Waiting for a Vehicle,طلبات تنتظر مركبة
+Maintenance,الصيانة
+Settings,الإعدادات
