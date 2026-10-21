@@ -144,6 +144,14 @@ fixtures = [
 
 override_doctype_class = {"Vehicle": "fleetix.fleetix.vehicle.VehicleService"}
 
+override_doctype_dashboards = {
+	"Customer": "fleetix.fleetix.dashboard_overrides.get_dashboard_for_customer",
+	"Driver": "fleetix.fleetix.dashboard_overrides.get_dashboard_for_driver",
+	"Project": "fleetix.fleetix.dashboard_overrides.get_dashboard_for_project",
+	"Vehicle": "fleetix.fleetix.dashboard_overrides.get_dashboard_for_vehicle",
+	"Sales Invoice": "fleetix.fleetix.dashboard_overrides.get_dashboard_for_sales_invoice",
+}
+
 jinja = {"methods": ["fleetix.fleetix.document_qr.document_qr"]}
 
 website_route_rules = [
