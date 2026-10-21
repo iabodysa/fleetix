@@ -5,7 +5,7 @@ import frappe
 from frappe.boot import load_translations
 from frappe.utils.jinja_globals import is_rtl
 
-from fleetix.operations.api.maintenance import WORKER_ROLES
+from fleetix.fleetix.api.maintenance import WORKER_ROLES
 
 no_cache = 1
 

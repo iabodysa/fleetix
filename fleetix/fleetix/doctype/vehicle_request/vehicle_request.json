@@ -1,0 +1,243 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "VR-.YYYY.-.#####",
+ "creation": "2026-10-21 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "project_supervisor",
+  "project",
+  "company",
+  "driver",
+  "column_break_request",
+  "usage_type",
+  "priority",
+  "requested_vehicle_type",
+  "required_date",
+  "expected_duration",
+  "proof_of_work",
+  "selection_section",
+  "selected_vehicle",
+  "column_break_selection",
+  "rejection_reason",
+  "cancellation_reason",
+  "workflow_state"
+ ],
+ "fields": [
+  {
+   "default": "__user",
+   "fieldname": "project_supervisor",
+   "fieldtype": "Link",
+   "label": "Project Supervisor",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Project",
+   "options": "Project",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "project.company",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Driver",
+   "options": "Driver",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_request",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Standard",
+   "fieldname": "usage_type",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "Usage Type",
+   "options": "Standard\nTravel",
+   "reqd": 1
+  },
+  {
+   "default": "Normal",
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "label": "Priority",
+   "options": "Normal\nHigh"
+  },
+  {
+   "fieldname": "requested_vehicle_type",
+   "fieldtype": "Link",
+   "label": "Requested Vehicle Type",
+   "options": "Vehicle Type"
+  },
+  {
+   "fieldname": "required_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Required Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expected_duration",
+   "fieldtype": "Data",
+   "label": "Expected Duration"
+  },
+  {
+   "fieldname": "proof_of_work",
+   "fieldtype": "Attach",
+   "label": "Proof of Work",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.workflow_state != 'New'",
+   "fieldname": "selection_section",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Selection"
+  },
+  {
+   "fieldname": "selected_vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Selected Vehicle",
+   "mandatory_depends_on": "eval:!['New', 'Pending Vehicle Selection', 'Rejected', 'Cancelled'].includes(doc.workflow_state)",
+   "options": "Vehicle"
+  },
+  {
+   "fieldname": "column_break_selection",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:['Pending Vehicle Selection', 'Rejected'].includes(doc.workflow_state)",
+   "fieldname": "rejection_reason",
+   "fieldtype": "Small Text",
+   "label": "Rejection Reason"
+  },
+  {
+   "depends_on": "eval:!['New', 'Rejected', 'Assigned'].includes(doc.workflow_state)",
+   "fieldname": "cancellation_reason",
+   "fieldtype": "Small Text",
+   "label": "Cancellation Reason"
+  },
+  {
+   "default": "New",
+   "fieldname": "workflow_state",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "no_copy": 1,
+   "options": "New\nPending Vehicle Selection\nPending Inspection\nPending Documentation\nPending Assignment\nAssigned\nRejected\nCancelled",
+   "read_only": 1,
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-21 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Fleetix",
+ "name": "Vehicle Request",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Project Supervisor",
+   "share": 0,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Rental Manager",
+   "share": 0,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Movement Supervisor",
+   "share": 0,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Maintenance Supervisor",
+   "share": 0,
+   "write": 0
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accountant",
+   "share": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "driver",
+ "track_changes": 1
+}

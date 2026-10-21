@@ -1,7 +1,7 @@
 import call from "frappe-ui/src/utils/call.js"
 import { __ } from "./translate.js"
 
-const M = "fleetix.operations.api.maintenance."
+const M = "fleetix.fleetix.api.maintenance."
 
 export const api = {
 	checklist: (maintenance, odometer) => call(M + "get_vehicle_checklist", { maintenance, odometer }),

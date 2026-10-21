@@ -36,8 +36,8 @@ fixtures = [
 			]
 		],
 	},
-	{"dt": "Custom Field", "filters": [["module", "=", "Master"]]},
-	{"dt": "Property Setter", "filters": [["module", "=", "Master"]]},
+	{"dt": "Custom Field", "filters": [["module", "=", "Fleetix"]]},
+	{"dt": "Property Setter", "filters": [["module", "=", "Fleetix"]]},
 	{
 		"dt": "Workflow",
 		"filters": [
@@ -141,15 +141,15 @@ fixtures = [
 	},
 ]
 
-override_doctype_class = {"Vehicle": "fleetix.master.vehicle.VehicleService"}
+override_doctype_class = {"Vehicle": "fleetix.fleetix.vehicle.VehicleService"}
 
-jinja = {"methods": ["fleetix.master.document_qr.document_qr"]}
+jinja = {"methods": ["fleetix.fleetix.document_qr.document_qr"]}
 
 website_route_rules = [{"from_route": "/maintenance/<path:app_path>", "to_route": "maintenance"}]
 
 after_install = ["frappe.clear_cache"]
-after_sync = ["fleetix.master.permissions.grant_core_permissions"]
-after_migrate = ["fleetix.master.permissions.grant_core_permissions"]
-before_uninstall = ["fleetix.master.permissions.revoke_core_permissions"]
+after_sync = ["fleetix.fleetix.permissions.grant_core_permissions"]
+after_migrate = ["fleetix.fleetix.permissions.grant_core_permissions"]
+before_uninstall = ["fleetix.fleetix.permissions.revoke_core_permissions"]
 
-scheduler_events = {"daily": ["fleetix.operations.doctype.maintenance.maintenance.create_due_alerts"]}
+scheduler_events = {"daily": ["fleetix.fleetix.doctype.maintenance.maintenance.create_due_alerts"]}

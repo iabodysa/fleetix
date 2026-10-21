@@ -1,0 +1,314 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "MNT-.YYYY.-.#####",
+ "creation": "2026-10-21 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "maintenance_type",
+  "vehicle",
+  "driver",
+  "project",
+  "company",
+  "column_break_maintenance",
+  "visit_datetime",
+  "odometer",
+  "inspection",
+  "workshop",
+  "description",
+  "service_section",
+  "components_replaced",
+  "items_issued",
+  "cost",
+  "related_accident",
+  "related_damage",
+  "final_check_section",
+  "final_check",
+  "approval_section",
+  "approved_by",
+  "status",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "Periodic",
+   "fieldname": "maintenance_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Maintenance Type",
+   "options": "Periodic\nEmergency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Vehicle",
+   "options": "Vehicle",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "vehicle.current_driver",
+   "fetch_if_empty": 1,
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Driver",
+   "options": "Driver",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "vehicle.current_project",
+   "fetch_if_empty": 1,
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "vehicle.company",
+   "fetch_if_empty": 1,
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_maintenance",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:['Driver Arrived', 'Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
+   "fieldname": "visit_datetime",
+   "fieldtype": "Datetime",
+   "label": "Visit Date and Time",
+   "mandatory_depends_on": "eval:['Driver Arrived', 'Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)"
+  },
+  {
+   "depends_on": "eval:['Driver Arrived', 'Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
+   "fieldname": "odometer",
+   "fieldtype": "Int",
+   "label": "Odometer (km)",
+   "mandatory_depends_on": "eval:['Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
+   "non_negative": 1
+  },
+  {
+   "depends_on": "eval:['Driver Arrived', 'Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
+   "fieldname": "inspection",
+   "fieldtype": "Link",
+   "label": "Full Inspection",
+   "mandatory_depends_on": "eval:['Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
+   "options": "Vehicle Inspection"
+  },
+  {
+   "fieldname": "workshop",
+   "fieldtype": "Data",
+   "label": "Workshop"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "depends_on": "eval:['Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
+   "fieldname": "service_section",
+   "fieldtype": "Section Break",
+   "label": "Service"
+  },
+  {
+   "fieldname": "components_replaced",
+   "fieldtype": "Table",
+   "label": "Components Replaced",
+   "options": "Maintenance Component"
+  },
+  {
+   "fieldname": "items_issued",
+   "fieldtype": "Link",
+   "label": "Items Issued from Warehouse",
+   "options": "Stock Entry"
+  },
+  {
+   "fieldname": "cost",
+   "fieldtype": "Currency",
+   "label": "Cost (SAR)",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "related_accident",
+   "fieldtype": "Link",
+   "label": "Related Accident",
+   "options": "Accident"
+  },
+  {
+   "fieldname": "related_damage",
+   "fieldtype": "Link",
+   "label": "Related Damage",
+   "options": "Damage"
+  },
+  {
+   "depends_on": "eval:['Final Check', 'Completed'].includes(doc.status)",
+   "fieldname": "final_check_section",
+   "fieldtype": "Section Break",
+   "label": "Final Check"
+  },
+  {
+   "fieldname": "final_check",
+   "fieldtype": "Table",
+   "label": "Final Check (lights and all)",
+   "mandatory_depends_on": "eval:['Final Check', 'Completed'].includes(doc.status)",
+   "options": "Vehicle Checklist Item"
+  },
+  {
+   "depends_on": "eval:doc.approved_by",
+   "fieldname": "approval_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Due Alert",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "no_copy": 1,
+   "options": "Due Alert\nDriver Arrived\nFull Inspection\nApproved\nService\nFinal Check\nCompleted",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Maintenance",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-10-21 19:40:00.000000",
+ "modified_by": "Administrator",
+ "module": "Fleetix",
+ "name": "Maintenance",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 0,
+   "cancel": 0,
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Rental Manager",
+   "share": 0,
+   "submit": 0,
+   "write": 1
+  },
+  {
+   "amend": 0,
+   "cancel": 0,
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Movement Supervisor",
+   "share": 0,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 0,
+   "cancel": 0,
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Driver",
+   "share": 0,
+   "submit": 0,
+   "write": 1
+  },
+  {
+   "amend": 0,
+   "cancel": 0,
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Maintenance Supervisor",
+   "share": 0,
+   "submit": 0,
+   "write": 0
+  },
+  {
+   "amend": 0,
+   "cancel": 0,
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 0,
+   "permlevel": 0,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accountant",
+   "share": 0,
+   "submit": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "vehicle",
+ "track_changes": 1
+}
