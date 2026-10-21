@@ -1,5 +1,18 @@
 {
- "cards": [],
+ "cards": [
+  {
+   "card": "Due for Handover"
+  },
+  {
+   "card": "Idle Without Assignment"
+  },
+  {
+   "card": "Periodic Maintenance Missed"
+  },
+  {
+   "card": "All Clear"
+  }
+ ],
  "charts": [
   {
    "chart": "Fleet by State",
@@ -29,7 +42,7 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2026-10-21 21:18:00.000000",
+ "modified": "2026-10-21 21:26:00.000000",
  "modified_by": "Administrator",
  "module": "Operations",
  "name": "Fleetix",
