@@ -17,3 +17,5 @@
 {"key": "{} active", "caller": "Fleetix workspace shortcut format"}
 {"key": "{} open", "caller": "Fleetix workspace shortcut format"}
 {"key": "{} due", "caller": "Fleetix workspace shortcut format"}
+{"key": "Fleetix Accountant", "caller": "Fleetix role profile record name"}
+{"key": "Fleetix Rental Manager", "caller": "Fleetix role profile record name"}

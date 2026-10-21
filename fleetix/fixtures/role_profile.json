@@ -19,5 +19,19 @@
     "role": "Accounts User"
    }
   ]
+ },
+ {
+  "doctype": "Role Profile",
+  "name": "Fleetix Rental Manager",
+  "role_profile": "Fleetix Rental Manager",
+  "roles": [
+   {
+    "doctype": "Has Role",
+    "parent": "Fleetix Rental Manager",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Rental Manager"
+   }
+  ]
  }
 ]

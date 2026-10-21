@@ -23,6 +23,15 @@
     "doctype": "Workflow Document State",
     "is_optional_state": 0,
     "send_email": 0,
+    "state": "New"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
     "state": "Pending Vehicle Selection"
    },
    {
@@ -35,7 +44,25 @@
     "state": "Pending Inspection"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Pending Inspection"
+   },
+   {
     "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Pending Documentation"
+   },
+   {
+    "allow_edit": "Rental Manager",
     "avoid_status_override": 0,
     "doc_status": "0",
     "doctype": "Workflow Document State",
@@ -62,7 +89,25 @@
     "state": "Assigned"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Assigned"
+   },
+   {
     "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Rejected"
+   },
+   {
+    "allow_edit": "Rental Manager",
     "avoid_status_override": 0,
     "doc_status": "0",
     "doctype": "Workflow Document State",
@@ -78,6 +123,15 @@
     "is_optional_state": 0,
     "send_email": 0,
     "state": "Cancelled"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Cancelled"
    }
   ],
   "transitions": [
@@ -85,6 +139,16 @@
     "action": "Submit",
     "allow_self_approval": 1,
     "allowed": "Project Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Pending Vehicle Selection",
+    "send_email_to_creator": 0,
+    "state": "New"
+   },
+   {
+    "action": "Submit",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
     "condition": null,
     "doctype": "Workflow Transition",
     "next_state": "Pending Vehicle Selection",
@@ -122,9 +186,29 @@
     "state": "Pending Inspection"
    },
    {
+    "action": "Inspect",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": "frappe.db.get_value(\"Vehicle Inspection\", {\"reference_type\": \"Vehicle Request\", \"reference_name\": doc.name}, \"name\")",
+    "doctype": "Workflow Transition",
+    "next_state": "Pending Documentation",
+    "send_email_to_creator": 0,
+    "state": "Pending Inspection"
+   },
+   {
     "action": "Document",
     "allow_self_approval": 1,
     "allowed": "Movement Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Pending Assignment",
+    "send_email_to_creator": 0,
+    "state": "Pending Documentation"
+   },
+   {
+    "action": "Document",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
     "condition": null,
     "doctype": "Workflow Transition",
     "next_state": "Pending Assignment",
@@ -212,6 +296,15 @@
     "state": "Inspection"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Inspection"
+   },
+   {
     "allow_edit": "Movement Supervisor",
     "avoid_status_override": 0,
     "doc_status": "0",
@@ -221,7 +314,25 @@
     "state": "Documentation and Signatures"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Documentation and Signatures"
+   },
+   {
     "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "1",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Completed"
+   },
+   {
+    "allow_edit": "Rental Manager",
     "avoid_status_override": 0,
     "doc_status": "1",
     "doctype": "Workflow Document State",
@@ -242,6 +353,16 @@
     "state": "Requested"
    },
    {
+    "action": "Start Inspection",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Inspection",
+    "send_email_to_creator": 0,
+    "state": "Requested"
+   },
+   {
     "action": "Document",
     "allow_self_approval": 1,
     "allowed": "Movement Supervisor",
@@ -252,9 +373,29 @@
     "state": "Inspection"
    },
    {
+    "action": "Document",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": "doc.inspection and doc.odometer",
+    "doctype": "Workflow Transition",
+    "next_state": "Documentation and Signatures",
+    "send_email_to_creator": 0,
+    "state": "Inspection"
+   },
+   {
     "action": "Complete",
     "allow_self_approval": 1,
     "allowed": "Movement Supervisor",
+    "condition": "doc.from_signature and doc.to_signature",
+    "doctype": "Workflow Transition",
+    "next_state": "Completed",
+    "send_email_to_creator": 0,
+    "state": "Documentation and Signatures"
+   },
+   {
+    "action": "Complete",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
     "condition": "doc.from_signature and doc.to_signature",
     "doctype": "Workflow Transition",
     "next_state": "Completed",
@@ -283,7 +424,25 @@
     "state": "Due Alert"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Due Alert"
+   },
+   {
     "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Driver Arrived"
+   },
+   {
+    "allow_edit": "Rental Manager",
     "avoid_status_override": 0,
     "doc_status": "0",
     "doctype": "Workflow Document State",
@@ -301,7 +460,25 @@
     "state": "Full Inspection"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Full Inspection"
+   },
+   {
     "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Approved"
+   },
+   {
+    "allow_edit": "Rental Manager",
     "avoid_status_override": 0,
     "doc_status": "0",
     "doctype": "Workflow Document State",
@@ -319,6 +496,15 @@
     "state": "Service"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Service"
+   },
+   {
     "allow_edit": "Movement Supervisor",
     "avoid_status_override": 0,
     "doc_status": "0",
@@ -328,7 +514,25 @@
     "state": "Final Check"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Final Check"
+   },
+   {
     "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "1",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Completed"
+   },
+   {
+    "allow_edit": "Rental Manager",
     "avoid_status_override": 0,
     "doc_status": "1",
     "doctype": "Workflow Document State",
@@ -349,9 +553,29 @@
     "state": "Due Alert"
    },
    {
+    "action": "Arrive",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Driver Arrived",
+    "send_email_to_creator": 0,
+    "state": "Due Alert"
+   },
+   {
     "action": "Start Inspection",
     "allow_self_approval": 1,
     "allowed": "Movement Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Full Inspection",
+    "send_email_to_creator": 0,
+    "state": "Driver Arrived"
+   },
+   {
+    "action": "Start Inspection",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
     "condition": null,
     "doctype": "Workflow Transition",
     "next_state": "Full Inspection",
@@ -379,6 +603,16 @@
     "state": "Approved"
    },
    {
+    "action": "Start Service",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Service",
+    "send_email_to_creator": 0,
+    "state": "Approved"
+   },
+   {
     "action": "Finish Service",
     "allow_self_approval": 1,
     "allowed": "Movement Supervisor",
@@ -389,9 +623,29 @@
     "state": "Service"
    },
    {
+    "action": "Finish Service",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Final Check",
+    "send_email_to_creator": 0,
+    "state": "Service"
+   },
+   {
     "action": "Complete",
     "allow_self_approval": 1,
     "allowed": "Movement Supervisor",
+    "condition": "doc.final_check and frappe.db.get_value(\"Vehicle\", doc.vehicle, \"last_odometer\")",
+    "doctype": "Workflow Transition",
+    "next_state": "Completed",
+    "send_email_to_creator": 0,
+    "state": "Final Check"
+   },
+   {
+    "action": "Complete",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
     "condition": "doc.final_check and frappe.db.get_value(\"Vehicle\", doc.vehicle, \"last_odometer\")",
     "doctype": "Workflow Transition",
     "next_state": "Completed",
@@ -420,7 +674,43 @@
     "state": "Reported"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Reported"
+   },
+   {
+    "allow_edit": "Accountant",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Reported"
+   },
+   {
     "allow_edit": "Maintenance Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Documented"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Documented"
+   },
+   {
+    "allow_edit": "Accountant",
     "avoid_status_override": 0,
     "doc_status": "0",
     "doctype": "Workflow Document State",
@@ -444,6 +734,33 @@
     "doctype": "Workflow Document State",
     "is_optional_state": 0,
     "send_email": 0,
+    "state": "Responsibility Set"
+   },
+   {
+    "allow_edit": "Accountant",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Responsibility Set"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Charged to Driver"
+   },
+   {
+    "allow_edit": "Accountant",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
     "state": "Charged to Driver"
    },
    {
@@ -456,7 +773,34 @@
     "state": "Claimed"
    },
    {
+    "allow_edit": "Accountant",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Claimed"
+   },
+   {
     "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Closed"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Closed"
+   },
+   {
+    "allow_edit": "Accountant",
     "avoid_status_override": 0,
     "doc_status": "0",
     "doctype": "Workflow Document State",
@@ -477,9 +821,49 @@
     "state": "Reported"
    },
    {
+    "action": "Document",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": "doc.photos",
+    "doctype": "Workflow Transition",
+    "next_state": "Documented",
+    "send_email_to_creator": 0,
+    "state": "Reported"
+   },
+   {
+    "action": "Document",
+    "allow_self_approval": 1,
+    "allowed": "Accountant",
+    "condition": "doc.photos",
+    "doctype": "Workflow Transition",
+    "next_state": "Documented",
+    "send_email_to_creator": 0,
+    "state": "Reported"
+   },
+   {
     "action": "Set Responsibility",
     "allow_self_approval": 1,
     "allowed": "Maintenance Supervisor",
+    "condition": "doc.charged_to_driver",
+    "doctype": "Workflow Transition",
+    "next_state": "Responsibility Set",
+    "send_email_to_creator": 0,
+    "state": "Documented"
+   },
+   {
+    "action": "Set Responsibility",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": "doc.charged_to_driver",
+    "doctype": "Workflow Transition",
+    "next_state": "Responsibility Set",
+    "send_email_to_creator": 0,
+    "state": "Documented"
+   },
+   {
+    "action": "Set Responsibility",
+    "allow_self_approval": 1,
+    "allowed": "Accountant",
     "condition": "doc.charged_to_driver",
     "doctype": "Workflow Transition",
     "next_state": "Responsibility Set",
@@ -497,6 +881,26 @@
     "state": "Responsibility Set"
    },
    {
+    "action": "Charge",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Charged to Driver",
+    "send_email_to_creator": 0,
+    "state": "Responsibility Set"
+   },
+   {
+    "action": "Charge",
+    "allow_self_approval": 1,
+    "allowed": "Accountant",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Charged to Driver",
+    "send_email_to_creator": 0,
+    "state": "Responsibility Set"
+   },
+   {
     "action": "Claim",
     "allow_self_approval": 1,
     "allowed": "Rental Manager",
@@ -507,9 +911,29 @@
     "state": "Charged to Driver"
    },
    {
+    "action": "Claim",
+    "allow_self_approval": 1,
+    "allowed": "Accountant",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Claimed",
+    "send_email_to_creator": 0,
+    "state": "Charged to Driver"
+   },
+   {
     "action": "Close",
     "allow_self_approval": 1,
     "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Closed",
+    "send_email_to_creator": 0,
+    "state": "Claimed"
+   },
+   {
+    "action": "Close",
+    "allow_self_approval": 1,
+    "allowed": "Accountant",
     "condition": null,
     "doctype": "Workflow Transition",
     "next_state": "Closed",
@@ -538,7 +962,25 @@
     "state": "Detected"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Detected"
+   },
+   {
     "allow_edit": "Maintenance Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Cost Estimated"
+   },
+   {
+    "allow_edit": "Rental Manager",
     "avoid_status_override": 0,
     "doc_status": "0",
     "doctype": "Workflow Document State",
@@ -572,6 +1014,15 @@
     "is_optional_state": 0,
     "send_email": 0,
     "state": "Closed"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Closed"
    }
   ],
   "transitions": [
@@ -586,9 +1037,29 @@
     "state": "Detected"
    },
    {
+    "action": "Estimate Cost",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": "doc.estimated_cost and doc.photos",
+    "doctype": "Workflow Transition",
+    "next_state": "Cost Estimated",
+    "send_email_to_creator": 0,
+    "state": "Detected"
+   },
+   {
     "action": "Charge",
     "allow_self_approval": 1,
     "allowed": "Maintenance Supervisor",
+    "condition": "doc.charged_to_driver",
+    "doctype": "Workflow Transition",
+    "next_state": "Charged to Driver",
+    "send_email_to_creator": 0,
+    "state": "Cost Estimated"
+   },
+   {
+    "action": "Charge",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
     "condition": "doc.charged_to_driver",
     "doctype": "Workflow Transition",
     "next_state": "Charged to Driver",
@@ -637,7 +1108,34 @@
     "state": "Draft"
    },
    {
+    "allow_edit": "Accountant",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Draft"
+   },
+   {
     "allow_edit": "Project Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Sent to Project"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Sent to Project"
+   },
+   {
+    "allow_edit": "Accountant",
     "avoid_status_override": 0,
     "doc_status": "0",
     "doctype": "Workflow Document State",
@@ -655,7 +1153,43 @@
     "state": "Paid"
    },
    {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Paid"
+   },
+   {
+    "allow_edit": "Accountant",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Paid"
+   },
+   {
     "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Rejected"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Rejected"
+   },
+   {
+    "allow_edit": "Accountant",
     "avoid_status_override": 0,
     "doc_status": "0",
     "doctype": "Workflow Document State",
@@ -676,6 +1210,16 @@
     "state": "Draft"
    },
    {
+    "action": "Send",
+    "allow_self_approval": 1,
+    "allowed": "Accountant",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Sent to Project",
+    "send_email_to_creator": 0,
+    "state": "Draft"
+   },
+   {
     "action": "Pay",
     "allow_self_approval": 1,
     "allowed": "Accountant",
@@ -686,9 +1230,39 @@
     "state": "Sent to Project"
    },
    {
+    "action": "Pay",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Paid",
+    "send_email_to_creator": 0,
+    "state": "Sent to Project"
+   },
+   {
     "action": "Reject",
     "allow_self_approval": 1,
     "allowed": "Project Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Rejected",
+    "send_email_to_creator": 0,
+    "state": "Sent to Project"
+   },
+   {
+    "action": "Reject",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Rejected",
+    "send_email_to_creator": 0,
+    "state": "Sent to Project"
+   },
+   {
+    "action": "Reject",
+    "allow_self_approval": 1,
+    "allowed": "Accountant",
     "condition": null,
     "doctype": "Workflow Transition",
     "next_state": "Rejected",
