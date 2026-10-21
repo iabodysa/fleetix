@@ -1,0 +1,23 @@
+[
+ {
+  "doctype": "Role Profile",
+  "name": "Fleetix Accountant",
+  "role_profile": "Fleetix Accountant",
+  "roles": [
+   {
+    "doctype": "Has Role",
+    "parent": "Fleetix Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accountant"
+   },
+   {
+    "doctype": "Has Role",
+    "parent": "Fleetix Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts User"
+   }
+  ]
+ }
+]

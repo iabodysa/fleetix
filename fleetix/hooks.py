@@ -36,6 +36,7 @@ fixtures = [
 			]
 		],
 	},
+	{"dt": "Role Profile", "filters": [["name", "=", "Fleetix Accountant"]]},
 	{"dt": "Custom Field", "filters": [["module", "=", "Fleetix"]]},
 	{"dt": "Property Setter", "filters": [["module", "=", "Fleetix"]]},
 	{
