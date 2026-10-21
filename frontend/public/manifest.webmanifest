@@ -1,0 +1,14 @@
+{
+	"name": "Fleetix Maintenance",
+	"short_name": "Fleetix",
+	"start_url": "/maintenance",
+	"scope": "/maintenance",
+	"display": "fullscreen",
+	"orientation": "landscape",
+	"background_color": "#0D1317",
+	"theme_color": "#0D1317",
+	"icons": [
+		{ "src": "/assets/fleetix/maintenance/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+		{ "src": "/assets/fleetix/maintenance/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+	]
+}

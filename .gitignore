@@ -54,3 +54,6 @@ jspm_packages/
 # Aider AI Chat
 .aider*
 .ctl/
+
+fleetix/public/maintenance
+fleetix/www/maintenance.html

@@ -1,0 +1,19 @@
+{
+	"name": "fleetix-maintenance",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build --base=/assets/fleetix/maintenance/ && yarn copy-html-entry",
+		"copy-html-entry": "cp ../fleetix/public/maintenance/index.html ../fleetix/www/maintenance.html"
+	},
+	"dependencies": {
+		"frappe-ui": "0.1.105",
+		"vue": "^3.5.12"
+	},
+	"devDependencies": {
+		"@vitejs/plugin-vue": "^5.1.4",
+		"vite": "^5.4.10"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"appId": "sa.etihad.fleetix.maintenance",
+	"appName": "Fleetix Maintenance",
+	"webDir": "www",
+	"server": {
+		"androidScheme": "https",
+		"cleartext": true
+	},
+	"android": {
+		"allowMixedContent": true
+	},
+	"plugins": {
+		"SunmiPrinter": {
+			"bindOnLoad": true
+		}
+	}
+}
