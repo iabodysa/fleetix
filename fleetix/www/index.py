@@ -1,6 +1,8 @@
 # Copyright (c) 2026, Ittihad and contributors
 # For license information, please see license.txt
 
+import os
+
 import frappe
 from frappe import _
 from frappe.utils import formatdate, getdate, nowdate, strip_html_tags
@@ -14,6 +16,7 @@ def get_context(context):
 	context.layout_direction = "rtl" if is_rtl() else "ltr"
 	context.cta = get_cta()
 	context.services = get_services()
+	context.client_logos = get_client_logos()
 	context.holidays = get_upcoming_holidays()
 	context.switch_lang = get_switch_lang()
 	context.year = getdate().year
@@ -30,36 +33,43 @@ def get_cta():
 def get_services():
 	return [
 		{
-			"icon": "car",
-			"title": _("Wide Vehicle Selection"),
-			"summary": _("From economy to luxury cars, we have the perfect vehicle for every occasion and budget."),
+			"icon": "calendar",
+			"title": _("Long-term supply"),
+			"summary": _("Vehicles stay with your project month after month, not one-day rentals."),
 		},
 		{
-			"icon": "bolt",
-			"title": _("Instant Booking"),
-			"summary": _("Book your car in minutes. Quick, easy, and hassle-free."),
+			"icon": "van",
+			"title": _("Vans and light vehicles"),
+			"summary": _("Toyota Hiace in high-roof and low-roof, and Toyota Lite Ace for crews and delivery."),
+		},
+		{
+			"icon": "swap",
+			"title": _("Handover and replacement at our offices"),
+			"summary": _("Collect and swap vehicles through our dedicated rental offices."),
 		},
 		{
 			"icon": "shield",
-			"title": _("Fully Insured"),
-			"summary": _("All our vehicles are comprehensively insured for your peace of mind and safety."),
+			"title": _("Centrally managed insurance"),
+			"summary": _("One cooperative policy for the fleet, checked against traffic records before every renewal."),
 		},
 		{
-			"icon": "tag",
-			"title": _("Best Prices"),
-			"summary": _("Competitive rates with transparent pricing. No hidden fees, just great value."),
+			"icon": "statement",
+			"title": _("Monthly statement per project"),
+			"summary": _("A usage and rental statement reaches you each month for matching before invoicing."),
 		},
 		{
-			"icon": "star",
-			"title": _("Premium Service"),
-			"summary": _("Experience world-class customer service with every rental. Your satisfaction is our priority."),
-		},
-		{
-			"icon": "phone",
-			"title": _("24/7 Support"),
-			"summary": _("Round-the-clock customer support ready to assist you anytime, anywhere."),
+			"icon": "pin",
+			"title": _("Tracked by project"),
+			"summary": _("Every vehicle is logged against its project, so you know what each project holds."),
 		},
 	]
+
+
+def get_client_logos():
+	folder = frappe.get_app_path("fleetix", "public", "images", "etihad", "clients")
+	if not os.path.isdir(folder):
+		return []
+	return [f"/assets/fleetix/images/etihad/clients/{name}" for name in sorted(os.listdir(folder)) if name.endswith(".webp")]
 
 
 def get_upcoming_holidays():
