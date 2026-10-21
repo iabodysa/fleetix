@@ -6,7 +6,12 @@ Advance,سلفة
 Advances,السلف
 Amended From,معدل من
 Amount,المبلغ
+Approve,اعتماد
 Approved,معتمد
+Approved By,معتمد من
+Arrive,تسجيل الوصول
+Assignment Type,نوع التفويض
+Authorization Document,مستند التفويض
 Available,متاحة
 Back,الخلف
 Balance,الرصيد
@@ -16,7 +21,9 @@ Battery Interval (months),فترة تغيير البطارية (بالأشهر)
 Billing,الفوترة
 Breakdown,عطل
 Buying,الشراء
+Cancellation Reason,سبب الإلغاء
 Cancelled,ملغي
+Caption,الوصف
 Check Item,بند الفحص
 Checklist,قائمة الفحص
 City,المدينة
@@ -27,7 +34,11 @@ Claimed,تمت المطالبة
 Client,عميل
 Closed,مغلق
 Commercial Registration No.,رقم السجل التجاري
+Component Replacement Log,سجل استبدال القطع
+Components Replaced,القطع المستبدلة
+Converted to Permanent,تحول إلى دائم
 Cost,التكلفة
+Cost (SAR),التكلفة (ريال)
 Count,العدد
 Current City,المدينة الحالية
 Current Driver,السائق الحالي
@@ -46,26 +57,45 @@ Disabled,معطل
 Disputed,معترض عليها
 Document,المستند
 Document Type,نوع المستند
+Documentation and Signatures,التوثيق والتوقيعات
 Done,منجز
 Draft,مسودة
+Driver Arrived,وصل السائق
+Driver Signature,توقيع السائق
+Driver {0} is not trained and can only receive a temporary training assignment,السائق {0} غير مدرب ولا يمكن منحه إلا تفويضا مؤقتا للتدريب
+Due Alert,تنبيه استحقاق
 Eastern,الشرقية
 Effective From,ساري من
+Eligible for Assignment,مؤهل للتفويض
+Emergency,طارئة
 Employee,موظف
 End Date,تاريخ النهاية
 Ended,منتهي
+Expected Duration,المدة المتوقعة
 Expired,منتهي
+Expiring,قارب على الانتهاء
 Expiry Date,تاريخ الانتهاء
 Fail,راسب
 File,الملف
+Final Check,الفحص النهائي
+Final Check (lights and all),الفحص النهائي (الأنوار وغيرها)
 Finance,المالية
+Finish Service,إنهاء الخدمة
 Fleet,الأسطول
 Fleet Settings,إعدادات الأسطول
 Fleetix,فليتيكس
 From Date,من تاريخ
+From Driver,من السائق
+From Project,من المشروع
 Front Tires,الإطارات الأمامية
+Fuel Level,مستوى الوقود
+Full Inspection,الفحص الشامل
 Full Name,الاسم الكامل
+Good,سليم
+Handing Over Signature,توقيع المسلم
 Handover,تسليم
 Handover Date,تاريخ التسليم
+Handover Date and Time,تاريخ ووقت التسليم
 Holder,صاحب الحساب
 Home,الرئيسية
 Hourly Rate (SAR),سعر الساعة (ريال)
@@ -73,8 +103,12 @@ IBAN,رقم الآيبان
 Image,الصورة
 In Progress,قيد المعالجة
 In Training,تحت التدريب
-Inspection,فحص دوري
+Inspect,فحص
+Inspection,الفحص
 Inspection Date,تاريخ الفحص
+Inspection Date and Time,تاريخ ووقت الفحص
+Inspector,الفاحص
+Inspector Signature,توقيع الفاحص
 Insurance,الحوادث والتأمين
 Interior,الداخلية
 Interval (km),الفترة (كم)
@@ -82,6 +116,8 @@ Interval (months),الفترة (بالأشهر)
 Iqama No,رقم الإقامة
 Issue Date,تاريخ الإصدار
 Issued,صادرة
+Item Used,الصنف المستخدم
+Items Issued from Warehouse,الأصناف المصروفة من المستودع
 Last Filter Change Date,تاريخ آخر تغيير للفلتر
 Last Filter Change Odometer,عداد آخر تغيير للفلتر
 Last Front Tires Change Date,تاريخ آخر تغيير للإطارات الأمامية
@@ -96,6 +132,7 @@ Legal,قضية قانونية
 License Plate,لوحة المركبة
 Lines,البنود
 Locked,مقفل
+Maintenance Component,قطعة صيانة
 Maintenance Policy,سياسة الصيانة
 Maintenance Supervisor,مشرف الصيانة
 Major,جسيم
@@ -107,15 +144,20 @@ Model Year,سنة الصنع
 Movement,الحركة
 Movement Supervisor,مشرف الحركة
 National ID / Iqama No.,رقم الهوية / الإقامة
+Needs Repair,يحتاج إصلاح
 Next Battery Due Date,موعد تغيير البطارية القادم
 Next Due,الاستحقاق القادم
+Next Due (km),الاستحقاق التالي (كم)
 Next Due Date,موعد الفحص القادم
 Next Front Tires Due (km),استحقاق الإطارات الأمامية القادم (كم)
 Next Oil Due (km),استحقاق الزيت القادم (كم)
 Next Rear Tires Due (km),استحقاق الإطارات الخلفية القادم (كم)
+Normal,عادية
 Not Trained,غير مدرب
 Note,ملاحظة
 Odometer,عداد الكيلومترات
+Odometer (km),عداد المسافة (كم)
+Odometer at Replacement,عداد المسافة عند الاستبدال
 Oil,الزيت
 Oil Filter,فلتر الزيت
 Oil Filter Interval (km),فترة تغيير فلتر الزيت (كم)
@@ -131,12 +173,20 @@ Passed,سليم
 Password,كلمة المرور
 Paused,متوقف
 Pending,قيد الاعتماد
+Pending Assignment,بانتظار التفويض
+Pending Documentation,بانتظار التوثيق
+Pending Inspection,بانتظار الفحص
+Pending Vehicle Selection,بانتظار اختيار المركبة
+Periodic,دورية
 Periodic Inspection (Fahs) Expiry,انتهاء الفحص الدوري
+Photos,الصور
+Photos and Documents,الصور والمستندات
 Plate,لوحة
 Platform,المنصة
 Problem,مشكلة مركبة
 Project Supervisor,مشرف المشروع
 Projects,المشاريع
+Proof of Work,إثبات العمل
 Purchasing,المشتريات
 Qty,الكمية
 Rate,السعر
@@ -146,41 +196,60 @@ Rear Tires,الإطارات الخلفية
 Reason,السبب
 Receipt,استلام
 Receipt Date,تاريخ الاستلام
+Receipts / Documents,الإيصالات / المستندات
 Received,تم الاستلام
+Receiving Signature,توقيع المستلم
 Recovered,مسترد
 Reference No,الرقم المرجعي
 Region,المنطقة
+Registered,مسجل
 Registration (Istimara) Expiry,انتهاء الاستمارة
+Reject,رفض
 Rejected,مرفوض
+Rejection Reason,سبب الرفض
 Rent,فاتورة إيجار
 Rental Manager,مدير التأجير
 Rental Rate,سعر التأجير
 Repair,صيانة
+Replacement Date,تاريخ الاستبدال
 Reports,التقارير
 Request Date,تاريخ الطلب
+Requested Vehicle Type,نوع المركبة المطلوب
 Result,النتيجة
 Returned,تم الإرجاع
 Riyadh,الرياض
 Season,الموسم
+Select Vehicle,اختيار المركبة
+Selected Vehicle,المركبة المختارة
 Series,السلسلة
-Service,صيانة دورية
+Service,الخدمة
 Service Intervals,فترات الصيانة
 Settled,مسدد
 Severity,درجة الضرر
 Signature,التوقيع
+Signatures,التوقيعات
 Signed,موقع
 Sold,مباعة
 Start Date,تاريخ البداية
+Start Inspection,بدء الفحص
+Start Service,بدء الخدمة
 Status,الحالة
 Stopped,متوقفة
 Summer (Apr-Sep),صيف (أبريل - سبتمبر)
 Suspended,موقوف
+Temporary (Training),مؤقت (تدريب)
+Temporary Assignment,التفويض المؤقت
 Tire Interval (km),فترة تغيير الإطارات (كم)
 To Date,إلى تاريخ
+To Driver,إلى السائق
+To Project,إلى المشروع
 Total,الإجمالي
 Trained,مدرب
+Trainer (Project Supervisor),المدرب (مشرف المشروع)
+Training Record,سجل التدريب
 Training Status,حالة التدريب
-Transaction,معاملة مرورية
+Training Type,نوع التدريب
+Transaction,المعاملات
 Transaction Date,تاريخ المعاملة
 Travel,سفر
 Type Name,اسم النوع
@@ -188,8 +257,18 @@ Usage Type,نوع الاستخدام
 Username,اسم المستخدم
 Valid,سارية
 Valid To,صالح حتى
+Vehicle Assignment,تفويض المركبة
+Vehicle Checklist Item,بند فحص المركبة
+Vehicle Handover,تسليم المركبة
+Vehicle Inspection,فحص المركبة
+Vehicle Inspection Document,مستند فحص المركبة
+Vehicle Inspection Photo,صورة فحص المركبة
+Vehicle Request,طلب مركبة
+Vehicle Selection,اختيار المركبة
 Vehicle Type,نوع المركبة
 Vendor Name,اسم المورد
 Violation,مخالفة مرورية
+Visit Date and Time,تاريخ ووقت الزيارة
 Western,الغربية
 Winter (Oct-Mar),شتاء (أكتوبر - مارس)
+Workshop,الورشة

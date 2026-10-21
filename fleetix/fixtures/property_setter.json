@@ -58,5 +58,17 @@
   "property": "reqd",
   "property_type": "Check",
   "value": "1"
+ },
+ {
+  "doc_type": "Vehicle",
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocField",
+  "field_name": "last_odometer",
+  "is_system_generated": 0,
+  "module": "Master",
+  "name": "Vehicle-last_odometer-set_only_once",
+  "property": "set_only_once",
+  "property_type": "Check",
+  "value": "0"
  }
 ]

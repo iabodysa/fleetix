@@ -1,0 +1,6 @@
+{"key": "Arrive", "caller": "Workflow Action Master fixture"}
+{"key": "Finish Service", "caller": "Workflow Action Master fixture"}
+{"key": "Inspect", "caller": "Workflow Action Master fixture"}
+{"key": "Select Vehicle", "caller": "Workflow Action Master fixture"}
+{"key": "Start Inspection", "caller": "Workflow Action Master fixture"}
+{"key": "Start Service", "caller": "Workflow Action Master fixture"}

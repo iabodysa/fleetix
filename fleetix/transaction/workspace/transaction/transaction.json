@@ -1,0 +1,118 @@
+{
+ "charts": [],
+ "content": "[{\"id\": \"transaction-sc-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Vehicle Request\", \"col\": 3}}, {\"id\": \"transaction-sc-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Vehicle Assignment\", \"col\": 3}}, {\"id\": \"transaction-sc-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Vehicle Handover\", \"col\": 3}}, {\"id\": \"transaction-sc-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Vehicle Inspection\", \"col\": 3}}, {\"id\": \"transaction-sp\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"transaction-cd-0\", \"type\": \"card\", \"data\": {\"card_name\": \"Transaction\", \"col\": 4}}]",
+ "creation": "2026-10-21 00:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "file",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Transaction",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transaction",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Vehicle Request",
+   "link_count": 0,
+   "link_to": "Vehicle Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Vehicle Inspection",
+   "link_count": 0,
+   "link_to": "Vehicle Inspection",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Vehicle Assignment",
+   "link_count": 0,
+   "link_to": "Vehicle Assignment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Vehicle Handover",
+   "link_count": 0,
+   "link_to": "Vehicle Handover",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-10-21 19:05:00.000000",
+ "modified_by": "Administrator",
+ "module": "Transaction",
+ "name": "Transaction",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Project Supervisor"
+  },
+  {
+   "role": "Rental Manager"
+  },
+  {
+   "role": "Movement Supervisor"
+  },
+  {
+   "role": "Maintenance Supervisor"
+  },
+  {
+   "role": "Accountant"
+  }
+ ],
+ "sequence_id": 3.0,
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "Vehicle Request",
+   "link_to": "Vehicle Request",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Vehicle Assignment",
+   "link_to": "Vehicle Assignment",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Vehicle Handover",
+   "link_to": "Vehicle Handover",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Vehicle Inspection",
+   "link_to": "Vehicle Inspection",
+   "type": "DocType"
+  }
+ ],
+ "title": "Transaction"
+}

@@ -1,0 +1,405 @@
+[
+ {
+  "doctype": "Workflow",
+  "document_type": "Vehicle Request",
+  "is_active": 1,
+  "name": "Vehicle Request",
+  "override_status": 0,
+  "send_email_alert": 0,
+  "states": [
+   {
+    "allow_edit": "Project Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "New"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Pending Vehicle Selection"
+   },
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Pending Inspection"
+   },
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Pending Documentation"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Pending Assignment"
+   },
+   {
+    "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Assigned"
+   },
+   {
+    "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Rejected"
+   },
+   {
+    "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Cancelled"
+   }
+  ],
+  "transitions": [
+   {
+    "action": "Submit",
+    "allow_self_approval": 1,
+    "allowed": "Project Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Pending Vehicle Selection",
+    "send_email_to_creator": 0,
+    "state": "New"
+   },
+   {
+    "action": "Select Vehicle",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": "doc.selected_vehicle",
+    "doctype": "Workflow Transition",
+    "next_state": "Pending Inspection",
+    "send_email_to_creator": 0,
+    "state": "Pending Vehicle Selection"
+   },
+   {
+    "action": "Reject",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Rejected",
+    "send_email_to_creator": 0,
+    "state": "Pending Vehicle Selection"
+   },
+   {
+    "action": "Inspect",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": "frappe.db.get_value(\"Vehicle Inspection\", {\"reference_type\": \"Vehicle Request\", \"reference_name\": doc.name}, \"name\")",
+    "doctype": "Workflow Transition",
+    "next_state": "Pending Documentation",
+    "send_email_to_creator": 0,
+    "state": "Pending Inspection"
+   },
+   {
+    "action": "Document",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Pending Assignment",
+    "send_email_to_creator": 0,
+    "state": "Pending Documentation"
+   },
+   {
+    "action": "Assign",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": "frappe.db.get_value(\"Vehicle Assignment\", {\"vehicle_request\": doc.name, \"docstatus\": 1}, \"name\")",
+    "doctype": "Workflow Transition",
+    "next_state": "Assigned",
+    "send_email_to_creator": 0,
+    "state": "Pending Assignment"
+   },
+   {
+    "action": "Cancel",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Cancelled",
+    "send_email_to_creator": 0,
+    "state": "Pending Vehicle Selection"
+   },
+   {
+    "action": "Cancel",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Cancelled",
+    "send_email_to_creator": 0,
+    "state": "Pending Inspection"
+   },
+   {
+    "action": "Cancel",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Cancelled",
+    "send_email_to_creator": 0,
+    "state": "Pending Documentation"
+   },
+   {
+    "action": "Cancel",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Cancelled",
+    "send_email_to_creator": 0,
+    "state": "Pending Assignment"
+   }
+  ],
+  "workflow_name": "Vehicle Request",
+  "workflow_state_field": "workflow_state"
+ },
+ {
+  "doctype": "Workflow",
+  "document_type": "Vehicle Handover",
+  "is_active": 1,
+  "name": "Vehicle Handover",
+  "override_status": 0,
+  "send_email_alert": 0,
+  "states": [
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Requested"
+   },
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Inspection"
+   },
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Documentation and Signatures"
+   },
+   {
+    "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "1",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Completed"
+   }
+  ],
+  "transitions": [
+   {
+    "action": "Start Inspection",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Inspection",
+    "send_email_to_creator": 0,
+    "state": "Requested"
+   },
+   {
+    "action": "Document",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": "doc.inspection and doc.odometer",
+    "doctype": "Workflow Transition",
+    "next_state": "Documentation and Signatures",
+    "send_email_to_creator": 0,
+    "state": "Inspection"
+   },
+   {
+    "action": "Complete",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": "doc.from_signature and doc.to_signature",
+    "doctype": "Workflow Transition",
+    "next_state": "Completed",
+    "send_email_to_creator": 0,
+    "state": "Documentation and Signatures"
+   }
+  ],
+  "workflow_name": "Vehicle Handover",
+  "workflow_state_field": "status"
+ },
+ {
+  "doctype": "Workflow",
+  "document_type": "Maintenance",
+  "is_active": 1,
+  "name": "Maintenance",
+  "override_status": 0,
+  "send_email_alert": 0,
+  "states": [
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Due Alert"
+   },
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Driver Arrived"
+   },
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Full Inspection"
+   },
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Approved"
+   },
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Service"
+   },
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Final Check"
+   },
+   {
+    "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "1",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Completed"
+   }
+  ],
+  "transitions": [
+   {
+    "action": "Arrive",
+    "allow_self_approval": 1,
+    "allowed": "Driver",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Driver Arrived",
+    "send_email_to_creator": 0,
+    "state": "Due Alert"
+   },
+   {
+    "action": "Start Inspection",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Full Inspection",
+    "send_email_to_creator": 0,
+    "state": "Driver Arrived"
+   },
+   {
+    "action": "Approve",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": "doc.inspection and doc.odometer",
+    "doctype": "Workflow Transition",
+    "next_state": "Approved",
+    "send_email_to_creator": 0,
+    "state": "Full Inspection"
+   },
+   {
+    "action": "Start Service",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Service",
+    "send_email_to_creator": 0,
+    "state": "Approved"
+   },
+   {
+    "action": "Finish Service",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Final Check",
+    "send_email_to_creator": 0,
+    "state": "Service"
+   },
+   {
+    "action": "Complete",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": "doc.final_check",
+    "doctype": "Workflow Transition",
+    "next_state": "Completed",
+    "send_email_to_creator": 0,
+    "state": "Final Check"
+   }
+  ],
+  "workflow_name": "Maintenance",
+  "workflow_state_field": "status"
+ }
+]

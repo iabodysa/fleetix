@@ -17,7 +17,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Fleet",
-   "link_count": 3,
+   "link_count": 4,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -47,6 +47,16 @@
    "label": "Driver",
    "link_count": 0,
    "link_to": "Driver",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Training Record",
+   "link_count": 0,
+   "link_to": "Training Record",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -90,7 +100,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-10-21 18:39:00.000000",
+ "modified": "2026-10-21 19:05:00.000000",
  "modified_by": "Administrator",
  "module": "Master",
  "name": "Master",

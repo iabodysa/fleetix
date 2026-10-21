@@ -1,0 +1,86 @@
+{
+ "charts": [],
+ "content": "[{\"id\": \"operations-sc-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Maintenance\", \"col\": 3}}, {\"id\": \"operations-sc-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Component Replacement Log\", \"col\": 3}}, {\"id\": \"operations-sp\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"operations-cd-0\", \"type\": \"card\", \"data\": {\"card_name\": \"Operations\", \"col\": 4}}]",
+ "creation": "2026-10-21 00:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "tool",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Operations",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Operations",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Maintenance",
+   "link_count": 0,
+   "link_to": "Maintenance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Component Replacement Log",
+   "link_count": 0,
+   "link_to": "Component Replacement Log",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-10-21 19:05:00.000000",
+ "modified_by": "Administrator",
+ "module": "Operations",
+ "name": "Operations",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Rental Manager"
+  },
+  {
+   "role": "Movement Supervisor"
+  },
+  {
+   "role": "Maintenance Supervisor"
+  },
+  {
+   "role": "Accountant"
+  },
+  {
+   "role": "Driver"
+  }
+ ],
+ "sequence_id": 4.0,
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "Maintenance",
+   "link_to": "Maintenance",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Component Replacement Log",
+   "link_to": "Component Replacement Log",
+   "type": "DocType"
+  }
+ ],
+ "title": "Operations"
+}

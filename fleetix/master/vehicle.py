@@ -23,28 +23,39 @@ class VehicleService(Document):
 	def validate(self):
 		super().validate()
 		self.set_policy_intervals()
-		self.set_next_due()
+		set_next_due(self)
 
 	def set_policy_intervals(self):
 		region = frappe.db.get_value("City", self.city, "region") if self.city else None
-		for fieldname, component, season, unit in POLICY_DEFAULTS:
-			if self.get(fieldname):
-				continue
-			policy = get_policy(component, region, season)
-			if policy:
-				self.set(fieldname, policy[unit])
+		for fieldname, value in policy_intervals(region).items():
+			if not self.get(fieldname):
+				self.set(fieldname, value)
 
-	def set_next_due(self):
-		in_summer = getdate().month in SUMMER_MONTHS
-		oil_interval = self.oil_interval_summer_km if in_summer else self.oil_interval_winter_km
-		self.next_oil_due_odometer = due_odometer(self.last_oil_change_odometer, oil_interval)
-		self.next_front_tires_due_odometer = due_odometer(self.last_front_tires_odometer, self.tire_interval_km)
-		self.next_rear_tires_due_odometer = due_odometer(self.last_rear_tires_odometer, self.tire_interval_km)
-		self.next_battery_due_date = (
-			add_months(self.battery_install_date, cint(self.battery_interval_months))
-			if self.battery_install_date and cint(self.battery_interval_months)
-			else None
-		)
+
+def policy_intervals(region):
+	intervals = {}
+	for fieldname, component, season, unit in POLICY_DEFAULTS:
+		policy = get_policy(component, region, season)
+		if policy:
+			intervals[fieldname] = policy[unit]
+	return intervals
+
+
+def set_next_due(vehicle):
+	in_summer = getdate().month in SUMMER_MONTHS
+	oil_interval = vehicle.oil_interval_summer_km if in_summer else vehicle.oil_interval_winter_km
+	vehicle.next_oil_due_odometer = due_odometer(vehicle.last_oil_change_odometer, oil_interval)
+	vehicle.next_front_tires_due_odometer = due_odometer(
+		vehicle.last_front_tires_odometer, vehicle.tire_interval_km
+	)
+	vehicle.next_rear_tires_due_odometer = due_odometer(
+		vehicle.last_rear_tires_odometer, vehicle.tire_interval_km
+	)
+	vehicle.next_battery_due_date = (
+		add_months(vehicle.battery_install_date, cint(vehicle.battery_interval_months))
+		if vehicle.battery_install_date and cint(vehicle.battery_interval_months)
+		else None
+	)
 
 
 def due_odometer(last_odometer, interval):
