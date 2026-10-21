@@ -17,6 +17,7 @@
   "to_project",
   "inspection_section",
   "inspection",
+  "damages_found",
   "signatures_section",
   "from_signature",
   "column_break_signatures",
@@ -105,6 +106,12 @@
    "options": "Vehicle Inspection"
   },
   {
+   "fieldname": "damages_found",
+   "fieldtype": "Table",
+   "label": "Damages Found",
+   "options": "Vehicle Handover Damage"
+  },
+  {
    "depends_on": "eval:['Documentation and Signatures', 'Completed'].includes(doc.status)",
    "fieldname": "signatures_section",
    "fieldtype": "Section Break",
@@ -153,7 +160,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-21 00:00:00.000000",
+ "modified": "2026-10-21 19:40:00.000000",
  "modified_by": "Administrator",
  "module": "Transaction",
  "name": "Vehicle Handover",

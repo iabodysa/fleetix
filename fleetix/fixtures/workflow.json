@@ -401,5 +401,302 @@
   ],
   "workflow_name": "Maintenance",
   "workflow_state_field": "status"
+ },
+ {
+  "doctype": "Workflow",
+  "document_type": "Accident",
+  "is_active": 1,
+  "name": "Accident",
+  "override_status": 0,
+  "send_email_alert": 0,
+  "states": [
+   {
+    "allow_edit": "Movement Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Reported"
+   },
+   {
+    "allow_edit": "Maintenance Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Documented"
+   },
+   {
+    "allow_edit": "Maintenance Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Responsibility Set"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Charged to Driver"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Claimed"
+   },
+   {
+    "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Closed"
+   }
+  ],
+  "transitions": [
+   {
+    "action": "Document",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": "doc.photos",
+    "doctype": "Workflow Transition",
+    "next_state": "Documented",
+    "send_email_to_creator": 0,
+    "state": "Reported"
+   },
+   {
+    "action": "Set Responsibility",
+    "allow_self_approval": 1,
+    "allowed": "Maintenance Supervisor",
+    "condition": "doc.charged_to_driver",
+    "doctype": "Workflow Transition",
+    "next_state": "Responsibility Set",
+    "send_email_to_creator": 0,
+    "state": "Documented"
+   },
+   {
+    "action": "Charge",
+    "allow_self_approval": 1,
+    "allowed": "Maintenance Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Charged to Driver",
+    "send_email_to_creator": 0,
+    "state": "Responsibility Set"
+   },
+   {
+    "action": "Claim",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Claimed",
+    "send_email_to_creator": 0,
+    "state": "Charged to Driver"
+   },
+   {
+    "action": "Close",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Closed",
+    "send_email_to_creator": 0,
+    "state": "Claimed"
+   }
+  ],
+  "workflow_name": "Accident",
+  "workflow_state_field": "status"
+ },
+ {
+  "doctype": "Workflow",
+  "document_type": "Damage",
+  "is_active": 1,
+  "name": "Damage",
+  "override_status": 0,
+  "send_email_alert": 0,
+  "states": [
+   {
+    "allow_edit": "Maintenance Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Detected"
+   },
+   {
+    "allow_edit": "Maintenance Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Cost Estimated"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Charged to Driver"
+   },
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Claimed from Project"
+   },
+   {
+    "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Closed"
+   }
+  ],
+  "transitions": [
+   {
+    "action": "Estimate Cost",
+    "allow_self_approval": 1,
+    "allowed": "Maintenance Supervisor",
+    "condition": "doc.estimated_cost",
+    "doctype": "Workflow Transition",
+    "next_state": "Cost Estimated",
+    "send_email_to_creator": 0,
+    "state": "Detected"
+   },
+   {
+    "action": "Charge",
+    "allow_self_approval": 1,
+    "allowed": "Maintenance Supervisor",
+    "condition": "doc.charged_to_driver",
+    "doctype": "Workflow Transition",
+    "next_state": "Charged to Driver",
+    "send_email_to_creator": 0,
+    "state": "Cost Estimated"
+   },
+   {
+    "action": "Claim",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Claimed from Project",
+    "send_email_to_creator": 0,
+    "state": "Charged to Driver"
+   },
+   {
+    "action": "Close",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Closed",
+    "send_email_to_creator": 0,
+    "state": "Claimed from Project"
+   }
+  ],
+  "workflow_name": "Damage",
+  "workflow_state_field": "status"
+ },
+ {
+  "doctype": "Workflow",
+  "document_type": "Project Claim",
+  "is_active": 1,
+  "name": "Project Claim",
+  "override_status": 0,
+  "send_email_alert": 0,
+  "states": [
+   {
+    "allow_edit": "Rental Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Draft"
+   },
+   {
+    "allow_edit": "Project Supervisor",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Sent to Project"
+   },
+   {
+    "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Paid"
+   },
+   {
+    "allow_edit": "System Manager",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "doctype": "Workflow Document State",
+    "is_optional_state": 0,
+    "send_email": 0,
+    "state": "Rejected"
+   }
+  ],
+  "transitions": [
+   {
+    "action": "Send",
+    "allow_self_approval": 1,
+    "allowed": "Rental Manager",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Sent to Project",
+    "send_email_to_creator": 0,
+    "state": "Draft"
+   },
+   {
+    "action": "Pay",
+    "allow_self_approval": 1,
+    "allowed": "Accountant",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Paid",
+    "send_email_to_creator": 0,
+    "state": "Sent to Project"
+   },
+   {
+    "action": "Reject",
+    "allow_self_approval": 1,
+    "allowed": "Project Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Rejected",
+    "send_email_to_creator": 0,
+    "state": "Sent to Project"
+   }
+  ],
+  "workflow_name": "Project Claim",
+  "workflow_state_field": "status"
  }
 ]

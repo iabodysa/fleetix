@@ -1,0 +1,32 @@
+[
+ {
+  "doctype": "Item Group",
+  "is_group": 0,
+  "item_group_name": "Oil",
+  "name": "Oil"
+ },
+ {
+  "doctype": "Item Group",
+  "is_group": 0,
+  "item_group_name": "Oil Filter",
+  "name": "Oil Filter"
+ },
+ {
+  "doctype": "Item Group",
+  "is_group": 0,
+  "item_group_name": "Tires",
+  "name": "Tires"
+ },
+ {
+  "doctype": "Item Group",
+  "is_group": 0,
+  "item_group_name": "Battery",
+  "name": "Battery"
+ },
+ {
+  "doctype": "Item Group",
+  "is_group": 0,
+  "item_group_name": "Spare Parts",
+  "name": "Spare Parts"
+ }
+]

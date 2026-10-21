@@ -5,7 +5,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 from frappe.model.workflow import apply_workflow
-from frappe.utils import now_datetime
+from frappe.utils import get_datetime, now_datetime
 
 from fleetix.master.vehicle import policy_intervals
 
@@ -91,3 +91,28 @@ class VehicleAssignment(Document):
 			return
 		vehicle.update({"current_driver": None, "current_project": None, "status": "Available"})
 		vehicle.save()
+
+
+def held_until(vehicle, driver, since):
+	return frappe.db.get_value(
+		"Vehicle Handover",
+		{"vehicle": vehicle, "from_driver": driver, "docstatus": 1, "handover_datetime": (">", since)},
+		"handover_datetime",
+		order_by="handover_datetime asc",
+	)
+
+
+def holder_at(vehicle, at):
+	if not (vehicle and at):
+		return None
+	for holder in frappe.get_all(
+		"Vehicle Assignment",
+		filters={"vehicle": vehicle, "docstatus": 1, "handover_date": ("<=", at)},
+		fields=["driver", "project", "handover_date"],
+		order_by="handover_date desc",
+		limit=1,
+	):
+		until = held_until(vehicle, holder.driver, holder.handover_date)
+		if not until or get_datetime(until) > get_datetime(at):
+			return holder
+	return None

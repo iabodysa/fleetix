@@ -4,3 +4,6 @@
 {"key": "Select Vehicle", "caller": "Workflow Action Master fixture"}
 {"key": "Start Inspection", "caller": "Workflow Action Master fixture"}
 {"key": "Start Service", "caller": "Workflow Action Master fixture"}
+{"key": "Charge", "caller": "Workflow Action Master fixture"}
+{"key": "Estimate Cost", "caller": "Workflow Action Master fixture"}
+{"key": "Set Responsibility", "caller": "Workflow Action Master fixture"}

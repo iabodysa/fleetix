@@ -19,6 +19,7 @@ NEXT_DUE_FIELDS = {
 	"Front Tires": "next_front_tires_due_odometer",
 	"Rear Tires": "next_rear_tires_due_odometer",
 }
+ISSUE_STATES = ("Service", "Final Check")
 
 
 class Maintenance(Document):
@@ -27,6 +28,8 @@ class Maintenance(Document):
 			self.visit_datetime = now_datetime()
 		if self.status == "Approved" and not self.approved_by:
 			self.approved_by = frappe.session.user
+		if self.status in ISSUE_STATES and not self.items_issued:
+			self.items_issued = issue_items(self)
 
 	def on_submit(self):
 		vehicle = frappe.get_doc("Vehicle", self.vehicle)
@@ -53,6 +56,24 @@ class Maintenance(Document):
 					"next_due_date": next_due_date,
 				}
 			).insert(ignore_permissions=True)
+
+
+def issue_items(maintenance):
+	rows = [row for row in maintenance.components_replaced if row.item]
+	if not rows:
+		return None
+	warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
+	entry = frappe.get_doc(
+		{
+			"doctype": "Stock Entry",
+			"stock_entry_type": "Material Issue",
+			"company": maintenance.company,
+			"maintenance": maintenance.name,
+			"from_warehouse": warehouse,
+			"items": [{"item_code": row.item, "qty": row.qty, "s_warehouse": warehouse} for row in rows],
+		}
+	).insert()
+	return entry.name
 
 
 def next_due(vehicle, component):

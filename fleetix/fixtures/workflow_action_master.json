@@ -16,6 +16,21 @@
  },
  {
   "doctype": "Workflow Action Master",
+  "name": "Charge",
+  "workflow_action_name": "Charge"
+ },
+ {
+  "doctype": "Workflow Action Master",
+  "name": "Claim",
+  "workflow_action_name": "Claim"
+ },
+ {
+  "doctype": "Workflow Action Master",
+  "name": "Close",
+  "workflow_action_name": "Close"
+ },
+ {
+  "doctype": "Workflow Action Master",
   "name": "Complete",
   "workflow_action_name": "Complete"
  },
@@ -23,6 +38,11 @@
   "doctype": "Workflow Action Master",
   "name": "Document",
   "workflow_action_name": "Document"
+ },
+ {
+  "doctype": "Workflow Action Master",
+  "name": "Estimate Cost",
+  "workflow_action_name": "Estimate Cost"
  },
  {
   "doctype": "Workflow Action Master",
@@ -36,8 +56,23 @@
  },
  {
   "doctype": "Workflow Action Master",
+  "name": "Pay",
+  "workflow_action_name": "Pay"
+ },
+ {
+  "doctype": "Workflow Action Master",
   "name": "Select Vehicle",
   "workflow_action_name": "Select Vehicle"
+ },
+ {
+  "doctype": "Workflow Action Master",
+  "name": "Send",
+  "workflow_action_name": "Send"
+ },
+ {
+  "doctype": "Workflow Action Master",
+  "name": "Set Responsibility",
+  "workflow_action_name": "Set Responsibility"
  },
  {
   "doctype": "Workflow Action Master",

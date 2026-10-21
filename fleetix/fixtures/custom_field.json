@@ -525,5 +525,69 @@
   "module": "Master",
   "name": "Vehicle-next_rear_tires_due_odometer",
   "read_only": 1
+ },
+ {
+  "doctype": "Custom Field",
+  "dt": "Vehicle",
+  "fieldname": "insurance_policy",
+  "fieldtype": "Link",
+  "insert_after": "periodic_inspection_expiry",
+  "is_system_generated": 0,
+  "label": "Current Insurance Policy",
+  "module": "Master",
+  "name": "Vehicle-insurance_policy",
+  "options": "Insurance Policy"
+ },
+ {
+  "doctype": "Custom Field",
+  "dt": "Stock Entry",
+  "fieldname": "maintenance",
+  "fieldtype": "Link",
+  "insert_after": "stock_entry_type",
+  "is_system_generated": 0,
+  "label": "Maintenance",
+  "module": "Master",
+  "name": "Stock Entry-maintenance",
+  "options": "Maintenance"
+ },
+ {
+  "doctype": "Custom Field",
+  "dt": "Stock Entry",
+  "fetch_from": "maintenance.vehicle",
+  "fetch_if_empty": 1,
+  "fieldname": "vehicle",
+  "fieldtype": "Link",
+  "insert_after": "maintenance",
+  "is_system_generated": 0,
+  "label": "Vehicle",
+  "module": "Master",
+  "name": "Stock Entry-vehicle",
+  "options": "Vehicle"
+ },
+ {
+  "doctype": "Custom Field",
+  "dt": "Stock Entry",
+  "fieldname": "approved_by",
+  "fieldtype": "Link",
+  "insert_after": "vehicle",
+  "is_system_generated": 0,
+  "label": "Approved By",
+  "mandatory_depends_on": "eval:doc.maintenance",
+  "module": "Master",
+  "name": "Stock Entry-approved_by",
+  "options": "User"
+ },
+ {
+  "doctype": "Custom Field",
+  "dt": "Warehouse",
+  "fieldname": "manager",
+  "fieldtype": "Link",
+  "insert_after": "company",
+  "is_system_generated": 0,
+  "label": "Manager",
+  "module": "Master",
+  "name": "Warehouse-manager",
+  "options": "User",
+  "reqd": 1
  }
 ]

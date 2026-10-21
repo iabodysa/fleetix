@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\": \"operations-sc-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Maintenance\", \"col\": 3}}, {\"id\": \"operations-sc-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Component Replacement Log\", \"col\": 3}}, {\"id\": \"operations-sp\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"operations-cd-0\", \"type\": \"card\", \"data\": {\"card_name\": \"Operations\", \"col\": 4}}]",
+ "content": "[{\"id\": \"operations-sc-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Maintenance\", \"col\": 3}}, {\"id\": \"operations-sc-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Accident\", \"col\": 3}}, {\"id\": \"operations-sc-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Damage\", \"col\": 3}}, {\"id\": \"operations-sc-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Component Replacement Log\", \"col\": 3}}, {\"id\": \"operations-sp\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"operations-cd-0\", \"type\": \"card\", \"data\": {\"card_name\": \"Operations\", \"col\": 4}}]",
  "creation": "2026-10-21 00:00:00.000000",
  "custom_blocks": [],
  "docstatus": 0,
@@ -16,7 +16,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Operations",
-   "link_count": 2,
+   "link_count": 4,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -39,9 +39,29 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Accident",
+   "link_count": 0,
+   "link_to": "Accident",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Damage",
+   "link_count": 0,
+   "link_to": "Damage",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-10-21 19:05:00.000000",
+ "modified": "2026-10-21 19:41:00.000000",
  "modified_by": "Administrator",
  "module": "Operations",
  "name": "Operations",
@@ -73,6 +93,18 @@
    "doc_view": "List",
    "label": "Maintenance",
    "link_to": "Maintenance",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Accident",
+   "link_to": "Accident",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Damage",
+   "link_to": "Damage",
    "type": "DocType"
   },
   {

@@ -28,7 +28,7 @@ Check Item,بند الفحص
 Checklist,قائمة الفحص
 City,المدينة
 City Name,اسم المدينة
-Claim,مطالبة تأمين
+Claim,مطالبة
 Claim Status,حالة المطالبة
 Claimed,تمت المطالبة
 Client,عميل
@@ -271,3 +271,57 @@ Visit Date and Time,تاريخ ووقت الزيارة
 Western,الغربية
 Winter (Oct-Mar),شتاء (أكتوبر - مارس)
 Workshop,الورشة
+Accident Date and Time,تاريخ ووقت الحادث
+Amount (SAR),المبلغ (ريال)
+Approved Amount (SAR),المبلغ المعتمد (ريال)
+Assignment,التفويض
+Assignment {0} did not hold the vehicle between {1} and {2},لم تكن المركبة في عهدة التفويض {0} بين {1} و{2}
+Charged To Driver,محمّل على السائق
+Charged to Driver,محمّل على السائق
+Claim Amount (SAR),مبلغ المطالبة (ريال)
+Claim Date,تاريخ المطالبة
+Claim Type,نوع المطالبة
+Claimed from Project,مطالَب بها من المشروع
+Company (Organizational Name),الشركة (الاسم النظامي)
+Comprehensive,شامل
+Cost Estimated,قُدّرت التكلفة
+Costing,التكاليف
+Coverage Type,نوع التغطية
+Covered Vehicles,المركبات المغطاة
+Current Insurance Policy,وثيقة التأمين الحالية
+Damages Found,الأضرار المكتشفة
+Deductible (SAR),مبلغ التحمل (ريال)
+Detected,اكتُشف
+Documented,وُثّق
+Driver Responsibility %,نسبة مسؤولية السائق %
+Estimated Cost (SAR),التكلفة التقديرية (ريال)
+Insurance Claim,مطالبة التأمين
+Insurance Policy,وثيقة التأمين
+Insurance Policy Vehicle,مركبة وثيقة التأمين
+Insurance and Claims,التأمين والمطالبات
+Insured Company,الشركة المؤمَّن لها
+Period From,الفترة من
+Period To,الفترة إلى
+Policy Document,مستند الوثيقة
+Policy Number,رقم الوثيقة
+Posted,مُرحّل
+Premium (SAR),قسط التأمين (ريال)
+Project Claim,مطالبة المشروع
+Project Rental Charge,رسوم إيجار المشروع
+Raised By,رفعها
+Related Accident,الحادث المرتبط
+Related Damage,الضرر المرتبط
+Reported,أُبلغ عنه
+Responsibility,المسؤولية
+Responsibility Set,حُددت المسؤولية
+Responsibility Set By,حدد المسؤولية
+Sent to Project,أُرسلت للمشروع
+Source Reference,مرجع المصدر
+Submitted By,قدّمها
+Third Party,ضد الغير
+Traffic / Najm Report No.,رقم تقرير المرور / نجم
+Vehicle Handover Damage,ضرر تسليم المركبة
+Charge,تحميل على السائق
+Estimate Cost,تقدير التكلفة
+Set Responsibility,تحديد المسؤولية
+Manager,المسؤول
