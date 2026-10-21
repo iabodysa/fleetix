@@ -14,6 +14,7 @@ def get_context(context):
 	context.layout_direction = "rtl" if is_rtl() else "ltr"
 	context.cta = get_cta()
 	context.services = get_services()
+	context.fleet = get_fleet()
 	context.client_logos = get_client_logos()
 	context.holidays = get_upcoming_holidays()
 	context.switch_lang = get_switch_lang()
@@ -32,34 +33,58 @@ def get_services():
 	return [
 		{
 			"icon": "calendar",
-			"title": _("Long-term supply"),
-			"summary": _("Vehicles stay with your project month after month, not one-day rentals."),
+			"title": _("Long-term rental for companies and projects"),
+			"summary": _(
+				"Contracts that run with your project, and vehicles that stay with your team month after month."
+			),
 		},
 		{
 			"icon": "van",
-			"title": _("Vans and light vehicles"),
-			"summary": _("Toyota Hiace in high-roof and low-roof, and Toyota Lite Ace for crews and delivery."),
+			"title": _("A varied fleet from one partner"),
+			"summary": _(
+				"From motorbikes and delivery vehicles to buses and refrigerated vehicles, choose what each task needs."
+			),
 		},
 		{
 			"icon": "swap",
-			"title": _("Handover and replacement at our offices"),
-			"summary": _("Collect and swap vehicles through our dedicated rental offices."),
+			"title": _("Replacement vehicle"),
+			"summary": _("When a vehicle is out of service, a replacement keeps your work going."),
 		},
 		{
-			"icon": "shield",
-			"title": _("Centrally managed insurance"),
-			"summary": _("One cooperative policy for the fleet, checked against traffic records before every renewal."),
-		},
-		{
-			"icon": "statement",
-			"title": _("Monthly statement per project"),
-			"summary": _("A usage and rental statement reaches you each month for matching before invoicing."),
+			"icon": "wrench",
+			"title": _("Maintenance and periodic service included"),
+			"summary": _("We look after servicing your vehicles, so your team stays on its work."),
 		},
 		{
 			"icon": "pin",
-			"title": _("Tracked by project"),
-			"summary": _("Every vehicle is logged against its project, so you know what each project holds."),
+			"title": _("Coverage across the Kingdom"),
+			"summary": _("We serve your projects in the different regions of Saudi Arabia."),
 		},
+		{
+			"icon": "headset",
+			"title": _("Dedicated account manager and support"),
+			"summary": _(
+				"One contact who knows your fleet and follows up your requests, backed by support around the clock."
+			),
+		},
+	]
+
+
+def get_fleet():
+	return [
+		{
+			"icon": "snow",
+			"title": _("Refrigerated vehicles"),
+			"summary": _("For food and temperature-sensitive goods."),
+		},
+		{"icon": "bus", "title": _("Buses"), "summary": _("For moving work crews and staff.")},
+		{"icon": "moto", "title": _("Motorbikes"), "summary": _("For fast delivery inside cities.")},
+		{
+			"icon": "box",
+			"title": _("Delivery vehicles"),
+			"summary": _("For distribution routes and customer deliveries."),
+		},
+		{"icon": "van", "title": _("Vans"), "summary": _("For crews, equipment and light cargo.")},
 	]
 
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{{ _("Etihad International Portal") }}</title>
-<meta name="description" content="{{ _('Long-term fleets for corporate projects, with a clear statement every month.') }}">
+<meta name="description" content="{{ _('Long-term vehicle rental for companies and projects across Saudi Arabia.') }}">
 <meta name="theme-color" content="#05213A">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="/assets/fleetix/images/etihad-mark.png">
@@ -23,6 +23,7 @@
     <nav class="et-nav" id="et-nav" aria-label="{{ _('Main menu') }}">
       <a href="#services">{{ _("Services") }}</a>
       <a href="#about">{{ _("About us") }}</a>
+      <a href="#fleet">{{ _("Our fleet") }}</a>
       <a href="#how-it-works">{{ _("How it works") }}</a>
       {% if client_logos %}<a href="#clients">{{ _("Our clients") }}</a>{% endif %}
       {% if holidays %}<a href="#holidays">{{ _("Official Holidays") }}</a>{% endif %}
@@ -40,12 +41,12 @@
         <path class="et-road__gold" pathLength="1" d="M-40 500C380 490 700 440 990 330S1350 140 1480 92"/>
       </svg>
       <div class="et-intro">
-        <p class="et-eyebrow">{{ _("Long-term fleets for corporate projects") }}</p>
-        <h1 class="et-intro__title" id="et-title">{{ _("A ready fleet for your projects,") }}<em>{{ _("managed for you.") }}</em></h1>
-        <p class="et-intro__lead">{{ _("Vans and light vehicles for crew transport and delivery.") }} {{ _("Handover and replacement through our rental offices, and a monthly usage statement for every project.") }}</p>
+        <p class="et-eyebrow">{{ _("Long-term vehicle rental for companies") }}</p>
+        <h1 class="et-intro__title" id="et-title">{{ _("A complete fleet for your business,") }}<em>{{ _("without the burden of owning it.") }}</em></h1>
+        <p class="et-intro__lead">{{ _("More than 500 vehicles, from motorbikes and delivery vehicles to buses and refrigerated vehicles, on long-term rental with maintenance and a replacement vehicle included.") }}</p>
         <div class="et-actions">
           <a class="et-pill et-pill--gold" href="{{ cta.route }}">{{ cta.label }}<svg class="et-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="et-pill et-pill--ghost" href="#how-it-works">{{ _("See how it works") }}</a>
+          <a class="et-pill et-pill--ghost" href="#fleet">{{ _("Explore our fleet") }}</a>
         </div>
       </div>
       <p class="et-stage__sig"><span lang="en" dir="ltr">ETIHAD INTERNATIONAL CAR RENT</span><i aria-hidden="true"></i><span lang="en" dir="ltr">DRIVE YOUR JOURNEY</span></p>
@@ -54,14 +55,18 @@
     <section class="et-section et-section--scoop" id="services" aria-labelledby="services-title">
       <p class="et-kicker">{{ _("Services") }}</p>
       <h2 class="et-title" id="services-title">{{ _("Our services") }}</h2>
-      <p class="et-lead">{{ _("Built around day-to-day fleet operations.") }}</p>
+      <p class="et-lead">{{ _("One partner for your fleet, from the first vehicle to the last day of the project.") }}</p>
       {% set icons = {
         "calendar": '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
         "van": '<path d="M3 17V7a1 1 0 0 1 1-1h11l4 5h1.5a.5.5 0 0 1 .5.5V17h-2M5 17H3"/><path d="M15 6v5h4M9 17h6"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>',
         "swap": '<path d="M4 8h15l-3.5-3.5M20 16H5l3.5 3.5"/>',
-        "shield": '<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
-        "statement": '<path d="M6 3h8.5L19 7.5V20a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M8.5 12.5h7M8.5 16h7"/>',
-        "pin": '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'
+        "wrench": '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.1L4 16.7V20h3.3l5.3-5.3a4 4 0 0 0 5.1-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>',
+        "pin": '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+        "headset": '<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19c0 1.5-2 2.5-5 2.5"/>',
+        "snow": '<path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3.5v2.5h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="16.5" cy="17.5" r="1.8"/><path d="M8 8.3v5.4M5.7 9.6l4.6 2.8M10.3 9.6l-4.6 2.8"/>',
+        "bus": '<rect x="4" y="3.5" width="16" height="14" rx="2.5"/><path d="M4 11h16M4 7.5h16M7 17.5V20M17 17.5V20"/><circle cx="7.5" cy="14.3" r=".9"/><circle cx="16.5" cy="14.3" r=".9"/>',
+        "moto": '<circle cx="5.5" cy="16.5" r="3"/><circle cx="18.5" cy="16.5" r="3"/><path d="M5.5 16.5l4-6h5l4 6M9.5 10.5L8 7.5H5.5M14.5 10.5l1.5-4h2.5"/>',
+        "box": '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>'
       } %}
       <ul class="et-services">
         {% for service in services %}
@@ -77,32 +82,51 @@
     <section class="et-section et-section--alt" id="about" aria-labelledby="about-title">
       <p class="et-kicker">{{ _("About us") }}</p>
       <h2 class="et-title" id="about-title">{{ _("About Etihad International") }}</h2>
-      <p class="et-lead">{{ _("A fleet partner for companies in Saudi Arabia, supplying vehicles on long terms for workforce transport and project operations.") }}</p>
-      <ul class="et-facts">
-        <li class="et-fact" data-reveal><h3>{{ _("A fleet sized to the work") }}</h3><p class="et-fact__value"><bdi dir="ltr">+350</bdi></p><p>{{ _("registered fleet vehicles") }}</p></li>
-        <li class="et-fact" data-reveal><h3>{{ _("Fixed procedures") }}</h3><p class="et-fact__value"><bdi dir="ltr">1</bdi></p><p>{{ _("cooperative insurance policy for the fleet, renewed yearly") }}</p></li>
-        <li class="et-fact" data-reveal><h3>{{ _("Clarity every month") }}</h3><p class="et-fact__value">{{ _("Monthly") }}</p><p>{{ _("statement for each project to match before invoicing") }}</p></li>
+      <p class="et-lead">{{ _("A car rental company in Saudi Arabia serving companies and projects with long-term rental and a varied fleet.") }}</p>
+      <ul class="et-services et-pillars">
+        <li class="et-service" data-reveal><h3>{{ _("Focus on your core work") }}</h3><p>{{ _("We look after the fleet's maintenance and insurance, and your team and capital stay on your work.") }}</p></li>
+        <li class="et-service" data-reveal><h3>{{ _("A fleet that grows with you") }}</h3><p>{{ _("Add vehicles as your projects expand, and pick the category each task needs.") }}</p></li>
+        <li class="et-service" data-reveal><h3>{{ _("Continuity for your operation") }}</h3><p>{{ _("A replacement vehicle and periodic service keep your work moving.") }}</p></li>
       </ul>
       <ul class="et-gallery">
-        <li data-reveal><figure><img src="/assets/fleetix/images/etihad/showroom.webp" width="935" height="513" loading="lazy" alt=""><figcaption>{{ _("Handover and replacement run through our rental offices.") }}</figcaption></figure></li>
-        <li data-reveal><figure><img src="/assets/fleetix/images/etihad/service-center.webp" width="1200" height="652" loading="lazy" alt=""><figcaption>{{ _("We track each vehicle against its project and send each project a monthly statement to reconcile.") }}</figcaption></figure></li>
+        <li data-reveal><figure><img src="/assets/fleetix/images/etihad/showroom.webp" width="935" height="513" loading="lazy" alt=""><figcaption>{{ _("Vehicles prepared and ready for your projects.") }}</figcaption></figure></li>
+        <li data-reveal><figure><img src="/assets/fleetix/images/etihad/service-center.webp" width="1200" height="652" loading="lazy" alt=""><figcaption>{{ _("Periodic maintenance that keeps your fleet on the road.") }}</figcaption></figure></li>
       </ul>
     </section>
 
-    <section class="et-section" id="how-it-works" aria-labelledby="how-title">
+    <section class="et-section" id="fleet" aria-labelledby="fleet-title">
+      <p class="et-kicker">{{ _("Our fleet") }}</p>
+      <h2 class="et-title" id="fleet-title">{{ _("A vehicle for every task") }}</h2>
+      <ul class="et-fleet">
+        {% for item in fleet %}
+        <li class="et-fleet__item" data-reveal>
+          <svg class="et-service__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">{{ icons[item.icon] | safe }}</svg>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.summary }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      <ul class="et-facts">
+        <li class="et-fact" data-reveal><h3>{{ _("Our fleet") }}</h3><p class="et-fact__value"><bdi dir="ltr">+500</bdi></p><p>{{ _("vehicles ready for your projects") }}</p></li>
+        <li class="et-fact" data-reveal><h3>{{ _("Categories") }}</h3><p class="et-fact__value"><bdi dir="ltr">5</bdi></p><p>{{ _("vehicle categories, from motorbikes to buses") }}</p></li>
+        <li class="et-fact" data-reveal><h3>{{ _("Coverage") }}</h3><p class="et-fact__value et-fact__value--text">{{ _("Kingdom-wide") }}</p><p>{{ _("for your projects in the different regions") }}</p></li>
+      </ul>
+    </section>
+
+    <section class="et-section et-section--alt" id="how-it-works" aria-labelledby="how-title">
       <p class="et-kicker">{{ _("How it works") }}</p>
-      <h2 class="et-title" id="how-title">{{ _("From request to monthly statement") }}</h2>
+      <h2 class="et-title" id="how-title">{{ _("From your request to a fleet at work") }}</h2>
       <ol class="et-steps">
-        <li class="et-step" data-reveal><h3>{{ _("Send your project needs") }}</h3><p>{{ _("Number of vehicles, type and project duration.") }}</p></li>
-        <li class="et-step" data-reveal><h3>{{ _("Collect at our rental offices") }}</h3><p>{{ _("Vehicles are handed over at our offices, and replacements go through them when needed.") }}</p></li>
-        <li class="et-step" data-reveal><h3>{{ _("Review the monthly statement") }}</h3><p>{{ _("Each project's usage statement reaches you for matching before the invoice.") }}</p></li>
+        <li class="et-step" data-reveal><h3>{{ _("Tell us what you need") }}</h3><p>{{ _("Number of vehicles, type and project duration.") }}</p></li>
+        <li class="et-step" data-reveal><h3>{{ _("Receive your fleet ready") }}</h3><p>{{ _("Serviced, insured vehicles ready for work from the first day.") }}</p></li>
+        <li class="et-step" data-reveal><h3>{{ _("We stay with you") }}</h3><p>{{ _("Periodic maintenance, a replacement vehicle when needed, and an account manager who follows up your fleet.") }}</p></li>
       </ol>
     </section>
 
     {% if client_logos %}
-    <section class="et-section et-section--alt" id="clients" aria-labelledby="clients-title">
+    <section class="et-section" id="clients" aria-labelledby="clients-title">
       <p class="et-kicker">{{ _("Our clients") }}</p>
-      <h2 class="et-title" id="clients-title">{{ _("Clients whose trust we value") }}</h2>
+      <h2 class="et-title" id="clients-title">{{ _("Companies we are proud to serve") }}</h2>
       <ul class="et-clients" data-reveal>
         {% for logo in client_logos %}
         <li><img src="{{ logo }}" loading="lazy" decoding="async" alt=""></li>
@@ -126,6 +150,12 @@
       </div>
     </section>
     {% endif %}
+
+    <section class="et-section et-section--alt et-cta" id="start" aria-labelledby="start-title">
+      <p class="et-kicker">{{ _("Get started") }}</p>
+      <h2 class="et-title" id="start-title">{{ _("Does your next project need a fleet?") }}</h2>
+      <p class="et-lead">{{ _("Tell us the number of vehicles, their categories and the project duration, and our team prepares an offer that fits your work.") }}</p>
+    </section>
   </main>
 
   <footer class="et-footer">
@@ -139,12 +169,13 @@
         </g>
       </svg>
       <img class="et-lockup" src="/assets/fleetix/images/etihad-lockup-light.png" width="690" height="352" alt="{{ _('Etihad International Car Rental') }}">
-      <p class="et-footer__tag">{{ _("Long-term fleets for corporate projects, with a clear statement every month.") }}</p>
+      <p class="et-footer__tag">{{ _("Long-term vehicle rental for companies and projects across Saudi Arabia.") }}</p>
     </div>
     <nav class="et-footer__nav" aria-label="{{ _('Page links') }}">
       <a href="#top">{{ _("Home") }}</a>
       <a href="#services">{{ _("Services") }}</a>
       <a href="#about">{{ _("About us") }}</a>
+      <a href="#fleet">{{ _("Our fleet") }}</a>
       <a href="#how-it-works">{{ _("How it works") }}</a>
       {% if client_logos %}<a href="#clients">{{ _("Our clients") }}</a>{% endif %}
       {% if holidays %}<a href="#holidays">{{ _("Official Holidays") }}</a>{% endif %}
