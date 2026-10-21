@@ -1,7 +1,2 @@
 Master
-Delivery
-Insurance
-Finance
-Upkeep
-Purchasing
-Traffic
+Settings

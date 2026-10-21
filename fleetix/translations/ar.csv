@@ -1,233 +1,195 @@
-Absher,أبشر
+Abbr,الاختصار
 Accident,حادث
-Accident Date,تاريخ الحادث
-Accident Form,نموذج الحادث
-Accident Register,سجل الحوادث
-Accidents,الحوادث
+Accountant,محاسب
 Active,نشط
-Active Permits,التفويضات السارية
 Advance,سلفة
-Advance Date,تاريخ السلفة
 Advances,السلف
 Amended From,معدل من
 Amount,المبلغ
 Approved,معتمد
-Approved Amount,المبلغ المعتمد
 Available,متاحة
 Back,الخلف
 Balance,الرصيد
-Billed Days,الأيام المفوترة
+Battery,البطارية
+Battery Install Date,تاريخ تركيب البطارية
+Battery Interval (months),فترة تغيير البطارية (بالأشهر)
 Billing,الفوترة
-Bond,إقرار
-Bond Date,تاريخ الإقرار
-Bonds,الإقرارات
 Breakdown,عطل
 Buying,الشراء
-CR No,رقم السجل التجاري
 Cancelled,ملغي
-Car,سيارة
-Car Photo,صورة السيارة
-Charged,محملة على الموظف
-Charged Amount,المبلغ المحمل
 Check Item,بند الفحص
-Check Point,نقطة الفحص
 Checklist,قائمة الفحص
 City,المدينة
+City Name,اسم المدينة
 Claim,مطالبة تأمين
-Claim Amount,مبلغ المطالبة
-Claim Date,تاريخ المطالبة
-Claim No,رقم المطالبة
 Claim Status,حالة المطالبة
 Claimed,تمت المطالبة
 Client,عميل
-Client Name,اسم العميل
-Close Date,تاريخ الإغلاق
 Closed,مغلق
+Commercial Registration No.,رقم السجل التجاري
 Cost,التكلفة
 Count,العدد
+Current City,المدينة الحالية
+Current Driver,السائق الحالي
+Current Project,المشروع الحالي
 Daily Rate,السعر اليومي
 Damage,ضرر
-Damage Line,بند ضرر
 Damaged,متضررة
-Damaged Part,القطعة المتضررة
-Damaged Plate,لوحة تالفة
-Damages,الأضرار
 Date,التاريخ
 Days,الأيام
-Days Elapsed,الأيام المنقضية
-Deal,مشروع
-Deal Name,اسم المشروع
-Deal Type,نوع المشروع
-Deducted,مخصوم
 Deduction,خصم
-Deduction Date,تاريخ الخصم
 Deductions,الخصومات
-Delegate,مندوب
+Default Tire Interval (km),فترة تغيير الإطارات الافتراضية (كم)
 Delivered,تم التسليم
 Delivery,التسليم والاستلام
 Disabled,معطل
 Disputed,معترض عليها
 Document,المستند
 Document Type,نوع المستند
-Documents Signed,تم توقيع المستندات
 Done,منجز
 Draft,مسودة
-Due,مستحق
-Due Before,مستحق قبل
-Due Days,الأيام المستحقة
+Eastern,الشرقية
+Effective From,ساري من
 Employee,موظف
-Employee or Delegate,الموظف أو المندوب
 End Date,تاريخ النهاية
 Ended,منتهي
 Expired,منتهي
 Expiry Date,تاريخ الانتهاء
 Fail,راسب
 File,الملف
-Filed,مقدمة
 Finance,المالية
-Firm,سجل تجاري
-Firm Name,اسم السجل
 Fleet,الأسطول
-Fleet Status,حالة الأسطول
+Fleet Settings,إعدادات الأسطول
+Fleetix,فليتيكس
 From Date,من تاريخ
-Front,الأمام
+Front Tires,الإطارات الأمامية
 Full Name,الاسم الكامل
-Get Permits,جلب التفويضات
 Handover,تسليم
 Handover Date,تاريخ التسليم
-Has Damages,توجد أضرار
 Holder,صاحب الحساب
 Home,الرئيسية
+Hourly Rate (SAR),سعر الساعة (ريال)
 IBAN,رقم الآيبان
-Fleetix,فليتيكس
-Fleetix Buyer,مسؤول المشتريات
-Fleetix Finance,محاسب فليتيكس
-Fleetix Fleet,مسؤول الأسطول
-Fleetix Manager,مدير فليتيكس
 Image,الصورة
 In Progress,قيد المعالجة
-In Workshop,في الورشة
-Inspected,تم الفحص
+In Training,تحت التدريب
 Inspection,فحص دوري
 Inspection Date,تاريخ الفحص
 Insurance,الحوادث والتأمين
 Interior,الداخلية
+Interval (km),الفترة (كم)
+Interval (months),الفترة (بالأشهر)
 Iqama No,رقم الإقامة
 Issue Date,تاريخ الإصدار
 Issued,صادرة
-Istimara,استمارة
-Istimara Expiry,انتهاء الاستمارات
-Istimara No,رقم الاستمارة
-Istimara Renewal,تجديد استمارة
-Kind,النوع
-Leased,مؤجرة
+Last Filter Change Date,تاريخ آخر تغيير للفلتر
+Last Filter Change Odometer,عداد آخر تغيير للفلتر
+Last Front Tires Change Date,تاريخ آخر تغيير للإطارات الأمامية
+Last Front Tires Odometer,عداد آخر تغيير للإطارات الأمامية
+Last Oil Change Date,تاريخ آخر تغيير للزيت
+Last Oil Change Odometer,عداد آخر تغيير للزيت
+Last Rear Tires Change Date,تاريخ آخر تغيير للإطارات الخلفية
+Last Rear Tires Odometer,عداد آخر تغيير للإطارات الخلفية
+Last Service,آخر صيانة
 Left,غادر
-Left Side,الجانب الأيسر
 Legal,قضية قانونية
+License Plate,لوحة المركبة
 Lines,البنود
 Locked,مقفل
+Maintenance Policy,سياسة الصيانة
+Maintenance Supervisor,مشرف الصيانة
 Major,جسيم
 Master,البيانات الأساسية
 Minor,بسيط
 Mobile,الجوال
 Model,الطراز
 Model Year,سنة الصنع
-Mounted,مركبة
 Movement,الحركة
-Muqeem,مقيم
+Movement Supervisor,مشرف الحركة
+National ID / Iqama No.,رقم الهوية / الإقامة
+Next Battery Due Date,موعد تغيير البطارية القادم
+Next Due,الاستحقاق القادم
 Next Due Date,موعد الفحص القادم
+Next Front Tires Due (km),استحقاق الإطارات الأمامية القادم (كم)
+Next Oil Due (km),استحقاق الزيت القادم (كم)
+Next Rear Tires Due (km),استحقاق الإطارات الخلفية القادم (كم)
+Not Trained,غير مدرب
 Note,ملاحظة
 Odometer,عداد الكيلومترات
+Oil,الزيت
+Oil Filter,فلتر الزيت
+Oil Filter Interval (km),فترة تغيير فلتر الزيت (كم)
+Oil Interval Summer (km),فترة تغيير الزيت صيفًا (كم)
+Oil Interval Winter (km),فترة تغيير الزيت شتاءً (كم)
 Open,مفتوح
-Open Amount,المبلغ المفتوح
-Open Date,تاريخ الفتح
 Ordered,تم الطلب
 Other,أخرى
-Other Party,الطرف الآخر
 Overdue,متأخر
-Ownership Transfer,نقل ملكية
 Paid,مدفوع
-Part,قطعة غيار
-Part Code,رمز القطعة
-Part Name,اسم القطعة
 Pass,ناجح
 Passed,سليم
 Password,كلمة المرور
 Paused,متوقف
 Pending,قيد الاعتماد
-Permit,تفويض
-Permit No,رقم التفويض
-Photos,الصور
+Periodic Inspection (Fahs) Expiry,انتهاء الفحص الدوري
 Plate,لوحة
-Plate No,رقم اللوحة
-Plate Replacement,استبدال لوحة
 Platform,المنصة
-Portal Account,حساب منصة
 Problem,مشكلة مركبة
-Problem Date,تاريخ المشكلة
+Project Supervisor,مشرف المشروع
 Projects,المشاريع
 Purchasing,المشتريات
-Qiwa,قوى
 Qty,الكمية
 Rate,السعر
+Rate (SAR),السعر (ريال)
+Rate Period,فترة السعر
+Rear Tires,الإطارات الخلفية
 Reason,السبب
 Receipt,استلام
 Receipt Date,تاريخ الاستلام
 Received,تم الاستلام
 Recovered,مسترد
 Reference No,الرقم المرجعي
-Registrations,السجلات التجارية
+Region,المنطقة
+Registration (Istimara) Expiry,انتهاء الاستمارة
 Rejected,مرفوض
-Renewed,مجددة
 Rent,فاتورة إيجار
-Rent Date,تاريخ الفاتورة
-Rent Due,الإيجار المستحق
-Rent Line,بند الإيجار
+Rental Manager,مدير التأجير
+Rental Rate,سعر التأجير
 Repair,صيانة
 Reports,التقارير
 Request Date,تاريخ الطلب
-Requisition,طلب شراء
-Requisition Line,بند طلب الشراء
 Result,النتيجة
-Retired,مستبعدة
 Returned,تم الإرجاع
-Right Side,الجانب الأيمن
+Riyadh,الرياض
+Season,الموسم
 Series,السلسلة
 Service,صيانة دورية
+Service Intervals,فترات الصيانة
 Settled,مسدد
 Severity,درجة الضرر
-Side,الجهة
 Signature,التوقيع
 Signed,موقع
 Sold,مباعة
-Spare,احتياطية
-Staff,الموظفون والمناديب
-Staff Balance,أرصدة الموظفين
-Staff Money,مالية الموظفين
 Start Date,تاريخ البداية
 Status,الحالة
-Stolen,مسروقة
-Stolen Plate,لوحة مسروقة
 Stopped,متوقفة
-Tamm,تم
+Summer (Apr-Sep),صيف (أبريل - سبتمبر)
+Suspended,موقوف
+Tire Interval (km),فترة تغيير الإطارات (كم)
 To Date,إلى تاريخ
 Total,الإجمالي
-Total Loss,خسارة كلية
-Traffic,المخالفات والمشاكل
+Trained,مدرب
+Training Status,حالة التدريب
 Transaction,معاملة مرورية
 Transaction Date,تاريخ المعاملة
+Travel,سفر
 Type Name,اسم النوع
-Tyres,إطارات
-Upkeep,المتابعة الفنية
-Upkeep Due,الصيانة والفحص المستحق
+Usage Type,نوع الاستخدام
 Username,اسم المستخدم
-VIN,رقم الهيكل
 Valid,سارية
-Vendor,مورد
-Vendor Follow-up,متابعة الموردين
+Valid To,صالح حتى
+Vehicle Type,نوع المركبة
 Vendor Name,اسم المورد
-Vendor Status,حالة المورد
 Violation,مخالفة مرورية
-Violation Date,تاريخ المخالفة
-Violation No,رقم المخالفة
-Violations by Staff,المخالفات حسب الموظف
+Western,الغربية
+Winter (Oct-Mar),شتاء (أكتوبر - مارس)

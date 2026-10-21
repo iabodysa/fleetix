@@ -1,0 +1,34 @@
+{
+ "app": "fleetix",
+ "creation": "2026-10-21 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Desktop Icon",
+ "hidden": 0,
+ "icon": "settings",
+ "icon_type": "Link",
+ "idx": 2,
+ "label": "Fleet Settings",
+ "link_to": "Fleet Settings",
+ "link_type": "Workspace Sidebar",
+ "modified": "2026-10-21 00:00:00.000000",
+ "modified_by": "Administrator",
+ "name": "Fleet Settings",
+ "owner": "Administrator",
+ "parent_icon": "Fleetix",
+ "restrict_removal": 0,
+ "roles": [
+  {
+   "role": "Rental Manager"
+  },
+  {
+   "role": "Movement Supervisor"
+  },
+  {
+   "role": "Maintenance Supervisor"
+  },
+  {
+   "role": "Accountant"
+  }
+ ],
+ "standard": 1
+}

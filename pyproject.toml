@@ -3,7 +3,7 @@ name = "fleetix"
 authors = [
     { name = "Ittihad", email = "afm@afmcoltd.com"}
 ]
-description = "Vehicle leasing operations for Ittihad"
+description = "Vehicle rental management for Etihad"
 requires-python = ">=3.14"
 readme = "README.md"
 dynamic = ["version"]
