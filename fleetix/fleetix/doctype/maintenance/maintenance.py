@@ -30,6 +30,10 @@ class Maintenance(Document):
 			self.approved_by = frappe.session.user
 		if self.status in ISSUE_STATES and not self.items_issued:
 			self.items_issued = issue_items(self)
+		if cint(self.odometer) > cint(frappe.db.get_value("Vehicle", self.vehicle, "last_odometer")):
+			frappe.db.set_value(
+				"Vehicle", self.vehicle, "last_odometer", cint(self.odometer), update_modified=False
+			)
 
 	def on_submit(self):
 		vehicle = frappe.get_doc("Vehicle", self.vehicle)
