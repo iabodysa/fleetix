@@ -6,7 +6,7 @@ from collections import defaultdict
 import frappe
 from erpnext.controllers.accounts_controller import get_default_taxes_and_charges
 from frappe import _
-from frappe.utils import flt, formatdate, get_first_day, get_last_day
+from frappe.utils import cint, flt, formatdate, get_first_day, get_last_day
 
 from fleetix.fleetix.doctype.project_rental_charge.project_rental_charge import attach_statement
 
@@ -43,6 +43,9 @@ def create_monthly_invoice(customer, month):
 	invoice.posting_date = end
 	invoice.due_date = end
 	invoice.update(get_default_taxes_and_charges("Sales Taxes and Charges Template", company=invoice.company))
+	if cint(frappe.get_cached_doc("Fleetix Settings").rates_include_vat):
+		for tax in invoice.taxes:
+			tax.included_in_print_rate = 1
 	for item, amount in totals.items():
 		invoice.append("items", {"item_code": item, "qty": 1, "rate": amount})
 	invoice.insert()

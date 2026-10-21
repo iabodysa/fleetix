@@ -9514,3 +9514,5 @@ Create Monthly Invoice,إنشاء الفاتورة الشهرية
 No unbilled rental charges for {0} in {1},لا توجد رسوم إيجار غير مفوترة للعميل {0} في {1}
 Set the item on rental charges {0},حدد الصنف في رسوم الإيجار {0}
 Claim Date,تاريخ المطالبة
+Fleetix Settings,إعدادات الأسطول
+Rental rates include VAT,أسعار التأجير شاملة ضريبة القيمة المضافة
