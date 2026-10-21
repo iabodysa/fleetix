@@ -1,8 +1,6 @@
 # Copyright (c) 2026, Ittihad and contributors
 # For license information, please see license.txt
 
-import os
-
 import frappe
 from frappe import _
 from frappe.utils import formatdate, getdate, nowdate, strip_html_tags
@@ -65,11 +63,23 @@ def get_services():
 	]
 
 
+CLIENT_LOGOS = (
+	"client-01.webp",
+	"client-03.webp",
+	"client-04.webp",
+	"client-05.webp",
+	"client-07.webp",
+	"client-09.webp",
+	"client-10.webp",
+	"client-11.webp",
+	"client-12.webp",
+	"client-15.webp",
+	"client-16.webp",
+)
+
+
 def get_client_logos():
-	folder = frappe.get_app_path("fleetix", "public", "images", "etihad", "clients")
-	if not os.path.isdir(folder):
-		return []
-	return [f"/assets/fleetix/images/etihad/clients/{name}" for name in sorted(os.listdir(folder)) if name.endswith(".webp")]
+	return [f"/assets/fleetix/images/etihad/clients/{name}" for name in CLIENT_LOGOS]
 
 
 def get_upcoming_holidays():
