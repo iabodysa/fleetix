@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="{{ lang }}" dir="{{ layout_direction }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ _("Etihad International Portal") }}</title>
+<meta name="description" content="{{ _('Etihad International Car Rental staff portal.') }}">
+<meta name="theme-color" content="#05213A">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="/assets/fleetix/images/etihad-mark.png">
+<link rel="stylesheet" href="/assets/fleetix/css/etihad-landing.css">
+<script src="/assets/fleetix/js/etihad-landing.js"></script>
+</head>
+<body>
+<div class="et" id="top">
+  <header class="et-header">
+    <a class="et-brand" href="/" aria-label="{{ _('Etihad International Car Rental, home') }}">
+      <span class="et-mark" aria-hidden="true">
+        <img class="et-mark__rev" src="/assets/fleetix/images/etihad-mark-light.png" width="352" height="346" alt="">
+        <img class="et-mark__color" src="/assets/fleetix/images/etihad-mark.png" width="352" height="346" alt="">
+      </span>
+      <span class="et-brand__text"><b>{{ _("Etihad International") }}</b><small>{{ _("Car Rental") }}</small></span>
+    </a>
+    <nav class="et-nav" id="et-nav" aria-label="{{ _('Main menu') }}">
+      <a href="#services">{{ _("Services") }}</a>
+      {% if holidays %}<a href="#holidays">{{ _("Official Holidays") }}</a>{% endif %}
+      <a href="#help">{{ _("Help") }}</a>
+      <a href="?_lang={{ switch_lang.code }}" lang="{{ switch_lang.code }}">{{ switch_lang.label }}</a>
+    </nav>
+    <a class="et-pill et-pill--gold et-pill--sm" href="{{ cta.route }}">{{ cta.label }}</a>
+    <button class="et-burger" type="button" aria-expanded="false" aria-controls="et-nav" aria-label="{{ _('Open menu') }}" data-open-label="{{ _('Open menu') }}" data-close-label="{{ _('Close menu') }}"><span></span><span></span></button>
+  </header>
+
+  <main>
+    <section class="et-stage" aria-labelledby="et-title">
+      <svg class="et-globe" viewBox="0 0 520 520" aria-hidden="true" focusable="false">
+        <g transform="rotate(-16 260 260)">
+          <path class="et-g et-g--rim" pathLength="1" d="M60 260a200 200 0 1 0 400 0a200 200 0 1 0-400 0"/>
+          <path class="et-g et-g--m" pathLength="1" d="M87 260a173 200 0 1 0 346 0a173 200 0 1 0-346 0"/>
+          <path class="et-g et-g--m" pathLength="1" d="M160 260a100 200 0 1 0 200 0a100 200 0 1 0-200 0"/>
+          <path class="et-g et-g--m" pathLength="1" d="M260 60V460"/>
+          <path class="et-g et-g--p" pathLength="1" d="M60 260H460"/>
+          <path class="et-g et-g--p" pathLength="1" d="M87 160H433"/>
+          <path class="et-g et-g--p" pathLength="1" d="M87 360H433"/>
+          <path class="et-g et-g--p" pathLength="1" d="M160 87H360"/>
+          <path class="et-g et-g--p" pathLength="1" d="M160 433H360"/>
+          <path class="et-g et-g--route" pathLength="1" d="M173.4 360Q190 190 346.6 160"/>
+          <circle class="et-node" cx="173.4" cy="360" r="5"/>
+          <circle class="et-node" cx="346.6" cy="160" r="5"/>
+          <circle class="et-node" cx="433" cy="260" r="5"/>
+          <circle class="et-node" cx="310" cy="87" r="4"/>
+          <circle class="et-node" cx="260" cy="360" r="4"/>
+          <circle class="et-node" cx="87" cy="260" r="4"/>
+        </g>
+      </svg>
+      <svg class="et-road" viewBox="0 0 1440 480" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">
+        <path class="et-road__band" d="M-40 470C380 460 700 410 980 300S1340 110 1480 60"/>
+        <path class="et-road__gold" pathLength="1" d="M-40 500C380 490 700 440 990 330S1350 140 1480 92"/>
+      </svg>
+      <div class="et-intro">
+        <p class="et-eyebrow">{{ _("Etihad International Staff Portal") }}</p>
+        <h1 class="et-intro__title" id="et-title">{{ _("All your daily work") }}<em>{{ _("in one place.") }}</em></h1>
+        <p class="et-intro__lead">{{ _("Vehicle requests, operations and the fleet, from any device.") }}</p>
+        <div class="et-actions">
+          <a class="et-pill et-pill--gold" href="{{ cta.route }}">{{ cta.label }}<svg class="et-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="et-pill et-pill--ghost" href="#help">{{ _("Request help") }}</a>
+        </div>
+      </div>
+      <p class="et-stage__sig"><span lang="en" dir="ltr">ETIHAD INTERNATIONAL CAR RENT</span><i aria-hidden="true"></i><span lang="en" dir="ltr">DRIVE YOUR JOURNEY</span></p>
+    </section>
+
+    <section class="et-section et-section--scoop" id="services" aria-labelledby="services-title">
+      <p class="et-kicker">{{ _("Services") }}</p>
+      <h2 class="et-title" id="services-title">{{ _("Services available to you") }}</h2>
+      <ul class="et-services">
+        {% for service in services %}
+        <li class="et-service" data-reveal>
+          <h3>{{ service.title }}</h3>
+          <p>{{ service.summary }}</p>
+          <a class="et-link" href="{{ service.route }}">{{ service.action }}<svg class="et-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    {% if holidays %}
+    <section class="et-section et-section--ruled et-section--alt" id="holidays" aria-labelledby="holidays-title">
+      <div class="et-board">
+        <div>
+          <p class="et-kicker">{{ _("Official Holidays") }}</p>
+          <h2 class="et-title" id="holidays-title">{{ _("Upcoming official holidays") }}</h2>
+        </div>
+        <ul class="et-holidays" data-reveal>
+          {% for holiday in holidays %}
+          <li><span class="et-holidays__date">{{ holiday.date }}</span><span class="et-holidays__what">{{ holiday.description }}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+    {% endif %}
+
+    <section class="et-section et-section--ruled" id="help" aria-labelledby="help-title">
+      <div class="et-help">
+        <div>
+          <p class="et-kicker">{{ _("Help") }}</p>
+          <h2 class="et-title" id="help-title">{{ _("Need help?") }}</h2>
+          <a class="et-pill et-pill--strong et-help__cta" href="mailto:support@etihadrent.com">{{ _("Email support") }}<svg class="et-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <ul class="et-contacts">
+          <li><a class="et-contact" href="mailto:support@etihadrent.com"><span class="et-contact__label">{{ _("Technical support") }}</span><span class="et-contact__value"><bdi dir="ltr">support@etihadrent.com</bdi></span></a></li>
+          <li><a class="et-contact" href="mailto:info@etihadrent.com"><span class="et-contact__label">{{ _("General enquiries") }}</span><span class="et-contact__value"><bdi dir="ltr">info@etihadrent.com</bdi></span></a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="et-footer">
+    <div class="et-footer__sign" data-reveal>
+      <svg class="et-ring" viewBox="0 0 520 520" aria-hidden="true" focusable="false">
+        <g transform="rotate(-16 260 260)">
+          <path pathLength="1" d="M60 260a200 200 0 1 0 400 0a200 200 0 1 0-400 0"/>
+          <path pathLength="1" d="M160 260a100 200 0 1 0 200 0a100 200 0 1 0-200 0"/>
+          <path pathLength="1" d="M60 260H460"/>
+          <path class="et-ring__gold" pathLength="1" d="M60 260a200 200 0 0 0 200 200"/>
+        </g>
+      </svg>
+      <img class="et-lockup" src="/assets/fleetix/images/etihad-lockup-light.png" width="690" height="352" alt="{{ _('Etihad International Car Rental') }}">
+    </div>
+    <nav class="et-footer__nav" aria-label="{{ _('Page links') }}">
+      <a href="#top">{{ _("Home") }}</a>
+      <a href="#services">{{ _("Services") }}</a>
+      {% if holidays %}<a href="#holidays">{{ _("Official Holidays") }}</a>{% endif %}
+      <a href="#help">{{ _("Help") }}</a>
+    </nav>
+    <div class="et-footer__bar">
+      <p>© {{ year }} {{ _("Etihad International Car Rental") }} - {{ _("Kingdom of Saudi Arabia. All rights reserved.") }}</p>
+      <div class="et-footer__actions">
+        <a class="et-pill et-pill--ghost et-pill--sm" href="?_lang={{ switch_lang.code }}" lang="{{ switch_lang.code }}">{{ switch_lang.label }}</a>
+        <a class="et-pill et-pill--gold et-pill--sm" href="{{ cta.route }}">{{ cta.label }}</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="et-mbar">
+    <a class="et-pill et-pill--gold" href="{{ cta.route }}">{{ cta.label }}</a>
+    <a class="et-pill et-pill--ghost" href="#help">{{ _("Help") }}</a>
+  </div>
+</div>
+</body>
+</html>

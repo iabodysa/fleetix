@@ -9435,7 +9435,6 @@ This document has unsaved changes which might not appear in final PDF. <br> Cons
 "Track if your email has been opened by the recipient.
 <br>
 Note: If you're sending to multiple recipients, even if 1 recipient reads the email, it'll be considered ""Opened""","تتبع ما إذا تم فتح بريدك الإلكتروني من قبل المستلم.
-<br>
 ملاحظة: إذا كنت ترسل إلى عدة مستلمين، حتى لو قرأ مستلم واحد البريد الإلكتروني، فسيعتبر ""مفتوح"""
 Unable to send mail because of a missing email account. Please setup default Email Account from Settings > Email Account,لا يمكن إرسال البريد الإلكتروني بسبب عدم وجود حساب بريد إلكتروني. يرجى إعداد حساب البريد الإلكتروني الافتراضي من الإعدادات > حساب البريد الإلكتروني
 Updating Email Queue Statuses. The emails will be picked up in the next scheduled run.,جار تحديث حالات قائمة انتظار البريد الإلكتروني. سيتم استلام رسائل البريد الإلكتروني في عملية التشغيل المجدولة التالية.
@@ -9619,3 +9618,37 @@ VAT,ضريبة القيمة المضافة
 Make,الشركة المصنعة,Vehicle
 Condition,الحالة,Vehicle Checklist Item
 Fleetix Dashboard,لوحة مؤشرات الأسطول
+Etihad International Portal,بوابة اتحاد الدولية
+Etihad International Car Rental staff portal.,بوابة منسوبي اتحاد الدولية لتأجير السيارات.
+"Etihad International Car Rental, home",اتحاد الدولية لتأجير السيارات، الصفحة الرئيسية
+Etihad International,اتحاد الدولية
+Car Rental,لتأجير السيارات
+Main menu,القائمة الرئيسية
+Official Holidays,الإجازات الرسمية
+Open menu,فتح القائمة
+Close menu,إغلاق القائمة
+Etihad International Staff Portal,بوابة منسوبي اتحاد الدولية
+All your daily work,كل عملك اليومي
+in one place.,في مكان واحد.
+"Vehicle requests, operations and the fleet, from any device.",طلبات المركبات والعمليات والأسطول، من أي جهاز.
+Request help,طلب مساعدة
+Services available to you,الخدمات المتاحة لك
+Upcoming official holidays,الإجازات الرسمية القادمة
+Need help?,تحتاج مساعدة؟
+Email support,راسل فريق الدعم
+Technical support,الدعم الفني
+General enquiries,الاستفسارات العامة
+Page links,روابط الصفحة
+Etihad International Car Rental,اتحاد الدولية لتأجير السيارات
+Kingdom of Saudi Arabia. All rights reserved.,المملكة العربية السعودية. جميع الحقوق محفوظة.
+Continue to your workspace,تابع إلى مساحة العمل
+Continue to your account,تابع إلى حسابك
+Request a vehicle and follow its assignment and handover.,اطلب مركبة وتابع تخصيصها وتسليمها.
+Open requests,افتح الطلبات
+"Maintenance, accidents and damage in one place.",الصيانة والحوادث والأضرار في مكان واحد.
+Open operations,افتح العمليات
+"Vehicles, rental rates and fleet records.",المركبات وأسعار التأجير وسجلات الأسطول.
+Open fleet,افتح الأسطول
+My Account,حسابي
+Update your details and follow your requests.,حدّث بياناتك وتابع طلباتك.
+Open my account,افتح حسابي

@@ -7,6 +7,8 @@ app_license = "mit"
 
 required_apps = ["frappe", "erpnext"]
 
+home_page = "index"
+
 add_to_apps_screen = [
 	{
 		"name": "fleetix",
