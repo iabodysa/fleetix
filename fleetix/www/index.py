@@ -30,28 +30,34 @@ def get_cta():
 def get_services():
 	return [
 		{
-			"title": _("Vehicle Requests"),
-			"summary": _("Request a vehicle and follow its assignment and handover."),
-			"action": _("Open requests"),
-			"route": "/app/transaction",
+			"icon": "car",
+			"title": _("Wide Vehicle Selection"),
+			"summary": _("From economy to luxury cars, we have the perfect vehicle for every occasion and budget."),
 		},
 		{
-			"title": _("Operations"),
-			"summary": _("Maintenance, accidents and damage in one place."),
-			"action": _("Open operations"),
-			"route": "/app/operations",
+			"icon": "bolt",
+			"title": _("Instant Booking"),
+			"summary": _("Book your car in minutes. Quick, easy, and hassle-free."),
 		},
 		{
-			"title": _("Fleet"),
-			"summary": _("Vehicles, rental rates and fleet records."),
-			"action": _("Open fleet"),
-			"route": "/app/master",
+			"icon": "shield",
+			"title": _("Fully Insured"),
+			"summary": _("All our vehicles are comprehensively insured for your peace of mind and safety."),
 		},
 		{
-			"title": _("My Account"),
-			"summary": _("Update your details and follow your requests."),
-			"action": _("Open my account"),
-			"route": "/me",
+			"icon": "tag",
+			"title": _("Best Prices"),
+			"summary": _("Competitive rates with transparent pricing. No hidden fees, just great value."),
+		},
+		{
+			"icon": "star",
+			"title": _("Premium Service"),
+			"summary": _("Experience world-class customer service with every rental. Your satisfaction is our priority."),
+		},
+		{
+			"icon": "phone",
+			"title": _("24/7 Support"),
+			"summary": _("Round-the-clock customer support ready to assist you anytime, anywhere."),
 		},
 	]
 
