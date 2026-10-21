@@ -1,0 +1,22 @@
+{% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
+{% set source = frappe.get_doc(doc.claim_type, doc.source_reference) if doc.claim_type and doc.source_reference else None %}
+{% set source_cost = (source.get("estimated_cost") or source.get("cost")) if source else None %}
+{% set raised_by = frappe.db.get_value("User", doc.raised_by, "full_name") if doc.raised_by else None %}
+{{ fx.style() }}
+<div class="fx">
+{{ fx.header(doc, _("Project Claim"), _(doc.claim_type) if doc.claim_type else None, doc.company, _("Claim Date"), doc.get_formatted("claim_date")) }}
+{{ fx.section(_("Project Claim"), [
+	(_("Project"), frappe.db.get_value("Project", doc.project, "project_name") if doc.project else None),
+	(_("Claim Type"), _(doc.claim_type) if doc.claim_type else None),
+	(_("Driver"), frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None),
+	(_("Raised By"), raised_by),
+]) }}
+{% if source %}
+<div class="fx-sec">{{ _("Source Reference") }}</div>
+<table class="fx-tbl"><tr><th style="width:17%">{{ _("Source Reference") }}</th><th style="width:13%">{{ _("Vehicle") }}</th><th>{{ _("Description") }}</th><th style="width:16%">{{ _("Estimated Cost (SAR)") }}</th>{% if doc.claim_type == "Accident" %}<th style="width:12%">{{ _("Driver Responsibility %") }}</th>{% endif %}<th style="width:15%">{{ _("Amount (SAR)") }}</th></tr>
+<tr><td>{{ source.name }}</td><td>{{ source.get("vehicle") or "" }}</td><td>{{ source.get("description") or "" }}</td><td>{{ frappe.format_value(source_cost, {"fieldtype": "Currency"}) if source_cost else "" }}</td>{% if doc.claim_type == "Accident" %}<td>{{ source.get_formatted("responsibility_percentage") if source.responsibility_percentage else "" }}</td>{% endif %}<td>{{ doc.get_formatted("amount") }}</td></tr>
+<tr class="fx-total"><td colspan="{{ 5 if doc.claim_type == 'Accident' else 4 }}">{{ _("Total") }}</td><td>{{ doc.get_formatted("amount") }}</td></tr>
+</table>
+{% endif %}
+{{ fx.signatures([(_("Raised By"), raised_by, None), (_("Approved By"), None, None)]) }}
+</div>

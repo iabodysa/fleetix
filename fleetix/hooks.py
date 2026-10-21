@@ -141,6 +141,8 @@ fixtures = [
 
 override_doctype_class = {"Vehicle": "fleetix.master.vehicle.VehicleService"}
 
+jinja = {"methods": ["fleetix.master.document_qr.document_qr"]}
+
 after_install = ["frappe.clear_cache"]
 after_sync = ["fleetix.master.permissions.grant_core_permissions"]
 after_migrate = ["fleetix.master.permissions.grant_core_permissions"]

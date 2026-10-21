@@ -1,0 +1,31 @@
+{% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model"], as_dict=True) if doc.vehicle else None %}
+{% set driver = frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None %}
+{% set claim = frappe.db.get_value("Insurance Claim", doc.insurance_claim, ["status", "claim_amount"], as_dict=True) if doc.insurance_claim else None %}
+{{ fx.style() }}
+<div class="fx">
+{{ fx.header(doc, _("Accident"), None, doc.company, _("Accident Date and Time"), doc.get_formatted("accident_datetime")) }}
+{{ fx.section(_("Accident"), [
+	(_("License Plate"), doc.vehicle),
+	(_("Model"), " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),
+	(_("Driver"), driver),
+	(_("Project"), frappe.db.get_value("Project", doc.project, "project_name") if doc.project else None),
+	(_("City"), doc.city),
+	(_("Location"), doc.location),
+	(_("Traffic / Najm Report No."), doc.report_number),
+	(_("Photos"), doc.photos | length if doc.photos else None),
+]) }}
+{% if doc.description %}
+<div class="fx-sec">{{ _("Description") }}</div>
+<div class="fx-text">{{ doc.description }}</div>
+{% endif %}
+{{ fx.section(_("Responsibility"), [
+	(_("Driver Responsibility %"), doc.get_formatted("responsibility_percentage") if doc.responsibility_percentage else None),
+	(_("Estimated Cost (SAR)"), doc.get_formatted("estimated_cost") if doc.estimated_cost else None),
+	(_("Charged To Driver"), frappe.db.get_value("Driver", doc.charged_to_driver, "full_name") if doc.charged_to_driver else None),
+	(_("Insurance Claim"), (doc.insurance_claim ~ " · " ~ _(claim.status)) if claim else doc.insurance_claim),
+	(_("Claim Amount"), frappe.format_value(claim.claim_amount, {"fieldtype": "Currency"}) if claim and claim.claim_amount else None),
+	(_("Project Claim"), doc.project_claim),
+]) }}
+{{ fx.signatures([(_("Driver"), driver, None), (_("Approved By"), None, None)]) }}
+</div>

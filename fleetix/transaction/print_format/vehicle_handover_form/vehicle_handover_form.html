@@ -1,0 +1,40 @@
+{% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model", "model_year", "istimara_no", "company"], as_dict=True) if doc.vehicle else None %}
+{% set inspection = frappe.get_doc("Vehicle Inspection", doc.inspection) if doc.inspection else None %}
+{% set from_driver = frappe.db.get_value("Driver", doc.from_driver, "full_name") if doc.from_driver else None %}
+{% set to_driver = frappe.db.get_value("Driver", doc.to_driver, "full_name") if doc.to_driver else None %}
+{{ fx.style() }}
+<div class="fx">
+{{ fx.header(doc, _("Vehicle Handover"), _(doc.handover_type) if doc.handover_type else None, vehicle.company if vehicle else None, _("Handover Date and Time"), doc.get_formatted("handover_datetime")) }}
+{{ fx.section(_("Vehicle"), [
+	(_("License Plate"), doc.vehicle),
+	(_("Make", context="Vehicle"), vehicle.make if vehicle else None),
+	(_("Model"), vehicle.model if vehicle else None),
+	(_("Model Year"), vehicle.model_year if vehicle else None),
+	(_("Istimara No"), vehicle.istimara_no if vehicle else None),
+	(_("Odometer (km)"), doc.get_formatted("odometer") if doc.odometer else None),
+	(_("Fuel Level"), _(inspection.fuel_level) if inspection and inspection.fuel_level else None),
+	(_("Photos"), inspection.photos | length if inspection and inspection.photos else None),
+]) }}
+{{ fx.section(_("Vehicle Handover"), [
+	(_("From Driver"), from_driver),
+	(_("To Driver"), to_driver),
+	(_("From Project"), frappe.db.get_value("Project", doc.from_project, "project_name") if doc.from_project else None),
+	(_("To Project"), frappe.db.get_value("Project", doc.to_project, "project_name") if doc.to_project else None),
+	(_("Inspection"), doc.inspection),
+]) }}
+{% if inspection and inspection.checklist %}
+<div class="fx-sec">{{ _("Checklist") }}</div>
+<table class="fx-tbl"><tr><th style="width:6%">#</th><th style="width:40%">{{ _("Item") }}</th><th style="width:18%">{{ _("Condition", context="Vehicle Checklist Item") }}</th><th>{{ _("Notes") }}</th></tr>
+{% for row in inspection.checklist %}<tr><td>{{ row.idx }}</td><td>{{ row.item or "" }}</td><td>{{ _(row.condition) if row.condition else "" }}</td><td>{{ row.notes or "" }}</td></tr>{% endfor %}
+</table>
+{% endif %}
+{% if doc.damages_found %}
+<div class="fx-sec">{{ _("Damages Found") }}</div>
+<table class="fx-tbl"><tr><th style="width:6%">#</th><th style="width:22%">{{ _("Damage") }}</th><th>{{ _("Description") }}</th><th style="width:22%">{{ _("Estimated Cost (SAR)") }}</th></tr>
+{% for row in doc.damages_found %}{% set damage = frappe.db.get_value("Damage", row.damage, ["description", "estimated_cost"], as_dict=True) if row.damage else None %}
+<tr><td>{{ row.idx }}</td><td>{{ row.damage or "" }}</td><td>{{ damage.description if damage and damage.description else "" }}</td><td>{{ frappe.format_value(damage.estimated_cost, {"fieldtype": "Currency"}) if damage and damage.estimated_cost else "" }}</td></tr>{% endfor %}
+</table>
+{% endif %}
+{{ fx.signatures([(_("Handing Over Signature"), from_driver, doc.from_signature), (_("Receiving Signature"), to_driver, doc.to_signature)]) }}
+</div>
