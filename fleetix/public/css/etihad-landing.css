@@ -33,16 +33,13 @@ ul{padding:0;list-style:none}
 .et--solid .et-header{background:var(--header-solid);color:var(--ink);box-shadow:0 1px 0 var(--hair);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px)}
 .et--menu .et-header{background:var(--et-navy);color:var(--on-navy);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 .et-brand{display:flex;align-items:center;gap:10px;margin-inline-end:auto;min-width:0;text-decoration:none}
-.et-mark{width:50px;height:50px;flex:none;line-height:0}
-.et-mark img{width:100%;height:100%;object-fit:contain}
-.et-mark__color{display:none}
-.et--solid .et-mark__color{display:var(--et-solid-color)}
-.et--solid .et-mark__rev{display:var(--et-solid-rev)}
-.et--menu .et-mark__color{display:none}
-.et--menu .et-mark__rev{display:inline}
-.et-brand__text{display:grid;line-height:1.25;white-space:nowrap}
-.et-brand__text b{font-size:16px;font-weight:800}
-.et-brand__text small{font-size:12px;opacity:.75}
+.et-logo{height:48px;aspect-ratio:690/352;flex:none;line-height:0}
+.et-logo img{width:100%;height:100%;object-fit:contain}
+.et-logo__color{display:none}
+.et--solid .et-logo__color{display:var(--et-solid-color)}
+.et--solid .et-logo__rev{display:var(--et-solid-rev)}
+.et--menu .et-logo__color{display:none}
+.et--menu .et-logo__rev{display:inline}
 .et-nav{display:none}
 .et-nav a{text-decoration:none}
 .et-burger{display:none;width:44px;height:44px;flex:none;place-content:center;gap:6px;padding:0;border:0;background:none;color:inherit;cursor:pointer}
