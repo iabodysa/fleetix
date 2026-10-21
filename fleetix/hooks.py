@@ -79,7 +79,7 @@ fixtures = [
 	},
 ]
 
-extend_doctype_class = {"Vehicle": ["fleetix.master.vehicle.VehicleService"]}
+override_doctype_class = {"Vehicle": "fleetix.master.vehicle.VehicleService"}
 
 after_sync = ["fleetix.master.permissions.grant_core_permissions"]
 after_migrate = ["fleetix.master.permissions.grant_core_permissions"]

@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe.model.document import Document
+from erpnext.setup.doctype.vehicle.vehicle import Vehicle
 from frappe.utils import add_months, cint, getdate
 
 from fleetix.settings.doctype.maintenance_policy.maintenance_policy import get_policy
@@ -19,7 +19,7 @@ POLICY_DEFAULTS = (
 )
 
 
-class VehicleService(Document):
+class VehicleService(Vehicle):
 	def validate(self):
 		super().validate()
 		self.set_policy_intervals()
