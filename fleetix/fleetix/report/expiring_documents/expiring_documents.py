@@ -12,14 +12,25 @@ def execute(filters=None):
 	filters = frappe._dict(filters or {})
 	days = DEFAULT_DAYS if filters.days in (None, "") else cint(filters.days)
 	limit = getdate(add_days(today(), days))
-	company = {"company": filters.company} if filters.company else {}
+	customer = {"customer": filters.customer} if filters.customer else {}
 
 	vehicles = frappe.get_list(
 		"Vehicle",
-		filters=company,
-		fields=["name", "company", "registration_expiry", "periodic_inspection_expiry", "insurance_policy"],
+		fields=["name", "current_driver", "registration_expiry", "periodic_inspection_expiry", "insurance_policy"],
 		limit_page_length=0,
 	)
+	customers = dict(
+		frappe.get_all(
+			"Driver",
+			filters={"name": ("in", [v.current_driver for v in vehicles if v.current_driver] or [""])},
+			fields=["name", "customer"],
+			as_list=True,
+		)
+	)
+	for vehicle in vehicles:
+		vehicle.customer = customers.get(vehicle.current_driver)
+	if filters.customer:
+		vehicles = [vehicle for vehicle in vehicles if vehicle.customer == filters.customer]
 	policies = list({vehicle.insurance_policy for vehicle in vehicles if vehicle.insurance_policy})
 	policy_end = (
 		dict(
@@ -41,7 +52,7 @@ def execute(filters=None):
 				"Vehicle",
 				vehicle.name,
 				vehicle.name,
-				vehicle.company,
+				vehicle.customer,
 				_("Istimara"),
 				vehicle.registration_expiry,
 			),
@@ -49,7 +60,7 @@ def execute(filters=None):
 				"Vehicle",
 				vehicle.name,
 				vehicle.name,
-				vehicle.company,
+				vehicle.customer,
 				_("Periodic Inspection"),
 				vehicle.periodic_inspection_expiry,
 			),
@@ -57,15 +68,15 @@ def execute(filters=None):
 				"Vehicle",
 				vehicle.name,
 				vehicle.name,
-				vehicle.company,
+				vehicle.customer,
 				_("Insurance Policy"),
 				policy_end.get(vehicle.insurance_policy),
 			),
 		]
 	for driver in frappe.get_list(
 		"Driver",
-		filters={"status": ("!=", "Left"), **company},
-		fields=["name", "full_name", "company", "expiry_date"],
+		filters={"status": ("!=", "Left"), **customer},
+		fields=["name", "full_name", "customer", "expiry_date"],
 		limit_page_length=0,
 	):
 		rows.append(
@@ -73,7 +84,7 @@ def execute(filters=None):
 				"Driver",
 				driver.name,
 				driver.full_name,
-				driver.company,
+				driver.customer,
 				_("Driving Licence"),
 				driver.expiry_date,
 			)
@@ -89,12 +100,12 @@ def execute(filters=None):
 	return get_columns(), data
 
 
-def document_row(doctype, name, title, company, document, expiry):
+def document_row(doctype, name, title, customer, document, expiry):
 	return {
 		"reference_type": doctype,
 		"reference": name,
 		"title": title,
-		"company": company,
+		"customer": customer,
 		"document": document,
 		"expiry": expiry,
 		"days_left": date_diff(expiry, today()) if expiry else None,
@@ -119,10 +130,10 @@ def get_columns():
 		},
 		{"fieldname": "title", "label": _("Name"), "fieldtype": "Data", "width": 180},
 		{
-			"fieldname": "company",
-			"label": _("Company"),
+			"fieldname": "customer",
+			"label": _("Customer"),
 			"fieldtype": "Link",
-			"options": "Company",
+			"options": "Customer",
 			"width": 140,
 		},
 		{"fieldname": "document", "label": _("Document"), "fieldtype": "Data", "width": 140},

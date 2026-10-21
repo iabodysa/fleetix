@@ -24,7 +24,7 @@ def execute(filters=None):
 	incidents = []
 	for doctype, (date_field, extra_fields) in INCIDENTS.items():
 		conditions = {date_field: ("between", [from_date, to_date])}
-		conditions.update({key: filters[key] for key in ("company", "project") if filters.get(key)})
+		conditions.update({key: filters[key] for key in ("customer", "project") if filters.get(key)})
 		for row in frappe.get_list(
 			doctype,
 			filters=conditions,

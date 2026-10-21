@@ -1,31 +1,5 @@
 [
  {
-  "default": "Active",
-  "doctype": "Custom Field",
-  "dt": "Company",
-  "fieldname": "status",
-  "fieldtype": "Select",
-  "in_list_view": 1,
-  "insert_after": "abbr",
-  "is_system_generated": 0,
-  "label": "Status",
-  "module": "Fleetix",
-  "name": "Company-status",
-  "options": "Active\nInactive",
-  "reqd": 1
- },
- {
-  "doctype": "Custom Field",
-  "dt": "Company",
-  "fieldname": "commercial_registration",
-  "fieldtype": "Data",
-  "insert_after": "tax_id",
-  "is_system_generated": 0,
-  "label": "Commercial Registration No.",
-  "module": "Fleetix",
-  "name": "Company-commercial_registration"
- },
- {
   "doctype": "Custom Field",
   "dt": "Project",
   "fieldname": "project_supervisor",
@@ -97,16 +71,17 @@
  {
   "doctype": "Custom Field",
   "dt": "Driver",
-  "fieldname": "company",
+  "fieldname": "customer",
   "fieldtype": "Link",
   "in_standard_filter": 1,
   "insert_after": "transporter",
   "is_system_generated": 0,
-  "label": "Company",
+  "label": "Customer",
+  "modified": "2026-10-21 22:30:00.000000",
   "module": "Fleetix",
-  "name": "Driver-company",
-  "options": "Company",
-  "reqd": 1
+  "name": "Driver-customer",
+  "options": "Customer",
+  "reqd": 0
  },
  {
   "doctype": "Custom Field",
@@ -115,13 +90,14 @@
   "fieldtype": "Link",
   "in_list_view": 1,
   "in_standard_filter": 1,
-  "insert_after": "company",
+  "insert_after": "customer",
   "is_system_generated": 0,
   "label": "Project",
+  "modified": "2026-10-21 22:30:00.000000",
   "module": "Fleetix",
   "name": "Driver-project",
   "options": "Project",
-  "reqd": 1
+  "reqd": 0
  },
  {
   "doctype": "Custom Field",

@@ -21,7 +21,7 @@ class ProjectRentalCharge(Document):
 				)
 			)
 		self.hourly_rate = (
-			get_hourly_rate(self.company, self.vehicle, self.usage_type, getdate(self.period_from))
+			get_hourly_rate(self.vehicle, self.usage_type, getdate(self.period_from))
 			or self.hourly_rate
 		)
 		self.amount = flt(self.hours * flt(self.hourly_rate), self.precision("amount"))

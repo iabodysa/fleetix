@@ -14,7 +14,7 @@
   "column_break_holder",
   "driver",
   "project",
-  "company",
+  "customer",
   "report_number",
   "section_break_details",
   "description",
@@ -86,13 +86,12 @@
    "reqd": 1
   },
   {
-   "fetch_from": "vehicle.company",
-   "fieldname": "company",
+   "fetch_from": "driver.customer",
+   "fieldname": "customer",
    "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company",
-   "read_only": 1,
-   "reqd": 1
+   "label": "Customer",
+   "options": "Customer",
+   "read_only": 1
   },
   {
    "fieldname": "report_number",
@@ -180,7 +179,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-21 21:10:00.000000",
+ "modified": "2026-10-21 22:30:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Accident",

@@ -17,7 +17,6 @@ STATE_COLORS = {"red": "#dc2626", "black": "#141518", "gray": "#8b919b", "green"
 VEHICLE_FIELDS = [
 	"name",
 	"vehicle_type",
-	"company",
 	"last_odometer",
 	"registration_expiry",
 	"periodic_inspection_expiry",
@@ -57,19 +56,28 @@ def execute(filters=None):
 		else {}
 	)
 
+	customers = dict(
+		frappe.get_all(
+			"Driver",
+			filters={"name": ("in", [row.driver for row in rows if row.driver] or [""])},
+			fields=["name", "customer"],
+			as_list=True,
+		)
+	)
 	kept, data = [], []
 	for row in rows:
 		vehicle = vehicles.get(row.vehicle)
 		if not vehicle:
 			continue
-		if filters.company and vehicle.company != filters.company:
+		customer = customers.get(row.driver)
+		if filters.customer and customer != filters.customer:
 			continue
 		if filters.vehicle_type and vehicle.vehicle_type != filters.vehicle_type:
 			continue
 		entry = {
 			"vehicle": row.vehicle,
 			"vehicle_type": vehicle.vehicle_type,
-			"company": vehicle.company,
+			"customer": customer,
 			"project": row.project,
 			"driver": row.driver,
 			"driver_name": row.driver_name,
@@ -106,10 +114,10 @@ def get_columns():
 			"width": 120,
 		},
 		{
-			"fieldname": "company",
-			"label": _("Company"),
+			"fieldname": "customer",
+			"label": _("Customer"),
 			"fieldtype": "Link",
-			"options": "Company",
+			"options": "Customer",
 			"width": 140,
 		},
 		{

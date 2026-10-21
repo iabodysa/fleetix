@@ -4,7 +4,7 @@
 {% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model"], as_dict=True) if doc.vehicle else None %}
 {{ fx.style() }}
 <div class="fx">
-{{ fx.header(doc, _("Project Rental Charge"), _(doc.usage_type) if doc.usage_type else None, doc.company, _("Date"), frappe.format_value(doc.creation, {"fieldtype": "Date"})) }}
+{{ fx.header(doc, _("Project Rental Charge"), _(doc.usage_type) if doc.usage_type else None, doc.customer, _("Date"), frappe.format_value(doc.creation, {"fieldtype": "Date"})) }}
 {{ fx.section(_("Project Rental Charge"), [
 	(_("Project"), frappe.db.get_value("Project", doc.project, "project_name") if doc.project else None),
 	(_("Assignment"), doc.assignment),

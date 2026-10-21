@@ -4,7 +4,7 @@
 {% set claim = frappe.db.get_value("Insurance Claim", doc.insurance_claim, ["status", "claim_amount"], as_dict=True) if doc.insurance_claim else None %}
 {{ fx.style() }}
 <div class="fx">
-{{ fx.header(doc, _("Accident"), None, doc.company, _("Accident Date and Time"), doc.get_formatted("accident_datetime")) }}
+{{ fx.header(doc, _("Accident"), None, doc.customer, _("Accident Date and Time"), doc.get_formatted("accident_datetime")) }}
 {{ fx.section(_("Accident"), [
 	(_("License Plate"), doc.vehicle),
 	(_("Model"), " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),

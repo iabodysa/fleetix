@@ -11,7 +11,7 @@
   "vehicle",
   "driver",
   "project",
-  "company",
+  "customer",
   "usage_type",
   "column_break_period",
   "period_from",
@@ -63,13 +63,12 @@
    "reqd": 1
   },
   {
-   "fetch_from": "assignment.company",
-   "fieldname": "company",
+   "fetch_from": "assignment.customer",
+   "fieldname": "customer",
    "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company",
-   "read_only": 1,
-   "reqd": 1
+   "label": "Customer",
+   "options": "Customer",
+   "read_only": 1
   },
   {
    "fetch_from": "assignment.usage_type",
@@ -145,7 +144,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-21 21:10:00.000000",
+ "modified": "2026-10-21 22:30:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Project Rental Charge",

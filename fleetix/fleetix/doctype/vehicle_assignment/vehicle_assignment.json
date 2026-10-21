@@ -10,7 +10,7 @@
   "vehicle",
   "driver",
   "project",
-  "company",
+  "customer",
   "column_break_assignment",
   "assignment_type",
   "usage_type",
@@ -70,13 +70,12 @@
    "reqd": 1
   },
   {
-   "fetch_from": "vehicle_request.company",
-   "fetch_if_empty": 1,
-   "fieldname": "company",
+   "fetch_from": "driver.customer",
+   "fieldname": "customer",
    "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company",
-   "reqd": 1
+   "label": "Customer",
+   "options": "Customer",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_assignment",
@@ -207,7 +206,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-21 20:16:00.000000",
+ "modified": "2026-10-21 22:30:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Vehicle Assignment",

@@ -3,7 +3,7 @@
 
 frappe.query_reports["Fleet Status"] = {
 	filters: [
-		{ fieldname: "company", label: __("Company"), fieldtype: "Link", options: "Company" },
+		{ fieldname: "customer", label: __("Customer"), fieldtype: "Link", options: "Customer" },
 		{ fieldname: "project", label: __("Project"), fieldtype: "Link", options: "Project" },
 		{ fieldname: "city", label: __("City"), fieldtype: "Link", options: "City" },
 		{

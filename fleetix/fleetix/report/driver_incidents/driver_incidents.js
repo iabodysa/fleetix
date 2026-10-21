@@ -3,7 +3,7 @@
 
 frappe.query_reports["Driver Incidents"] = {
 	filters: [
-		{ fieldname: "company", label: __("Company"), fieldtype: "Link", options: "Company" },
+		{ fieldname: "customer", label: __("Customer"), fieldtype: "Link", options: "Customer" },
 		{ fieldname: "project", label: __("Project"), fieldtype: "Link", options: "Project" },
 		{ fieldname: "driver", label: __("Driver"), fieldtype: "Link", options: "Driver" },
 		{

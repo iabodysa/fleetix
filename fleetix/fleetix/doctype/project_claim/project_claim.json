@@ -10,7 +10,7 @@
   "claim_type",
   "source_reference",
   "project",
-  "company",
+  "customer",
   "driver",
   "column_break_amount",
   "amount",
@@ -45,12 +45,13 @@
    "reqd": 1
   },
   {
-   "fieldname": "company",
+   "fetch_from": "driver.customer",
+   "fieldname": "customer",
    "fieldtype": "Link",
    "in_standard_filter": 1,
-   "label": "Company (Organizational Name)",
-   "options": "Company",
-   "reqd": 1
+   "label": "Customer",
+   "options": "Customer",
+   "read_only": 1
   },
   {
    "fieldname": "driver",
@@ -102,7 +103,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-21 21:10:00.000000",
+ "modified": "2026-10-21 22:30:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Project Claim",

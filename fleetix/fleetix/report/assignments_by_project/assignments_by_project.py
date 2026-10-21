@@ -14,7 +14,7 @@ def execute(filters=None):
 	filters = frappe._dict(filters or {})
 	conditions = {"docstatus": ("<", 2)}
 	conditions.update(
-		{key: filters[key] for key in ("company", "project", "vehicle", "driver") if filters.get(key)}
+		{key: filters[key] for key in ("customer", "project", "vehicle", "driver") if filters.get(key)}
 	)
 	rows = frappe.get_list(
 		"Vehicle Assignment",

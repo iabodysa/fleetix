@@ -30,12 +30,12 @@
 </style>
 {%- endmacro %}
 
-{% macro header(doc, title, subtitle, company, date_label, date_value) -%}
+{% macro header(doc, title, subtitle, customer, date_label, date_value) -%}
 <table class="fx-head"><tr>
 <td class="fx-logo"><img src="/assets/fleetix/images/etihad-lockup.png"></td>
 <td class="fx-title"><h1>{{ title }}</h1>{% if subtitle %}<div>{{ subtitle }}</div>{% endif %}</td>
 <td class="fx-meta">
-{% if company %}<div><span class="fx-l">{{ _("Company") }}</span> {{ company }}</div>{% endif %}
+{% if customer %}<div><span class="fx-l">{{ _("Customer") }}</span> {{ customer }}</div>{% endif %}
 <div><span class="fx-l">{{ _("Document No.") }}</span> {{ doc.name }}</div>
 {% if date_value %}<div><span class="fx-l">{{ date_label }}</span> {{ date_value }}</div>{% endif %}
 </td>

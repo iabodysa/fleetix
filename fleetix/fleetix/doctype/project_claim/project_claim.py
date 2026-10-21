@@ -30,7 +30,7 @@ def claim_amount(source):
 def source_values(source):
 	return {
 		"project": source.project,
-		"company": source.company,
+		"customer": source.customer,
 		"driver": source.get("charged_to_driver") or source.driver,
 		"amount": claim_amount(source),
 	}

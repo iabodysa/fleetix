@@ -1,11 +1,11 @@
 {% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
-{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model", "model_year", "istimara_no", "company"], as_dict=True) if doc.vehicle else None %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model", "model_year", "istimara_no"], as_dict=True) if doc.vehicle else None %}
 {% set inspection = frappe.get_doc("Vehicle Inspection", doc.inspection) if doc.inspection else None %}
 {% set from_driver = frappe.db.get_value("Driver", doc.from_driver, "full_name") if doc.from_driver else None %}
 {% set to_driver = frappe.db.get_value("Driver", doc.to_driver, "full_name") if doc.to_driver else None %}
 {{ fx.style() }}
 <div class="fx">
-{{ fx.header(doc, _("Vehicle Handover"), _(doc.handover_type) if doc.handover_type else None, vehicle.company if vehicle else None, _("Handover Date and Time"), doc.get_formatted("handover_datetime")) }}
+{{ fx.header(doc, _("Vehicle Handover"), _(doc.handover_type) if doc.handover_type else None, frappe.db.get_value("Driver", doc.to_driver or doc.from_driver, "customer") if (doc.to_driver or doc.from_driver) else None, _("Handover Date and Time"), doc.get_formatted("handover_datetime")) }}
 {{ fx.section(_("Vehicle"), [
 	(_("License Plate"), doc.vehicle),
 	(_("Make", context="Vehicle"), vehicle.make if vehicle else None),

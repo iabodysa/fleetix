@@ -11,7 +11,7 @@ from fleetix.fleetix.titles import titles
 def execute(filters=None):
 	filters = frappe._dict(filters or {})
 	conditions = {"docstatus": ("<", 2)}
-	conditions.update({key: filters[key] for key in ("company", "project") if filters.get(key)})
+	conditions.update({key: filters[key] for key in ("customer", "project") if filters.get(key)})
 	if filters.from_date and filters.to_date:
 		conditions["period_from"] = ("between", [filters.from_date, filters.to_date])
 
