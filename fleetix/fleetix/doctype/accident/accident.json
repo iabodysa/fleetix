@@ -143,6 +143,8 @@
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "project_claim.driver",
+   "fetch_if_empty": 1,
    "fieldname": "charged_to_driver",
    "fieldtype": "Link",
    "label": "Charged To Driver",
@@ -179,7 +181,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-21 22:30:00.000000",
+ "modified": "2026-10-21 23:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Accident",

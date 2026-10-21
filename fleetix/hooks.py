@@ -14,7 +14,7 @@ add_to_apps_screen = [
 		"name": "fleetix",
 		"logo": "/assets/fleetix/images/fleetix-logo.svg",
 		"title": "Fleetix",
-		"route": "/app/master",
+		"route": "/app/fleetix",
 	}
 ]
 
@@ -147,9 +147,12 @@ jinja = {"methods": ["fleetix.fleetix.document_qr.document_qr"]}
 
 website_route_rules = [{"from_route": "/maintenance/<path:app_path>", "to_route": "maintenance"}]
 
-after_install = ["frappe.clear_cache"]
+after_install = ["fleetix.fleetix.branding.set_navbar_logo", "frappe.clear_cache"]
 after_sync = ["fleetix.fleetix.permissions.grant_core_permissions"]
-after_migrate = ["fleetix.fleetix.permissions.grant_core_permissions"]
+after_migrate = [
+	"fleetix.fleetix.permissions.grant_core_permissions",
+	"fleetix.fleetix.branding.set_navbar_logo",
+]
 before_uninstall = ["fleetix.fleetix.permissions.revoke_core_permissions"]
 
 scheduler_events = {"daily": ["fleetix.fleetix.doctype.maintenance.maintenance.create_due_alerts"]}
