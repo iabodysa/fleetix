@@ -1,12 +1,15 @@
 # Copyright (c) 2026, Ittihad and contributors
 # For license information, please see license.txt
 
+from urllib.parse import quote
+
 import frappe
 from frappe import _
 from frappe.model.workflow import apply_workflow
-from frappe.utils import cint, date_diff, flt, getdate, today
+from frappe.utils import cint, date_diff, flt, get_host_name_from_request, getdate, today
 
 from fleetix.fleetix.doctype.maintenance.maintenance import COMPONENT_FIELDS, due_components, next_due
+from fleetix.fleetix.document_qr import qr_data_url
 
 WORKER_ROLES = ("Movement Supervisor", "System Manager")
 OPEN_STATES = ("Due Alert", "Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
@@ -112,6 +115,26 @@ def upload_photo(maintenance):
 		}
 	).insert()
 	return {"name": photo.name, "file_url": photo.file_url}
+
+
+@frappe.whitelist()
+def get_photos(maintenance):
+	frappe.only_for(WORKER_ROLES)
+	frappe.get_doc("Maintenance", maintenance).check_permission("read")
+	return frappe.get_all(
+		"File",
+		filters={"attached_to_doctype": "Maintenance", "attached_to_name": maintenance},
+		fields=["name", "file_url"],
+		order_by="creation asc",
+	)
+
+
+@frappe.whitelist()
+def get_photo_link(maintenance):
+	frappe.only_for(WORKER_ROLES)
+	frappe.get_doc("Maintenance", maintenance).check_permission("read")
+	url = get_host_name_from_request() + "/maintenance/photos/" + quote(maintenance)
+	return {"url": url, "qr": qr_data_url(url)}
 
 
 @frappe.whitelist(methods=["POST"])

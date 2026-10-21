@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="{{ lang }}" dir="{{ direction }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0D1317">
+<title>{{ _("Vehicle photos") }}</title>
+<link rel="icon" href="/assets/fleetix/images/fleetix-favicon.svg">
+<link rel="stylesheet" href="/assets/fleetix/css/maintenance-photos.css">
+<script src="/assets/fleetix/js/maintenance-photos.js" defer></script>
+</head>
+<body>
+<main class="mp" data-maintenance="{{ visit.maintenance|e }}" data-csrf="{{ csrf_token|e }}" data-busy="{{ _('Uploading') }}" data-failed="{{ _('Upload failed') }}">
+  <header class="mp-vehicle">
+    <p class="mp-plate"><bdi>{{ visit.vehicle.plate|e }}</bdi></p>
+    <p class="mp-model">{{ visit.vehicle.model|e }}</p>
+    <p class="mp-odometer"><span>{{ _("Odometer") }}</span> <bdi>{{ odometer }} {{ _("km") }}</bdi></p>
+  </header>
+  <ol class="mp-steps">
+    {% for step in steps %}<li class="{{ step.state }}">{{ step.label }}</li>{% endfor %}
+  </ol>
+  <label class="mp-take">
+    <input type="file" accept="image/*" capture="environment" multiple>
+    <span data-label>{{ _("Take photos") }}</span>
+  </label>
+  <p class="mp-count"><span>{{ _("Photos added") }}</span> <strong data-count>{{ photo_count }}</strong></p>
+  <p class="mp-error" data-error role="alert"></p>
+</main>
+</body>
+</html>

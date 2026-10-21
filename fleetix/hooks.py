@@ -146,7 +146,10 @@ override_doctype_class = {"Vehicle": "fleetix.fleetix.vehicle.VehicleService"}
 
 jinja = {"methods": ["fleetix.fleetix.document_qr.document_qr"]}
 
-website_route_rules = [{"from_route": "/maintenance/<path:app_path>", "to_route": "maintenance"}]
+website_route_rules = [
+	{"from_route": "/maintenance/photos/<visit>", "to_route": "maintenance_photos"},
+	{"from_route": "/maintenance/<path:app_path>", "to_route": "maintenance"},
+]
 
 after_install = ["fleetix.fleetix.branding.set_navbar_logo", "frappe.clear_cache"]
 after_sync = ["fleetix.fleetix.permissions.grant_core_permissions"]

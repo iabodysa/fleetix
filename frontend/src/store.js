@@ -10,7 +10,7 @@ export const store = reactive({
 	visit: null,
 	odometer: "",
 	checklist: null,
-	photos: {},
+	photos: [],
 	signatures: { driver: null, inspector: null },
 	result: null,
 	display: false,
@@ -32,7 +32,7 @@ export async function openVisit(row) {
 	store.visit = row
 	store.odometer = row.odometer ? String(row.odometer) : ""
 	store.checklist = null
-	store.photos = {}
+	store.photos = []
 	store.signatures = { driver: null, inspector: null }
 	store.result = null
 	store.printed = false

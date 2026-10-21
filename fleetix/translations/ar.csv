@@ -9468,7 +9468,6 @@ Final check,الفحص النهائي
 Finish maintenance,إنهاء الصيانة
 Finishing,جارٍ الإنهاء
 Fleetix Maintenance,صيانة فليتكس
-Front of vehicle,مقدمة السيارة
 Inspector signature,توقيع الفاحص
 Items and parts,البنود والقطع
 Last reading,آخر قراءة
@@ -9485,8 +9484,6 @@ Odometer reading is below the last reading {0},قراءة العداد أقل م
 Offline,غير متصل
 On customer screen,على شاشة العميل
 Online,متصل
-Optional,اختيارية
-Other photo,صورة أخرى
 Other vehicle,سيارة أخرى
 Photos and signatures,الصور والتواقيع
 Plate number,رقم اللوحة
@@ -9494,12 +9491,9 @@ Print again,طباعة مرة أخرى
 Printer not connected,الطابعة غير متصلة
 Receipt printed,طُبع الإيصال
 Replaced today,تم التغيير اليوم
-Required,مطلوبة
-Retake,إعادة
 Select at least one component,اختر بنداً واحداً على الأقل
 Send for approval,إرسال للاعتماد
 Sent for approval,أُرسلت للاعتماد
-Take the odometer photo,صوّر العداد
 This account cannot use the maintenance app,هذا الحساب لا يملك صلاحية تطبيق الصيانة
 This visit is not approved yet,الزيارة لم تُعتمد بعد
 This visit is not waiting for inspection,الزيارة ليست بانتظار الفحص
@@ -9516,3 +9510,10 @@ Set the item on rental charges {0},حدد الصنف في رسوم الإيجا�
 Claim Date,تاريخ المطالبة
 Fleetix Settings,إعدادات الأسطول
 Rental rates include VAT,أسعار التأجير شاملة ضريبة القيمة المضافة
+Photo {0},صورة {0}
+Photos added,الصور المضافة
+Scan with your phone to add photos,امسح الرمز بجوالك لإضافة الصور
+Take photos,التقط الصور
+Upload failed,تعذر الرفع
+Uploading,جارٍ الرفع
+Vehicle photos,صور المركبة
