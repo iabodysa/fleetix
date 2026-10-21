@@ -15,7 +15,7 @@ BOARD_ROLES = (
 	"Accountant",
 	"System Manager",
 )
-STATES = ("red", "gray", "black", "green")
+STATES = ("red", "black", "gray", "green")
 DELIVERY_STEPS = ("Pending Inspection", "Pending Documentation", "Pending Assignment")
 WAITING_STEPS = ("New", "Pending Vehicle Selection")
 WORKSHOP_STEPS = ("Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
@@ -55,7 +55,7 @@ def classify(project=None, city=None):
 	day_end = get_datetime(f"{today()} 23:59:59")
 
 	live = {}
-	for row in frappe.get_all(
+	for row in frappe.get_list(
 		"Vehicle Assignment",
 		filters={"docstatus": 1, "status": ("in", LIVE), "vehicle": ("in", names)},
 		fields=["name", "vehicle", "driver", "project", "assignment_type", "from_datetime", "to_datetime"],
@@ -64,7 +64,7 @@ def classify(project=None, city=None):
 		live[row.vehicle] = row
 
 	deliveries = {}
-	for row in frappe.get_all(
+	for row in frappe.get_list(
 		"Vehicle Request",
 		filters={
 			"selected_vehicle": ("in", names),
@@ -77,7 +77,7 @@ def classify(project=None, city=None):
 		deliveries.setdefault(row.selected_vehicle, row)
 
 	in_workshop, due_alerts = set(), {}
-	for row in frappe.get_all(
+	for row in frappe.get_list(
 		"Maintenance",
 		filters={"docstatus": 0, "vehicle": ("in", names)},
 		fields=["name", "vehicle", "status", "maintenance_type", "description", "creation"],
@@ -89,7 +89,7 @@ def classify(project=None, city=None):
 
 	notes = {}
 	for doctype in ("Accident", "Damage"):
-		for row in frappe.get_all(
+		for row in frappe.get_list(
 			doctype,
 			filters={"vehicle": ("in", names), "status": ("!=", "Closed")},
 			fields=["name", "vehicle"],
@@ -97,7 +97,7 @@ def classify(project=None, city=None):
 			notes.setdefault(row.vehicle, []).append({"doctype": doctype, "name": row.name})
 
 	last_return = dict(
-		frappe.get_all(
+		frappe.get_list(
 			"Vehicle Handover",
 			filters={"docstatus": 1, "handover_type": "Return", "vehicle": ("in", names)},
 			fields=["vehicle", "max(handover_datetime) as at"],
@@ -142,6 +142,9 @@ def classify(project=None, city=None):
 			)
 		elif assignment and row.notes:
 			row.update(state="red", reason="open_note", late_hours=0)
+		elif not assignment and vehicle.status != "In Maintenance" and vehicle.name not in in_workshop:
+			since = last_return.get(vehicle.name) or vehicle.acquisition_date or vehicle.creation
+			row.update(state="black", reason="idle", idle_days=date_diff(today(), since))
 		elif vehicle.name not in in_workshop and (vehicle.name in due_alerts or due):
 			alert = due_alerts.get(vehicle.name)
 			row.update(
@@ -151,9 +154,6 @@ def classify(project=None, city=None):
 				ref_name=alert.name if alert else None,
 				since_days=date_diff(today(), alert.creation) if alert else 0,
 			)
-		elif not assignment and vehicle.status != "In Maintenance" and vehicle.name not in in_workshop:
-			since = last_return.get(vehicle.name) or vehicle.acquisition_date or vehicle.creation
-			row.update(state="black", reason="idle", idle_days=date_diff(today(), since))
 		else:
 			row.update(state="green", reason="")
 		set_chips(row, vehicle, assignment, in_workshop)
@@ -188,12 +188,12 @@ def add_titles(rows):
 	projects = {row.project for row in rows if row.project}
 	driver_info = {
 		d.name: d
-		for d in frappe.get_all(
+		for d in frappe.get_list(
 			"Driver", filters={"name": ("in", list(drivers))}, fields=["name", "full_name", "cell_number"]
 		)
 	}
 	project_names = dict(
-		frappe.get_all(
+		frappe.get_list(
 			"Project", filters={"name": ("in", list(projects))}, fields=["name", "project_name"], as_list=True
 		)
 	)

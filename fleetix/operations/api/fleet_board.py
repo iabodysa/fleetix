@@ -11,6 +11,8 @@ COUNT_TTL_SECONDS = 60
 @frappe.whitelist()
 def get_board(project=None, city=None):
 	frappe.only_for(BOARD_ROLES)
+	frappe.has_permission("Vehicle", "read", throw=True)
+	frappe.has_permission("Driver", "read", throw=True)
 	rows = classify(city=city)
 	projects = sorted({(row.project, row.project_name or row.project) for row in rows if row.project})
 	if project:
@@ -19,13 +21,14 @@ def get_board(project=None, city=None):
 		"rows": rows,
 		"counts": count(rows),
 		"projects": [{"value": name, "label": label} for name, label in projects],
-		"cities": frappe.get_all("City", pluck="name", order_by="name"),
+		"cities": frappe.get_list("City", pluck="name", order_by="name"),
 	}
 
 
 @frappe.whitelist()
 def count_state(filters=None):
 	frappe.only_for(BOARD_ROLES)
+	frappe.has_permission("Vehicle", "read", throw=True)
 	filters = frappe.parse_json(filters) or {}
 	if isinstance(filters, list):
 		filters = {row[1]: row[3] for row in filters if len(row) > 3}

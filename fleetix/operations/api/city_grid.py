@@ -9,11 +9,12 @@ from fleetix.operations.fleet_state import BOARD_ROLES, STATES, WAITING_STEPS, c
 @frappe.whitelist()
 def get_city_grid():
 	frappe.only_for(BOARD_ROLES)
+	frappe.has_permission("Vehicle", "read", throw=True)
 	rows = classify()
-	regions = dict(frappe.get_all("City", fields=["name", "region"], as_list=True))
+	regions = dict(frappe.get_list("City", fields=["name", "region"], as_list=True))
 	types = (
 		dict(
-			frappe.get_all(
+			frappe.get_list(
 				"Vehicle",
 				filters={"name": ("in", [r.vehicle for r in rows])},
 				fields=["name", "vehicle_type"],
@@ -23,8 +24,8 @@ def get_city_grid():
 		if rows
 		else {}
 	)
-	project_city = dict(frappe.get_all("Project", fields=["name", "city"], as_list=True))
-	waiting = frappe.get_all(
+	project_city = dict(frappe.get_list("Project", fields=["name", "city"], as_list=True))
+	waiting = frappe.get_list(
 		"Vehicle Request",
 		filters={"workflow_state": ("in", WAITING_STEPS)},
 		fields=["name", "project", "required_date", "requested_vehicle_type", "workflow_state"],

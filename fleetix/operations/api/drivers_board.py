@@ -13,6 +13,8 @@ TRAINED = "Trained"
 @frappe.whitelist()
 def get_drivers(project=None, city=None):
 	frappe.only_for(BOARD_ROLES)
+	frappe.has_permission("Vehicle", "read", throw=True)
+	frappe.has_permission("Driver", "read", throw=True)
 	drivers = frappe.get_list(
 		"Driver",
 		filters={"status": "Active"},
@@ -24,7 +26,7 @@ def get_drivers(project=None, city=None):
 	now = now_datetime()
 	day_end = get_datetime(f"{today()} 23:59:59")
 	live = {}
-	for row in frappe.get_all(
+	for row in frappe.get_list(
 		"Vehicle Assignment",
 		filters={"docstatus": 1, "status": ("in", LIVE), "driver": ("in", [d.name for d in drivers])},
 		fields=["name", "driver", "vehicle", "project", "assignment_type", "to_datetime"],
@@ -32,14 +34,14 @@ def get_drivers(project=None, city=None):
 	):
 		live[row.driver] = row
 	plates = dict(
-		frappe.get_all(
+		frappe.get_list(
 			"Vehicle",
 			filters={"name": ("in", [a.vehicle for a in live.values()])},
 			fields=["name", "license_plate"],
 			as_list=True,
 		)
 	)
-	project_rows = frappe.get_all("Project", fields=["name", "project_name", "city"])
+	project_rows = frappe.get_list("Project", fields=["name", "project_name", "city"])
 	project_city = {p.name: p.city for p in project_rows}
 	project_label = {p.name: p.project_name for p in project_rows}
 
@@ -81,5 +83,5 @@ def get_drivers(project=None, city=None):
 		"rows": rows,
 		"counts": count(rows),
 		"projects": [{"value": name, "label": label} for name, label in projects],
-		"cities": frappe.get_all("City", pluck="name", order_by="name"),
+		"cities": frappe.get_list("City", pluck="name", order_by="name"),
 	}

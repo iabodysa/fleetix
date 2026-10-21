@@ -14,6 +14,8 @@ BACK_DAYS = 3
 @frappe.whitelist()
 def get_timeline(start=None, days=DEFAULT_DAYS, project=None, city=None):
 	frappe.only_for(BOARD_ROLES)
+	frappe.has_permission("Vehicle", "read", throw=True)
+	frappe.has_permission("Driver", "read", throw=True)
 	days = min(max(cint(days), 1), MAX_DAYS)
 	start = getdate(start or add_days(today(), -BACK_DAYS))
 	end = add_days(start, days)
@@ -21,7 +23,7 @@ def get_timeline(start=None, days=DEFAULT_DAYS, project=None, city=None):
 	names = [r.vehicle for r in rows]
 	spans = {name: [] for name in names}
 	if names:
-		for a in frappe.get_all(
+		for a in frappe.get_list(
 			"Vehicle Assignment",
 			filters={"docstatus": 1, "vehicle": ("in", names), "from_datetime": ("<", end)},
 			or_filters={
@@ -49,7 +51,7 @@ def get_timeline(start=None, days=DEFAULT_DAYS, project=None, city=None):
 					"label": a.project or a.driver,
 				}
 			)
-		for r in frappe.get_all(
+		for r in frappe.get_list(
 			"Vehicle Request",
 			filters={
 				"selected_vehicle": ("in", names),
@@ -68,7 +70,7 @@ def get_timeline(start=None, days=DEFAULT_DAYS, project=None, city=None):
 					"label": r.project,
 				}
 			)
-		for m in frappe.get_all(
+		for m in frappe.get_list(
 			"Maintenance",
 			filters={
 				"vehicle": ("in", names),
@@ -80,7 +82,7 @@ def get_timeline(start=None, days=DEFAULT_DAYS, project=None, city=None):
 			spans[m.vehicle].append(
 				{"kind": "maintenance", "start": m.visit_datetime, "doctype": "Maintenance", "name": m.name}
 			)
-		for h in frappe.get_all(
+		for h in frappe.get_list(
 			"Vehicle Handover",
 			filters={
 				"vehicle": ("in", names),

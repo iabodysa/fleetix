@@ -1,6 +1,6 @@
 frappe.provide("fleetix.fleet");
 
-const STATES = ["red", "gray", "black", "green"];
+const STATES = ["red", "black", "gray", "green"];
 const REFRESH_MS = 60 * 1000;
 const PLATE_LETTERS = {
 	A: "ا",
