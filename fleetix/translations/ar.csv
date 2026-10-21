@@ -60,6 +60,7 @@ Checklist,قائمة الفحص
 City,المدينة
 City Name,اسم المدينة
 Claimed,تمت المطالبة
+Component,قطعة
 Component Replacement Log,سجل استبدال القطع
 Components Replaced,القطع المستبدلة
 Converted to Permanent,تحول إلى دائم
@@ -112,6 +113,7 @@ Handing Over Signature,توقيع المسلم
 Handover,تسليم
 Handover Date,تاريخ التسليم
 Handover Date and Time,تاريخ ووقت التسليم
+Handover Type,نوع التسليم
 Home,الرئيسية
 Hourly Rate (SAR),سعر الساعة (ريال)
 IBAN,رقم الآيبان
@@ -166,7 +168,7 @@ Next Rear Tires Due (km),استحقاق الإطارات الخلفية القا
 Normal,عادية
 Not Trained,غير مدرب
 Note,ملاحظة
-Odometer,عداد الكيلومترات
+Odometer,عداد المسافة
 Odometer (km),عداد المسافة (كم)
 Odometer at Replacement,عداد المسافة عند الاستبدال
 Oil,الزيت
@@ -9517,3 +9519,4 @@ Take photos,التقط الصور
 Upload failed,تعذر الرفع
 Uploading,جارٍ الرفع
 Vehicle photos,صور المركبة
+Trainer,المدرب
