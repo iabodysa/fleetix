@@ -113,8 +113,7 @@
    "fieldname": "photos",
    "fieldtype": "Table",
    "label": "Photos",
-   "options": "Vehicle Inspection Photo",
-   "reqd": 1
+   "options": "Vehicle Inspection Photo"
   },
   {
    "fieldname": "section_break_responsibility",
@@ -180,7 +179,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-21 00:00:00.000000",
+ "modified": "2026-10-21 20:16:00.000000",
  "modified_by": "Administrator",
  "module": "Operations",
  "name": "Accident",

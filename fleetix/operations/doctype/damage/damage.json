@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "vehicle",
+  "city",
   "source",
   "source_reference",
   "column_break_holder",
@@ -35,12 +36,19 @@
    "reqd": 1
   },
   {
+   "fetch_from": "vehicle.city",
+   "fetch_if_empty": 1,
+   "fieldname": "city",
+   "fieldtype": "Link",
+   "label": "City",
+   "options": "City"
+  },
+  {
    "fieldname": "source",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Source",
-   "options": "Vehicle Handover\nVehicle Inspection\nMaintenance\nAccident",
-   "reqd": 1
+   "options": "\nVehicle Handover\nVehicle Inspection\nMaintenance\nAccident"
   },
   {
    "fieldname": "source_reference",
@@ -60,8 +68,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Driver",
-   "options": "Driver",
-   "reqd": 1
+   "options": "Driver"
   },
   {
    "fetch_from": "vehicle.current_project",
@@ -70,8 +77,7 @@
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Project",
-   "options": "Project",
-   "reqd": 1
+   "options": "Project"
   },
   {
    "fetch_from": "vehicle.company",
@@ -97,8 +103,7 @@
    "fieldname": "photos",
    "fieldtype": "Table",
    "label": "Photos",
-   "options": "Vehicle Inspection Photo",
-   "reqd": 1
+   "options": "Vehicle Inspection Photo"
   },
   {
    "fieldname": "section_break_responsibility",
@@ -151,7 +156,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-21 00:00:00.000000",
+ "modified": "2026-10-21 20:16:00.000000",
  "modified_by": "Administrator",
  "module": "Operations",
  "name": "Damage",

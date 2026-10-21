@@ -5,7 +5,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 from frappe.model.workflow import apply_workflow
-from frappe.utils import get_datetime, now_datetime
+from frappe.utils import get_datetime, getdate, now_datetime, today
 
 from fleetix.master.vehicle import policy_intervals
 
@@ -16,6 +16,7 @@ INTERVAL_FIELDS = (
 	"tire_interval_km",
 	"battery_interval_months",
 )
+SUBMIT_FIELDS = ("usage_type", "from_datetime", "handover_date")
 CONVERTIBLE = ("Active", "Expiring")
 LIVE = ("Active", "Expiring", "Converted to Permanent")
 
@@ -23,7 +24,6 @@ LIVE = ("Active", "Expiring", "Converted to Permanent")
 class VehicleAssignment(Document):
 	def validate(self):
 		self.set_default_intervals()
-		self.validate_driver_trained()
 
 	def before_update_after_submit(self):
 		self.validate_driver_trained()
@@ -49,7 +49,28 @@ class VehicleAssignment(Document):
 				)
 			)
 
+	def validate_submit_fields(self):
+		for fieldname in SUBMIT_FIELDS:
+			if not self.get(fieldname):
+				frappe.throw(_("{0} is required to submit").format(_(self.meta.get_label(fieldname))))
+
+	def validate_driver_licence(self):
+		licence, expiry = frappe.db.get_value("Driver", self.driver, ["license_number", "expiry_date"])
+		driver_meta = frappe.get_meta("Driver")
+		for fieldname, value in (("license_number", licence), ("expiry_date", expiry)):
+			if not value:
+				frappe.throw(
+					_("{0} is missing on Driver {1}").format(_(driver_meta.get_label(fieldname)), self.driver)
+				)
+		if getdate(expiry) < getdate(today()):
+			frappe.throw(
+				_("{0} on Driver {1} has passed").format(_(driver_meta.get_label("expiry_date")), self.driver)
+			)
+
 	def before_submit(self):
+		self.validate_submit_fields()
+		self.validate_driver_licence()
+		self.validate_driver_trained()
 		self.status = "Active"
 
 	def on_submit(self):
@@ -57,7 +78,8 @@ class VehicleAssignment(Document):
 		vehicle.update({field: self.get(field) for field in INTERVAL_FIELDS})
 		vehicle.update({"current_driver": self.driver, "current_project": self.project, "status": "Assigned"})
 		vehicle.save()
-		apply_workflow(frappe.get_doc("Vehicle Request", self.vehicle_request), "Assign")
+		if self.vehicle_request:
+			apply_workflow(frappe.get_doc("Vehicle Request", self.vehicle_request), "Assign")
 
 	def before_cancel(self):
 		self.status = "Cancelled"

@@ -326,6 +326,10 @@ Charge,تحميل على السائق
 Estimate Cost,تقدير التكلفة
 Set Responsibility,تحديد المسؤولية
 Manager,المسؤول
+Istimara No,رقم الاستمارة
+{0} is missing on Driver {1},{0} غير مسجل للسائق {1}
+{0} is required to submit,{0} مطلوب للاعتماد
+{0} on Driver {1} has passed,{0} للسائق {1} منتهي
 Accounting Details,التفاصيل المحاسبية
 Accounting Entries,القيود المحاسبية
 Accounts,الحسابات

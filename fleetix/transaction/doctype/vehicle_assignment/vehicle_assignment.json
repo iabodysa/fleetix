@@ -36,8 +36,7 @@
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Vehicle Request",
-   "options": "Vehicle Request",
-   "reqd": 1
+   "options": "Vehicle Request"
   },
   {
    "fetch_from": "vehicle_request.selected_vehicle",
@@ -99,15 +98,12 @@
    "fieldname": "usage_type",
    "fieldtype": "Select",
    "label": "Usage Type",
-   "options": "Standard\nTravel",
-   "reqd": 1
+   "options": "\nStandard\nTravel"
   },
   {
-   "default": "Now",
    "fieldname": "from_datetime",
    "fieldtype": "Datetime",
-   "label": "From",
-   "reqd": 1
+   "label": "From"
   },
   {
    "allow_on_submit": 1,
@@ -120,12 +116,10 @@
   },
   {
    "allow_on_submit": 1,
-   "default": "Now",
    "fieldname": "handover_date",
    "fieldtype": "Datetime",
    "label": "Handover Date",
-   "read_only_depends_on": "eval:doc.docstatus == 1",
-   "reqd": 1
+   "read_only_depends_on": "eval:doc.docstatus == 1"
   },
   {
    "fieldname": "intervals_section",
@@ -172,8 +166,7 @@
   {
    "fieldname": "authorization_document",
    "fieldtype": "Attach",
-   "label": "Authorization Document",
-   "reqd": 1
+   "label": "Authorization Document"
   },
   {
    "fieldname": "column_break_authorization",
@@ -214,7 +207,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-21 00:00:00.000000",
+ "modified": "2026-10-21 20:16:00.000000",
  "modified_by": "Administrator",
  "module": "Transaction",
  "name": "Vehicle Assignment",

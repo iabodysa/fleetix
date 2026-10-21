@@ -37,7 +37,7 @@
   "module": "Master",
   "name": "Project-project_supervisor",
   "options": "User",
-  "reqd": 1
+  "reqd": 0
  },
  {
   "doctype": "Custom Field",
@@ -51,7 +51,7 @@
   "module": "Master",
   "name": "Project-city",
   "options": "City",
-  "reqd": 1
+  "reqd": 0
  },
  {
   "doctype": "Custom Field",
@@ -63,7 +63,7 @@
   "label": "Employee ID",
   "module": "Master",
   "name": "Driver-employee_id",
-  "reqd": 1
+  "reqd": 0
  },
  {
   "doctype": "Custom Field",
@@ -195,14 +195,26 @@
  {
   "doctype": "Custom Field",
   "dt": "Vehicle",
+  "fieldname": "istimara_no",
+  "fieldtype": "Data",
+  "insert_after": "city",
+  "is_system_generated": 0,
+  "label": "Istimara No",
+  "module": "Master",
+  "name": "Vehicle-istimara_no",
+  "reqd": 0
+ },
+ {
+  "doctype": "Custom Field",
+  "dt": "Vehicle",
   "fieldname": "registration_expiry",
   "fieldtype": "Date",
-  "insert_after": "city",
+  "insert_after": "istimara_no",
   "is_system_generated": 0,
   "label": "Registration (Istimara) Expiry",
   "module": "Master",
   "name": "Vehicle-registration_expiry",
-  "reqd": 1
+  "reqd": 0
  },
  {
   "doctype": "Custom Field",
