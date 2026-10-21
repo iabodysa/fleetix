@@ -1,3 +1,9 @@
+{"key": "Fleet Status", "caller": "Fleetix report record name"}
+{"key": "Maintenance Due", "caller": "Fleetix report record name"}
+{"key": "Assignments by Project", "caller": "Fleetix report record name"}
+{"key": "Rental Charges by Project", "caller": "Fleetix report record name"}
+{"key": "Driver Incidents", "caller": "Fleetix report record name"}
+{"key": "Expiring Documents", "caller": "Fleetix report record name"}
 {"key": "Arrive", "caller": "Workflow Action Master fixture"}
 {"key": "Finish Service", "caller": "Workflow Action Master fixture"}
 {"key": "Inspect", "caller": "Workflow Action Master fixture"}

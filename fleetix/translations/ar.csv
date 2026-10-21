@@ -1,3 +1,36 @@
+Accidents,الحوادث
+Assignments by Project,الإسنادات حسب المشروع
+Assignments per Project,الإسنادات لكل مشروع
+Charged Amount,المبلغ المحمّل على السائق
+Charges,الرسوم
+Damages,الأضرار
+Days Left,الأيام المتبقية
+Driver Incidents,حوادث السائقين
+Driving Licence,رخصة القيادة
+Due Odometer,عداد الاستحقاق
+Expiring Documents,المستندات القريبة من الانتهاء
+Fleet Status,حالة الأسطول
+Fleet by State,الأسطول حسب الحالة
+Incidents per Month,الحوادث والأضرار شهرياً
+Inspection Expiry,انتهاء الفحص الدوري
+Insurance Expiry,انتهاء التأمين
+Istimara Expiry,انتهاء الاستمارة
+Istimara,الاستمارة
+Km Remaining,الكيلومترات المتبقية
+Last Done,آخر استبدال
+Maintenance Due per Week,الصيانة المستحقة أسبوعياً
+Maintenance Due,الصيانة المستحقة
+Open Claims,المطالبات المفتوحة
+Overdue Only,المتأخرة فقط
+Periodic Inspection,الفحص الدوري
+Posted Amount,المبلغ المرحّل
+Rental Charges by Project,رسوم التأجير حسب المشروع
+Rental Charges per Month,رسوم التأجير شهرياً
+Show Missing,إظهار غير المسجّل
+Vehicle State,حالة المركبة
+Vehicles,المركبات
+Within Days,خلال أيام
+{0} Due,استحقاق {0}
 Abbr,الاختصار
 Accident,حادث
 Accountant,محاسب
@@ -9562,7 +9595,6 @@ Longest Idle,الأطول وقوفاً
 Expiring in 7 Days,تنتهي خلال 7 أيام
 Since Yesterday,من أمس
 Handovers,التسليمات
-Accidents,الحوادث
 Vehicle Requests,طلبات المركبات
 "Good morning, {0}",صباح الخير يا {0}
 Late,متأخر
