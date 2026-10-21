@@ -90,6 +90,8 @@
   },
   {
    "depends_on": "eval:['Driver Arrived', 'Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
+   "fetch_from": "vehicle.last_odometer",
+   "fetch_if_empty": 1,
    "fieldname": "odometer",
    "fieldtype": "Int",
    "label": "Odometer (km)",
@@ -159,7 +161,7 @@
   {
    "fieldname": "final_check",
    "fieldtype": "Table",
-   "label": "Final Check (lights and all)",
+   "label": "Final Check",
    "mandatory_depends_on": "eval:['Final Check', 'Completed'].includes(doc.status)",
    "options": "Vehicle Checklist Item"
   },

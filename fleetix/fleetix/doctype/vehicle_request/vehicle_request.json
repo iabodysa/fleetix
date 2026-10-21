@@ -16,6 +16,7 @@
   "requested_vehicle_type",
   "required_date",
   "expected_duration",
+  "attachment_section",
   "proof_of_work",
   "selection_section",
   "selected_vehicle",
@@ -46,6 +47,7 @@
    "fetch_from": "driver.customer",
    "fieldname": "customer",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Customer",
    "options": "Customer",
    "read_only": 1
@@ -96,6 +98,11 @@
    "fieldname": "expected_duration",
    "fieldtype": "Data",
    "label": "Expected Duration"
+  },
+  {
+   "fieldname": "attachment_section",
+   "fieldtype": "Section Break",
+   "label": "Attachment"
   },
   {
    "fieldname": "proof_of_work",

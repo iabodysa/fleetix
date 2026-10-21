@@ -15,8 +15,9 @@
   "end_date",
   "temporary_assignment",
   "result",
-  "certificate",
-  "status"
+  "status",
+  "certificate_section",
+  "certificate"
  ],
  "fields": [
   {
@@ -33,6 +34,7 @@
    "fetch_if_empty": 1,
    "fieldname": "project",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Project",
    "options": "Project",
@@ -42,7 +44,7 @@
    "default": "__user",
    "fieldname": "trainer",
    "fieldtype": "Link",
-   "label": "Trainer (Project Supervisor)",
+   "label": "Trainer",
    "options": "User",
    "reqd": 1
   },
@@ -82,11 +84,6 @@
    "options": "\nPassed\nFailed"
   },
   {
-   "fieldname": "certificate",
-   "fieldtype": "Attach",
-   "label": "Certificate"
-  },
-  {
    "default": "Registered",
    "fieldname": "status",
    "fieldtype": "Select",
@@ -97,6 +94,16 @@
    "options": "Registered\nIn Training\nPassed\nEligible for Assignment",
    "read_only": 1,
    "reqd": 1
+  },
+  {
+   "fieldname": "certificate_section",
+   "fieldtype": "Section Break",
+   "label": "Certificate"
+  },
+  {
+   "fieldname": "certificate",
+   "fieldtype": "Attach",
+   "label": "Certificate"
   }
  ],
  "index_web_pages_for_search": 0,

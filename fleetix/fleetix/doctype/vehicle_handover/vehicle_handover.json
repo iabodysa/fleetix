@@ -32,7 +32,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Type",
+   "label": "Handover Type",
    "options": "Handover\nReturn\nTransfer",
    "reqd": 1
   },
@@ -55,6 +55,8 @@
   },
   {
    "depends_on": "eval:doc.status != 'Requested'",
+   "fetch_from": "vehicle.last_odometer",
+   "fetch_if_empty": 1,
    "fieldname": "odometer",
    "fieldtype": "Int",
    "label": "Odometer (km)",
@@ -90,6 +92,8 @@
   {
    "fieldname": "to_project",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "To Project",
    "options": "Project"
   },

@@ -256,6 +256,7 @@
    "write": 0
   }
  ],
+ "quick_entry": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],

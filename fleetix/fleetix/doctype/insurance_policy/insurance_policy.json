@@ -15,8 +15,9 @@
   "end_date",
   "premium",
   "deductible",
-  "policy_document",
   "status",
+  "document_section",
+  "policy_document",
   "section_break_vehicles",
   "vehicles"
  ],
@@ -80,11 +81,6 @@
    "label": "Deductible (SAR)"
   },
   {
-   "fieldname": "policy_document",
-   "fieldtype": "Attach",
-   "label": "Policy Document"
-  },
-  {
    "default": "Active",
    "fieldname": "status",
    "fieldtype": "Select",
@@ -97,9 +93,18 @@
    "reqd": 1
   },
   {
-   "fieldname": "section_break_vehicles",
+   "fieldname": "document_section",
    "fieldtype": "Section Break",
-   "label": "Covered Vehicles"
+   "label": "Document"
+  },
+  {
+   "fieldname": "policy_document",
+   "fieldtype": "Attach",
+   "label": "Policy Document"
+  },
+  {
+   "fieldname": "section_break_vehicles",
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "vehicles",

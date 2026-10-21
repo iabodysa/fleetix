@@ -23,7 +23,6 @@
   "driver_signature",
   "column_break_signatures",
   "inspector_signature",
-  "notes_section",
   "notes"
  ],
  "fields": [
@@ -73,6 +72,8 @@
    "reqd": 1
   },
   {
+   "fetch_from": "vehicle.last_odometer",
+   "fetch_if_empty": 1,
    "fieldname": "odometer",
    "fieldtype": "Int",
    "label": "Odometer (km)",
@@ -87,8 +88,7 @@
   },
   {
    "fieldname": "checklist_section",
-   "fieldtype": "Section Break",
-   "label": "Checklist"
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "checklist",
@@ -135,10 +135,6 @@
    "fieldtype": "Signature",
    "label": "Inspector Signature",
    "reqd": 1
-  },
-  {
-   "fieldname": "notes_section",
-   "fieldtype": "Section Break"
   },
   {
    "fieldname": "notes",

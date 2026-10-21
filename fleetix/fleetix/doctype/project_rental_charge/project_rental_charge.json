@@ -20,7 +20,9 @@
   "hourly_rate",
   "item",
   "amount",
+  "section_break_billing",
   "status",
+  "column_break_billing",
   "sales_invoice",
   "amended_from"
  ],
@@ -127,6 +129,11 @@
    "reqd": 1
   },
   {
+   "fieldname": "section_break_billing",
+   "fieldtype": "Section Break",
+   "label": "Billing"
+  },
+  {
    "default": "Draft",
    "fieldname": "status",
    "fieldtype": "Select",
@@ -137,6 +144,10 @@
    "options": "Draft\nPosted",
    "read_only": 1,
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_billing",
+   "fieldtype": "Column Break"
   },
   {
    "allow_on_submit": 1,
