@@ -10,6 +10,7 @@
   "vehicle",
   "company",
   "usage_type",
+  "item",
   "column_break_rate",
   "rate",
   "rate_period",
@@ -53,6 +54,12 @@
    "reqd": 1
   },
   {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item"
+  },
+  {
    "fieldname": "column_break_rate",
    "fieldtype": "Column Break",
    "label": ""
@@ -94,7 +101,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-21 00:00:00.000000",
+ "modified": "2026-10-21 22:45:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Rental Rate",

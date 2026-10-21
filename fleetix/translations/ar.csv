@@ -9734,3 +9734,6 @@ Server address,عنوان الخادم
 Save,حفظ
 Photo {0} does not belong to this visit,الصورة {0} لا تخص هذه الزيارة
 No connection to the server,لا يوجد اتصال بالخادم
+Create Monthly Invoice,إنشاء الفاتورة الشهرية
+No unbilled rental charges for {0} in {1},لا توجد رسوم إيجار غير مفوترة للعميل {0} في {1}
+Set the item on rental charges {0},حدد الصنف في رسوم الإيجار {0}

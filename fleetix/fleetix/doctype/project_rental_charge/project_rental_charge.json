@@ -18,8 +18,10 @@
   "period_to",
   "hours",
   "hourly_rate",
+  "item",
   "amount",
   "status",
+  "sales_invoice",
   "amended_from"
  ],
  "fields": [
@@ -111,6 +113,12 @@
    "reqd": 1
   },
   {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item"
+  },
+  {
    "fieldname": "amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -131,6 +139,15 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
+   "fieldname": "sales_invoice",
+   "fieldtype": "Link",
+   "label": "Sales Invoice",
+   "no_copy": 1,
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -144,7 +161,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-21 22:30:00.000000",
+ "modified": "2026-10-21 22:45:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Project Rental Charge",

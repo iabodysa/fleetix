@@ -16,7 +16,13 @@ def execute(filters=None):
 
 	vehicles = frappe.get_list(
 		"Vehicle",
-		fields=["name", "current_driver", "registration_expiry", "periodic_inspection_expiry", "insurance_policy"],
+		fields=[
+			"name",
+			"current_driver",
+			"registration_expiry",
+			"periodic_inspection_expiry",
+			"insurance_policy",
+		],
 		limit_page_length=0,
 	)
 	customers = dict(

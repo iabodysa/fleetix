@@ -15,7 +15,7 @@ class RentalRate(Document):
 		self.hourly_rate = flt(flt(self.rate) / days / HOURS_PER_DAY, self.precision("hourly_rate"))
 
 
-def get_hourly_rate(vehicle, usage_type, on_date):
+def get_rental_rate(vehicle, usage_type, on_date):
 	vehicle_type, company = frappe.db.get_value("Vehicle", vehicle, ["vehicle_type", "company"])
 	scopes = [{"vehicle": vehicle}]
 	if vehicle_type:
@@ -25,7 +25,7 @@ def get_hourly_rate(vehicle, usage_type, on_date):
 			"Rental Rate",
 			filters={**scope, "company": company, "usage_type": usage_type, "valid_from": ("<=", on_date)},
 			or_filters=[["valid_to", "is", "not set"], ["valid_to", ">=", on_date]],
-			pluck="hourly_rate",
+			fields=["hourly_rate", "item"],
 			order_by="valid_from desc",
 			limit=1,
 		)

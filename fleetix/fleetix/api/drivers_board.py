@@ -4,8 +4,8 @@
 import frappe
 from frappe.utils import get_datetime, now_datetime, today
 
-from fleetix.fleetix.fleet_state import BOARD_ROLES, STATES, count
 from fleetix.fleetix.doctype.vehicle_assignment.vehicle_assignment import LIVE
+from fleetix.fleetix.fleet_state import BOARD_ROLES, STATES, count
 
 TRAINED = "Trained"
 
