@@ -1,4 +1,5 @@
 import call from "frappe-ui/src/utils/call.js"
+import { __ } from "./translate.js"
 
 const M = "fleetix.operations.api.maintenance."
 
@@ -20,6 +21,7 @@ export const api = {
 export const QUEUE_METHOD = M + "get_due_queue"
 
 export function errorText(error) {
+	if (error instanceof TypeError && /fetch/i.test(error.message)) return __("No connection to the server")
 	const parts = error && error.messages && error.messages.length ? error.messages : [error && error.message]
 	return parts
 		.filter(Boolean)
@@ -48,14 +50,12 @@ function downscale(file, max) {
 	})
 }
 
-export async function uploadPhoto(file, maintenance, caption) {
+export async function uploadPhoto(file, maintenance, slot) {
 	const { blob, preview } = await downscale(file, 1600)
 	const form = new FormData()
-	form.append("file", blob, caption + "-" + Date.now() + ".jpg")
-	form.append("is_private", "1")
-	form.append("doctype", "Maintenance")
-	form.append("docname", maintenance)
-	const response = await fetch("/api/method/upload_file", {
+	form.append("file", blob, slot + "-" + Date.now() + ".jpg")
+	form.append("maintenance", maintenance)
+	const response = await fetch("/api/method/" + M + "upload_photo", {
 		method: "POST",
 		body: form,
 		headers: { Accept: "application/json", "X-Frappe-CSRF-Token": window.csrf_token },
@@ -65,5 +65,5 @@ export async function uploadPhoto(file, maintenance, caption) {
 		const messages = data._server_messages ? JSON.parse(data._server_messages).map((m) => JSON.parse(m).message) : []
 		throw { messages: messages.length ? messages : [data.exc_type || response.statusText] }
 	}
-	return { file_url: data.message.file_url, preview }
+	return { name: data.message.name, file_url: data.message.file_url, preview }
 }

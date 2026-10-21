@@ -1,5 +1,6 @@
 :root {
 	--bg: #e6eaed;
+	--bg-clear: rgba(230, 234, 237, 0);
 	--surface: #ffffff;
 	--surface-2: #f1f4f6;
 	--ink: #0d1317;
@@ -26,6 +27,7 @@
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme="light"]) {
 		--bg: #0d1114;
+		--bg-clear: rgba(13, 17, 20, 0);
 		--surface: #171e23;
 		--surface-2: #1f282e;
 		--ink: #f1f4f6;
@@ -49,6 +51,7 @@
 }
 :root[data-theme="dark"] {
 	--bg: #0d1114;
+	--bg-clear: rgba(13, 17, 20, 0);
 	--surface: #171e23;
 	--surface-2: #1f282e;
 	--ink: #f1f4f6;
@@ -257,9 +260,12 @@ select:focus-visible {
 	flex: 1;
 	min-height: 0;
 	overflow-y: auto;
-	padding: 24px 32px;
+	padding: 24px 32px 96px;
+	background: linear-gradient(var(--bg-clear), var(--bg) 60%) center bottom / 100% 64px no-repeat local,
+		linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3)) center bottom / 100% 32px no-repeat scroll;
 }
 .pane-center {
+	padding-bottom: 24px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -293,11 +299,15 @@ select:focus-visible {
 	padding: 0 32px;
 	background: var(--surface);
 	border-top: 1px solid var(--line);
+	position: relative;
+	z-index: 1;
+	box-shadow: 0 -12px 20px -12px rgba(0, 0, 0, 0.4);
 }
 .btn {
 	min-height: 56px;
 	min-width: 112px;
 	padding: 0 24px;
+	white-space: nowrap;
 	border-radius: 14px;
 	border: 2px solid transparent;
 	font-size: 26px;
@@ -318,7 +328,7 @@ select:focus-visible {
 	color: var(--on-ok);
 }
 .btn-back {
-	width: 220px;
+	min-width: 220px;
 	height: 84px;
 	background: var(--surface-2);
 	border-color: var(--line);
@@ -335,8 +345,10 @@ select:focus-visible {
 	width: 100%;
 }
 .btn-link {
-	border: 0;
-	background: none;
+	border: 2px solid var(--line);
+	border-radius: 14px;
+	background: var(--surface);
+	padding: 0 20px;
 	font-size: 20px;
 	font-weight: 700;
 	color: var(--focus);
@@ -354,7 +366,7 @@ select:focus-visible {
 	white-space: nowrap;
 	padding: 4px 14px;
 	border-radius: 999px;
-	font-size: 18px;
+	font-size: 21px;
 	font-weight: 700;
 }
 .pill-bad {
@@ -385,7 +397,7 @@ select:focus-visible {
 	display: inline-block;
 	padding: 4px 12px;
 	border-radius: 8px;
-	font-size: 18px;
+	font-size: 21px;
 	font-weight: 700;
 	margin: 6px 0 0 8px;
 }
@@ -603,7 +615,7 @@ select:focus-visible {
 	font-weight: 800;
 }
 .tile-due {
-	font-size: 19px;
+	font-size: 22px;
 	color: var(--ink-2);
 	font-weight: 700;
 }

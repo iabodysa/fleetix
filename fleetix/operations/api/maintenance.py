@@ -89,8 +89,29 @@ def get_vehicle_checklist(maintenance, odometer=None):
 			"project": visit.project,
 		},
 		"components": components,
-		"final_check": [{"item": row.item, "condition": row.condition, "notes": row.notes} for row in visit.final_check],
+		"final_check": [
+			{"item": row.item, "condition": row.condition, "notes": row.notes} for row in visit.final_check
+		],
 	}
+
+
+@frappe.whitelist(methods=["POST"])
+def upload_photo(maintenance):
+	frappe.only_for(WORKER_ROLES)
+	visit = frappe.get_doc("Maintenance", maintenance)
+	visit.check_permission("write")
+	upload = frappe.request.files["file"]
+	photo = frappe.get_doc(
+		{
+			"doctype": "File",
+			"file_name": upload.filename,
+			"attached_to_doctype": "Maintenance",
+			"attached_to_name": visit.name,
+			"is_private": 1,
+			"content": upload.stream.read(),
+		}
+	).insert()
+	return {"name": photo.name, "file_url": photo.file_url}
 
 
 @frappe.whitelist(methods=["POST"])
@@ -108,6 +129,17 @@ def send_for_approval(maintenance, odometer, components, photos, driver_signatur
 		frappe.throw(_("Select at least one component"))
 	if any(not row.get("item") or flt(row.get("qty")) <= 0 for row in components):
 		frappe.throw(_("Every selected component needs an item and a quantity"))
+	for row in photos:
+		if not frappe.db.exists(
+			"File",
+			{
+				"name": row.get("file"),
+				"file_url": row.get("file_url"),
+				"attached_to_doctype": "Maintenance",
+				"attached_to_name": visit.name,
+			},
+		):
+			frappe.throw(_("Photo {0} does not belong to this visit").format(row.get("caption")))
 	if visit.status == "Driver Arrived":
 		visit = apply_workflow(visit, "Start Inspection")
 	if visit.status != "Full Inspection":
@@ -129,6 +161,16 @@ def send_for_approval(maintenance, odometer, components, photos, driver_signatur
 			"inspector_signature": inspector_signature,
 		}
 	).insert()
+	for row in photos:
+		frappe.db.set_value(
+			"File",
+			row["file"],
+			{
+				"attached_to_doctype": "Vehicle Inspection",
+				"attached_to_name": inspection.name,
+				"attached_to_field": "photos",
+			},
+		)
 	visit.odometer = odometer
 	visit.inspection = inspection.name
 	visit.set(
@@ -198,7 +240,14 @@ def get_history(vehicle):
 		"replacements": frappe.get_list(
 			"Component Replacement Log",
 			filters={"vehicle": vehicle},
-			fields=["component", "replacement_date", "odometer_at_replacement", "item", "next_due_odometer", "next_due_date"],
+			fields=[
+				"component",
+				"replacement_date",
+				"odometer_at_replacement",
+				"item",
+				"next_due_odometer",
+				"next_due_date",
+			],
 			order_by="replacement_date desc, creation desc",
 			limit=50,
 		),
@@ -235,7 +284,9 @@ def component_state(is_due, due_km, due_date, reading):
 
 
 def worst_overdue(components, reading):
-	overdue_km = [reading - row["due_km"] for row in components if row["state"] == "overdue" and row["due_km"]]
+	overdue_km = [
+		reading - row["due_km"] for row in components if row["state"] == "overdue" and row["due_km"]
+	]
 	overdue_days = [
 		-row["remaining_days"] for row in components if row["state"] == "overdue" and row["due_date"]
 	]

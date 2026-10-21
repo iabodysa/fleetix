@@ -70,7 +70,7 @@ async function send() {
 		const components = store.checklist.components
 			.filter((row) => row.ticked)
 			.map((row) => ({ component: row.component, item: row.item, qty: row.qty }))
-		const photos = Object.keys(store.photos).map((key) => ({ file_url: store.photos[key].file_url, caption: store.photos[key].caption }))
+		const photos = Object.keys(store.photos).map((key) => ({ file: store.photos[key].name, file_url: store.photos[key].file_url, caption: store.photos[key].caption }))
 		const response = await api.send({
 			maintenance: store.visit.maintenance,
 			odometer: Number(store.odometer),
