@@ -1,12 +1,13 @@
 # Copyright (c) 2026, Ittihad and contributors
 # For license information, please see license.txt
 
+import os
 from urllib.parse import quote
 
 import frappe
 from frappe import _
 from frappe.model.workflow import apply_workflow
-from frappe.utils import cint, date_diff, flt, get_host_name_from_request, getdate, today
+from frappe.utils import cint, date_diff, flt, get_host_name_from_request, get_url, getdate, today
 
 from fleetix.fleetix.doctype.maintenance.maintenance import COMPONENT_FIELDS, due_components, next_due
 from fleetix.fleetix.document_qr import qr_data_url
@@ -23,6 +24,15 @@ COMPONENT_GROUPS = {
 FINISH_ACTIONS = {"Approved": "Start Service", "Service": "Finish Service", "Final Check": "Complete"}
 SOON_KM = 1000
 SOON_DAYS = 14
+MAINTENANCE_APK = {"version_code": 2, "version_name": "1.1", "file": "fleetix-maintenance.apk"}
+
+
+@frappe.whitelist(allow_guest=True, methods=["GET"])
+def app_version():
+	url = None
+	if os.path.exists(frappe.get_app_path("fleetix", "public", "apk", MAINTENANCE_APK["file"])):
+		url = get_url("/assets/fleetix/apk/" + MAINTENANCE_APK["file"])
+	return {"version_code": MAINTENANCE_APK["version_code"], "version_name": MAINTENANCE_APK["version_name"], "url": url}
 
 
 @frappe.whitelist()

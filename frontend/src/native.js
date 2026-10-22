@@ -6,6 +6,13 @@ function plugin(name) {
 	return (capacitor.Plugins && capacitor.Plugins[name]) || null
 }
 
+const PRINTER_ERRORS = {
+	OutOfPaper: __("Out of paper"),
+	CoverIsOpen: __("Printer cover is open"),
+	Overheated: __("Printer is overheated"),
+	PrinterNotDetected: __("Printer not found"),
+}
+
 export function hasPrinter() {
 	return !!plugin("SunmiPrinter")
 }
@@ -14,8 +21,19 @@ export function hasCustomerDisplay() {
 	return !!plugin("CustomerDisplay")
 }
 
-export function hasServerConfig() {
-	return !!plugin("ServerConfig")
+export function hasShell() {
+	return !!plugin("Shell")
+}
+
+export function onShellBack(handler) {
+	window.fleetixShell = { back: handler }
+}
+
+export function showStepOnCustomerDisplay(plate, step) {
+	const display = plugin("CustomerDisplay")
+	if (!display) return
+	const call = plate ? display.step({ plate, step }) : display.idle()
+	call.catch(() => null)
 }
 
 export function dueText(row) {
@@ -77,6 +95,8 @@ export function receiptCanvas(result) {
 export async function printReceipt(result) {
 	const printer = plugin("SunmiPrinter")
 	if (!printer) return false
+	const state = await printer.updatePrinterState().catch(() => null)
+	if (state && state.status !== "NormalOperation") throw new Error(PRINTER_ERRORS[state.status] || __("Printer error"))
 	const bitmap = receiptCanvas(result).toDataURL("image/png").split(",")[1]
 	await printer.printerInit()
 	await printer.printBitmapCustom({ bitmap, type: 2 })
@@ -85,7 +105,7 @@ export async function printReceipt(result) {
 	return true
 }
 
-export async function resetServer() {
-	const config = plugin("ServerConfig")
-	if (config) await config.reset()
+export async function openSettings() {
+	const shell = plugin("Shell")
+	if (shell) await shell.settings()
 }

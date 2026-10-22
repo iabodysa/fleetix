@@ -9456,7 +9456,6 @@ Our services,خدماتنا
 "Number of vehicles, type and project duration.",عدد المركبات ونوعها ومدة المشروع.
 Add a note to every row that needs repair,أضف ملاحظة لكل بند يحتاج إصلاح
 Both signatures are required,التوقيعان مطلوبان
-Change server,تغيير الخادم
 Check now,تحقق الآن
 Choose an item for {0},اختر صنفاً لـ {0}
 Confirm reading,تأكيد القراءة
@@ -9522,3 +9521,39 @@ Upload failed,تعذر الرفع
 Uploading,جارٍ الرفع
 Vehicle photos,صور المركبة
 Trainer,المدرب
+App version,إصدار التطبيق
+"Check the network cable or Wi-Fi, then try again.",تأكد من كابل الشبكة أو الواي فاي، ثم أعد المحاولة.
+"Check the network, then try again.",تأكد من الشبكة، ثم أعد المحاولة.
+Checking the server,جارٍ التحقق من الخادم
+Choose a settings PIN of 4 to 8 digits,اختر رمز دخول للإعدادات من 4 إلى 8 أرقام
+Close app,إغلاق التطبيق
+Close the app?,إغلاق التطبيق؟
+Enter an address such as https://example.com,أدخل عنوانًا مثل https://example.com
+Enter the same PIN again,أدخل الرمز نفسه مرة أخرى
+Enter the settings PIN,أدخل رمز الإعدادات
+New version available,يتوفر إصدار جديد
+No connection,لا يوجد اتصال
+OK,موافق
+Out of paper,نفد الورق
+Printer cover is open,غطاء الطابعة مفتوح
+Printer error,خطأ في الطابعة
+Printer is overheated,الطابعة ساخنة جدًا
+Printer is ready,الطابعة جاهزة
+Printer not found,لم يتم العثور على الطابعة
+Printer test page,صفحة اختبار الطابعة
+Secure connection failed,تعذر الاتصال الآمن
+Server address,عنوان الخادم
+Test printer,اختبار الطابعة
+The page could not be loaded,تعذر تحميل الصفحة
+The page is taking too long,الصفحة تأخرت في التحميل
+The server certificate could not be verified.,تعذر التحقق من شهادة الخادم.
+The server could not be reached,تعذر الوصول إلى الخادم
+The server did not answer within 30 seconds.,لم يستجب الخادم خلال 30 ثانية.
+The server returned an error. Try again or go to the home page.,أعاد الخادم خطأ. أعد المحاولة أو ارجع إلى الصفحة الرئيسية.
+The two PINs do not match,الرمزان غير متطابقين
+Try again,إعادة المحاولة
+Use 4 to 8 digits,استخدم من 4 إلى 8 أرقام
+Version {0} is ready to install.,الإصدار {0} جاهز للتثبيت.
+Wrong PIN,الرمز غير صحيح
+Save,حفظ
+Welcome,أهلًا وسهلًا

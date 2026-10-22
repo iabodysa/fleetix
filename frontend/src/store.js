@@ -42,6 +42,20 @@ export async function openVisit(row) {
 	store.step = step
 }
 
+const PREVIOUS_STEP = { odometer: "queue", components: "odometer", photos: "components", await: "queue", review: "queue", done: "queue" }
+
+export function stepBack() {
+	if (store.drawer) {
+		store.drawer = false
+		return true
+	}
+	const previous = PREVIOUS_STEP[store.step]
+	if (!previous) return false
+	if (previous === "queue") backToQueue()
+	else store.step = previous
+	return true
+}
+
 export function backToQueue() {
 	store.visit = null
 	store.step = "queue"

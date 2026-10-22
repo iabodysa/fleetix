@@ -1,20 +1,60 @@
-import { mkdirSync, readFileSync, writeFileSync, copyFileSync, existsSync } from "fs"
+import { mkdirSync, readFileSync, readdirSync, writeFileSync, copyFileSync, existsSync } from "fs"
 import { fileURLToPath } from "url"
 import sharp from "sharp"
+import strings from "./strings.js"
 
 const here = (path) => fileURLToPath(new URL(path, import.meta.url))
 const logo = here("../../../fleetix/public/images/fleetix-logo.svg")
 const csv = readFileSync(here("../../../fleetix/translations/ar.csv"), "utf8")
-const KEYS = ["Fleetix Maintenance", "Server address", "Save"]
+const KEYS = Object.values(strings)
 const BG = "#ffffff"
 
-function translations() {
-	const rows = {}
-	csv.split(/\r?\n/).forEach((line) => {
-		const match = line.match(/^"?((?:[^"]|"")*?)"?,"?((?:[^"]|"")*?)"?(,.*)?$/)
-		if (match && KEYS.indexOf(match[1]) !== -1) rows[match[1]] = match[2]
-	})
+function csvRows(text) {
+	const rows = []
+	let row = []
+	let cell = ""
+	let quoted = false
+	for (let index = 0; index < text.length; index++) {
+		const char = text[index]
+		if (quoted) {
+			if (char === '"' && text[index + 1] === '"') {
+				cell += '"'
+				index++
+			} else if (char === '"') quoted = false
+			else cell += char
+		} else if (char === '"') quoted = true
+		else if (char === ",") {
+			row.push(cell)
+			cell = ""
+		} else if (char === "\n" || char === "\r") {
+			if (char === "\r" && text[index + 1] === "\n") index++
+			row.push(cell)
+			rows.push(row)
+			row = []
+			cell = ""
+		} else cell += char
+	}
+	if (cell || row.length) rows.push(row.concat(cell))
 	return rows
+}
+
+function translations() {
+	const found = {}
+	csvRows(csv).forEach(([source, translation]) => {
+		if (KEYS.indexOf(source) !== -1 && translation && !(source in found)) found[source] = translation
+	})
+	return found
+}
+
+async function splash(out) {
+	const { width, height } = await sharp(out).metadata()
+	const side = Math.round(Math.min(width, height) * 0.36)
+	const art = await sharp(logo, { density: 600 }).resize(side, side, { fit: "contain", background: BG }).png().toBuffer()
+	const canvas = await sharp({ create: { width, height, channels: 3, background: BG } })
+		.composite([{ input: art, gravity: "center" }])
+		.png()
+		.toBuffer()
+	writeFileSync(out, canvas)
 }
 
 async function icon(size, pad, out) {
@@ -27,8 +67,14 @@ async function icon(size, pad, out) {
 }
 
 const tr = translations()
-writeFileSync(here("../www/translations.js"), "window.TRANSLATIONS = " + JSON.stringify(tr) + "\n")
-copyFileSync(logo, here("../www/logo.svg"))
+const lockup = here("../../../fleetix/public/images/etihad-lockup.png")
+const escape = (text) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/'/g, "\\'").replace(/"/g, '\\"')
+const resources = (pick) =>
+	'<?xml version="1.0" encoding="utf-8"?>\n<resources>\n' +
+	Object.entries(strings)
+		.map(([name, text]) => '    <string name="' + name + '">' + escape(pick(text)) + "</string>\n")
+		.join("") +
+	'    <string name="title_activity_main">' + escape(pick(strings.app_name)) + "</string>\n</resources>\n"
 
 const res = here("../android/app/src/main/res/")
 if (existsSync(res)) {
@@ -40,10 +86,14 @@ if (existsSync(res)) {
 		await icon(Math.round(48 * scale), 0.08, dir + "ic_launcher_round.png")
 		await icon(Math.round(108 * scale), 0.22, dir + "ic_launcher_foreground.png")
 	}
+	for (const dir of readdirSync(res)) {
+		if (dir.startsWith("drawable") && existsSync(res + dir + "/splash.png")) await splash(res + dir + "/splash.png")
+	}
 	mkdirSync(res + "values-ar", { recursive: true })
-	const xml = (name) =>
-		'<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <string name="app_name">' + name + '</string>\n    <string name="title_activity_main">' + name + "</string>\n</resources>\n"
-	writeFileSync(res + "values-ar/strings.xml", xml(tr["Fleetix Maintenance"] || "Fleetix Maintenance"))
+	mkdirSync(res + "drawable-nodpi", { recursive: true })
+	writeFileSync(res + "values/shell.xml", resources((text) => text))
+	writeFileSync(res + "values-ar/strings.xml", resources((text) => tr[text] || text))
+	copyFileSync(lockup, res + "drawable-nodpi/etihad_lockup.png")
 }
 
 const pwa = here("../../../frontend/public/icons/")

@@ -28,7 +28,7 @@
 					</button>
 					<button v-else class="btn btn-soft btn-head" type="button" @click="menu = !menu">{{ boot.full_name }}</button>
 					<div v-if="menu" class="menu">
-						<button v-if="serverConfig" type="button" @click="resetServer">{{ __("Change server") }}</button>
+						<button v-if="shell" type="button" @click="openSettings">{{ __("Settings") }}</button>
 						<button type="button" @click="logout">{{ __("Log out") }}</button>
 					</div>
 				</div>
@@ -55,11 +55,11 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from "vue"
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { __ } from "./translate.js"
 import { api } from "./api.js"
-import { hasPrinter, hasServerConfig, resetServer } from "./native.js"
-import { STEPS, backToQueue, queue, store } from "./store.js"
+import { hasPrinter, hasShell, onShellBack, openSettings, showStepOnCustomerDisplay } from "./native.js"
+import { STEPS, backToQueue, queue, stepBack, store } from "./store.js"
 import PlateChip from "./components/PlateChip.vue"
 import QueueList from "./components/QueueList.vue"
 import LoginScreen from "./screens/LoginScreen.vue"
@@ -75,9 +75,25 @@ const boot = window.frappe.boot
 const menu = ref(false)
 const online = ref(navigator.onLine)
 const printerReady = hasPrinter()
-const serverConfig = hasServerConfig()
+const shell = hasShell()
 const stepLabels = [__("Vehicle"), __("Odometer"), __("Items and parts"), __("Photos"), __("Approval"), __("Review")]
 const stepIndex = computed(() => (store.step === "done" ? STEPS.length : STEPS.indexOf(store.step)))
+
+function shellBack() {
+	if (menu.value) {
+		menu.value = false
+		return true
+	}
+	return stepBack()
+}
+watch(
+	() => [store.step, store.visit && store.visit.plate],
+	([step, plate]) => {
+		if (step === "done") return
+		showStepOnCustomerDisplay(step === "queue" ? "" : plate, stepLabels[STEPS.indexOf(step)])
+	},
+)
+onShellBack(shellBack)
 
 function setOnline() {
 	online.value = navigator.onLine
