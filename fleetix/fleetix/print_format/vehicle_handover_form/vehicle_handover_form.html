@@ -19,14 +19,12 @@
 	[(_("Odometer at Handover (km)"), "Odometer at handover", doc.get_formatted("odometer") if doc.odometer else None, 1), (_("Fuel Level"), "Fuel level", _(inspection.fuel_level) if inspection and inspection.fuel_level else None)],
 	[(_("Chassis No."), "Chassis No.", vehicle.chassis_no if vehicle else None, 1), (_("Istimara No"), "Registration No.", vehicle.istimara_no if vehicle else None, 1)],
 ]) }}
-<table class="fx-g"><tr><th class="fx-bar">{{ _("Vehicle Notes") }}<span class="en">Vehicle notes</span></th></tr>
-<tr><td style="padding:5px 8px">{{ fx.vehicle(doc.vehicle, damages | map(attribute="area") | select | list) }}</td></tr>
-{% if inspection and inspection.checklist %}<tr><td style="font-size:10.5px;line-height:2"><b>{{ _("Accessories") }}:</b> {% for row in inspection.checklist %}<span style="white-space:nowrap;margin-left:10px">{{ fx.check(row.condition and row.condition != "Needs Repair") }}{{ _(row.item, context="Vehicle Checklist Item") if row.item else "" }}</span>{% endfor %}</td></tr>{% endif %}
-</table>
+{{ fx.vehicle(doc.vehicle, damages, _("Vehicle Notes"), "Vehicle notes") }}
 <table class="fx-g">
 <tr class="fx-h"><td style="width:6%">#</td><td style="width:20%">{{ _("Damaged Area") }}<i>Area</i></td><td>{{ _("Description") }}<i>Description</i></td><td style="width:20%">{{ _("Estimated Cost") }}<i>Estimated cost</i></td></tr>
-{% for n in range([damages | length, 3] | max) %}{% set d = damages[n] if n < damages | length else None %}<tr class="fx-r"><td class="fx-c">{{ n + 1 }}</td><td>{{ _(d.area) if d and d.area else "" }}</td><td>{{ d.description or "" if d else "" }}</td><td class="fx-n">{{ frappe.format_value(d.estimated_cost, {"fieldtype": "Currency"}) if d and d.estimated_cost else "" }}</td></tr>{% endfor %}
+{% for n in range([damages | length, 4] | max) %}{% set d = damages[n] if n < damages | length else None %}<tr class="fx-r"><td class="fx-c">{{ n + 1 }}</td><td>{{ _(d.area) if d and d.area else "" }}</td><td>{{ d.description or "" if d else "" }}</td><td class="fx-n">{{ frappe.format_value(d.estimated_cost, {"fieldtype": "Currency"}) if d and d.estimated_cost else "" }}</td></tr>{% endfor %}
 </table>
+{% if inspection and inspection.checklist %}<table class="fx-g"><tr><td class="fx-v"><b>{{ _("Accessories") }}:</b> {% for row in inspection.checklist %}<span style="white-space:nowrap;margin-left:3mm">{{ fx.check(row.condition and row.condition != "Needs Repair") }}{{ _(row.item, context="Vehicle Checklist Item") if row.item else "" }}</span>{% endfor %}</td></tr></table>{% endif %}
 {{ fx.statement(_("I, the undersigned, acknowledge that I received the vehicle described above on {0} in its stated condition, and I undertake to keep it safe and not to give it up or hand it over to anyone else, and I am accountable if I breach this acknowledgement.").format('<span class="ltr">' ~ doc.get_formatted("handover_datetime") ~ '</span>')) }}
 {{ fx.signatures([(_("Handing Over Signature"), "Handed over by", from_driver, doc.from_signature), (_("Receiving Signature"), "Received by", receiver.full_name if receiver else None, doc.to_signature), (_("Handover Officer"), "Handover officer", None), (_("Stamp"), "Stamp", None)]) }}
 {{ fx.footer(vehicle.company if vehicle else None) }}

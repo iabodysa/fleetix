@@ -9,7 +9,7 @@
 {% set purpose = "Receipt" if handover and handover.handover_type == "Return" else ("Delivery" if handover else "Inspection") %}
 {% macro state(key, key_tr) -%}
 {% set row = rows.get(key.lower()) or rows.get(key_tr.lower()) %}
-{% if row and row.condition == "Needs Repair" %}{{ fx.check(False) }}<span style="color:#9A3412;font-weight:800">{{ _("Needs Repair") }}</span>{% elif row %}{{ fx.check(True) }}{{ _(row.condition) if row.condition else "" }}{% else %}{{ fx.check(False) }}{% endif %}
+{% if row and row.condition == "Needs Repair" %}{{ fx.check(False) }}<b>{{ _("Needs Repair") }}</b>{% elif row %}{{ fx.check(True) }}{{ _(row.condition) if row.condition else "" }}{% else %}{{ fx.check(False) }}{% endif %}
 {%- endmacro %}
 {% set info = [
 	(_("Driver Name"), "Driver name", fx.val(driver.full_name if driver else None)),
@@ -34,31 +34,25 @@
 ] %}
 {{ fx.style() }}
 <div class="fx">
-{{ fx.header(doc, _("Vehicle Inspection Card"), "Vehicle Inspection Card") }}
+{{ fx.header(doc, _("Vehicle Inspection Card"), "Vehicle Inspection Card", None, [(_("Document No."), doc.name), (_("Date"), frappe.format_value(doc.inspection_datetime, {"fieldtype": "Datetime"}) if doc.inspection_datetime else None)], fx.check(purpose == "Inspection") ~ _("Inspection") ~ " " ~ fx.check(purpose == "Delivery") ~ _("Delivery to Driver") ~ " " ~ fx.check(purpose == "Receipt") ~ _("Receipt from Driver")) }}
 <table class="fx-g">
-<tr><td class="fx-k" style="width:13%">{{ fx.lbl(_("Document No."), "Document No.") }}</td><td class="fx-v" style="width:20%"><span class="ltr">{{ doc.name }}</span></td>
-<td class="fx-k" style="width:13%">{{ fx.lbl(_("Date"), "Date") }}</td><td class="fx-v" style="width:20%"><span class="ltr">{{ frappe.format_value(doc.inspection_datetime, {"fieldtype": "Datetime"}) if doc.inspection_datetime else "" }}</span></td>
-<td colspan="2" style="text-align:center;font-weight:700">{{ fx.check(purpose == "Inspection") }}{{ _("Inspection") }} &nbsp; {{ fx.check(purpose == "Delivery") }}{{ _("Delivery to Driver") }} &nbsp; {{ fx.check(purpose == "Receipt") }}{{ _("Receipt from Driver") }}</td></tr>
 {% for n in range(5) %}<tr>
-<td class="fx-k" style="width:13%">{{ fx.lbl(info[n][0], info[n][1]) }}</td><td class="fx-v" style="width:20%">{{ info[n][2] }}</td>
-<td class="fx-k" style="width:13%">{{ fx.lbl(mid[n][0], mid[n][1]) }}</td><td class="fx-v" style="width:20%;font-size:11px">{{ mid[n][2] }}</td>
-<td class="fx-k" style="width:13%">{{ fx.lbl(last[n][0], last[n][1]) }}</td><td class="fx-v" style="font-size:11px">{{ last[n][2] }}</td>
+<td class="fx-k" style="width:16%">{{ fx.lbl(info[n][0], info[n][1]) }}</td><td class="fx-v" style="width:17%">{{ info[n][2] }}</td>
+<td class="fx-k" style="width:16%">{{ fx.lbl(mid[n][0], mid[n][1]) }}</td><td class="fx-v" style="width:17%;font-size:9pt">{{ mid[n][2] }}</td>
+<td class="fx-k" style="width:16%">{{ fx.lbl(last[n][0], last[n][1]) }}</td><td class="fx-v" style="font-size:9pt">{{ last[n][2] }}</td>
 </tr>{% endfor %}
 </table>
 <table class="fx-g"><tr><th class="fx-bar" colspan="5">{{ _("Accessories") }}<span class="en">Accessories</span></th></tr><tr>
 {% for key, key_tr, en in [("Jack and Tools", _("Jack and Tools", context="Vehicle Checklist Item"), "Jack & tools"), ("Wheel Wrench", _("Wheel Wrench", context="Vehicle Checklist Item"), "Wheel caps"), ("Spare Tire", _("Spare Tire", context="Vehicle Checklist Item"), "Spare tire"), ("Warning Triangle", _("Warning Triangle", context="Vehicle Checklist Item"), "Triangle"), ("Fire Extinguisher", _("Fire Extinguisher", context="Vehicle Checklist Item"), "Fire extinguisher")] %}
-<td class="fx-v" style="text-align:center;font-size:11px">{% set row = rows.get(key.lower()) or rows.get(key_tr.lower()) %}{{ fx.check(row and row.condition != "Needs Repair") }}{{ key_tr }}<span class="en" style="display:block;font-size:8.5px;font-weight:400;color:#555">{{ en }}</span></td>
+<td class="fx-v" style="text-align:center;font-size:9pt">{% set row = rows.get(key.lower()) or rows.get(key_tr.lower()) %}{{ fx.check(row and row.condition != "Needs Repair") }}{{ key_tr }}<span class="en" style="display:block;font-size:7pt">{{ en }}</span></td>
 {% endfor %}</tr></table>
-<table class="fx-g"><tr><th class="fx-bar">{{ _("Damage Diagram") }}<span class="en">Damage diagram</span></th></tr>
-<tr><td style="padding:5px 8px">{{ fx.vehicle(doc.vehicle, damages | map(attribute="area") | select | list) }}</td></tr></table>
-{% if damages %}
+{{ fx.vehicle(doc.vehicle, damages, _("Damage Diagram"), "Damage diagram") }}
 <table class="fx-g">
 <tr class="fx-h"><td style="width:6%">#</td><td style="width:18%">{{ _("Damage") }}<i>Damage</i></td><td style="width:16%">{{ _("Damaged Area") }}<i>Area</i></td><td>{{ _("Description") }}<i>Description</i></td><td style="width:17%">{{ _("Estimated Cost") }}<i>Estimated cost</i></td></tr>
-{% for d in damages %}<tr class="fx-r"><td class="fx-c">{{ loop.index }}</td><td><span class="ltr">{{ d.name }}</span></td><td>{{ _(d.area) if d.area else "" }}</td><td>{{ d.description or "" }}</td><td class="fx-n">{{ frappe.format_value(d.estimated_cost, {"fieldtype": "Currency"}) if d.estimated_cost else "" }}</td></tr>{% endfor %}
+{% for n in range([damages | length, 4] | max) %}{% set d = damages[n] if n < damages | length else None %}<tr class="fx-r"><td class="fx-c">{{ n + 1 }}</td><td>{% if d %}<span class="ltr">{{ d.name }}</span>{% endif %}</td><td>{{ _(d.area) if d and d.area else "" }}</td><td>{{ d.description or "" if d else "" }}</td><td class="fx-n">{{ frappe.format_value(d.estimated_cost, {"fieldtype": "Currency"}) if d and d.estimated_cost else "" }}</td></tr>{% endfor %}
 </table>
-{% endif %}
 <table class="fx-g"><tr><th class="fx-bar">{{ _("Driver Observations / Fleet Coordinator") }}<span class="en">Driver observations / Fleet coordinator</span></th></tr>
-<tr><td style="padding:2px 10px 6px">{{ fx.lines((doc.notes or "").split("\n"), 2) }}</td></tr></table>
+<tr><td style="padding:0 2mm 1.5mm">{{ fx.lines((doc.notes or "").split("\n"), 3) }}</td></tr></table>
 {{ fx.signatures([(_("Employee Signature"), "Employee signature", frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None, doc.inspector_signature), (_("Driver Signature"), "Driver signature", driver.full_name if driver else None, doc.driver_signature), (_("Fleet Supervisor"), "Fleet supervisor", None), (_("Transport Officer"), "Transport officer", None)]) }}
 {{ fx.footer(vehicle.company if vehicle else None) }}
 </div>

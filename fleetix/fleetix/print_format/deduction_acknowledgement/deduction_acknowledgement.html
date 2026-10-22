@@ -13,12 +13,12 @@
 ]) }}
 <table class="fx-g"><tr><th class="fx-bar" colspan="2">{{ _("Reason") }}<span class="en">Reason</span></th></tr>
 {% for pair in [(_("Car insurance amount"), "Car insurance amount", False), (_("Car Damages"), "Car Damages", True), (_("Traffic Violation"), "Traffic Violation", False), (_("Missed amounts or shipments"), "Missed amounts or shipments", False), (_("COD Shortage"), "COD Shortage", False), (_("Other"), "Other", False)] | batch(2) %}
-<tr>{% for label, en, on in pair %}<td class="fx-v" style="width:50%">{{ fx.check(on) }}{{ label }}<span class="en" style="float:left;font-weight:400;font-size:9.5px;color:#444;line-height:20px">{{ en }}</span></td>{% endfor %}</tr>
+<tr>{% for label, en, on in pair %}<td class="fx-v" style="width:50%">{{ fx.check(on) }}{{ label }}<span class="en" style="float:left;font-size:7pt">{{ en }}</span></td>{% endfor %}</tr>
 {% endfor %}</table>
 <table class="fx-g"><tr><th class="fx-bar">{{ _("Details") }}<span class="en">Details</span></th></tr>
-<tr><td style="padding:2px 10px 8px">{{ fx.lines([doc.description or "", (_("License Plate") ~ ": " ~ doc.vehicle) if doc.vehicle else "", (_("Damaged Area") ~ ": " ~ _(doc.area)) if doc.area else ""] | select | list, 7) }}</td></tr></table>
+<tr><td style="padding:0.5mm 2.6mm 2.1mm">{{ fx.lines([doc.description or "", (_("License Plate") ~ ": " ~ doc.vehicle) if doc.vehicle else "", (_("Damaged Area") ~ ": " ~ _(doc.area)) if doc.area else ""] | select | list, 3) }}</td></tr></table>
 {{ fx.statement(_("I, the undersigned, acknowledge and understand that I bear full responsibility for the amount mentioned above and according to the above details, and I agree to the right of the company to claim the full amount or deduct it from my salary, and this is my acknowledgment."), "I, the undersigned, acknowledge and understand that I bear full responsibility for the amount mentioned above and according to the above details, and I agree to the right of the company to claim the full amount or deduct it from my salary, and this is my acknowledgment.") }}
-<table style="width:62%;margin:14px auto 0">
+<table style="width:62%;margin:3mm auto 0">
 <tr><td>{{ fx.signatures([(_("Driver's Signature"), "Driver's Signature", driver.full_name if driver else None), (_("Driver's Thumb"), "Driver's Thumb", None)]) }}</td></tr></table>
 {{ fx.footer(frappe.db.get_value("Vehicle", doc.vehicle, "company") if doc.vehicle else None) }}
 </div>

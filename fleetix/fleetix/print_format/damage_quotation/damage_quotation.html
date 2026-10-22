@@ -21,11 +21,11 @@
 ]) }}
 <table class="fx-g">
 <tr><th class="fx-bar" colspan="2">{{ _("Driver Information") }}<span class="en">Driver</span></th><th class="fx-bar" colspan="2">{{ _("Vehicle Information") }}<span class="en">Vehicle</span></th><th class="fx-bar" colspan="2">{{ _("Accident Information") }}<span class="en">Accident</span></th></tr>
-{% for row in info %}<tr>{% for f in row %}<td class="fx-k" style="width:13%">{{ fx.lbl(f[0], f[1]) }}</td><td class="fx-v" style="width:20.3%;font-size:11px">{{ f[2] }}</td>{% endfor %}</tr>{% endfor %}
+{% for row in info %}<tr>{% for f in row %}<td class="fx-k" style="width:13%">{{ fx.lbl(f[0], f[1]) }}</td><td class="fx-v" style="width:20.3%;font-size:9pt">{{ f[2] }}</td>{% endfor %}</tr>{% endfor %}
 </table>
 {% if doc.description %}<table class="fx-g"><tr><td class="fx-k" style="width:17%">{{ fx.lbl(_("Damage Description"), "Damage description") }}</td><td class="fx-v">{{ doc.description }}</td></tr></table>{% endif %}
 {% set t = namespace(parts=0, labour=0) %}
-{% for kind, heading, en, column, pad in [("Spare Part", _("Spare Parts"), "Spare parts", _("Part Name"), 6), ("Labour", _("Labour"), "Labour", _("Service Name"), 3)] %}
+{% for kind, heading, en, column, pad in [("Spare Part", _("Spare Parts"), "Spare parts", _("Part Name"), 4), ("Labour", _("Labour"), "Labour", _("Service Name"), 2)] %}
 {% set rows = doc.cost_items | selectattr("item_type", "equalto", kind) | list %}
 {% set ns = namespace(net=0, cells=[]) %}
 {% for row in rows %}{% set net = (row.qty or 0) * (row.rate or 0) %}{% set ns.net = ns.net + net %}{% set _x = ns.cells.append([loop.index, row.description, frappe.format_value(row.qty, {"fieldtype": "Float"}), money(row.rate), money(net), money(net * (1 + vat))]) %}{% endfor %}
@@ -33,13 +33,13 @@
 {% if kind == "Labour" %}{% set t.labour = ns.net %}{% else %}{% set t.parts = ns.net %}{% endif %}
 {% endfor %}
 {% set net_total = t.parts + t.labour %}
-<table style="table-layout:fixed"><tr><td style="width:50%;vertical-align:top;padding-left:8px">
+<table style="table-layout:fixed"><tr><td style="width:50%;vertical-align:top;padding-left:2.1mm">
 {{ fx.statement(_("The driver confirms the data above is correct and agrees to it."), "The driver confirms the data above is correct and agrees to it.") }}
 </td><td style="vertical-align:top">
 <table class="fx-g">
 <tr><td class="fx-k" style="width:55%">{{ fx.lbl(_("Total excl. VAT"), "Total excl. VAT") }}</td><td class="fx-n" style="font-weight:700">{{ money(net_total) }}</td></tr>
 <tr><td class="fx-k">{{ fx.lbl(_("VAT 15%"), "VAT 15%") }}</td><td class="fx-n" style="font-weight:700">{{ money(net_total * vat) }}</td></tr>
-<tr class="fx-grand"><td>{{ _("Quotation Total") }} <span class="en" style="font-size:9px;font-weight:400">Quotation total</span></td><td class="fx-n">{{ money(net_total * (1 + vat)) }}</td></tr>
+<tr class="fx-grand"><td>{{ _("Quotation Total") }} <span class="en">Quotation total</span></td><td class="fx-n">{{ money(net_total * (1 + vat)) }}</td></tr>
 {% if doc.insurance_deductible %}<tr><td class="fx-k">{{ fx.lbl(_("Insurance Deductible"), "Insurance deductible") }}</td><td class="fx-n" style="font-weight:700">{{ money(doc.insurance_deductible) }}</td></tr>{% endif %}
 </table></td></tr></table>
 {{ fx.signatures([(_("Driver Signature"), "Driver signature", driver.full_name if driver else None), (_("Driver's Thumb"), "Driver's thumb", None), (_("Workshop Supervisor"), "Workshop supervisor", None), (_("Accountant"), "Accountant", None)]) }}

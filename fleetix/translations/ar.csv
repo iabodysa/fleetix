@@ -9788,3 +9788,9 @@ Van,فان
 Bus,حافلة
 Truck,شاحنة
 Motorbike,دراجة نارية
+Broken,تالف
+Crack,كسر/شرخ
+Dent,انبعاج
+No Damage,لا توجد أضرار
+Row number in the damage table,رقم السطر في جدول الأضرار
+Scratch,خدش

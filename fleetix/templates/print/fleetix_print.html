@@ -1,63 +1,70 @@
 {% macro style() -%}
+{% include "fleetix/templates/print/fonts.html" %}
 <style>
-.fx{font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif;color:#141414;font-size:11.5px;line-height:1.45;direction:rtl;text-align:right}
+.fx{font-family:"Tajawal",sans-serif;color:#000;font-size:9.5pt;font-weight:400;line-height:1.35;direction:rtl;text-align:right;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.fx b,.fx strong,.fx th{font-weight:700}
+.fx i{font-style:normal}
 .fx table{width:100%;border-collapse:collapse;table-layout:fixed}
 .fx .ltr{direction:ltr;unicode-bidi:embed;display:inline-block}
-.fx .en{font-family:"Segoe UI",Helvetica,Arial,sans-serif;direction:ltr;unicode-bidi:embed}
+.fx .en{direction:ltr;unicode-bidi:embed}
+.fx-head{height:22mm;page-break-inside:avoid}
 .fx-head td{vertical-align:middle;padding:0}
-.fx-head .fx-logo{width:27%}
-.fx-head .fx-logo img{max-height:50px;max-width:100%;display:block}
+.fx-head .fx-logo{width:22%}
+.fx-head .fx-logo img{height:14mm;max-width:100%;display:block}
 .fx-head .fx-t{text-align:center}
-.fx-tb{display:inline-block;border:1.4px solid #141414;border-radius:3px;background:#F2F3F4;padding:5px 24px 4px;min-width:66%}
-.fx-tb h1{font-size:19px;font-weight:800;margin:0;line-height:1.25;color:#05213A}
-.fx-tb .en{display:block;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:#333;margin-top:1px}
-.fx-head .fx-qr{width:27%;text-align:left}
-.fx-meta{width:auto!important;margin:5px auto 0;border:1px solid #141414}
-.fx-meta td{border-left:.8px solid #3a3a3a;padding:2px 9px;font-size:10.5px;white-space:nowrap}
-.fx-meta td:last-child{border-left:none}
-.fx-qr img{width:52px;height:52px;display:inline-block}
-.fx-rule{border-top:2.5px solid #05213A;border-bottom:.8px solid #A88752;height:3px;margin:6px 0 7px}
-.fx-g{border:1.3px solid #141414;margin:0 0 6px;page-break-inside:avoid}
-.fx-g>tbody>tr>td,.fx-g>tbody>tr>th{border:.8px solid #3a3a3a;padding:2px 6px;vertical-align:middle;text-align:right}
-.fx-g>tbody>tr>th.fx-bar{background:#E5E6E8;font-weight:800;font-size:12px;text-align:center;padding:3px 6px;border-bottom:1.1px solid #141414}
-.fx-bar .en{font-weight:600;font-size:8.5px;letter-spacing:1.3px;text-transform:uppercase;color:#444;padding-right:8px}
-.fx-k{background:#F5F5F6;width:17%;line-height:1.1}
-.fx-k b{display:block;font-size:10.5px;font-weight:700}
-.fx-k i{display:block;font-style:normal;font-size:8px;color:#555;font-family:"Segoe UI",Helvetica,Arial,sans-serif;margin-top:1px}
-.fx-v{height:24px;font-weight:600;font-size:12px}
+.fx-tb{display:inline-block;border:.75pt solid #000;padding:1mm 5mm .8mm;min-width:75%}
+.fx-tb h1{font-size:15pt;font-weight:700;margin:0;line-height:1.2}
+.fx-tb .en{display:block;font-size:9pt;font-weight:400;margin-top:.3mm}
+.fx-head .fx-qr{width:22%;text-align:left}
+.fx-qr img{width:18mm;height:18mm;display:inline-block}
+.fx-meta{width:auto!important;margin:1mm auto 0}
+.fx-meta td{border:.5pt solid #000;padding:.4mm 2.5mm;font-size:8.5pt;line-height:1.2;white-space:nowrap}
+.fx-rule{border-top:.75pt solid #000;height:0;margin:1.5mm 0 3mm}
+.fx-g{border:.75pt solid #000;margin:0 0 1.5mm;page-break-inside:avoid}
+.fx-g>tbody>tr>td,.fx-g>tbody>tr>th{border:.5pt solid #000;padding:.4mm 2mm;height:6.5mm;line-height:1.2;vertical-align:middle;text-align:right}
+.fx-g>tbody>tr>th.fx-bar{background:#E6E6E6;font-size:10pt;font-weight:700;text-align:center;border-bottom:.75pt solid #000}
+.fx-bar .en{font-size:7pt;font-weight:400;margin-right:3mm}
+.fx-k{line-height:1}
+.fx-k b{display:block;font-size:8.5pt;font-weight:700}
+.fx-k i{display:block;font-size:7pt;font-weight:400}
+.fx-v{font-size:9.5pt}
 .fx-g .fx-c{text-align:center}
 .fx-g .fx-n{text-align:left;direction:ltr;white-space:nowrap}
-.fx-h>td{background:#E5E6E8;font-weight:700;font-size:10.5px;text-align:center!important;line-height:1.15;border-bottom:1.1px solid #141414!important}
-.fx-h i{display:block;font-style:normal;font-weight:400;font-size:8px;color:#444;font-family:"Segoe UI",Helvetica,Arial,sans-serif}
-.fx-r>td{height:23px}
-.fx-tot>td{background:#F0F1F2;font-weight:800;border-top:1.2px solid #141414!important}
-.fx-grand>td{background:#05213A;color:#fff;font-weight:800;font-size:12.5px}
-.fx-cb{display:inline-block;vertical-align:-2px;margin:0 0 0 5px}
-.fx-st{border:1.3px solid #141414;padding:7px 11px;margin:0 0 7px;font-size:11.5px;line-height:1.8;page-break-inside:avoid}
-.fx-st .en{display:block;text-align:left;font-size:9.5px;line-height:1.55;color:#222;margin-top:5px;padding-top:5px;border-top:.6px solid #9a9a9a}
-.fx-ln{border-bottom:1px dotted #555;height:23px;line-height:23px;font-weight:600;padding:0 4px;overflow:hidden;white-space:nowrap}
-.fx-sg{border:1.3px solid #141414;margin:8px 0 0;page-break-inside:avoid}
-.fx-sg td{border:.8px solid #3a3a3a;text-align:center;vertical-align:middle;padding:3px 5px}
-.fx-sg .fx-sk{background:#E5E6E8;font-weight:700;font-size:10.5px;line-height:1.1;height:26px}
-.fx-sg .fx-sk i{display:block;font-style:normal;font-weight:400;font-size:8.5px;color:#444;font-family:"Segoe UI",Helvetica,Arial,sans-serif}
-.fx-sg .fx-ss{height:50px}
-.fx-sg .fx-ss img{max-height:58px;max-width:100%}
-.fx-sg .fx-sn{height:24px;font-weight:600;font-size:11px}
-.fx-veh{width:73%!important;margin:0 auto}
-.fx-veh td{border:.8px solid #3a3a3a;padding:3px 4px;text-align:center}
-.fx-veh svg{display:block;width:100%;height:auto}
-.fx-veh .fx-cap{background:#F5F5F6;font-size:10.5px;font-weight:700;padding:2px 4px}
-.fx-veh .fx-cap i{font-style:normal;font-weight:400;font-size:8.5px;color:#444;font-family:"Segoe UI",Helvetica,Arial,sans-serif;padding:0 6px}
-.fx-key{display:inline-block;width:12px;height:9px;background:#F5A898;border:.8px solid #141414;vertical-align:-1px;margin-left:5px}
-.fx-terms{font-size:10.5px;line-height:1.6}
-.fx-terms h3{font-size:11.5px;font-weight:800;margin:6px 0 1px;color:#05213A;page-break-after:avoid}
-.fx-terms ol{margin:0;padding-right:20px}
+.fx-h>td{background:#E6E6E6;font-size:8.5pt;font-weight:700;text-align:center!important;line-height:1;border-bottom:.75pt solid #000!important}
+.fx-h i{display:block;font-size:7pt;font-weight:400}
+.fx-r>td{font-size:9pt}
+.fx-tot>td{font-weight:700;border-top:.75pt solid #000!important}
+.fx-grand>td{background:#E6E6E6;font-size:10.5pt;font-weight:700;border-top:.75pt solid #000!important;border-bottom:.75pt solid #000!important}
+.fx-grand .en{font-size:7pt;font-weight:400}
+.fx-cb{display:inline-block;vertical-align:-.6mm;margin:0 0 0 1.5mm}
+.fx-st{border:.75pt solid #000;padding:1.5mm 3mm;margin:0 0 1.5mm;font-size:9.5pt;line-height:1.6;page-break-inside:avoid}
+.fx-st .en{display:block;text-align:left;line-height:1.45;margin-top:1mm;padding-top:1mm;border-top:.5pt solid #000}
+.fx-ln{border-bottom:.5pt dotted #000;height:7.5mm;line-height:7.5mm;padding:0 1mm;overflow:hidden;white-space:nowrap}
+.fx-ln .fx-no{display:inline-block;width:5mm;font-weight:700}
+.fx-sg{border:.75pt solid #000;margin:2mm 0 0;page-break-inside:avoid}
+.fx-sg td{border:.5pt solid #000;text-align:center;vertical-align:middle;padding:.4mm 2mm}
+.fx-sg .fx-sk{font-size:8.5pt;font-weight:700;line-height:1;height:6.5mm}
+.fx-sg .fx-sk i{display:block;font-size:7pt;font-weight:400}
+.fx-sg .fx-ss{height:19mm}
+.fx-sg .fx-ss img{max-height:18mm;max-width:100%;filter:grayscale(1);-webkit-filter:grayscale(1)}
+.fx-sg .fx-sn{height:6.5mm;font-size:9pt}
+.fx-veh{margin:0 auto}
+.fx-veh td{border:.5pt solid #000;padding:.5mm;text-align:center;vertical-align:middle;line-height:1}
+.fx-veh svg{display:block;margin:0 auto}
+.fx-veh .fx-cap{font-size:8.5pt;font-weight:700;height:6mm}
+.fx-veh .fx-cap i{font-size:7pt;font-weight:400;padding:0 1.5mm}
+.fx-g>tbody>tr>td.fx-lg{font-size:8pt;line-height:1.3;text-align:center}
+.fx-lg>span{display:inline-block;white-space:nowrap;margin:0 .8mm}
+.fx-lg svg{vertical-align:-1mm}
+.fx-terms{font-size:9pt;line-height:1.4}
+.fx-terms h3{font-size:10pt;font-weight:700;margin:1.5mm 0 .5mm;padding:.6mm 2mm;background:#E6E6E6;border-bottom:.75pt solid #000;text-align:center;page-break-after:avoid}
+.fx-terms ol{margin:0;padding-right:6mm}
 .fx-terms li{margin:0;page-break-inside:avoid}
-.fx-terms p{margin:2px 0}
-.fx-foot{font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif;direction:rtl;color:#222;font-size:9px;border-top:1.6px solid #05213A;padding-top:4px;width:100%}
+.fx-terms p{margin:.3mm 0}
+.fx-foot{font-family:"Tajawal",sans-serif;direction:rtl;color:#000;font-size:7.5pt;border-top:.5pt solid #000;padding-top:1mm;width:100%}
 .fx-foot td{vertical-align:top}
-.fx-foot .fx-co{font-weight:800;color:#05213A;font-size:9.5px}
-.fx-foot .fx-pg{text-align:left;direction:ltr;white-space:nowrap;font-weight:700;width:60px}
+.fx-foot .fx-co{font-weight:700}
+.fx-foot .fx-pg{text-align:left;direction:ltr;white-space:nowrap;width:18mm}
 .fx-pb{page-break-before:always}
 .fx-keep{page-break-inside:avoid}
 </style>
@@ -67,10 +74,14 @@
 <b>{{ ar }}</b>{% if en and en != ar %}<i>{{ en }}</i>{% endif %}
 {%- endmacro %}
 
-{% macro header(doc, title, title_en, logo=None, meta=None) -%}
+{% macro bar(title, title_en, span=1) -%}
+<tr><th class="fx-bar" colspan="{{ span }}">{{ title }}{% if title_en and title_en != title %}<span class="en">{{ title_en }}</span>{% endif %}</th></tr>
+{%- endmacro %}
+
+{% macro header(doc, title, title_en, logo=None, meta=None, aside=None) -%}
 <table class="fx-head"><tr>
 <td class="fx-logo"><img src="{{ logo or '/assets/fleetix/images/etihad-lockup.png' }}"></td>
-<td class="fx-t"><div class="fx-tb"><h1>{{ title }}</h1>{% if title_en and title_en != title %}<span class="en">{{ title_en }}</span>{% endif %}</div>{% if meta %}<table class="fx-meta"><tr>{% for m in meta %}<td><b>{{ m[0] }}</b> <span class="ltr">{{ m[1] or "" }}</span></td>{% endfor %}</tr></table>{% endif %}</td>
+<td class="fx-t"><div class="fx-tb"><h1>{{ title }}</h1>{% if title_en and title_en != title %}<span class="en">{{ title_en }}</span>{% endif %}</div>{% if meta %}<table class="fx-meta"><tr>{% for m in meta %}<td><b>{{ m[0] }}</b> <span class="ltr">{{ m[1] or "" }}</span></td>{% endfor %}{% if aside %}<td>{{ aside }}</td>{% endif %}</tr></table>{% endif %}</td>
 <td class="fx-qr"><img src="{{ document_qr(doc.doctype, doc.name) }}"></td>
 </tr></table>
 <div class="fx-rule"></div>
@@ -80,20 +91,23 @@
 {% if v is not none and v != "" %}{% if ltr %}<span class="ltr">{{ v }}</span>{% else %}{{ v }}{% endif %}{% endif %}
 {%- endmacro %}
 
-{% macro grid(title, title_en, rows) -%}
+{% macro grid(title, title_en, rows, cols=4) -%}
+{% set flat = [] %}
+{% for row in rows %}{% if cols == 2 %}{% for f in row %}{% set _x = flat.append([f]) %}{% endfor %}{% else %}{% set _x = flat.append(row) %}{% endif %}{% endfor %}
 <table class="fx-g">
-{% if title %}<tr><th class="fx-bar" colspan="4">{{ title }}{% if title_en and title_en != title %}<span class="en">{{ title_en }}</span>{% endif %}</th></tr>{% endif %}
-{% for row in rows %}<tr>{% for f in row %}<td class="fx-k">{{ lbl(f[0], f[1]) }}</td><td class="fx-v"{% if row | length == 1 %} colspan="3"{% endif %}>{{ val(f[2], f | length > 3 and f[3]) }}</td>{% endfor %}</tr>{% endfor %}
+{% if cols == 2 %}<colgroup><col style="width:22%"><col></colgroup>{% else %}<colgroup><col style="width:15%"><col style="width:35%"><col style="width:15%"><col style="width:35%"></colgroup>{% endif %}
+{% if title %}{{ bar(title, title_en, cols) }}{% endif %}
+{% for row in flat %}<tr>{% for f in row %}<td class="fx-k">{{ lbl(f[0], f[1]) }}</td><td class="fx-v"{% if cols == 4 and row | length == 1 %} colspan="3"{% endif %}>{{ val(f[2], f | length > 3 and f[3]) }}</td>{% endfor %}</tr>{% endfor %}
 </table>
 {%- endmacro %}
 
 {% macro check(on) -%}
-<svg class="fx-cb" width="12" height="12" viewBox="0 0 12 12"><rect x=".6" y=".6" width="10.8" height="10.8" fill="#fff" stroke="#141414" stroke-width="1.1"/>{% if on %}<path d="M2.6 6.2l2.3 2.4 4.6-5.4" fill="none" stroke="#141414" stroke-width="1.8"/>{% endif %}</svg>
+<svg class="fx-cb" width="3.5mm" height="3.5mm" viewBox="0 0 12 12"><rect x=".3" y=".3" width="11.4" height="11.4" fill="none" stroke="#000" stroke-width=".6"/>{% if on %}<path d="M2.4 6.3l2.5 2.6 4.8-5.8" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>{% endif %}</svg>
 {%- endmacro %}
 
 {% macro table(title, title_en, heads, rows, pad=0, foot=None) -%}
 <table class="fx-g">
-{% if title %}<tr><th class="fx-bar" colspan="{{ heads | length }}">{{ title }}{% if title_en and title_en != title %}<span class="en">{{ title_en }}</span>{% endif %}</th></tr>{% endif %}
+{% if title %}{{ bar(title, title_en, heads | length) }}{% endif %}
 <tr class="fx-h">{% for h in heads %}<td style="width:{{ h[2] }}">{{ h[0] }}{% if h[1] and h[1] != h[0] %}<i>{{ h[1] }}</i>{% endif %}</td>{% endfor %}</tr>
 {% for row in rows %}<tr class="fx-r">{% for cell in row %}<td{% if heads[loop.index0] | length > 3 %} class="{{ heads[loop.index0][3] }}"{% endif %}>{{ cell if cell is not none else "" }}</td>{% endfor %}</tr>{% endfor %}
 {% for n in range(rows | length, pad) %}<tr class="fx-r"><td class="fx-c">{{ n + 1 }}</td>{% for h in heads[1:] %}<td></td>{% endfor %}</tr>{% endfor %}
@@ -106,17 +120,27 @@
 {%- endmacro %}
 
 {% macro lines(values, count) -%}
-{% for n in range(count) %}<div class="fx-ln">{{ values[n] if values and n < values | length else "" }}</div>{% endfor %}
+{% for n in range(count) %}<div class="fx-ln"><span class="fx-no">{{ n + 1 }}.</span>{{ values[n] if values and n < values | length else "" }}</div>{% endfor %}
 {%- endmacro %}
 
-{% macro vehicle(vehicle_name, areas) -%}
-{% set d = vehicle_views(vehicle_name, areas) %}
-{% set caps = {"left": (_("Left Side"), "Left side"), "front": (_("Front"), "Front"), "right": (_("Right Side"), "Right side"), "rear": (_("Rear"), "Rear")} %}
-<table class="fx-veh" style="direction:ltr">
-{% for pair in d.views | batch(2) %}
-<tr>{% for v in pair %}<td style="width:{{ '66%' if loop.first else '34%' }}">{{ v[1] }}</td>{% endfor %}</tr>
-<tr>{% for v in pair %}<td class="fx-cap"><span style="direction:rtl;unicode-bidi:embed">{{ caps[v[0]][0] }}</span><i>{{ caps[v[0]][1] }}</i></td>{% endfor %}</tr>
-{% endfor %}
+{% macro marker(no) -%}
+<svg width="4.5mm" height="4.5mm" viewBox="0 0 18 18"><circle cx="9" cy="9" r="8.5" fill="#FFFFFF" stroke="#000" stroke-width="1"/><text x="9" y="12.5" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="700" font-size="10" fill="#000">{{ no }}</text></svg>
+{%- endmacro %}
+
+{% macro vehicle(vehicle_name, damages, title, title_en) -%}
+{% set marks = [] %}
+{% for d in damages %}{% set _x = marks.append({"no": loop.index, "area": d.area}) %}{% endfor %}
+{% set d = vehicle_views(vehicle_name, marks) %}
+{% set caps = {"left": (_("Left Side"), "Left side"), "front": (_("Front"), "Front"), "right": (_("Right Side"), "Right side")} %}
+{% set widths = {"left": 62, "front": 40, "right": 62} %}
+<table class="fx-g">
+{{ bar(title, title_en) }}
+<tr><td style="padding:1mm 2mm">
+<table class="fx-veh" style="direction:ltr;width:{{ 164 if d.views | length == 3 else 124 }}mm">
+<tr>{% for v in d.views %}<td style="width:{{ widths[v[0]] }}mm">{{ v[1] }}</td>{% endfor %}</tr>
+<tr>{% for v in d.views %}<td class="fx-cap"><span style="direction:rtl;unicode-bidi:embed">{{ caps[v[0]][0] }}</span><i>{{ caps[v[0]][1] }}</i></td>{% endfor %}</tr>
+</table></td></tr>
+<tr><td class="fx-lg"><span>{{ marker(1) }} = {{ _("Row number in the damage table") }} <i class="en">row no. in damage table</i></span>{% for code, ar, en in [("S", _("Scratch"), "Scratch"), ("D", _("Dent"), "Dent"), ("C", _("Crack"), "Crack"), ("B", _("Broken"), "Broken"), ("M", _("Missing"), "Missing")] %}<span><b>{{ code }}</b> {{ ar }} <i class="en">{{ en }}</i></span>{% endfor %}<span>{{ check(False) }}{{ _("No Damage") }} <i class="en">No damage</i></span>{% for no, area in d.unplaced %}<span>{{ marker(no) }} {{ _(area) }}</span>{% endfor %}</td></tr>
 </table>
 {%- endmacro %}
 
@@ -130,9 +154,9 @@
 
 {% macro footer(company=None) -%}
 {% set company_name = company or frappe.db.get_single_value("Global Defaults", "default_company") or frappe.db.get_value("Company", {}, "name") %}
-{% set co = frappe.db.get_value("Company", company_name, ["company_name", "registration_details", "tax_id", "phone_no", "email", "website"], as_dict=True) if company_name else None %}
+{% set co = frappe.db.get_value("Company", company_name, ["company_name", "registration_details", "tax_id", "phone_no"], as_dict=True) if company_name else None %}
 <div id="footer-html" class="visible-pdf"><table class="fx-foot"><tr>
-<td>{% if co %}<span class="fx-co">{{ co.company_name }}</span>{% for label, value in [(_("C.R."), co.registration_details), (_("VAT No."), co.tax_id), (_("Phone"), co.phone_no), (_("Email"), co.email), (_("Website"), co.website)] if value %} &nbsp;|&nbsp; {{ label }} <span class="ltr">{{ value }}</span>{% endfor %}{% endif %}</td>
+<td>{% if co %}<span class="fx-co">{{ co.company_name }}</span>{% for label, value in [(_("C.R."), co.registration_details), (_("VAT No."), co.tax_id), (_("Phone"), co.phone_no)] if value %} | {{ label }} <span class="ltr">{{ value }}</span>{% endfor %}{% endif %}</td>
 <td class="fx-pg"><span class="page"></span> / <span class="topage"></span></td>
 </tr></table></div>
 {%- endmacro %}
