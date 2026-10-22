@@ -9718,3 +9718,15 @@ Workshop Supervisor,توقيع مشرف الورشة
 "The user has no right to make any modifications to the vehicle and its equipment, including tampering with the odometer or removing the identification sticker, repairing any damage, adding any external additions or replacing any part.",أنه ليس له الحق في إجراء أي تعديلات على السيارة وتجهيزاتها بما في ذلك العبث بعداد المسافات أو نزع ملصق التعريف أو إصلاح أي تلفيات أو إضافة أي إضافات خارجية أو استبدال أي قطعة.
 "The person authorized by the company who holds a driving license qualifying them to drive the vehicle, whose contract details were recorded and an authorization issued to them on the Tamm system.",الشخص المفوض من قبل الشركة ويحمل رخصة قيادة تؤهله لقيادة السيارة ودونت بيانات العقد وتم إصدار تفويض له على نظام تم.
 "If the driver authorized under the contract is unable to drive the vehicle, is under the influence of intoxicants or narcotics, or suffers from a health condition that prevents safe driving.",إذا كان السائق المفوض بموجب العقد غير قادر على قيادة السيارة ويكون تحت تأثير مواد مسكرة أو مخدرة أو يعاني من سبب صحي يمنعه عن القيادة السليمة.
+Trunk,الشنطة,Vehicle Checklist Item
+Dashboard,الطبلون,Vehicle Checklist Item
+Interior,الداخلية,Vehicle Checklist Item
+Flooring,الأرضيات,Vehicle Checklist Item
+Seats,الكراسي,Vehicle Checklist Item
+Roof Lining,بطانة السقف,Vehicle Checklist Item
+Exterior Cleanliness,النظافة الخارجية,Vehicle Checklist Item
+Jack and Tools,عدة رفع وسحب,Vehicle Checklist Item
+Wheel Wrench,مفتاح كفر,Vehicle Checklist Item
+Spare Tire,كفر احتياطي,Vehicle Checklist Item
+Warning Triangle,مثلث,Vehicle Checklist Item
+Fire Extinguisher,طفاية حريق,Vehicle Checklist Item

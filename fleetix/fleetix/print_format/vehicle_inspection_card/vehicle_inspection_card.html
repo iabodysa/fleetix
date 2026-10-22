@@ -33,13 +33,13 @@
 <td style="width:62%">
 <div class="fx-sec">{{ _("Vehicle Condition") }}</div>
 <table class="fx-tbl">
-{% for key, key_tr, label in [("Trunk", _("Trunk"), _("Trunk Condition")), ("Dashboard", _("Dashboard"), _("Dashboard Condition")), ("Interior", _("Interior"), _("General Interior Condition")), ("Flooring", _("Flooring"), _("Flooring Condition")), ("Seats", _("Seats"), _("Seats Condition")), ("Roof Lining", _("Roof Lining"), _("Roof Condition")), ("Exterior Cleanliness", _("Exterior Cleanliness"), _("Exterior Cleanliness Condition"))] %}
+{% for key, key_tr, label in [("Trunk", _("Trunk", context="Vehicle Checklist Item"), _("Trunk Condition")), ("Dashboard", _("Dashboard", context="Vehicle Checklist Item"), _("Dashboard Condition")), ("Interior", _("Interior", context="Vehicle Checklist Item"), _("General Interior Condition")), ("Flooring", _("Flooring", context="Vehicle Checklist Item"), _("Flooring Condition")), ("Seats", _("Seats", context="Vehicle Checklist Item"), _("Seats Condition")), ("Roof Lining", _("Roof Lining", context="Vehicle Checklist Item"), _("Roof Condition")), ("Exterior Cleanliness", _("Exterior Cleanliness", context="Vehicle Checklist Item"), _("Exterior Cleanliness Condition"))] %}
 <tr><td style="width:55%">{{ label }}</td><td>{{ state(key, key_tr) }}</td></tr>
 {% endfor %}
 </table>
 <div class="fx-sec">{{ _("Accessories") }}</div>
 <table class="fx-tbl">
-{% for key, key_tr in [("Jack and Tools", _("Jack and Tools")), ("Wheel Wrench", _("Wheel Wrench")), ("Spare Tire", _("Spare Tire")), ("Warning Triangle", _("Warning Triangle")), ("Fire Extinguisher", _("Fire Extinguisher"))] %}
+{% for key, key_tr in [("Jack and Tools", _("Jack and Tools", context="Vehicle Checklist Item")), ("Wheel Wrench", _("Wheel Wrench", context="Vehicle Checklist Item")), ("Spare Tire", _("Spare Tire", context="Vehicle Checklist Item")), ("Warning Triangle", _("Warning Triangle", context="Vehicle Checklist Item")), ("Fire Extinguisher", _("Fire Extinguisher", context="Vehicle Checklist Item"))] %}
 <tr><td style="width:55%">{{ key_tr }}</td><td>{{ state(key, key_tr) }}</td></tr>
 {% endfor %}
 </table>
