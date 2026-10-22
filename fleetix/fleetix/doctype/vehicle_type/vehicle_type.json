@@ -6,7 +6,8 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "vehicle_type_name"
+  "vehicle_type_name",
+  "body_type"
  ],
  "fields": [
   {
@@ -16,11 +17,20 @@
    "label": "Vehicle Type",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "default": "Car",
+   "fieldname": "body_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Body Type",
+   "options": "Car\nPickup Truck\nVan\nBus\nTruck\nMotorbike",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-21 00:00:00.000000",
+ "modified": "2026-10-23 00:30:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Vehicle Type",

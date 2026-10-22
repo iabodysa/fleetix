@@ -1,33 +1,36 @@
 {% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
-{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model"], as_dict=True) if doc.vehicle else None %}
-{% set driver = frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model", "vehicle_type", "company"], as_dict=True) if doc.vehicle else None %}
+{% set driver = frappe.db.get_value("Driver", doc.driver, ["full_name", "national_id", "cell_number"], as_dict=True) if doc.driver else None %}
 {% set claim = frappe.db.get_value("Insurance Claim", doc.insurance_claim, ["status", "claim_amount"], as_dict=True) if doc.insurance_claim else None %}
+{% set damages = frappe.get_all("Damage", filters={"source": "Accident", "source_reference": doc.name}, fields=["name", "area", "description", "estimated_cost"], order_by="creation asc") %}
 {{ fx.style() }}
 <div class="fx">
-{{ fx.header(doc, _("Accident"), None, doc.customer, _("Accident Date and Time"), doc.get_formatted("accident_datetime"), "Accident") }}
-{{ fx.section(_("Accident"), [
-	(_("License Plate"), doc.vehicle),
-	(_("Model"), " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),
-	(_("Driver"), driver),
-	(_("Project"), frappe.db.get_value("Project", doc.project, "project_name") if doc.project else None),
-	(_("City"), doc.city),
-	(_("Location"), doc.location),
-	(_("Report Type"), _(doc.report_type) if doc.report_type else None),
-	(_("Traffic / Najm Report No."), doc.report_number, 1),
-	(_("Photos"), doc.photos | length if doc.photos else None),
+{{ fx.header(doc, _("Accident Report"), "Accident Report") }}
+<table class="fx-g">
+<tr><td class="fx-k">{{ fx.lbl(_("Accident No."), "Accident No.") }}</td><td class="fx-v"><span class="ltr">{{ doc.name }}</span></td><td class="fx-k">{{ fx.lbl(_("Accident Date and Time"), "Date and time") }}</td><td class="fx-v"><span class="ltr">{{ doc.get_formatted("accident_datetime") }}</span></td></tr>
+<tr><td class="fx-k">{{ fx.lbl(_("Report Type"), "Report type") }}</td><td class="fx-v" style="font-size:11px">{% for t in ["No Report", "Traffic Police", "Najm"] %}<span style="white-space:nowrap;margin-left:8px">{{ fx.check(doc.report_type == t) }}{{ _(t) }}</span>{% endfor %}</td><td class="fx-k">{{ fx.lbl(_("Traffic / Najm Report No."), "Report No.") }}</td><td class="fx-v"><span class="ltr">{{ doc.report_number or "" }}</span></td></tr>
+</table>
+{{ fx.grid(_("Accident Details"), "Accident details", [
+	[(_("Driver"), "Driver", driver.full_name if driver else None), (_("Iqama No."), "Iqama No.", driver.national_id if driver else None, 1)],
+	[(_("License Plate"), "Plate No.", doc.vehicle, 1), (_("Model"), "Model", " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None)],
+	[(_("Project"), "Project", frappe.db.get_value("Project", doc.project, "project_name") if doc.project else None), (_("Customer"), "Customer", doc.customer)],
+	[(_("City"), "City", doc.city), (_("Location"), "Location", doc.location)],
 ]) }}
-{% if doc.description %}
-<div class="fx-sec">{{ _("Description") }}</div>
-<div class="fx-text">{{ doc.description }}</div>
+<table class="fx-g"><tr><th class="fx-bar">{{ _("Description") }}<span class="en">Description</span></th></tr>
+<tr><td style="padding:2px 10px 6px">{{ fx.lines((doc.description or "").split("\n"), 2) }}</td></tr></table>
+<table class="fx-g"><tr><th class="fx-bar">{{ _("Damage Diagram") }}<span class="en">Damage diagram</span></th></tr>
+<tr><td style="padding:5px 8px">{{ fx.vehicle(doc.vehicle, damages | map(attribute="area") | select | list) }}</td></tr></table>
+{% if damages %}
+<table class="fx-g">
+<tr class="fx-h"><td style="width:6%">#</td><td style="width:18%">{{ _("Damage") }}<i>Damage</i></td><td style="width:16%">{{ _("Damaged Area") }}<i>Area</i></td><td>{{ _("Description") }}<i>Description</i></td><td style="width:17%">{{ _("Estimated Cost") }}<i>Estimated cost</i></td></tr>
+{% for d in damages %}<tr class="fx-r"><td class="fx-c">{{ loop.index }}</td><td><span class="ltr">{{ d.name }}</span></td><td>{{ _(d.area) if d.area else "" }}</td><td>{{ d.description or "" }}</td><td class="fx-n">{{ frappe.format_value(d.estimated_cost, {"fieldtype": "Currency"}) if d.estimated_cost else "" }}</td></tr>{% endfor %}
+</table>
 {% endif %}
-{{ fx.section(_("Responsibility"), [
-	(_("Driver Responsibility %"), doc.get_formatted("responsibility_percentage") if doc.responsibility_percentage else None),
-	(_("Estimated Cost (SAR)"), doc.get_formatted("estimated_cost") if doc.estimated_cost else None),
-	(_("Charged To Driver"), frappe.db.get_value("Driver", doc.charged_to_driver, "full_name") if doc.charged_to_driver else None),
-	(_("Insurance Claim"), (doc.insurance_claim ~ " · " ~ _(claim.status)) if claim else doc.insurance_claim),
-	(_("Claim Amount"), frappe.format_value(claim.claim_amount, {"fieldtype": "Currency"}) if claim and claim.claim_amount else None),
-	(_("Project Claim"), doc.project_claim),
+{{ fx.grid(_("Responsibility"), "Responsibility", [
+	[(_("Driver Responsibility %"), "Driver fault %", doc.get_formatted("responsibility_percentage") if doc.responsibility_percentage is not none else None, 1), (_("Estimated Cost (SAR)"), "Estimated cost", doc.get_formatted("estimated_cost") if doc.estimated_cost else None, 1)],
+	[(_("Charged To Driver"), "Charged to driver", frappe.db.get_value("Driver", doc.charged_to_driver, "full_name") if doc.charged_to_driver else None), (_("Insurance Claim"), "Insurance claim", (doc.insurance_claim ~ " · " ~ _(claim.status)) if claim else doc.insurance_claim)],
+	[(_("Claim Amount"), "Claim amount", frappe.format_value(claim.claim_amount, {"fieldtype": "Currency"}) if claim and claim.claim_amount else None, 1), (_("Project Claim"), "Project claim", doc.project_claim, 1)],
 ]) }}
-{{ fx.signatures([(_("Driver"), driver, None), (_("Approved By"), None, None)]) }}
-{{ fx.footer() }}
+{{ fx.signatures([(_("Driver"), "Driver", driver.full_name if driver else None), (_("Fleet Supervisor"), "Fleet supervisor", None), (_("Approved By"), "Approved by", None)]) }}
+{{ fx.footer(vehicle.company if vehicle else None) }}
 </div>

@@ -1,141 +1,138 @@
 {% macro style() -%}
 <style>
-.fx{font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif;color:#05213A;font-size:11px;line-height:1.6;direction:rtl;text-align:right;counter-reset:fxsec}
-.fx table{width:100%;border-collapse:collapse}
+.fx{font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif;color:#141414;font-size:11.5px;line-height:1.45;direction:rtl;text-align:right}
+.fx table{width:100%;border-collapse:collapse;table-layout:fixed}
 .fx .ltr{direction:ltr;unicode-bidi:embed;display:inline-block}
+.fx .en{font-family:"Segoe UI",Helvetica,Arial,sans-serif;direction:ltr;unicode-bidi:embed}
 .fx-head td{vertical-align:middle;padding:0}
-.fx-logo{width:150px}
-.fx-logo img{height:56px}
-.fx-title{text-align:center;padding:0 10px}
-.fx-title h1{font-size:19px;font-weight:800;color:#05213A;margin:0;line-height:1.3}
-.fx-title .fx-en{font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:8.5px;letter-spacing:2.2px;text-transform:uppercase;color:#8A6D3F;margin-top:3px;direction:ltr}
-.fx-title .fx-chip{display:inline-block;margin-top:5px;padding:1px 10px;border:1px solid #BB9B6A;border-radius:10px;font-size:10px;color:#8A6D3F}
-.fx-meta{width:190px;font-size:10px}
-.fx-meta table td{padding:1.5px 0;border-bottom:1px solid #EEF0F2}
-.fx-meta .fx-l{color:#767676;white-space:nowrap;padding-left:6px}
-.fx-meta .fx-v{font-weight:700;text-align:left;white-space:nowrap}
-.fx-qr{width:64px;text-align:left}
-.fx-qr img{width:60px;height:60px;display:block;margin-right:auto}
-.fx-band{margin:9px 0 12px;height:5px;border-top:3px solid #05213A;border-bottom:1px solid #BB9B6A}
-.fx-sec{font-size:12px;font-weight:800;color:#05213A;margin:13px 0 5px;padding-bottom:3px;border-bottom:1px solid #DCDDDE;page-break-after:avoid}
-.fx-sec:before{counter-increment:fxsec;content:counter(fxsec,decimal-leading-zero);display:inline-block;min-width:18px;margin-left:7px;padding:0 4px;background:#05213A;color:#fff;font-size:9.5px;font-weight:700;text-align:center;border-radius:2px;direction:ltr}
-.fx-grid td{padding:4px 6px 3px;vertical-align:bottom}
-.fx-grid .fx-l{color:#767676;width:17%;white-space:nowrap;font-size:10.5px}
-.fx-grid .fx-v{font-weight:700;width:33%;border-bottom:1px dotted #B3B4B5}
-.fx-cols>tbody>tr>td{vertical-align:top;padding:0 0 0 10px}
-.fx-cols>tbody>tr>td:last-child{padding-left:0}
-.fx-card{border:1px solid #DCDDDE;border-top:3px solid #05213A}
-.fx-card .fx-ct{background:#F3F4F5;font-weight:800;font-size:10.5px;padding:4px 8px}
-.fx-card td{padding:3px 8px;font-size:10.5px}
-.fx-card .fx-l{color:#767676;white-space:nowrap;width:40%}
-.fx-card .fx-v{font-weight:700}
-.fx-tbl th{background:#05213A;color:#fff;font-weight:700;padding:5px 6px;text-align:right;font-size:10px}
-.fx-tbl td{padding:4px 6px;border-bottom:1px solid #E4E6E8;vertical-align:top}
-.fx-tbl tr:nth-child(even) td{background:#F8F9FA}
-.fx-tbl .fx-num{text-align:left;direction:ltr;white-space:nowrap}
-.fx-tbl .fx-c{text-align:center}
-.fx-tbl .fx-total td{font-weight:800;background:#F3F4F5;border-top:2px solid #05213A;border-bottom:none}
-.fx-sum{width:46%;margin-right:auto;margin-top:10px}
-.fx-sum td{padding:4px 8px;border-bottom:1px solid #E4E6E8}
-.fx-sum .fx-num{text-align:left;direction:ltr;font-weight:700}
-.fx-sum .fx-grand td{background:#05213A;color:#fff;font-weight:800;font-size:12px;border:none}
-.fx-text{border:1px solid #DCDDDE;border-right:3px solid #BB9B6A;padding:7px 10px;white-space:pre-wrap;background:#FBFBFC}
-.fx-stmt{border:1px solid #DCDDDE;background:#F8F9FA;padding:9px 12px;margin-top:12px;font-size:11px;line-height:1.8;page-break-inside:avoid}
-.fx-stmt .fx-en{direction:ltr;text-align:left;font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:9.5px;color:#313C47;margin-top:6px;padding-top:6px;border-top:1px solid #E4E6E8}
-.fx-terms{font-size:10px;line-height:1.6}
-.fx-terms h3{font-size:10.5px;font-weight:800;margin:6px 0 1px;color:#05213A;page-break-after:avoid}
-.fx-terms ol{margin:0;padding-right:18px}
+.fx-head .fx-logo{width:27%}
+.fx-head .fx-logo img{max-height:50px;max-width:100%;display:block}
+.fx-head .fx-t{text-align:center}
+.fx-tb{display:inline-block;border:1.4px solid #141414;border-radius:3px;background:#F2F3F4;padding:5px 24px 4px;min-width:66%}
+.fx-tb h1{font-size:19px;font-weight:800;margin:0;line-height:1.25;color:#05213A}
+.fx-tb .en{display:block;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:#333;margin-top:1px}
+.fx-head .fx-qr{width:27%;text-align:left}
+.fx-meta{width:auto!important;margin:5px auto 0;border:1px solid #141414}
+.fx-meta td{border-left:.8px solid #3a3a3a;padding:2px 9px;font-size:10.5px;white-space:nowrap}
+.fx-meta td:last-child{border-left:none}
+.fx-qr img{width:52px;height:52px;display:inline-block}
+.fx-rule{border-top:2.5px solid #05213A;border-bottom:.8px solid #A88752;height:3px;margin:6px 0 7px}
+.fx-g{border:1.3px solid #141414;margin:0 0 6px;page-break-inside:avoid}
+.fx-g>tbody>tr>td,.fx-g>tbody>tr>th{border:.8px solid #3a3a3a;padding:2px 6px;vertical-align:middle;text-align:right}
+.fx-g>tbody>tr>th.fx-bar{background:#E5E6E8;font-weight:800;font-size:12px;text-align:center;padding:3px 6px;border-bottom:1.1px solid #141414}
+.fx-bar .en{font-weight:600;font-size:8.5px;letter-spacing:1.3px;text-transform:uppercase;color:#444;padding-right:8px}
+.fx-k{background:#F5F5F6;width:17%;line-height:1.1}
+.fx-k b{display:block;font-size:10.5px;font-weight:700}
+.fx-k i{display:block;font-style:normal;font-size:8px;color:#555;font-family:"Segoe UI",Helvetica,Arial,sans-serif;margin-top:1px}
+.fx-v{height:24px;font-weight:600;font-size:12px}
+.fx-g .fx-c{text-align:center}
+.fx-g .fx-n{text-align:left;direction:ltr;white-space:nowrap}
+.fx-h>td{background:#E5E6E8;font-weight:700;font-size:10.5px;text-align:center!important;line-height:1.15;border-bottom:1.1px solid #141414!important}
+.fx-h i{display:block;font-style:normal;font-weight:400;font-size:8px;color:#444;font-family:"Segoe UI",Helvetica,Arial,sans-serif}
+.fx-r>td{height:23px}
+.fx-tot>td{background:#F0F1F2;font-weight:800;border-top:1.2px solid #141414!important}
+.fx-grand>td{background:#05213A;color:#fff;font-weight:800;font-size:12.5px}
+.fx-cb{display:inline-block;vertical-align:-2px;margin:0 0 0 5px}
+.fx-st{border:1.3px solid #141414;padding:7px 11px;margin:0 0 7px;font-size:11.5px;line-height:1.8;page-break-inside:avoid}
+.fx-st .en{display:block;text-align:left;font-size:9.5px;line-height:1.55;color:#222;margin-top:5px;padding-top:5px;border-top:.6px solid #9a9a9a}
+.fx-ln{border-bottom:1px dotted #555;height:23px;line-height:23px;font-weight:600;padding:0 4px;overflow:hidden;white-space:nowrap}
+.fx-sg{border:1.3px solid #141414;margin:8px 0 0;page-break-inside:avoid}
+.fx-sg td{border:.8px solid #3a3a3a;text-align:center;vertical-align:middle;padding:3px 5px}
+.fx-sg .fx-sk{background:#E5E6E8;font-weight:700;font-size:10.5px;line-height:1.1;height:26px}
+.fx-sg .fx-sk i{display:block;font-style:normal;font-weight:400;font-size:8.5px;color:#444;font-family:"Segoe UI",Helvetica,Arial,sans-serif}
+.fx-sg .fx-ss{height:50px}
+.fx-sg .fx-ss img{max-height:58px;max-width:100%}
+.fx-sg .fx-sn{height:24px;font-weight:600;font-size:11px}
+.fx-veh{width:73%!important;margin:0 auto}
+.fx-veh td{border:.8px solid #3a3a3a;padding:3px 4px;text-align:center}
+.fx-veh svg{display:block;width:100%;height:auto}
+.fx-veh .fx-cap{background:#F5F5F6;font-size:10.5px;font-weight:700;padding:2px 4px}
+.fx-veh .fx-cap i{font-style:normal;font-weight:400;font-size:8.5px;color:#444;font-family:"Segoe UI",Helvetica,Arial,sans-serif;padding:0 6px}
+.fx-key{display:inline-block;width:12px;height:9px;background:#F5A898;border:.8px solid #141414;vertical-align:-1px;margin-left:5px}
+.fx-terms{font-size:10.5px;line-height:1.6}
+.fx-terms h3{font-size:11.5px;font-weight:800;margin:6px 0 1px;color:#05213A;page-break-after:avoid}
+.fx-terms ol{margin:0;padding-right:20px}
 .fx-terms li{margin:0;page-break-inside:avoid}
 .fx-terms p{margin:2px 0}
-.fx-cbx{display:inline-block;vertical-align:middle;margin-left:5px}
-.fx-opts td{padding:3px 6px;font-size:10.5px;border-bottom:1px solid #F0F1F2}
-.fx-opts .fx-en{direction:ltr;text-align:left;color:#767676;font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:9.5px}
-.fx-fig{border:1px solid #DCDDDE;padding:6px;text-align:center}
-.fx-fig svg{display:block;margin:0 auto}
-.fx-key{font-size:9.5px;color:#767676;margin-top:3px}
-.fx-key i{display:inline-block;width:9px;height:9px;background:#BB9B6A;margin:0 0 -1px 4px}
-.fx-sign{margin-top:16px;page-break-inside:avoid}
-.fx-sign>tbody>tr>td{padding:0 6px;vertical-align:top}
-.fx-sign .fx-l{color:#05213A;font-weight:700;font-size:10.5px;padding-bottom:4px}
-.fx-sign .fx-l span{display:block;font-weight:400;color:#767676;font-size:9px;direction:ltr;text-align:right;font-family:"Segoe UI",Helvetica,Arial,sans-serif}
-.fx-box{border:1px dashed #959697;height:70px;text-align:center;border-radius:3px}
-.fx-box img{max-height:66px;max-width:100%}
-.fx-box.fx-round{width:92px;height:70px;border-radius:50%;margin:0 auto}
-.fx-n{border-top:1px solid #05213A;margin-top:5px;padding-top:3px;min-height:16px;font-size:10.5px}
-.fx-foot{font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif;direction:rtl;color:#313C47;font-size:8.5px;border-top:1px solid #BB9B6A;padding-top:4px;width:100%}
+.fx-foot{font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif;direction:rtl;color:#222;font-size:9px;border-top:1.6px solid #05213A;padding-top:4px;width:100%}
 .fx-foot td{vertical-align:top}
-.fx-foot .fx-co{font-weight:800;color:#05213A;font-size:9px}
-.fx-foot .fx-pg{text-align:left;direction:ltr;white-space:nowrap;color:#05213A;font-weight:700}
+.fx-foot .fx-co{font-weight:800;color:#05213A;font-size:9.5px}
+.fx-foot .fx-pg{text-align:left;direction:ltr;white-space:nowrap;font-weight:700;width:60px}
 .fx-pb{page-break-before:always}
 .fx-keep{page-break-inside:avoid}
 </style>
 {%- endmacro %}
 
-{% macro header(doc, title, subtitle, customer, date_label, date_value, title_en=None) -%}
+{% macro lbl(ar, en) -%}
+<b>{{ ar }}</b>{% if en and en != ar %}<i>{{ en }}</i>{% endif %}
+{%- endmacro %}
+
+{% macro header(doc, title, title_en, logo=None, meta=None) -%}
 <table class="fx-head"><tr>
-<td class="fx-logo"><img src="/assets/fleetix/images/etihad-lockup.png"></td>
-<td class="fx-title"><h1>{{ title }}</h1>{% if title_en and title_en != title %}<div class="fx-en">{{ title_en }}</div>{% endif %}{% if subtitle %}<div class="fx-chip">{{ subtitle }}</div>{% endif %}</td>
-<td class="fx-meta"><table>
-<tr><td class="fx-l">{{ _("Document No.") }}</td><td class="fx-v"><span class="ltr">{{ doc.name }}</span></td></tr>
-{% if date_value %}<tr><td class="fx-l">{{ date_label }}</td><td class="fx-v"><span class="ltr">{{ date_value }}</span></td></tr>{% endif %}
-{% if customer %}<tr><td class="fx-l">{{ _("Customer") }}</td><td class="fx-v">{{ customer }}</td></tr>{% endif %}
-</table></td>
+<td class="fx-logo"><img src="{{ logo or '/assets/fleetix/images/etihad-lockup.png' }}"></td>
+<td class="fx-t"><div class="fx-tb"><h1>{{ title }}</h1>{% if title_en and title_en != title %}<span class="en">{{ title_en }}</span>{% endif %}</div>{% if meta %}<table class="fx-meta"><tr>{% for m in meta %}<td><b>{{ m[0] }}</b> <span class="ltr">{{ m[1] or "" }}</span></td>{% endfor %}</tr></table>{% endif %}</td>
 <td class="fx-qr"><img src="{{ document_qr(doc.doctype, doc.name) }}"></td>
 </tr></table>
-<div class="fx-band"></div>
+<div class="fx-rule"></div>
 {%- endmacro %}
 
-{% macro footer() -%}
-{% set company_name = frappe.db.get_single_value("Global Defaults", "default_company") or frappe.db.get_value("Company", {}, "name") %}
-{% set co = frappe.db.get_value("Company", company_name, ["company_name", "tax_id", "registration_details", "phone_no", "email", "website"], as_dict=True) if company_name else None %}
-<div id="footer-html" class="visible-pdf"><table class="fx-foot"><tr>
-<td>{% if co %}<span class="fx-co">{{ co.company_name }}</span>{% for label, value in [(_("C.R."), co.registration_details), (_("VAT No."), co.tax_id), (_("Phone"), co.phone_no), (_("Email"), co.email), (_("Website"), co.website)] if value %} &nbsp;·&nbsp; {{ label }} <span class="ltr">{{ value }}</span>{% endfor %}{% endif %}</td>
-<td class="fx-pg"><span class="page"></span> / <span class="topage"></span></td>
-</tr></table></div>
+{% macro val(v, ltr=False) -%}
+{% if v is not none and v != "" %}{% if ltr %}<span class="ltr">{{ v }}</span>{% else %}{{ v }}{% endif %}{% endif %}
 {%- endmacro %}
 
-{% macro section(title, pairs) -%}
-{% set shown = pairs | selectattr("1") | list %}
-{% if shown %}
-<div class="fx-sec">{{ title }}</div>
-<table class="fx-grid">{% for row in shown | batch(2) %}<tr>{% for pair in row %}<td class="fx-l">{{ pair[0] }}</td><td class="fx-v">{% if pair | length > 2 %}<span class="ltr">{{ pair[1] }}</span>{% else %}{{ pair[1] }}{% endif %}</td>{% endfor %}{% if row | length == 1 %}<td></td><td></td>{% endif %}</tr>{% endfor %}</table>
-{% endif %}
-{%- endmacro %}
-
-{% macro form(title, pairs) -%}
-<div class="fx-sec">{{ title }}</div>
-<table class="fx-grid">{% for row in pairs | batch(2) %}<tr>{% for pair in row %}<td class="fx-l">{{ pair[0] }}</td><td class="fx-v">{% if pair[1] %}{% if pair | length > 2 %}<span class="ltr">{{ pair[1] }}</span>{% else %}{{ pair[1] }}{% endif %}{% endif %}</td>{% endfor %}{% if row | length == 1 %}<td></td><td></td>{% endif %}</tr>{% endfor %}</table>
-{%- endmacro %}
-
-{% macro card(title, pairs) -%}
-<table class="fx-card"><tr><td colspan="2" class="fx-ct">{{ title }}</td></tr>{% for pair in pairs %}<tr><td class="fx-l">{{ pair[0] }}</td><td class="fx-v">{% if pair[1] %}{% if pair | length > 2 %}<span class="ltr">{{ pair[1] }}</span>{% else %}{{ pair[1] }}{% endif %}{% endif %}</td></tr>{% endfor %}</table>
+{% macro grid(title, title_en, rows) -%}
+<table class="fx-g">
+{% if title %}<tr><th class="fx-bar" colspan="4">{{ title }}{% if title_en and title_en != title %}<span class="en">{{ title_en }}</span>{% endif %}</th></tr>{% endif %}
+{% for row in rows %}<tr>{% for f in row %}<td class="fx-k">{{ lbl(f[0], f[1]) }}</td><td class="fx-v"{% if row | length == 1 %} colspan="3"{% endif %}>{{ val(f[2], f | length > 3 and f[3]) }}</td>{% endfor %}</tr>{% endfor %}
+</table>
 {%- endmacro %}
 
 {% macro check(on) -%}
-<svg class="fx-cbx" width="11" height="11" viewBox="0 0 11 11"><rect x="0.5" y="0.5" width="10" height="10" rx="1.5" fill="{{ '#05213A' if on else '#fff' }}" stroke="#05213A"/>{% if on %}<path d="M2.6 5.7l2 2 3.8-4.4" fill="none" stroke="#fff" stroke-width="1.5"/>{% endif %}</svg>
+<svg class="fx-cb" width="12" height="12" viewBox="0 0 12 12"><rect x=".6" y=".6" width="10.8" height="10.8" fill="#fff" stroke="#141414" stroke-width="1.1"/>{% if on %}<path d="M2.6 6.2l2.3 2.4 4.6-5.4" fill="none" stroke="#141414" stroke-width="1.8"/>{% endif %}</svg>
 {%- endmacro %}
 
-{% macro car(areas) -%}
-{% set on = "#BB9B6A" %}{% set off = "#F3F4F5" %}
-<svg width="190" height="250" viewBox="0 0 190 250" xmlns="http://www.w3.org/2000/svg" font-family="Tajawal, Segoe UI, Arial" font-size="9" fill="#05213A">
-<rect x="26" y="52" width="10" height="34" rx="3" fill="#313C47"/><rect x="154" y="52" width="10" height="34" rx="3" fill="#313C47"/>
-<rect x="26" y="168" width="10" height="34" rx="3" fill="#313C47"/><rect x="154" y="168" width="10" height="34" rx="3" fill="#313C47"/>
-<rect x="34" y="18" width="122" height="214" rx="38" fill="#fff" stroke="#05213A" stroke-width="1.6"/>
-<path d="M44 74 Q44 26 95 24 Q146 26 146 74 Z" fill="{{ on if 'Front' in areas else off }}" stroke="#05213A" stroke-width="0.8"/>
-<path d="M46 202 Q46 228 95 228 Q144 228 144 202 Z" fill="{{ on if 'Rear' in areas else off }}" stroke="#05213A" stroke-width="0.8"/>
-<rect x="36" y="80" width="8" height="116" fill="{{ on if 'Left Side' in areas else off }}" stroke="#05213A" stroke-width="0.8"/>
-<rect x="146" y="80" width="8" height="116" fill="{{ on if 'Right Side' in areas else off }}" stroke="#05213A" stroke-width="0.8"/>
-<path d="M54 92 Q95 78 136 92 L132 184 Q95 194 58 184 Z" fill="{{ on if 'Roof' in areas else off }}" stroke="#05213A" stroke-width="0.8"/>
-<rect x="70" y="110" width="50" height="58" rx="6" fill="{{ on if 'Interior' in areas else '#fff' }}" stroke="#959697" stroke-width="0.8" stroke-dasharray="2 2"/>
-<text x="95" y="12" text-anchor="middle" font-weight="700">{{ _("Front") }}</text>
-<text x="95" y="246" text-anchor="middle" font-weight="700">{{ _("Rear") }}</text>
-<text x="95" y="142" text-anchor="middle" fill="#767676">{{ _("Interior") }}</text>
-<text x="95" y="102" text-anchor="middle" fill="#767676">{{ _("Roof") }}</text>
-<text x="12" y="127" text-anchor="middle" font-weight="700" transform="rotate(-90 12 127)">{{ _("Left Side") }}</text>
-<text x="178" y="127" text-anchor="middle" font-weight="700" transform="rotate(90 178 127)">{{ _("Right Side") }}</text>
-</svg>
+{% macro table(title, title_en, heads, rows, pad=0, foot=None) -%}
+<table class="fx-g">
+{% if title %}<tr><th class="fx-bar" colspan="{{ heads | length }}">{{ title }}{% if title_en and title_en != title %}<span class="en">{{ title_en }}</span>{% endif %}</th></tr>{% endif %}
+<tr class="fx-h">{% for h in heads %}<td style="width:{{ h[2] }}">{{ h[0] }}{% if h[1] and h[1] != h[0] %}<i>{{ h[1] }}</i>{% endif %}</td>{% endfor %}</tr>
+{% for row in rows %}<tr class="fx-r">{% for cell in row %}<td{% if heads[loop.index0] | length > 3 %} class="{{ heads[loop.index0][3] }}"{% endif %}>{{ cell if cell is not none else "" }}</td>{% endfor %}</tr>{% endfor %}
+{% for n in range(rows | length, pad) %}<tr class="fx-r"><td class="fx-c">{{ n + 1 }}</td>{% for h in heads[1:] %}<td></td>{% endfor %}</tr>{% endfor %}
+{% for f in foot or [] %}<tr class="{{ f[2] if f | length > 2 else 'fx-tot' }}"><td colspan="{{ heads | length - (f[1] | length) }}">{{ f[0] }}</td>{% for v in f[1] %}<td class="fx-n">{{ v }}</td>{% endfor %}</tr>{% endfor %}
+</table>
+{%- endmacro %}
+
+{% macro statement(ar, en=None) -%}
+<div class="fx-st">{{ ar }}{% if en and en != ar %}<span class="en">{{ en }}</span>{% endif %}</div>
+{%- endmacro %}
+
+{% macro lines(values, count) -%}
+{% for n in range(count) %}<div class="fx-ln">{{ values[n] if values and n < values | length else "" }}</div>{% endfor %}
+{%- endmacro %}
+
+{% macro vehicle(vehicle_name, areas) -%}
+{% set d = vehicle_views(vehicle_name, areas) %}
+{% set caps = {"left": (_("Left Side"), "Left side"), "front": (_("Front"), "Front"), "right": (_("Right Side"), "Right side"), "rear": (_("Rear"), "Rear")} %}
+<table class="fx-veh" style="direction:ltr">
+{% for pair in d.views | batch(2) %}
+<tr>{% for v in pair %}<td style="width:{{ '66%' if loop.first else '34%' }}">{{ v[1] }}</td>{% endfor %}</tr>
+<tr>{% for v in pair %}<td class="fx-cap"><span style="direction:rtl;unicode-bidi:embed">{{ caps[v[0]][0] }}</span><i>{{ caps[v[0]][1] }}</i></td>{% endfor %}</tr>
+{% endfor %}
+</table>
 {%- endmacro %}
 
 {% macro signatures(boxes) -%}
-<table class="fx-sign"><tr>{% for box in boxes %}<td style="width:{{ (100 / (boxes | length)) | round(1) }}%"><div class="fx-l">{{ box[0] }}{% if box | length > 4 and box[4] %}<span>{{ box[4] }}</span>{% endif %}</div><div class="fx-box{{ ' fx-round' if box | length > 3 and box[3] else '' }}">{% if box[2] and "signature-placeholder" not in box[2] %}<img src="{{ box[2] }}">{% endif %}</div>{% if not (box | length > 3 and box[3]) %}<div class="fx-n">{{ box[1] or "" }}</div>{% endif %}</td>{% endfor %}</tr></table>
+<table class="fx-sg">
+<tr>{% for b in boxes %}<td class="fx-sk">{{ b[0] }}{% if b[1] and b[1] != b[0] %}<i>{{ b[1] }}</i>{% endif %}</td>{% endfor %}</tr>
+<tr>{% for b in boxes %}<td class="fx-ss">{% if b | length > 3 and b[3] and "signature-placeholder" not in b[3] %}<img src="{{ b[3] }}">{% endif %}</td>{% endfor %}</tr>
+<tr>{% for b in boxes %}<td class="fx-sn">{{ b[2] or "" }}</td>{% endfor %}</tr>
+</table>
+{%- endmacro %}
+
+{% macro footer(company=None) -%}
+{% set company_name = company or frappe.db.get_single_value("Global Defaults", "default_company") or frappe.db.get_value("Company", {}, "name") %}
+{% set co = frappe.db.get_value("Company", company_name, ["company_name", "registration_details", "tax_id", "phone_no", "email", "website"], as_dict=True) if company_name else None %}
+<div id="footer-html" class="visible-pdf"><table class="fx-foot"><tr>
+<td>{% if co %}<span class="fx-co">{{ co.company_name }}</span>{% for label, value in [(_("C.R."), co.registration_details), (_("VAT No."), co.tax_id), (_("Phone"), co.phone_no), (_("Email"), co.email), (_("Website"), co.website)] if value %} &nbsp;|&nbsp; {{ label }} <span class="ltr">{{ value }}</span>{% endfor %}{% endif %}</td>
+<td class="fx-pg"><span class="page"></span> / <span class="topage"></span></td>
+</tr></table></div>
 {%- endmacro %}

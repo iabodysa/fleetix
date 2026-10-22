@@ -9619,7 +9619,6 @@ Flooring Condition,حالة الأرضيات
 Front,الأمام
 General Interior Condition,حالة الداخلية العامة
 General Notes,ملاحظات عامة
-Handing Over Party,الطرف المسلِّم
 Handover Officer,مسؤول التسليم
 ID Number,رقم الهوية
 If operating it causes damage to the vehicle engine or any of its components.,إذا كان التشغيل يؤدي إلى أضرار بمحرك السيارة أو أحد عناصرها.
@@ -9730,3 +9729,62 @@ Wheel Wrench,مفتاح كفر,Vehicle Checklist Item
 Spare Tire,كفر احتياطي,Vehicle Checklist Item
 Warning Triangle,مثلث,Vehicle Checklist Item
 Fire Extinguisher,طفاية حريق,Vehicle Checklist Item
+Accident Details,بيانات الحادث
+Accident Report,تقرير حادث
+Acknowledgement,إقرار
+Advance Payment Guarantee,كفالة السلفة
+Claim No.,رقم المطالبة
+Color,اللون
+"Dear Director of Financial Management,",سعادة مدير الإدارة المالية،
+Debt After Loan,المديونية بعد السلفة
+Debt Before Loan,المديونية قبل السلفة
+Debt End Date,تاريخ انتهاء المديونية
+Department,الإدارة
+Description,الوصف
+Details,التفاصيل
+Driver,السائق
+Driver Name,اسم السائق
+Email,البريد الإلكتروني
+Employee Data,بيانات الموظف
+Employee Name,اسم الموظف
+Estimated Cost,التكلفة التقديرية
+Finance Manager,المدير المالي
+Fuel Type,نوع الوقود
+Guarantor Name,اسم الكفيل
+Hours,الساعات
+I would like to request a loan with the amount of {0} and agree to deduct it from my salary monthly. Your kind approval will be highly appreciated as the mentioned request is urgent.,أرجو من سعادتكم الموافقة على منحي سلفة مالية وقدرها {0} على أن يستقطع من راتبي شهريا، وذلك لحاجتي الماسة لها.
+"I, the undersigned, acknowledge that I received the amount of {0} Saudi Riyals only from the company accountant, and I am thereby indebted to {1} for this amount. I agree that this amount is repaid by direct deduction from my salary as stated, without exceeding the set period, and the management has the right to collect the amount in monthly instalments or in one payment from my due salaries if I leave work, without any objection from me. This is my acknowledgement.",أقر أنا الموقع أدناه بأنني قد استلمت مبلغ {0} ريال سعودي فقط لا غير من محاسب الشركة، وأكون بذلك مدينا لشركة {1} بقيمة هذا المبلغ، كما أنني أقر بموافقتي على أن يتم سداد هذا المبلغ بالخصم مباشرة من راتبي وفقا لما هو موضح وأن لا تتجاوز المدة المحددة، وللإدارة الحق في تحصيل المبلغ على دفعات شهرية أو على دفعة واحدة من رواتبي المستحقة في حالة تركي للعمل دون أي اعتراض مني بذلك. وهذا إقرار مني بذلك.
+"I, the undersigned, guarantee the employee {0} for the amount of {1} Saudi Riyals only, and I undertake to pay you the above amount or the balance due from it upon your first written request, regardless of any objection or reservation by the employee. This guarantee remains valid from its date of issue until the employee pays the loan instalments, and is extended automatically until the loan is paid in full.",أقر أنا الموقع أدناه بأنني أكفل الموظف {0} بمبلغ {1} ريال سعودي فقط، وأنني أتعهد بأن أدفع لكم المبلغ المذكور أعلاه أو الرصيد المستحق منه عند أول طلب خطي منكم، وذلك بصرف النظر عن أي اعتراض أو تحفظ يبديه الموظف. وتبقى هذه الكفالة سارية المفعول من تاريخ صدورها ولحين سداد الموظف لأقساط دفعات السلفة، ويتم تمديدها تلقائيا لحين سداد السلفة بالكامل.
+ID No.,رقم الإقامة
+Last Loan Date,تاريخ آخر سلفة أخذها الموظف
+Loan Application,طلب سلفة
+Location,الموقع
+Management,الإدارة
+Monthly Installment,القسط الشهري
+My reasons,للأسباب التالية
+NOON ID,رقم نون
+Not Approved,غير موافق
+Operation Director,مدير إدارة الحركة والتشغيل
+Period,الفترة
+Phone,الهاتف
+Present Job Title,مسمى الوظيفة الحالية
+Present Salary,الراتب الحالي
+Price,السعر
+Project Manager,مدير المشروع
+Qty,الكمية
+Quotation No.,رقم عرض السعر
+Reference,المرجع
+Report Type,نوع التقرير
+Request Date,تاريخ الطلب
+Salary After Deduction,صافي الراتب بعد الخصم
+Started Work On,تاريخ التعيين
+The employee has no current loans.,لا يوجد عليه سلف حاليا.
+Type,النوع
+Work Order,أمر عمل
+Body Type,هيكل المركبة
+Car,سيارة
+Pickup Truck,بيك أب
+Van,فان
+Bus,حافلة
+Truck,شاحنة
+Motorbike,دراجة نارية

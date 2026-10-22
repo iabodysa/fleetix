@@ -1,0 +1,59 @@
+{% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
+{% set customer = frappe.db.get_value("Customer", doc.customer, ["customer_name", "image"], as_dict=True) if doc.customer else None %}
+{% set company = frappe.db.get_single_value("Global Defaults", "default_company") or frappe.db.get_value("Company", {}, "name") %}
+{% set company_name = frappe.db.get_value("Company", company, "company_name") if company else "" %}
+{% set joined = frappe.db.get_value("Employee", doc.employee, "date_of_joining") if doc.employee else None %}
+{% macro side(n, ar, en, span) -%}
+<td rowspan="{{ span }}" style="width:9%;background:#E5E6E8;text-align:center;vertical-align:middle;padding:6px 2px"><div style="font-size:20px;font-weight:800;color:#05213A;line-height:1">{{ n }}</div><div style="font-weight:800;font-size:11px;margin-top:4px">{{ ar }}</div><div class="en" style="font-size:8.5px;color:#444">{{ en }}</div></td>
+{%- endmacro %}
+{% macro pair(ar, en, value=None, ltr=False) -%}
+<td class="fx-k">{{ fx.lbl(ar, en) }}</td><td class="fx-v">{{ fx.val(value, ltr) }}</td>
+{%- endmacro %}
+{% macro signline(rows, inline=False) -%}
+<table class="fx-g" style="margin:6px 0 0;border-width:.8px">{% if inline %}<tr>{% for r in rows %}<td class="fx-k" style="width:{{ (40 / (rows | length)) | round(1) }}%">{{ fx.lbl(r[0], r[1]) }}</td><td class="fx-v" style="height:34px"></td>{% endfor %}</tr>{% else %}{% for r in rows %}<tr><td class="fx-k" style="width:22%">{{ fx.lbl(r[0], r[1]) }}</td><td class="fx-v" style="height:30px">{{ fx.val(r[2] if r | length > 2 else None) }}</td></tr>{% endfor %}{% endif %}</table>
+{%- endmacro %}
+{{ fx.style() }}
+<div class="fx">
+{{ fx.header(doc, _("Loan Application"), "Loan Application form", customer.image if customer and customer.image else None) }}
+<table class="fx-g">
+<tr>{{ side(1, _("Employee Data"), "Employee data", 5) }}{{ pair(_("Name"), "Name", doc.full_name) }}{{ pair(_("ID No."), "ID No.", doc.national_id, True) }}</tr>
+<tr>{{ pair(_("NOON ID"), "NOON ID") }}{{ pair(_("City"), "City") }}</tr>
+<tr>{{ pair(_("Present Job Title"), "Present job title", _("Driver")) }}{{ pair(_("Request Date"), "Request date") }}</tr>
+<tr><td colspan="4" style="padding:8px 10px;line-height:2">
+<div>{{ _("Dear Director of Financial Management,") }}</div>
+<div>{{ _("I would like to request a loan with the amount of {0} and agree to deduct it from my salary monthly. Your kind approval will be highly appreciated as the mentioned request is urgent.").format('(<span style="display:inline-block;width:150px;border-bottom:1px dotted #555"></span>)') }}</div>
+<div class="en" style="display:block;text-align:left;font-size:9.5px;line-height:1.6;color:#222;border-top:.6px solid #9a9a9a;margin-top:4px;padding-top:4px">Dear Director of Financial Management, I would like to request a loan with the amount of (______________) and agree to deduct it from my salary monthly. Your kind approval will be highly appreciated as the mentioned request is urgent.</div>
+</td></tr>
+<tr><td colspan="4" style="padding:4px 10px 8px"><b>{{ _("My reasons") }}:</b> <span class="en" style="font-size:9px;color:#444">My reasons</span>{{ fx.lines([], 3) }}<div style="margin-top:8px;width:55%">{{ signline([(_("Signature"), "Signature")]) }}</div></td></tr>
+</table>
+<table class="fx-g">
+<tr>{{ side(2, _("Finance"), "Finance", 6) }}{{ pair(_("Present Salary"), "Present salary") }}{{ pair(_("Started Work On"), "Started work on", frappe.format_value(joined, {"fieldtype": "Date"}) if joined else None, True) }}</tr>
+<tr>{{ pair(_("Debt Before Loan"), "Debt before loan") }}{{ pair(_("Debt After Loan"), "Debt after loan") }}</tr>
+<tr>{{ pair(_("Monthly Installment"), "Monthly installment") }}{{ pair(_("Salary After Deduction"), "Salary after deduction") }}</tr>
+<tr>{{ pair(_("Debt End Date"), "Debt end date") }}{{ pair(_("Last Loan Date"), "Last loan taken") }}</tr>
+<tr><td colspan="4" style="height:26px">{{ fx.check(False) }}{{ _("The employee has no current loans.") }} <span class="en" style="font-size:9px;color:#444">No current loans</span></td></tr>
+<tr><td colspan="4" style="padding:2px 6px 6px"><b>{{ _("Finance Manager") }}</b> <span class="en" style="font-size:9px;color:#444">Finance manager</span>{{ signline([(_("Name"), "Name"), (_("Signature"), "Signature"), (_("Date"), "Date")], True) }}</td></tr>
+</table>
+<table class="fx-g">
+<tr>{{ side(3, _("Approval"), "Approval", 1) }}<td style="padding:4px 6px 6px"><b>{{ _("Operation Director") }}</b> <span class="en" style="font-size:9px;color:#444">Operation director</span>{{ signline([(_("Name"), "Name"), (_("Signature"), "Signature"), (_("Date"), "Date")], True) }}</td></tr>
+</table>
+<table class="fx-g">
+<tr>{{ side(4, _("Management"), "Management", 1) }}<td style="padding:4px 6px 6px"><b>{{ _("Project Manager") }}</b> <span class="en" style="font-size:9px;color:#444">Project manager</span> &nbsp; &nbsp; {{ fx.check(False) }}{{ _("Approved") }} &nbsp; &nbsp; {{ fx.check(False) }}{{ _("Not Approved") }}{{ signline([(_("Name"), "Name"), (_("Signature"), "Signature"), (_("Stamp"), "Stamp"), (_("Date"), "Date")], True) }}</td></tr>
+</table>
+<div class="fx-pb"></div>
+{{ fx.header(doc, _("Loan Application"), "Loan Application form", customer.image if customer and customer.image else None) }}
+<table class="fx-g">
+<tr><th class="fx-bar">{{ _("Advance Payment Guarantee") }}<span class="en">Advance payment guarantee</span></th></tr>
+<tr><td style="padding:10px 14px;line-height:2.1;font-size:12px">{{ _("I, the undersigned, guarantee the employee {0} for the amount of {1} Saudi Riyals only, and I undertake to pay you the above amount or the balance due from it upon your first written request, regardless of any objection or reservation by the employee. This guarantee remains valid from its date of issue until the employee pays the loan instalments, and is extended automatically until the loan is paid in full.").format("<b>" ~ (doc.full_name or "") ~ "</b>", '(<span style="display:inline-block;width:120px;border-bottom:1px dotted #555"></span>)') }}
+{{ signline([(_("Guarantor Name"), "Name"), (_("Signature"), "Signature"), (_("Date"), "Date")]) }}</td></tr>
+</table>
+<table class="fx-g" style="margin-top:14px">
+<tr><th class="fx-bar">{{ _("Acknowledgement") }}<span class="en">Acknowledgement</span></th></tr>
+<tr><td style="padding:10px 14px;line-height:2.1;font-size:12px">{{ _("I, the undersigned, acknowledge that I received the amount of {0} Saudi Riyals only from the company accountant, and I am thereby indebted to {1} for this amount. I agree that this amount is repaid by direct deduction from my salary as stated, without exceeding the set period, and the management has the right to collect the amount in monthly instalments or in one payment from my due salaries if I leave work, without any objection from me. This is my acknowledgement.").format('(<span style="display:inline-block;width:120px;border-bottom:1px dotted #555"></span>)', "<b>" ~ company_name ~ "</b>") }}
+<table style="table-layout:fixed;margin-top:4px"><tr>
+<td style="width:50%;vertical-align:top;padding-left:6px">{{ signline([(_("Employee Name"), "Name", doc.full_name), (_("Signature"), "Signature"), (_("Thumbprint"), "Thumbprint")]) }}</td>
+<td style="vertical-align:top">{{ signline([(_("Accountant"), "Accountant"), (_("Signature"), "Signature"), (_("Date"), "Date")]) }}</td>
+</tr></table></td></tr>
+</table>
+{{ fx.footer(company) }}
+</div>

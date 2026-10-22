@@ -1,17 +1,15 @@
 {% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
 {% set driver_id = doc.to_driver if doc.handover_type != "Return" else doc.from_driver %}
-{% set driver = frappe.db.get_value("Driver", driver_id, ["full_name", "national_id"], as_dict=True) if driver_id else None %}
-{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["vehicle_type", "model", "fuel_type"], as_dict=True) if doc.vehicle else None %}
+{% set driver = frappe.db.get_value("Driver", driver_id, ["full_name", "national_id", "cell_number"], as_dict=True) if driver_id else None %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["vehicle_type", "model", "fuel_type", "company"], as_dict=True) if doc.vehicle else None %}
 {{ fx.style() }}
 <div class="fx">
-{{ fx.header(doc, _("Driver Vehicle Undertaking"), _(doc.handover_type) if doc.handover_type else None, None, _("Date"), frappe.format_value(doc.handover_datetime, {"fieldtype": "Date"}) if doc.handover_datetime else None, "Driver Vehicle Undertaking") }}
-{{ fx.form(_("Driver and Vehicle"), [
-	(_("Driver Name"), driver.full_name if driver else None),
-	(_("ID Number"), driver.national_id if driver else None, 1),
-	(_("License Plate"), doc.vehicle, 1),
-	(_("Vehicle Type"), (vehicle.vehicle_type or vehicle.model) if vehicle else None),
-	(_("Delivery City"), doc.city),
-	(_("Fuel Type"), _(vehicle.fuel_type) if vehicle and vehicle.fuel_type else None),
+{{ fx.header(doc, _("Driver Vehicle Undertaking"), "Driver Vehicle Undertaking") }}
+{{ fx.grid(_("Driver and Vehicle"), "Driver and vehicle", [
+	[(_("Date"), "Date", frappe.format_value(doc.handover_datetime, {"fieldtype": "Date"}) if doc.handover_datetime else None, 1), (_("Reference"), "Reference", doc.name, 1)],
+	[(_("Driver Name"), "Driver name", driver.full_name if driver else None), (_("ID Number"), "ID number", driver.national_id if driver else None, 1)],
+	[(_("License Plate"), "Plate No.", doc.vehicle, 1), (_("Vehicle Type"), "Vehicle type", (vehicle.vehicle_type or vehicle.model) if vehicle else None)],
+	[(_("Delivery City"), "Delivery city", doc.city), (_("Fuel Type"), "Fuel type", _(vehicle.fuel_type) if vehicle and vehicle.fuel_type else None)],
 ]) }}
 <div class="fx-terms">
 <h3>{{ _("User Obligations (Driver of the Vehicle)") }}</h3>
@@ -78,20 +76,21 @@
 <li>{{ _("Travelling with the vehicle outside the city without written authorization is prohibited.") }}</li>
 </ol>
 </div>
-<div class="fx-sec">{{ _("Deductible Cases") }}</div>
-<table class="fx-tbl"><tr><th style="width:6%">{{ _("Case") }}</th><th style="width:12%">{{ _("Driver Fault") }}</th><th style="width:13%">{{ _("Other Party") }}</th><th style="width:12%">{{ _("Vehicle Condition") }}</th><th style="width:9%">{{ _("Deductible") }}</th><th>{{ _("Repair if cost is under 3,500 SAR") }}</th><th>{{ _("Repair if cost is over 3,500 SAR") }}</th></tr>
-<tr><td class="fx-c">1</td><td><span class="ltr">100%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Repairable") }}</td><td class="fx-num">2,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
-<tr><td class="fx-c">2</td><td><span class="ltr">100%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-num">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
-<tr><td class="fx-c">3</td><td><span class="ltr">0%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Repairable") }}</td><td class="fx-num">2,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
-<tr><td class="fx-c">4</td><td><span class="ltr">0%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-num">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
-<tr><td class="fx-c">5</td><td>{{ _("Less than 50%") }}</td><td>{{ _("No other party") }}</td><td>{{ _("Repairable") }}</td><td class="fx-num">2,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
-<tr><td class="fx-c">6</td><td>{{ _("More than 50%") }}</td><td>{{ _("No other party") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-num">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
-<tr><td class="fx-c">7</td><td>{{ _("Less than 50%") }}</td><td>{{ _("Other party exists") }}</td><td>{{ _("Repairable") }}</td><td class="fx-num">1,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
-<tr><td class="fx-c">8</td><td>{{ _("More than 50%") }}</td><td>{{ _("Other party exists") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-num">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
-<tr><td class="fx-c">9</td><td><span class="ltr">0%</span></td><td>{{ _("Other party exists") }}</td><td>{{ _("Repairable") }}</td><td class="fx-num">0</td><td>{{ _("Work Order") }}</td><td>{{ _("Management approval required before the work order") }}</td></tr>
-<tr><td class="fx-c">10</td><td><span class="ltr">0%</span></td><td>{{ _("Other party exists") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-num">0</td><td>{{ _("Management approval required before the work order") }}</td><td>{{ _("Management approval required before the work order") }}</td></tr>
+<table class="fx-g">
+<tr><th class="fx-bar" colspan="7">{{ _("Deductible Cases") }}<span class="en">Deductible cases</span></th></tr>
+<tr class="fx-h"><td style="width:6%">{{ _("Case") }}<i>Case</i></td><td style="width:11%">{{ _("Driver Fault") }}<i>Driver fault</i></td><td style="width:13%">{{ _("Other Party") }}<i>Other party</i></td><td style="width:12%">{{ _("Vehicle Condition") }}<i>Vehicle condition</i></td><td style="width:10%">{{ _("Deductible") }}<i>Deductible</i></td><td>{{ _("Repair if cost is under 3,500 SAR") }}<i>Repair under 3,500 SAR</i></td><td>{{ _("Repair if cost is over 3,500 SAR") }}<i>Repair over 3,500 SAR</i></td></tr>
+<tr class="fx-r" style="font-size:10px"><td class="fx-c">1</td><td class="fx-c"><span class="ltr">100%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Repairable") }}</td><td class="fx-n">2,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr class="fx-r" style="font-size:10px"><td class="fx-c">2</td><td class="fx-c"><span class="ltr">100%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-n">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr class="fx-r" style="font-size:10px"><td class="fx-c">3</td><td class="fx-c"><span class="ltr">0%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Repairable") }}</td><td class="fx-n">2,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr class="fx-r" style="font-size:10px"><td class="fx-c">4</td><td class="fx-c"><span class="ltr">0%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-n">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr class="fx-r" style="font-size:10px"><td class="fx-c">5</td><td class="fx-c">{{ _("Less than 50%") }}</td><td>{{ _("No other party") }}</td><td>{{ _("Repairable") }}</td><td class="fx-n">2,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr class="fx-r" style="font-size:10px"><td class="fx-c">6</td><td class="fx-c">{{ _("More than 50%") }}</td><td>{{ _("No other party") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-n">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr class="fx-r" style="font-size:10px"><td class="fx-c">7</td><td class="fx-c">{{ _("Less than 50%") }}</td><td>{{ _("Other party exists") }}</td><td>{{ _("Repairable") }}</td><td class="fx-n">1,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr class="fx-r" style="font-size:10px"><td class="fx-c">8</td><td class="fx-c">{{ _("More than 50%") }}</td><td>{{ _("Other party exists") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-n">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr class="fx-r" style="font-size:10px"><td class="fx-c">9</td><td class="fx-c"><span class="ltr">0%</span></td><td>{{ _("Other party exists") }}</td><td>{{ _("Repairable") }}</td><td class="fx-n">0</td><td>{{ _("Work Order") }}</td><td>{{ _("Management approval required before the work order") }}</td></tr>
+<tr class="fx-r" style="font-size:10px"><td class="fx-c">10</td><td class="fx-c"><span class="ltr">0%</span></td><td>{{ _("Other party exists") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-n">0</td><td>{{ _("Management approval required before the work order") }}</td><td>{{ _("Management approval required before the work order") }}</td></tr>
 </table>
-<div class="fx-stmt">{{ _("Comprehensive insurance workshop: the comprehensive insurance workshop for Etihad vehicles.") }}<br>{{ _("Total loss: airbag, chassis or an impact to the vehicle interior.") }}</div>
-{{ fx.signatures([(_("Name"), driver.full_name if driver else None, None), (_("Signature"), None, doc.to_signature if doc.handover_type != "Return" else doc.from_signature), (_("Thumbprint"), None, None, True)]) }}
-{{ fx.footer() }}
+<div class="fx-st" style="font-size:10.5px">{{ _("Comprehensive insurance workshop: the comprehensive insurance workshop for Etihad vehicles.") }}<br>{{ _("Total loss: airbag, chassis or an impact to the vehicle interior.") }}</div>
+{{ fx.signatures([(_("Driver Name"), "Driver name", driver.full_name if driver else None), (_("Signature"), "Signature", None, doc.to_signature if doc.handover_type != "Return" else doc.from_signature), (_("Thumbprint"), "Thumbprint", None)]) }}
+{{ fx.footer(vehicle.company if vehicle else None) }}
 </div>

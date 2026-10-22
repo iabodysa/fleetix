@@ -1,31 +1,30 @@
 {% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
 {% set vat_rate = 15 %}
 {% set net_amount = frappe.utils.flt(doc.amount * 100 / (100 + vat_rate), 2) %}
-{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model"], as_dict=True) if doc.vehicle else None %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model", "company"], as_dict=True) if doc.vehicle else None %}
 {{ fx.style() }}
 <div class="fx">
-{{ fx.header(doc, _("Project Rental Charge"), _(doc.usage_type) if doc.usage_type else None, doc.customer, _("Date"), frappe.format_value(doc.creation, {"fieldtype": "Date"}), "Project Rental Charge") }}
-{{ fx.section(_("Project Rental Charge"), [
-	(_("Project"), frappe.db.get_value("Project", doc.project, "project_name") if doc.project else None),
-	(_("Assignment"), doc.assignment),
-	(_("License Plate"), doc.vehicle),
-	(_("Model"), " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),
-	(_("Driver"), frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None),
-	(_("Usage Type"), _(doc.usage_type) if doc.usage_type else None),
+{{ fx.header(doc, _("Project Rental Charge"), "Project Rental Charge") }}
+{{ fx.grid(None, None, [
+	[(_("Document No."), "Document No.", doc.name, 1), (_("Date"), "Date", frappe.format_value(doc.creation, {"fieldtype": "Date"}), 1)],
+	[(_("Project"), "Project", frappe.db.get_value("Project", doc.project, "project_name") if doc.project else None), (_("Customer"), "Customer", doc.customer)],
 ]) }}
-{{ fx.section(_("Period"), [
-	(_("Period From"), doc.get_formatted("period_from")),
-	(_("Period To"), doc.get_formatted("period_to")),
-	(_("Hours"), doc.get_formatted("hours") if doc.hours else None),
-	(_("Days"), frappe.format_value(doc.hours / 24, {"fieldtype": "Float", "precision": 2}) if doc.hours else None),
+{{ fx.grid(_("Vehicle Details"), "Vehicle details", [
+	[(_("License Plate"), "Plate No.", doc.vehicle, 1), (_("Model"), "Model", " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None)],
+	[(_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None), (_("Assignment"), "Assignment", doc.assignment, 1)],
+	[(_("Usage Type"), "Usage type", _(doc.usage_type) if doc.usage_type else None)],
 ]) }}
-<div class="fx-sec">{{ _("Amount (SAR)") }}</div>
-<table class="fx-tbl">
-<tr><td style="width:60%">{{ _("Hourly Rate (SAR)") }}</td><td>{{ frappe.format_value(doc.hourly_rate, {"fieldtype": "Currency", "precision": 6}) }}</td></tr>
-<tr><td>{{ _("Amount before VAT") }}</td><td>{{ frappe.format_value(net_amount, {"fieldtype": "Currency"}) }}</td></tr>
-<tr><td>{{ _("VAT") }} {{ vat_rate }}%</td><td>{{ frappe.format_value(doc.amount - net_amount, {"fieldtype": "Currency"}) }}</td></tr>
-<tr class="fx-total"><td>{{ _("Total including VAT") }}</td><td>{{ doc.get_formatted("amount") }}</td></tr>
+{{ fx.grid(_("Period"), "Period", [
+	[(_("Period From"), "From", doc.get_formatted("period_from"), 1), (_("Period To"), "To", doc.get_formatted("period_to"), 1)],
+	[(_("Hours"), "Hours", doc.get_formatted("hours") if doc.hours else None, 1), (_("Days"), "Days", frappe.format_value(doc.hours / 24, {"fieldtype": "Float", "precision": 2}) if doc.hours else None, 1)],
+]) }}
+<table class="fx-g">
+<tr><th class="fx-bar" colspan="2">{{ _("Amount (SAR)") }}<span class="en">Amount</span></th></tr>
+<tr><td class="fx-k" style="width:60%">{{ fx.lbl(_("Hourly Rate (SAR)"), "Hourly rate") }}</td><td class="fx-n fx-v">{{ frappe.format_value(doc.hourly_rate, {"fieldtype": "Currency", "precision": 6}) }}</td></tr>
+<tr><td class="fx-k">{{ fx.lbl(_("Amount before VAT"), "Amount before VAT") }}</td><td class="fx-n fx-v">{{ frappe.format_value(net_amount, {"fieldtype": "Currency"}) }}</td></tr>
+<tr><td class="fx-k">{{ fx.lbl(_("VAT") ~ " " ~ vat_rate ~ "%", "VAT " ~ vat_rate ~ "%") }}</td><td class="fx-n fx-v">{{ frappe.format_value(doc.amount - net_amount, {"fieldtype": "Currency"}) }}</td></tr>
+<tr class="fx-grand"><td>{{ _("Total including VAT") }} <span class="en" style="font-size:9px;font-weight:400">Total including VAT</span></td><td class="fx-n">{{ doc.get_formatted("amount") }}</td></tr>
 </table>
-{{ fx.signatures([(_("Prepared By"), None, None), (_("Approved By"), None, None)]) }}
-{{ fx.footer() }}
+{{ fx.signatures([(_("Prepared By"), "Prepared by", None), (_("Approved By"), "Approved by", None)]) }}
+{{ fx.footer(vehicle.company if vehicle else None) }}
 </div>

@@ -152,7 +152,7 @@ override_doctype_dashboards = {
 	"Sales Invoice": "fleetix.fleetix.dashboard_overrides.get_dashboard_for_sales_invoice",
 }
 
-jinja = {"methods": ["fleetix.fleetix.document_qr.document_qr"]}
+jinja = {"methods": ["fleetix.fleetix.document_qr.document_qr", "fleetix.fleetix.vehicle_diagram.vehicle_views"]}
 
 website_route_rules = [
 	{"from_route": "/maintenance/photos/<visit>", "to_route": "maintenance_photos"},
