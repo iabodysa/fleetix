@@ -1,40 +1,53 @@
 {% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
-{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model", "model_year", "istimara_no"], as_dict=True) if doc.vehicle else None %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["make", "model", "model_year", "istimara_no", "vehicle_type", "color", "chassis_no"], as_dict=True) if doc.vehicle else None %}
 {% set inspection = frappe.get_doc("Vehicle Inspection", doc.inspection) if doc.inspection else None %}
 {% set from_driver = frappe.db.get_value("Driver", doc.from_driver, "full_name") if doc.from_driver else None %}
 {% set to_driver = frappe.db.get_value("Driver", doc.to_driver, "full_name") if doc.to_driver else None %}
+{% set receiver = frappe.db.get_value("Driver", doc.to_driver, ["national_id", "cell_number"], as_dict=True) if doc.to_driver else None %}
+{% set damages = [] %}
+{% for row in doc.damages_found %}{% if row.damage %}{% set _x = damages.append(frappe.db.get_value("Damage", row.damage, ["name", "area", "description", "estimated_cost"], as_dict=True)) %}{% endif %}{% endfor %}
 {{ fx.style() }}
 <div class="fx">
-{{ fx.header(doc, _("Vehicle Handover"), _(doc.handover_type) if doc.handover_type else None, frappe.db.get_value("Driver", doc.to_driver or doc.from_driver, "customer") if (doc.to_driver or doc.from_driver) else None, _("Handover Date and Time"), doc.get_formatted("handover_datetime")) }}
-{{ fx.section(_("Vehicle"), [
-	(_("License Plate"), doc.vehicle),
-	(_("Make", context="Vehicle"), vehicle.make if vehicle else None),
-	(_("Model"), vehicle.model if vehicle else None),
-	(_("Model Year"), vehicle.model_year if vehicle else None),
-	(_("Istimara No"), vehicle.istimara_no if vehicle else None),
-	(_("Odometer (km)"), doc.get_formatted("odometer") if doc.odometer else None),
-	(_("Fuel Level"), _(inspection.fuel_level) if inspection and inspection.fuel_level else None),
-	(_("Photos"), inspection.photos | length if inspection and inspection.photos else None),
+{{ fx.header(doc, _("Vehicle Handover and Receipt Record"), _(doc.handover_type) if doc.handover_type else None, frappe.db.get_value("Driver", doc.to_driver or doc.from_driver, "customer") if (doc.to_driver or doc.from_driver) else None, _("Handover Date and Time"), doc.get_formatted("handover_datetime"), "Vehicle Handover and Receipt Record") }}
+{{ fx.section(_("Receiver Details"), [
+	(_("Employee Name"), to_driver),
+	(_("Department"), frappe.db.get_value("Project", doc.to_project, "project_name") if doc.to_project else None),
+	(_("ID Number"), receiver.national_id if receiver else None, 1),
+	(_("Mobile No."), receiver.cell_number if receiver else None, 1),
+	(_("City"), doc.city),
 ]) }}
-{{ fx.section(_("Vehicle Handover"), [
+{{ fx.section(_("Handing Over Party"), [
 	(_("From Driver"), from_driver),
-	(_("To Driver"), to_driver),
 	(_("From Project"), frappe.db.get_value("Project", doc.from_project, "project_name") if doc.from_project else None),
-	(_("To Project"), frappe.db.get_value("Project", doc.to_project, "project_name") if doc.to_project else None),
-	(_("Inspection"), doc.inspection),
+	(_("Inspection"), doc.inspection, 1),
 ]) }}
+{{ fx.section(_("Vehicle Details"), [
+	(_("Vehicle Type"), vehicle.vehicle_type if vehicle else None),
+	(_("Model"), " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),
+	(_("License Plate"), doc.vehicle, 1),
+	(_("Color"), vehicle.color if vehicle else None),
+	(_("Model Year"), vehicle.model_year if vehicle and vehicle.model_year else None, 1),
+	(_("Odometer at Handover (km)"), doc.get_formatted("odometer") if doc.odometer else None, 1),
+	(_("Chassis No."), vehicle.chassis_no if vehicle else None, 1),
+	(_("Istimara No"), vehicle.istimara_no if vehicle else None, 1),
+	(_("Fuel Level"), _(inspection.fuel_level) if inspection and inspection.fuel_level else None),
+]) }}
+<div class="fx-sec">{{ _("Vehicle Notes") }}</div>
+<table class="fx-cols"><tr>
+<td style="width:34%"><div class="fx-fig">{{ fx.car(damages | map(attribute="area") | select | list) }}<div class="fx-key"><i></i>{{ _("Damaged Area") }}</div></div></td>
+<td>
+<table class="fx-tbl"><tr><th style="width:7%">#</th><th style="width:22%">{{ _("Damaged Area") }}</th><th>{{ _("Description") }}</th><th style="width:22%">{{ _("Estimated Cost") }}</th></tr>
+{% for d in damages %}<tr><td>{{ loop.index }}</td><td>{{ _(d.area) if d.area else "" }}</td><td>{{ d.description or "" }}</td><td class="fx-num">{{ frappe.format_value(d.estimated_cost, {"fieldtype": "Currency"}) if d.estimated_cost else "" }}</td></tr>
+{% else %}{% for n in range(4) %}<tr><td>{{ n + 1 }}</td><td></td><td></td><td></td></tr>{% endfor %}{% endfor %}
+</table>
+</td></tr></table>
 {% if inspection and inspection.checklist %}
 <div class="fx-sec">{{ _("Checklist") }}</div>
 <table class="fx-tbl"><tr><th style="width:6%">#</th><th style="width:40%">{{ _("Item") }}</th><th style="width:18%">{{ _("Condition", context="Vehicle Checklist Item") }}</th><th>{{ _("Notes") }}</th></tr>
 {% for row in inspection.checklist %}<tr><td>{{ row.idx }}</td><td>{{ row.item or "" }}</td><td>{{ _(row.condition) if row.condition else "" }}</td><td>{{ row.notes or "" }}</td></tr>{% endfor %}
 </table>
 {% endif %}
-{% if doc.damages_found %}
-<div class="fx-sec">{{ _("Damages Found") }}</div>
-<table class="fx-tbl"><tr><th style="width:6%">#</th><th style="width:22%">{{ _("Damage") }}</th><th>{{ _("Description") }}</th><th style="width:22%">{{ _("Estimated Cost (SAR)") }}</th></tr>
-{% for row in doc.damages_found %}{% set damage = frappe.db.get_value("Damage", row.damage, ["description", "estimated_cost"], as_dict=True) if row.damage else None %}
-<tr><td>{{ row.idx }}</td><td>{{ row.damage or "" }}</td><td>{{ damage.description if damage and damage.description else "" }}</td><td>{{ frappe.format_value(damage.estimated_cost, {"fieldtype": "Currency"}) if damage and damage.estimated_cost else "" }}</td></tr>{% endfor %}
-</table>
-{% endif %}
-{{ fx.signatures([(_("Handing Over Signature"), from_driver, doc.from_signature), (_("Receiving Signature"), to_driver, doc.to_signature)]) }}
+<div class="fx-stmt">{{ _("I, the undersigned, acknowledge that I received the vehicle described above on {0} in its stated condition, and I undertake to keep it safe and not to give it up or hand it over to anyone else, and I am accountable if I breach this acknowledgement.").format('<span class="ltr">' ~ doc.get_formatted("handover_datetime") ~ '</span>') }}</div>
+{{ fx.signatures([(_("Handing Over Signature"), from_driver, doc.from_signature), (_("Receiving Signature"), to_driver, doc.to_signature), (_("Handover Officer"), None, None), (_("Stamp"), None, None, True)]) }}
+{{ fx.footer() }}
 </div>
