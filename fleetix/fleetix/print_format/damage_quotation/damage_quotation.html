@@ -1,0 +1,53 @@
+{% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
+{% set vat = 0.15 %}
+{% set driver_id = doc.charged_to_driver or doc.driver %}
+{% set driver = frappe.db.get_value("Driver", driver_id, ["full_name", "national_id", "cell_number"], as_dict=True) if driver_id else None %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["vehicle_type", "model", "model_year"], as_dict=True) if doc.vehicle else None %}
+{% set accident = frappe.db.get_value("Accident", doc.source_reference, ["name", "report_type", "report_number", "responsibility_percentage", "accident_datetime"], as_dict=True) if doc.source == "Accident" and doc.source_reference else None %}
+{% macro money(v) %}{{ frappe.format_value(v, {"fieldtype": "Currency"}) }}{% endmacro %}
+{{ fx.style() }}
+<div class="fx">
+{{ fx.header(doc, _("Damage Quotation"), _(doc.area) if doc.area else None, doc.customer, _("Date"), frappe.format_value(doc.creation, {"fieldtype": "Date"}), "Damage Quotation") }}
+<table class="fx-cols"><tr>
+<td style="width:33%">{{ fx.card(_("Driver Information"), [
+	(_("Driver Name"), driver.full_name if driver else None),
+	(_("Iqama No."), driver.national_id if driver else None, 1),
+	(_("Mobile No."), driver.cell_number if driver else None, 1),
+]) }}</td>
+<td style="width:33%">{{ fx.card(_("Vehicle Information"), [
+	(_("License Plate"), doc.vehicle, 1),
+	(_("Vehicle Type"), (vehicle.vehicle_type or vehicle.model) if vehicle else None),
+	(_("Model Year"), vehicle.model_year if vehicle and vehicle.model_year else None, 1),
+]) }}</td>
+<td>{{ fx.card(_("Accident Information"), [
+	(_("Report Type"), _(accident.report_type) if accident and accident.report_type else None),
+	(_("Driver Fault %"), (accident.responsibility_percentage | int ~ "%") if accident and accident.responsibility_percentage is not none else None, 1),
+	(_("Accident No."), accident.report_number if accident else None, 1),
+	(_("Accident Date"), frappe.format_value(accident.accident_datetime, {"fieldtype": "Date"}) if accident and accident.accident_datetime else None, 1),
+]) }}</td>
+</tr></table>
+{% if doc.description %}<div class="fx-sec">{{ _("Damage Description") }}</div><div class="fx-text">{{ doc.description }}</div>{% endif %}
+{% set t = namespace(parts=0, labour=0) %}
+{% for kind, heading, column in [("Spare Part", _("Spare Parts"), _("Part Name")), ("Labour", _("Labour"), _("Service Name"))] %}
+{% set rows = doc.cost_items | selectattr("item_type", "equalto", kind) | list %}
+{% set ns = namespace(net=0) %}
+<div class="fx-sec">{{ heading }}</div>
+<table class="fx-tbl"><tr><th style="width:5%">#</th><th>{{ column }}</th><th class="fx-c" style="width:8%">{{ _("Qty") }}</th><th style="width:15%">{{ _("Price") }}</th><th style="width:16%">{{ _("Total excl. VAT") }}</th><th style="width:16%">{{ _("Total incl. VAT") }}</th></tr>
+{% for row in rows %}{% set net = (row.qty or 0) * (row.rate or 0) %}{% set ns.net = ns.net + net %}
+<tr><td>{{ loop.index }}</td><td>{{ row.description }}</td><td class="fx-c">{{ frappe.format_value(row.qty, {"fieldtype": "Float"}) }}</td><td class="fx-num">{{ money(row.rate) }}</td><td class="fx-num">{{ money(net) }}</td><td class="fx-num">{{ money(net * (1 + vat)) }}</td></tr>
+{% else %}<tr><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}
+<tr class="fx-total"><td colspan="4">{{ _("Total") }} {{ heading }}</td><td class="fx-num">{{ money(ns.net) }}</td><td class="fx-num">{{ money(ns.net * (1 + vat)) }}</td></tr>
+</table>
+{% if kind == "Labour" %}{% set t.labour = ns.net %}{% else %}{% set t.parts = ns.net %}{% endif %}
+{% endfor %}
+{% set net_total = t.parts + t.labour %}
+<table class="fx-sum">
+<tr><td>{{ _("Total excl. VAT") }}</td><td class="fx-num">{{ money(net_total) }}</td></tr>
+<tr><td>{{ _("VAT 15%") }}</td><td class="fx-num">{{ money(net_total * vat) }}</td></tr>
+<tr class="fx-grand"><td>{{ _("Quotation Total") }}</td><td class="fx-num">{{ money(net_total * (1 + vat)) }}</td></tr>
+{% if doc.insurance_deductible %}<tr><td>{{ _("Insurance Deductible") }}</td><td class="fx-num">{{ money(doc.insurance_deductible) }}</td></tr>{% endif %}
+</table>
+<div class="fx-stmt">{{ _("The driver confirms the data above is correct and agrees to it.") }}</div>
+{{ fx.signatures([(_("Driver Signature"), driver.full_name if driver else None, None), (_("Workshop Supervisor"), None, None), (_("Accountant"), None, None)]) }}
+{{ fx.footer() }}
+</div>
