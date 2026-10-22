@@ -22,7 +22,11 @@
     <string name="error_unreachable_text">Check the network, then try again.</string>
     <string name="update_title">New version available</string>
     <string name="update_text">Version {0} is ready to install.</string>
-    <string name="update_get">Download</string>
+    <string name="update_get">Update</string>
+    <string name="update_check">Check for updates</string>
+    <string name="update_none">The app is up to date.</string>
+    <string name="update_downloading">Downloading the update</string>
+    <string name="update_failed">The update could not be downloaded. Try again.</string>
     <string name="pin_enter">Enter the settings PIN</string>
     <string name="pin_new">Choose a settings PIN of 4 to 8 digits</string>
     <string name="pin_repeat">Enter the same PIN again</string>

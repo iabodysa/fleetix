@@ -22,7 +22,11 @@
     <string name="error_unreachable_text">تأكد من الشبكة، ثم أعد المحاولة.</string>
     <string name="update_title">يتوفر إصدار جديد</string>
     <string name="update_text">الإصدار {0} جاهز للتثبيت.</string>
-    <string name="update_get">تنزيل</string>
+    <string name="update_get">تحديث</string>
+    <string name="update_check">التحقق من التحديثات</string>
+    <string name="update_none">التطبيق محدّث إلى آخر إصدار.</string>
+    <string name="update_downloading">جارٍ تنزيل التحديث</string>
+    <string name="update_failed">تعذّر تنزيل التحديث. حاول مرة أخرى.</string>
     <string name="pin_enter">أدخل رمز الإعدادات</string>
     <string name="pin_new">اختر رمز دخول للإعدادات من 4 إلى 8 أرقام</string>
     <string name="pin_repeat">أدخل الرمز نفسه مرة أخرى</string>

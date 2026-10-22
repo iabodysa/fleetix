@@ -68,6 +68,12 @@ public class SettingsActivity extends AppCompatActivity {
         return ShellPlugin.prefs(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ApkUpdater.resume(this);
+    }
+
     private void askPin(int prompt, Consumer<String> next) {
         column.removeAllViews();
         column.addView(text(getString(prompt), 24, true));
@@ -140,6 +146,10 @@ public class SettingsActivity extends AppCompatActivity {
             url.setText(saved != null ? saved : "https://");
             column.addView(url);
             column.addView(button(R.string.save, () -> saveUrl(url.getText().toString())));
+        }
+        String base = ShellPlugin.baseUrl(this);
+        if (base != null) {
+            column.addView(button(R.string.update_check, () -> ApkUpdater.check(this, base, true)));
         }
         column.addView(button(R.string.printer_test, this::testPrinter));
         column.addView(button(R.string.close, this::finish));

@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Handler;
@@ -375,31 +374,13 @@ public class MainActivity extends BridgeActivity {
             return;
         }
         updateChecked = true;
-        String base = baseUrl;
-        new Thread(() -> {
-            JSONObject latest = AppVersion.fetch(base);
-            if (latest == null || latest.isNull("url")) {
-                return;
-            }
-            String url = latest.optString("url");
-            if (latest.optInt("version_code") <= BuildConfig.VERSION_CODE || !url.startsWith(base + "/")) {
-                return;
-            }
-            String name = latest.optString("version_name");
-            handler.post(() -> offerUpdate(name, url));
-        }).start();
+        ApkUpdater.check(this, baseUrl, false);
     }
 
-    private void offerUpdate(String name, String url) {
-        if (isFinishing()) {
-            return;
-        }
-        new AlertDialog.Builder(this)
-            .setTitle(R.string.update_title)
-            .setMessage(getString(R.string.update_text).replace("{0}", name))
-            .setPositiveButton(R.string.update_get, (dialog, which) -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))))
-            .setNegativeButton(R.string.cancel, null)
-            .show();
+    @Override
+    public void onResume() {
+        super.onResume();
+        ApkUpdater.resume(this);
     }
 
     private int dp(int value) {
