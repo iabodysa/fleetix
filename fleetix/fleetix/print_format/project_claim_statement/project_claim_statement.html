@@ -4,7 +4,7 @@
 {% set raised_by = frappe.db.get_value("User", doc.raised_by, "full_name") if doc.raised_by else None %}
 {{ fx.style() }}
 <div class="fx">
-{{ fx.header(doc, _("Project Claim"), _(doc.claim_type) if doc.claim_type else None, doc.customer, _("Claim Date"), doc.get_formatted("claim_date")) }}
+{{ fx.header(doc, _("Project Claim"), _(doc.claim_type) if doc.claim_type else None, doc.customer, _("Claim Date"), doc.get_formatted("claim_date"), "Project Claim") }}
 {{ fx.section(_("Project Claim"), [
 	(_("Project"), frappe.db.get_value("Project", doc.project, "project_name") if doc.project else None),
 	(_("Claim Type"), _(doc.claim_type) if doc.claim_type else None),
@@ -19,4 +19,5 @@
 </table>
 {% endif %}
 {{ fx.signatures([(_("Raised By"), raised_by, None), (_("Approved By"), None, None)]) }}
+{{ fx.footer() }}
 </div>

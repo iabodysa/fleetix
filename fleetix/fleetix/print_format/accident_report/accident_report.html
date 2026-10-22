@@ -4,7 +4,7 @@
 {% set claim = frappe.db.get_value("Insurance Claim", doc.insurance_claim, ["status", "claim_amount"], as_dict=True) if doc.insurance_claim else None %}
 {{ fx.style() }}
 <div class="fx">
-{{ fx.header(doc, _("Accident"), None, doc.customer, _("Accident Date and Time"), doc.get_formatted("accident_datetime")) }}
+{{ fx.header(doc, _("Accident"), None, doc.customer, _("Accident Date and Time"), doc.get_formatted("accident_datetime"), "Accident") }}
 {{ fx.section(_("Accident"), [
 	(_("License Plate"), doc.vehicle),
 	(_("Model"), " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),
@@ -12,7 +12,8 @@
 	(_("Project"), frappe.db.get_value("Project", doc.project, "project_name") if doc.project else None),
 	(_("City"), doc.city),
 	(_("Location"), doc.location),
-	(_("Traffic / Najm Report No."), doc.report_number),
+	(_("Report Type"), _(doc.report_type) if doc.report_type else None),
+	(_("Traffic / Najm Report No."), doc.report_number, 1),
 	(_("Photos"), doc.photos | length if doc.photos else None),
 ]) }}
 {% if doc.description %}
@@ -28,4 +29,5 @@
 	(_("Project Claim"), doc.project_claim),
 ]) }}
 {{ fx.signatures([(_("Driver"), driver, None), (_("Approved By"), None, None)]) }}
+{{ fx.footer() }}
 </div>
