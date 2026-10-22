@@ -50,10 +50,10 @@
 </td>
 </tr></table>
 {% if damages %}
-<div class="fx-sec">{{ _("Damages Found") }}</div>
+<div class="fx-keep"><div class="fx-sec">{{ _("Damages Found") }}</div>
 <table class="fx-tbl"><tr><th style="width:5%">#</th><th style="width:17%">{{ _("Damage") }}</th><th style="width:15%">{{ _("Damaged Area") }}</th><th>{{ _("Description") }}</th><th style="width:16%">{{ _("Estimated Cost") }}</th></tr>
 {% for d in damages %}<tr><td>{{ loop.index }}</td><td><span class="ltr">{{ d.name }}</span></td><td>{{ _(d.area) if d.area else "" }}</td><td>{{ d.description or "" }}</td><td class="fx-num">{{ frappe.format_value(d.estimated_cost, {"fieldtype": "Currency"}) if d.estimated_cost else "" }}</td></tr>{% endfor %}
-</table>
+</table></div>
 {% endif %}
 <div class="fx-sec">{{ _("Driver Observations / Fleet Coordinator") }}</div>
 <div class="fx-text" style="min-height:44px">{{ doc.notes or "" }}</div>
