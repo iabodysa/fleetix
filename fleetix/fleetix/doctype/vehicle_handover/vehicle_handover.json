@@ -11,6 +11,7 @@
   "vehicle",
   "handover_datetime",
   "odometer",
+  "city",
   "column_break_handover",
   "from_driver",
   "to_driver",
@@ -62,6 +63,14 @@
    "label": "Odometer (km)",
    "mandatory_depends_on": "eval:doc.status != 'Requested'",
    "non_negative": 1
+  },
+  {
+   "fetch_from": "vehicle.city",
+   "fetch_if_empty": 1,
+   "fieldname": "city",
+   "fieldtype": "Link",
+   "label": "City",
+   "options": "City"
   },
   {
    "fieldname": "column_break_handover",
@@ -165,7 +174,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-21 21:10:00.000000",
+ "modified": "2026-10-23 00:09:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Vehicle Handover",

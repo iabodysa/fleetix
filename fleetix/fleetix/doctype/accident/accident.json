@@ -15,6 +15,7 @@
   "driver",
   "project",
   "customer",
+  "report_type",
   "report_number",
   "section_break_details",
   "description",
@@ -99,6 +100,12 @@
    "label": "Traffic / Najm Report No."
   },
   {
+   "fieldname": "report_type",
+   "fieldtype": "Select",
+   "label": "Report Type",
+   "options": "\nNo Report\nTraffic Police\nNajm"
+  },
+  {
    "fieldname": "section_break_details",
    "fieldtype": "Section Break",
    "label": "Details"
@@ -181,7 +188,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-21 23:00:00.000000",
+ "modified": "2026-10-23 00:09:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Accident",

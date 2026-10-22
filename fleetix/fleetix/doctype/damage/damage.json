@@ -15,11 +15,15 @@
   "project",
   "customer",
   "section_break_details",
+  "area",
   "description",
   "photos",
+  "section_break_cost",
+  "cost_items",
   "section_break_responsibility",
   "responsibility_set_by",
   "estimated_cost",
+  "insurance_deductible",
   "column_break_claims",
   "charged_to_driver",
   "project_claim",
@@ -93,6 +97,13 @@
    "label": "Details"
   },
   {
+   "fieldname": "area",
+   "fieldtype": "Select",
+   "in_list_view": 0,
+   "label": "Damaged Area",
+   "options": "\nFront\nRear\nRight Side\nLeft Side\nRoof\nInterior"
+  },
+  {
    "fieldname": "description",
    "fieldtype": "Small Text",
    "label": "Description",
@@ -103,6 +114,17 @@
    "fieldtype": "Table",
    "label": "Photos",
    "options": "Vehicle Inspection Photo"
+  },
+  {
+   "fieldname": "section_break_cost",
+   "fieldtype": "Section Break",
+   "label": "Cost Estimate"
+  },
+  {
+   "fieldname": "cost_items",
+   "fieldtype": "Table",
+   "label": "Cost Items",
+   "options": "Damage Cost Item"
   },
   {
    "fieldname": "section_break_responsibility",
@@ -121,6 +143,11 @@
    "fieldname": "estimated_cost",
    "fieldtype": "Currency",
    "label": "Estimated Cost (SAR)"
+  },
+  {
+   "fieldname": "insurance_deductible",
+   "fieldtype": "Currency",
+   "label": "Insurance Deductible"
   },
   {
    "fieldname": "column_break_claims",
@@ -157,7 +184,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-21 23:00:00.000000",
+ "modified": "2026-10-23 00:09:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Damage",
