@@ -19,12 +19,14 @@
 .fx-qr img{width:18mm;height:18mm;display:inline-block}
 .fx-meta{width:auto!important;margin:1mm auto 0}
 .fx-meta td{border:.5pt solid #000;padding:.4mm 2.5mm;font-size:8.5pt;line-height:1.2;white-space:nowrap}
-.fx-rule{border-top:.75pt solid #000;height:0;margin:1.5mm 0 3mm}
-.fx-g{border:.75pt solid #000;margin:0 0 1.5mm;page-break-inside:avoid}
+.fx-aside{font-size:8.5pt;line-height:1.2;margin-top:1mm;white-space:nowrap}
+.fx-aside .fx-cb{margin-right:3mm}
+.fx-rule{border-top:.75pt solid #000;height:0;margin:1.5mm 0 2.5mm}
+.fx-g{border:.75pt solid #000;margin:0 0 1mm;page-break-inside:avoid}
 .fx-g>tbody>tr>td,.fx-g>tbody>tr>th{border:.5pt solid #000;padding:.4mm 2mm;height:6.5mm;line-height:1.2;vertical-align:middle;text-align:right}
 .fx-g>tbody>tr>th.fx-bar{background:#E6E6E6;font-size:10pt;font-weight:700;text-align:center;border-bottom:.75pt solid #000}
 .fx-bar .en{font-size:7pt;font-weight:400;margin-right:3mm}
-.fx-k{line-height:1}
+.fx-g>tbody>tr>td.fx-k{line-height:1}
 .fx-k b{display:block;font-size:8.5pt;font-weight:700}
 .fx-k i{display:block;font-size:7pt;font-weight:400}
 .fx-v{font-size:9.5pt}
@@ -41,7 +43,7 @@
 .fx-st .en{display:block;text-align:left;line-height:1.45;margin-top:1mm;padding-top:1mm;border-top:.5pt solid #000}
 .fx-ln{border-bottom:.5pt dotted #000;height:7.5mm;line-height:7.5mm;padding:0 1mm;overflow:hidden;white-space:nowrap}
 .fx-ln .fx-no{display:inline-block;width:5mm;font-weight:700}
-.fx-sg{border:.75pt solid #000;margin:2mm 0 0;page-break-inside:avoid}
+.fx-sg{border:.75pt solid #000;margin:1mm 0 0;page-break-inside:avoid}
 .fx-sg td{border:.5pt solid #000;text-align:center;vertical-align:middle;padding:.4mm 2mm}
 .fx-sg .fx-sk{font-size:8.5pt;font-weight:700;line-height:1;height:6.5mm}
 .fx-sg .fx-sk i{display:block;font-size:7pt;font-weight:400}
@@ -49,9 +51,9 @@
 .fx-sg .fx-ss img{max-height:18mm;max-width:100%;filter:grayscale(1);-webkit-filter:grayscale(1)}
 .fx-sg .fx-sn{height:6.5mm;font-size:9pt}
 .fx-veh{margin:0 auto}
-.fx-veh td{border:.5pt solid #000;padding:.5mm;text-align:center;vertical-align:middle;line-height:1}
+.fx-veh td{border:.5pt solid #000;padding:.5mm 0;text-align:center;vertical-align:middle;line-height:1}
 .fx-veh svg{display:block;margin:0 auto}
-.fx-veh .fx-cap{font-size:8.5pt;font-weight:700;height:6mm}
+.fx-veh .fx-cap{font-size:8.5pt;font-weight:700;height:6.5mm}
 .fx-veh .fx-cap i{font-size:7pt;font-weight:400;padding:0 1.5mm}
 .fx-g>tbody>tr>td.fx-lg{font-size:8pt;line-height:1.3;text-align:center}
 .fx-lg>span{display:inline-block;white-space:nowrap;margin:0 .8mm}
@@ -81,7 +83,7 @@
 {% macro header(doc, title, title_en, logo=None, meta=None, aside=None) -%}
 <table class="fx-head"><tr>
 <td class="fx-logo"><img src="{{ logo or '/assets/fleetix/images/etihad-lockup.png' }}"></td>
-<td class="fx-t"><div class="fx-tb"><h1>{{ title }}</h1>{% if title_en and title_en != title %}<span class="en">{{ title_en }}</span>{% endif %}</div>{% if meta %}<table class="fx-meta"><tr>{% for m in meta %}<td><b>{{ m[0] }}</b> <span class="ltr">{{ m[1] or "" }}</span></td>{% endfor %}{% if aside %}<td>{{ aside }}</td>{% endif %}</tr></table>{% endif %}</td>
+<td class="fx-t"><div class="fx-tb"><h1>{{ title }}</h1>{% if title_en and title_en != title %}<span class="en">{{ title_en }}</span>{% endif %}</div>{% if meta %}<table class="fx-meta"><tr>{% for m in meta %}<td><b>{{ m[0] }}</b> <span class="ltr">{{ m[1] or "" }}</span></td>{% endfor %}</tr></table>{% endif %}{% if aside %}<div class="fx-aside">{{ aside }}</div>{% endif %}</td>
 <td class="fx-qr"><img src="{{ document_qr(doc.doctype, doc.name) }}"></td>
 </tr></table>
 <div class="fx-rule"></div>
@@ -95,7 +97,7 @@
 {% set flat = [] %}
 {% for row in rows %}{% if cols == 2 %}{% for f in row %}{% set _x = flat.append([f]) %}{% endfor %}{% else %}{% set _x = flat.append(row) %}{% endif %}{% endfor %}
 <table class="fx-g">
-{% if cols == 2 %}<colgroup><col style="width:22%"><col></colgroup>{% else %}<colgroup><col style="width:15%"><col style="width:35%"><col style="width:15%"><col style="width:35%"></colgroup>{% endif %}
+{% if cols == 2 %}<colgroup><col style="width:22%"><col></colgroup>{% else %}<colgroup><col style="width:18%"><col style="width:32%"><col style="width:18%"><col style="width:32%"></colgroup>{% endif %}
 {% if title %}{{ bar(title, title_en, cols) }}{% endif %}
 {% for row in flat %}<tr>{% for f in row %}<td class="fx-k">{{ lbl(f[0], f[1]) }}</td><td class="fx-v"{% if cols == 4 and row | length == 1 %} colspan="3"{% endif %}>{{ val(f[2], f | length > 3 and f[3]) }}</td>{% endfor %}</tr>{% endfor %}
 </table>
@@ -131,16 +133,15 @@
 {% set marks = [] %}
 {% for d in damages %}{% set _x = marks.append({"no": loop.index, "area": d.area}) %}{% endfor %}
 {% set d = vehicle_views(vehicle_name, marks) %}
-{% set caps = {"left": (_("Left Side"), "Left side"), "front": (_("Front"), "Front"), "right": (_("Right Side"), "Right side")} %}
-{% set widths = {"left": 62, "front": 40, "right": 62} %}
+{% set caps = {"left": (_("Left Side"), "Left side"), "front": (_("Front"), "Front"), "rear": (_("Rear"), "Rear"), "right": (_("Right Side"), "Right side")} %}
 <table class="fx-g">
 {{ bar(title, title_en) }}
 <tr><td style="padding:1mm 2mm">
-<table class="fx-veh" style="direction:ltr;width:{{ 164 if d.views | length == 3 else 124 }}mm">
-<tr>{% for v in d.views %}<td style="width:{{ widths[v[0]] }}mm">{{ v[1] }}</td>{% endfor %}</tr>
+<table class="fx-veh" style="direction:ltr;width:{{ (d.views | sum(attribute=2)) + 2 * d.views | length }}mm">
+<tr>{% for v in d.views %}<td style="width:{{ v[2] + 2 }}mm">{{ v[1] }}</td>{% endfor %}</tr>
 <tr>{% for v in d.views %}<td class="fx-cap"><span style="direction:rtl;unicode-bidi:embed">{{ caps[v[0]][0] }}</span><i>{{ caps[v[0]][1] }}</i></td>{% endfor %}</tr>
 </table></td></tr>
-<tr><td class="fx-lg"><span>{{ marker(1) }} = {{ _("Row number in the damage table") }} <i class="en">row no. in damage table</i></span>{% for code, ar, en in [("S", _("Scratch"), "Scratch"), ("D", _("Dent"), "Dent"), ("C", _("Crack"), "Crack"), ("B", _("Broken"), "Broken"), ("M", _("Missing"), "Missing")] %}<span><b>{{ code }}</b> {{ ar }} <i class="en">{{ en }}</i></span>{% endfor %}<span>{{ check(False) }}{{ _("No Damage") }} <i class="en">No damage</i></span>{% for no, area in d.unplaced %}<span>{{ marker(no) }} {{ _(area) }}</span>{% endfor %}</td></tr>
+<tr><td class="fx-lg"><span>{{ marker(1) }} = {{ _("Row number in the damage table") }} <i class="en">row no. in damage table</i></span>{% for code, ar in [("S", _("Scratch")), ("D", _("Dent")), ("C", _("Crack")), ("B", _("Broken")), ("M", _("Missing"))] %}<span><b>{{ code }}</b> {{ ar }}</span>{% endfor %}<span>{{ check(False) }}{{ _("No Damage") }} <i class="en">No damage</i></span>{% for no, area in d.unplaced %}<span>{{ marker(no) }} {{ _(area) }}</span>{% endfor %}</td></tr>
 </table>
 {%- endmacro %}
 

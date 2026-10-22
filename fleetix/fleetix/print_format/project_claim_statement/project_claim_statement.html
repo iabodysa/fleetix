@@ -14,8 +14,9 @@
 ]) }}
 {% set heads = [("#", None, "5%", "fx-c"), (_("Source Reference"), "Reference", "17%"), (_("Vehicle"), "Vehicle", "12%"), (_("Description"), "Description", "30%" if accident else "40%"), (_("Estimated Cost (SAR)"), "Estimated cost", "13%", "fx-n")] + ([(_("Driver Responsibility %"), "Driver fault", "10%", "fx-c")] if accident else []) + [(_("Amount (SAR)"), "Amount", "13%", "fx-n")] %}
 {% set rows = [[1, source.name, source.get("vehicle") or "", source.get("description") or "", frappe.format_value(source_cost, {"fieldtype": "Currency"}) if source_cost else ""] + ([source.get_formatted("responsibility_percentage") if source.get("responsibility_percentage") is not none else ""] if accident else []) + [doc.get_formatted("amount")]] if source else [] %}
-{{ fx.table(_("Source Reference"), "Claim details", heads, rows, 3, [(_("Total"), [doc.get_formatted("amount")], "fx-grand")]) }}
-{% if doc.get("notes") %}{{ fx.statement(doc.notes) }}{% endif %}
+{{ fx.table(_("Source Reference"), "Claim details", heads, rows, 6, [(_("Total"), [doc.get_formatted("amount")], "fx-grand")]) }}
+<table class="fx-g"><tr><th class="fx-bar">{{ _("Notes") }}<span class="en">Notes</span></th></tr>
+<tr><td style="padding:0 2mm 1.5mm">{{ fx.lines((doc.get("notes") or "").split("\n"), 5) }}</td></tr></table>
 {{ fx.signatures([(_("Raised By"), "Raised by", raised_by), (_("Approved By"), "Approved by", None)]) }}
 {{ fx.footer(frappe.db.get_value("Vehicle", source.get("vehicle"), "company") if source and source.get("vehicle") else None) }}
 </div>
