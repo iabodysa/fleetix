@@ -31,13 +31,15 @@
 {% for kind, heading, column in [("Spare Part", _("Spare Parts"), _("Part Name")), ("Labour", _("Labour"), _("Service Name"))] %}
 {% set rows = doc.cost_items | selectattr("item_type", "equalto", kind) | list %}
 {% set ns = namespace(net=0) %}
+{% if rows %}
 <div class="fx-sec">{{ heading }}</div>
 <table class="fx-tbl"><tr><th style="width:5%">#</th><th>{{ column }}</th><th class="fx-c" style="width:8%">{{ _("Qty") }}</th><th style="width:15%">{{ _("Price") }}</th><th style="width:16%">{{ _("Total excl. VAT") }}</th><th style="width:16%">{{ _("Total incl. VAT") }}</th></tr>
 {% for row in rows %}{% set net = (row.qty or 0) * (row.rate or 0) %}{% set ns.net = ns.net + net %}
 <tr><td>{{ loop.index }}</td><td>{{ row.description }}</td><td class="fx-c">{{ frappe.format_value(row.qty, {"fieldtype": "Float"}) }}</td><td class="fx-num">{{ money(row.rate) }}</td><td class="fx-num">{{ money(net) }}</td><td class="fx-num">{{ money(net * (1 + vat)) }}</td></tr>
-{% else %}<tr><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}
+{% endfor %}
 <tr class="fx-total"><td colspan="4">{{ _("Total") }} {{ heading }}</td><td class="fx-num">{{ money(ns.net) }}</td><td class="fx-num">{{ money(ns.net * (1 + vat)) }}</td></tr>
 </table>
+{% endif %}
 {% if kind == "Labour" %}{% set t.labour = ns.net %}{% else %}{% set t.parts = ns.net %}{% endif %}
 {% endfor %}
 {% set net_total = t.parts + t.labour %}

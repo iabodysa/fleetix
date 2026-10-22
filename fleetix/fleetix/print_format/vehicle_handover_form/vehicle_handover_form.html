@@ -44,7 +44,7 @@
 {% if inspection and inspection.checklist %}
 <div class="fx-sec">{{ _("Checklist") }}</div>
 <table class="fx-tbl"><tr><th style="width:6%">#</th><th style="width:40%">{{ _("Item") }}</th><th style="width:18%">{{ _("Condition", context="Vehicle Checklist Item") }}</th><th>{{ _("Notes") }}</th></tr>
-{% for row in inspection.checklist %}<tr><td>{{ row.idx }}</td><td>{{ row.item or "" }}</td><td>{{ _(row.condition) if row.condition else "" }}</td><td>{{ row.notes or "" }}</td></tr>{% endfor %}
+{% for row in inspection.checklist %}<tr><td>{{ row.idx }}</td><td>{{ _(row.item) if row.item else "" }}</td><td>{{ _(row.condition) if row.condition else "" }}</td><td>{{ row.notes or "" }}</td></tr>{% endfor %}
 </table>
 {% endif %}
 <div class="fx-stmt">{{ _("I, the undersigned, acknowledge that I received the vehicle described above on {0} in its stated condition, and I undertake to keep it safe and not to give it up or hand it over to anyone else, and I am accountable if I breach this acknowledgement.").format('<span class="ltr">' ~ doc.get_formatted("handover_datetime") ~ '</span>') }}</div>

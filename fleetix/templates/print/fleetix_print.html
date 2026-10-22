@@ -42,10 +42,10 @@
 .fx-text{border:1px solid #DCDDDE;border-right:3px solid #BB9B6A;padding:7px 10px;white-space:pre-wrap;background:#FBFBFC}
 .fx-stmt{border:1px solid #DCDDDE;background:#F8F9FA;padding:9px 12px;margin-top:12px;font-size:11px;line-height:1.8;page-break-inside:avoid}
 .fx-stmt .fx-en{direction:ltr;text-align:left;font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:9.5px;color:#313C47;margin-top:6px;padding-top:6px;border-top:1px solid #E4E6E8}
-.fx-terms{font-size:10.2px;line-height:1.75}
-.fx-terms h3{font-size:11px;font-weight:800;margin:9px 0 2px;color:#05213A;page-break-after:avoid}
+.fx-terms{font-size:10px;line-height:1.6}
+.fx-terms h3{font-size:10.5px;font-weight:800;margin:6px 0 1px;color:#05213A;page-break-after:avoid}
 .fx-terms ol{margin:0;padding-right:18px}
-.fx-terms li{margin:1px 0;page-break-inside:avoid}
+.fx-terms li{margin:0;page-break-inside:avoid}
 .fx-terms p{margin:2px 0}
 .fx-cbx{display:inline-block;vertical-align:middle;margin-left:5px}
 .fx-opts td{padding:3px 6px;font-size:10.5px;border-bottom:1px solid #F0F1F2}
@@ -54,7 +54,7 @@
 .fx-fig svg{display:block;margin:0 auto}
 .fx-key{font-size:9.5px;color:#767676;margin-top:3px}
 .fx-key i{display:inline-block;width:9px;height:9px;background:#BB9B6A;margin:0 0 -1px 4px}
-.fx-sign{margin-top:22px;page-break-inside:avoid}
+.fx-sign{margin-top:16px;page-break-inside:avoid}
 .fx-sign>tbody>tr>td{padding:0 6px;vertical-align:top}
 .fx-sign .fx-l{color:#05213A;font-weight:700;font-size:10.5px;padding-bottom:4px}
 .fx-sign .fx-l span{display:block;font-weight:400;color:#767676;font-size:9px;direction:ltr;text-align:right;font-family:"Segoe UI",Helvetica,Arial,sans-serif}
@@ -136,5 +136,5 @@
 {%- endmacro %}
 
 {% macro signatures(boxes) -%}
-<table class="fx-sign"><tr>{% for box in boxes %}<td style="width:{{ (100 / (boxes | length)) | round(1) }}%"><div class="fx-l">{{ box[0] }}{% if box | length > 4 and box[4] %}<span>{{ box[4] }}</span>{% endif %}</div><div class="fx-box{{ ' fx-round' if box | length > 3 and box[3] else '' }}">{% if box[2] %}<img src="{{ box[2] }}">{% endif %}</div>{% if not (box | length > 3 and box[3]) %}<div class="fx-n">{{ box[1] or "" }}</div>{% endif %}</td>{% endfor %}</tr></table>
+<table class="fx-sign"><tr>{% for box in boxes %}<td style="width:{{ (100 / (boxes | length)) | round(1) }}%"><div class="fx-l">{{ box[0] }}{% if box | length > 4 and box[4] %}<span>{{ box[4] }}</span>{% endif %}</div><div class="fx-box{{ ' fx-round' if box | length > 3 and box[3] else '' }}">{% if box[2] and "signature-placeholder" not in box[2] %}<img src="{{ box[2] }}">{% endif %}</div>{% if not (box | length > 3 and box[3]) %}<div class="fx-n">{{ box[1] or "" }}</div>{% endif %}</td>{% endfor %}</tr></table>
 {%- endmacro %}
