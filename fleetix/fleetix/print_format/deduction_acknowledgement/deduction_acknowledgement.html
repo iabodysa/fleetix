@@ -1,0 +1,28 @@
+{% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
+{% set driver_id = doc.charged_to_driver or doc.driver %}
+{% set driver = frappe.db.get_value("Driver", driver_id, ["full_name", "employee_id", "national_id"], as_dict=True) if driver_id else None %}
+{% set amount = doc.insurance_deductible or doc.estimated_cost %}
+{{ fx.style() }}
+<div class="fx">
+{{ fx.header(doc, _("Deduction Acknowledgement"), None, None, _("Date"), frappe.format_value(doc.creation, {"fieldtype": "Date"}), "Deduction Acknowledgement") }}
+<div class="fx-sec">{{ _("Driver Information") }}</div>
+<table class="fx-grid">
+<tr><td class="fx-l">{{ _("Driver's ID") }}</td><td class="fx-v"><span class="ltr">{{ driver.employee_id or "" if driver else "" }}</span></td><td class="fx-l">{{ _("Iqama No.") }}</td><td class="fx-v"><span class="ltr">{{ driver.national_id or "" if driver else "" }}</span></td></tr>
+<tr><td class="fx-l">{{ _("Driver's Name") }}</td><td class="fx-v">{{ driver.full_name if driver else "" }}</td><td class="fx-l">{{ _("City") }}</td><td class="fx-v">{{ doc.city or "" }}</td></tr>
+<tr><td class="fx-l">{{ _("Deduction Amount") }}</td><td class="fx-v" colspan="3"><span class="ltr">{{ frappe.format_value(amount, {"fieldtype": "Currency"}) if amount else "" }}</span>{% if amount %} &nbsp; <span style="font-weight:400;color:#313C47">{{ frappe.utils.money_in_words(amount) }}</span>{% endif %}</td></tr>
+</table>
+<div class="fx-sec">{{ _("Reason") }}</div>
+<table class="fx-opts">
+{% for label, en, on in [(_("Car insurance amount"), "Car insurance amount", False), (_("Car Damages"), "Car Damages", True), (_("Traffic Violation"), "Traffic Violation", False), (_("Missed amounts or shipments"), "Missed amounts or shipments", False), (_("COD Shortage"), "COD Shortage", False), (_("Other"), "Other", False)] %}
+<tr><td style="width:5%">{{ fx.check(on) }}</td><td>{{ label }}</td><td class="fx-en">{{ en }}</td></tr>
+{% endfor %}
+</table>
+<div class="fx-sec">{{ _("Details") }}</div>
+<div class="fx-text" style="min-height:70px">{{ doc.description or "" }}{% if doc.vehicle %}
+{{ _("License Plate") }}: <span class="ltr">{{ doc.vehicle }}</span>{% endif %}
+{{ _("Reference") }}: <span class="ltr">{{ doc.name }}</span></div>
+<div class="fx-stmt">{{ _("I, the undersigned, acknowledge and understand that I bear full responsibility for the amount mentioned above and according to the above details, and I agree to the right of the company to claim the full amount or deduct it from my salary, and this is my acknowledgment.") }}
+<div class="fx-en">I, the undersigned, acknowledge and understand that I bear full responsibility for the amount mentioned above and according to the above details, and I agree to the right of the company to claim the full amount or deduct it from my salary, and this is my acknowledgment.</div></div>
+{{ fx.signatures([(_("Driver's Signature"), driver.full_name if driver else None, None, False, "Driver's Signature"), (_("Driver's Thumb"), None, None, True, "Driver's Thumb")]) }}
+{{ fx.footer() }}
+</div>
