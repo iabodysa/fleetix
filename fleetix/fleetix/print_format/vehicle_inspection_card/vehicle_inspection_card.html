@@ -1,0 +1,62 @@
+{% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
+{% set handover = frappe.db.get_value("Vehicle Handover", doc.reference_name, ["handover_type", "to_driver", "from_driver"], as_dict=True) if doc.reference_type == "Vehicle Handover" and doc.reference_name else None %}
+{% set driver_id = doc.driver or ((handover.from_driver if handover.handover_type == "Return" else handover.to_driver) if handover else None) %}
+{% set driver = frappe.db.get_value("Driver", driver_id, ["full_name", "national_id", "cell_number"], as_dict=True) if driver_id else None %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["city", "model"], as_dict=True) if doc.vehicle else None %}
+{% set rows = {} %}
+{% for row in doc.checklist %}{% if row.item %}{% set _x = rows.update({row.item.strip().lower(): row}) %}{% endif %}{% endfor %}
+{% set damages = frappe.get_all("Damage", filters={"source": "Vehicle Inspection", "source_reference": doc.name}, fields=["name", "area", "description", "estimated_cost"], order_by="creation asc") %}
+{% set purpose = "Receipt" if handover and handover.handover_type == "Return" else ("Delivery" if handover else "Inspection") %}
+{% macro state(key, key_tr) -%}
+{% set row = rows.get(key.lower()) or rows.get(key_tr.lower()) %}
+{% if row and row.condition == "Needs Repair" %}{{ fx.check(False) }}<span style="color:#8A6D3F;font-weight:700">{{ _("Needs Repair") }}</span>{% elif row %}{{ fx.check(True) }}{{ _(row.condition) if row.condition else "" }}{% else %}{{ fx.check(False) }}{% endif %}
+{%- endmacro %}
+{{ fx.style() }}
+<div class="fx">
+{{ fx.header(doc, _("Vehicle Inspection Card"), None, None, _("Date"), frappe.format_value(doc.inspection_datetime, {"fieldtype": "Date"}) if doc.inspection_datetime else None, "Vehicle Inspection Card") }}
+<table class="fx-opts" style="width:auto;margin:0 auto 4px"><tr>
+<td>{{ fx.check(purpose == "Inspection") }}{{ _("Inspection") }}</td>
+<td>{{ fx.check(purpose == "Delivery") }}{{ _("Delivery to Driver") }}</td>
+<td>{{ fx.check(purpose == "Receipt") }}{{ _("Receipt from Driver") }}</td>
+</tr></table>
+{{ fx.form(_("Driver and Vehicle"), [
+	(_("Driver Name"), driver.full_name if driver else None),
+	(_("Iqama No."), driver.national_id if driver else None, 1),
+	(_("Driver's Mobile"), driver.cell_number if driver else None, 1),
+	(_("License Plate"), doc.vehicle, 1),
+	(_("City"), vehicle.city if vehicle else None),
+	(_("KM Number"), doc.get_formatted("odometer") if doc.odometer else None, 1),
+	(_("Fuel Level"), _(doc.fuel_level) if doc.fuel_level else None),
+	(_("Inspector"), frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None),
+]) }}
+<table class="fx-cols" style="margin-top:6px"><tr>
+<td style="width:62%">
+<div class="fx-sec">{{ _("Vehicle Condition") }}</div>
+<table class="fx-tbl">
+{% for key, key_tr, label in [("Trunk", _("Trunk"), _("Trunk Condition")), ("Dashboard", _("Dashboard"), _("Dashboard Condition")), ("Interior", _("Interior"), _("General Interior Condition")), ("Flooring", _("Flooring"), _("Flooring Condition")), ("Seats", _("Seats"), _("Seats Condition")), ("Roof Lining", _("Roof Lining"), _("Roof Condition")), ("Exterior Cleanliness", _("Exterior Cleanliness"), _("Exterior Cleanliness Condition"))] %}
+<tr><td style="width:55%">{{ label }}</td><td>{{ state(key, key_tr) }}</td></tr>
+{% endfor %}
+</table>
+<div class="fx-sec">{{ _("Accessories") }}</div>
+<table class="fx-tbl">
+{% for key, key_tr in [("Jack and Tools", _("Jack and Tools")), ("Wheel Wrench", _("Wheel Wrench")), ("Spare Tire", _("Spare Tire")), ("Warning Triangle", _("Warning Triangle")), ("Fire Extinguisher", _("Fire Extinguisher"))] %}
+<tr><td style="width:55%">{{ key_tr }}</td><td>{{ state(key, key_tr) }}</td></tr>
+{% endfor %}
+</table>
+</td>
+<td>
+<div class="fx-sec">{{ _("Damage Diagram") }}</div>
+<div class="fx-fig">{{ fx.car(damages | map(attribute="area") | select | list) }}<div class="fx-key"><i></i>{{ _("Damaged Area") }}</div></div>
+</td>
+</tr></table>
+{% if damages %}
+<div class="fx-sec">{{ _("Damages Found") }}</div>
+<table class="fx-tbl"><tr><th style="width:5%">#</th><th style="width:17%">{{ _("Damage") }}</th><th style="width:15%">{{ _("Damaged Area") }}</th><th>{{ _("Description") }}</th><th style="width:16%">{{ _("Estimated Cost") }}</th></tr>
+{% for d in damages %}<tr><td>{{ loop.index }}</td><td><span class="ltr">{{ d.name }}</span></td><td>{{ _(d.area) if d.area else "" }}</td><td>{{ d.description or "" }}</td><td class="fx-num">{{ frappe.format_value(d.estimated_cost, {"fieldtype": "Currency"}) if d.estimated_cost else "" }}</td></tr>{% endfor %}
+</table>
+{% endif %}
+<div class="fx-sec">{{ _("Driver Observations / Fleet Coordinator") }}</div>
+<div class="fx-text" style="min-height:44px">{{ doc.notes or "" }}</div>
+{{ fx.signatures([(_("Employee Signature"), frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None, doc.inspector_signature), (_("Driver Signature"), driver.full_name if driver else None, doc.driver_signature), (_("Fleet Supervisor"), None, None), (_("Transport Officer"), None, None)]) }}
+{{ fx.footer() }}
+</div>
