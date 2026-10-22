@@ -1,0 +1,97 @@
+{% import "fleetix/templates/print/fleetix_print.html" as fx with context %}
+{% set driver_id = doc.to_driver if doc.handover_type != "Return" else doc.from_driver %}
+{% set driver = frappe.db.get_value("Driver", driver_id, ["full_name", "national_id"], as_dict=True) if driver_id else None %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["vehicle_type", "model", "fuel_type"], as_dict=True) if doc.vehicle else None %}
+{{ fx.style() }}
+<div class="fx">
+{{ fx.header(doc, _("Driver Vehicle Undertaking"), _(doc.handover_type) if doc.handover_type else None, None, _("Date"), frappe.format_value(doc.handover_datetime, {"fieldtype": "Date"}) if doc.handover_datetime else None, "Driver Vehicle Undertaking") }}
+{{ fx.form(_("Driver and Vehicle"), [
+	(_("Driver Name"), driver.full_name if driver else None),
+	(_("ID Number"), driver.national_id if driver else None, 1),
+	(_("License Plate"), doc.vehicle, 1),
+	(_("Vehicle Type"), (vehicle.vehicle_type or vehicle.model) if vehicle else None),
+	(_("Delivery City"), doc.city),
+	(_("Fuel Type"), _(vehicle.fuel_type) if vehicle and vehicle.fuel_type else None),
+]) }}
+<div class="fx-terms">
+<h3>{{ _("User Obligations (Driver of the Vehicle)") }}</h3>
+<p>{{ _("The user acknowledges and undertakes to comply with the following:") }}</p>
+<ol>
+<li>{{ _("The vehicle is complete, and its contents of tires, engine, tools, equipment and documents belong to the owning company as per the registration.") }}</li>
+<li>{{ _("The vehicle is to be used inside the delivery city only.") }}</li>
+<li>{{ _("The user has no right to make any modifications to the vehicle and its equipment, including tampering with the odometer or removing the identification sticker, repairing any damage, adding any external additions or replacing any part.") }}</li>
+<li>{{ _("The user has confirmed the vehicle is suitable for use before receipt and that all remarks on the vehicle are recorded in the inspection sheet.") }}</li>
+<li>{{ _("The user uses the fuel type specified by the owner.") }}</li>
+<li>{{ _("The user bears the impound, tow truck and assessment fees (if not paid by the insurance) in the event of an accident to the vehicle in use.") }}</li>
+<li>{{ _("The contract is not closed and the vehicle authorization is not cancelled until the traffic representative is reviewed and the parties to the accident are confirmed.") }}</li>
+<li>{{ _("Lawyer fees and legal costs in the event of not returning or delaying the return of the vehicle.") }}</li>
+</ol>
+<h3>1. {{ _("Drivers") }}</h3>
+<p>{{ _("The persons authorized to drive the vehicle are:") }}</p>
+<ol>
+<li>{{ _("The user, if holding a driving license qualifying them to drive the vehicle.") }}</li>
+<li>{{ _("The person authorized by the company who holds a driving license qualifying them to drive the vehicle, whose contract details were recorded and an authorization issued to them on the Tamm system.") }}</li>
+</ol>
+<h3>2. {{ _("Terms of Use") }}</h3>
+<p>{{ _("The vehicle must not be used in the following cases:") }}</p>
+<ol>
+<li>{{ _("Use by persons other than those authorized under a Tamm authorization and the lease contract is prohibited.") }}</li>
+<li>{{ _("Use is prohibited if the vehicle is broken down or shows any sign of a technical fault or warning lights that need repair.") }}</li>
+<li>{{ _("If operating it causes damage to the vehicle engine or any of its components.") }}</li>
+<li>{{ _("If the driver authorized under the contract is unable to drive the vehicle, is under the influence of intoxicants or narcotics, or suffers from a health condition that prevents safe driving.") }}</li>
+</ol>
+<h3>3. {{ _("Leaving the Vehicle") }}</h3>
+<ol>
+<li>{{ _("Do not leave the vehicle with the ignition key in it.") }}</li>
+</ol>
+<h3>4. {{ _("Insurance") }}</h3>
+<p>{{ _("Acceptance of the comprehensive insurance provided by the company is as follows:") }}</p>
+<ol>
+<li>{{ _("Insurance is comprehensive in the event of an accident according to the policy.") }}</li>
+<li>{{ _("The user is aware that it does not cover accidents in the following cases, and therefore bears full responsibility arising from them:") }}
+<ol type="a">
+<li>{{ _("If the driver is under the influence of intoxicants or narcotics.") }}</li>
+<li>{{ _("If the driver is not qualified under the contract to drive the vehicle.") }}</li>
+<li>{{ _("Using the vehicle for purposes other than work.") }}</li>
+</ol></li>
+</ol>
+<h3>5. {{ _("Usage Costs") }}</h3>
+<ol>
+<li>{{ _("Insurance costs agreed in the contract.") }}</li>
+<li>{{ _("Costs arising from misuse of the vehicle.") }}</li>
+<li>{{ _("Insurance costs are comprehensive insurance in the event of an accident according to the policy.") }}</li>
+<li>{{ _("Costs arising from violating regulations.") }}</li>
+<li>{{ _("Public parking fees used.") }}</li>
+<li>{{ _("Costs arising from loss or violating regulations.") }}</li>
+<li>{{ _("Costs arising from the loss, replacement or tampering with any vehicle parts and equipment.") }}</li>
+<li>{{ _("Costs arising from delay in returning the vehicle on the specified date and time.") }}</li>
+<li>{{ _("Costs of damage not covered by the insurance agreed under the contract.") }}</li>
+<li>{{ _("Costs of repairing any modifications to the vehicle the user received.") }}</li>
+</ol>
+<h3>6. {{ _("General Notes") }}</h3>
+<ol>
+<li>{{ _("Repairing the vehicle in external workshops or without written approval is prohibited, including repair, replacing parts, bodywork, painting, glass replacement or otherwise.") }}</li>
+<li>{{ _("The driver must report accidents immediately, and is prohibited from waiving or taking any amount to repair accidents and damage to the vehicle.") }}</li>
+<li>{{ _("The right of recourse for damage costs if the claim is rejected.") }}</li>
+<li>{{ _("Also cases not covered by insurance such as driving against traffic, running a red light, drifting or driving under the influence of narcotics.") }}</li>
+<li>{{ _("Using the vehicle for personal purposes or outside work such as order delivery or external work is prohibited.") }}</li>
+<li>{{ _("Travelling with the vehicle outside the city without written authorization is prohibited.") }}</li>
+</ol>
+</div>
+<div class="fx-sec">{{ _("Deductible Cases") }}</div>
+<table class="fx-tbl"><tr><th style="width:6%">{{ _("Case") }}</th><th style="width:12%">{{ _("Driver Fault") }}</th><th style="width:13%">{{ _("Other Party") }}</th><th style="width:12%">{{ _("Vehicle Condition") }}</th><th style="width:9%">{{ _("Deductible") }}</th><th>{{ _("Repair if cost is under 3,500 SAR") }}</th><th>{{ _("Repair if cost is over 3,500 SAR") }}</th></tr>
+<tr><td class="fx-c">1</td><td><span class="ltr">100%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Repairable") }}</td><td class="fx-num">2,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr><td class="fx-c">2</td><td><span class="ltr">100%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-num">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr><td class="fx-c">3</td><td><span class="ltr">0%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Repairable") }}</td><td class="fx-num">2,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr><td class="fx-c">4</td><td><span class="ltr">0%</span></td><td>{{ _("No other party") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-num">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr><td class="fx-c">5</td><td>{{ _("Less than 50%") }}</td><td>{{ _("No other party") }}</td><td>{{ _("Repairable") }}</td><td class="fx-num">2,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr><td class="fx-c">6</td><td>{{ _("More than 50%") }}</td><td>{{ _("No other party") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-num">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr><td class="fx-c">7</td><td>{{ _("Less than 50%") }}</td><td>{{ _("Other party exists") }}</td><td>{{ _("Repairable") }}</td><td class="fx-num">1,000</td><td>{{ _("Work Order") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr><td class="fx-c">8</td><td>{{ _("More than 50%") }}</td><td>{{ _("Other party exists") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-num">3,500</td><td>{{ _("Management Approval Required") }}</td><td>{{ _("As per the comprehensive insurance policy") }}</td></tr>
+<tr><td class="fx-c">9</td><td><span class="ltr">0%</span></td><td>{{ _("Other party exists") }}</td><td>{{ _("Repairable") }}</td><td class="fx-num">0</td><td>{{ _("Work Order") }}</td><td>{{ _("Management approval required before the work order") }}</td></tr>
+<tr><td class="fx-c">10</td><td><span class="ltr">0%</span></td><td>{{ _("Other party exists") }}</td><td>{{ _("Total Loss") }}</td><td class="fx-num">0</td><td>{{ _("Management approval required before the work order") }}</td><td>{{ _("Management approval required before the work order") }}</td></tr>
+</table>
+<div class="fx-stmt">{{ _("Comprehensive insurance workshop: the comprehensive insurance workshop for Etihad vehicles.") }}<br>{{ _("Total loss: airbag, chassis or an impact to the vehicle interior.") }}</div>
+{{ fx.signatures([(_("Name"), driver.full_name if driver else None, None), (_("Signature"), None, doc.to_signature if doc.handover_type != "Return" else doc.from_signature), (_("Thumbprint"), None, None, True)]) }}
+{{ fx.footer() }}
+</div>
