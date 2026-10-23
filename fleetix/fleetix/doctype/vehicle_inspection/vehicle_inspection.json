@@ -49,6 +49,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Vehicle",
+   "link_filters": "[[\"Vehicle\", \"active\", \"=\", 1]]",
    "options": "Vehicle",
    "reqd": 1
   },
@@ -56,6 +57,7 @@
    "fieldname": "driver",
    "fieldtype": "Link",
    "label": "Driver",
+   "link_filters": "[[\"Driver\", \"active\", \"=\", 1]]",
    "options": "Driver"
   },
   {

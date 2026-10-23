@@ -147,7 +147,7 @@ override_doctype_class = {"Vehicle": "fleetix.fleetix.vehicle.VehicleService"}
 app_include_js = "/assets/fleetix/js/vehicle_type.js"
 
 doctype_js = {"Vehicle": "public/js/vehicle.js"}
-doctype_list_js = {"Vehicle": "public/js/vehicle_list.js"}
+doctype_list_js = {"Driver": "public/js/driver_list.js", "Vehicle": "public/js/vehicle_list.js"}
 
 override_doctype_dashboards = {
 	"Customer": "fleetix.fleetix.dashboard_overrides.get_dashboard_for_customer",

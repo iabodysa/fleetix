@@ -26,6 +26,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Driver",
+   "link_filters": "[[\"Driver\", \"active\", \"=\", 1]]",
    "options": "Driver",
    "reqd": 1
   },

@@ -88,6 +88,7 @@
    "fieldname": "to_driver",
    "fieldtype": "Link",
    "label": "To Driver",
+   "link_filters": "[[\"Driver\", \"active\", \"=\", 1]]",
    "options": "Driver"
   },
   {

@@ -57,6 +57,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Driver",
+   "link_filters": "[[\"Driver\", \"active\", \"=\", 1]]",
    "options": "Driver",
    "reqd": 1
   },
@@ -120,7 +121,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Selected Vehicle",
-   "link_filters": "[[\"Vehicle\",\"status\",\"=\",\"Available\"]]",
+   "link_filters": "[[\"Vehicle\", \"status\", \"=\", \"Available\"], [\"Vehicle\", \"active\", \"=\", 1]]",
    "mandatory_depends_on": "eval:!['New', 'Pending Vehicle Selection', 'Rejected', 'Cancelled'].includes(doc.workflow_state)",
    "options": "Vehicle"
   },
