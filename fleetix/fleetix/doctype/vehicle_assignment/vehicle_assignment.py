@@ -68,7 +68,30 @@ class VehicleAssignment(Document):
 				_("{0} on Driver {1} has passed").format(_(driver_meta.get_label("expiry_date")), self.driver)
 			)
 
+	def validate_active(self):
+		for doctype, name in (("Driver", self.driver), ("Vehicle", self.vehicle)):
+			if not frappe.db.get_value(doctype, name, "active"):
+				frappe.throw(_("{0} {1} is inactive").format(_(doctype), name))
+
+	def warn_other_vehicles(self):
+		others = frappe.get_all(
+			"Vehicle Assignment",
+			filters={
+				"docstatus": 1,
+				"status": ("in", LIVE),
+				"driver": self.driver,
+				"name": ("!=", self.name),
+			},
+			pluck="vehicle",
+		)
+		if others:
+			frappe.msgprint(
+				_("Driver {0} already holds vehicle {1}").format(self.driver, ", ".join(others)),
+				indicator="orange",
+			)
+
 	def before_submit(self):
+		self.validate_active()
 		self.validate_submit_fields()
 		self.validate_driver_licence()
 		self.validate_driver_trained()
@@ -81,6 +104,7 @@ class VehicleAssignment(Document):
 		vehicle.save()
 		if self.vehicle_request:
 			apply_workflow(frappe.get_doc("Vehicle Request", self.vehicle_request), "Assign")
+		self.warn_other_vehicles()
 
 	def before_cancel(self):
 		self.status = "Cancelled"
