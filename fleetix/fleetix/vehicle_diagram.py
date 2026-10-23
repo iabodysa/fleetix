@@ -16,7 +16,7 @@ HAIRLINE_MM = 0.5 * 0.3528
 VIEWS = ("left", "front", "rear", "right")
 BODIES = {
 	"Car": ("car-side", "car-front", "car-rear"),
-	"Pickup Truck": ("pickup-side", "car-front", "pickup-rear"),
+	"Pickup Truck": ("pickup-side", "pickup-front", "pickup-rear"),
 	"Van": ("van-side", "van-front", "van-rear"),
 	"Bus": ("bus-side", "bus-front", "bus-rear"),
 	"Truck": ("truck-side", "truck-front", "truck-rear"),
