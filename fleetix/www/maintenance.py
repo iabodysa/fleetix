@@ -5,7 +5,7 @@ import frappe
 from frappe.boot import load_translations
 from frappe.utils.jinja_globals import is_rtl
 
-from fleetix.fleetix.api.maintenance import WORKER_ROLES
+from fleetix.fleetix.api.maintenance import RTL_LANGUAGES, WORKER_ROLES
 
 no_cache = 1
 
@@ -15,7 +15,8 @@ def get_context(context):
 	frappe.db.commit()
 	context.csrf_token = csrf_token
 	context.boot = frappe.as_json(get_boot(), indent=None)
-	context.direction = "rtl" if is_rtl() else "ltr"
+	context.lang = frappe.local.lang
+	context.direction = "rtl" if is_rtl() or frappe.local.lang in RTL_LANGUAGES else "ltr"
 	return context
 
 
@@ -23,6 +24,7 @@ def get_boot():
 	bootinfo = frappe._dict(
 		site_name=frappe.local.site,
 		user=frappe.session.user,
+		lang=frappe.local.lang,
 		full_name=frappe.utils.get_fullname(frappe.session.user),
 		is_worker=bool(set(frappe.get_roles()) & set(WORKER_ROLES)),
 	)

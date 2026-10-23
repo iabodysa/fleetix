@@ -2,11 +2,11 @@ import { createApp } from "vue"
 import { setConfig } from "frappe-ui/src/utils/config.js"
 import { frappeRequest } from "frappe-ui/src/utils/frappeRequest.js"
 import App from "./App.vue"
-import { __ } from "./translate.js"
-import "./style.css"
+import { __ } from "./i18n/index.js"
+import "./theme/tokens.css"
+import "./theme/base.css"
 
 setConfig("resourceFetcher", frappeRequest)
-document.documentElement.lang = (window.frappe.boot && window.frappe.boot.lang) || "ar"
 
 const app = createApp(App)
 app.config.globalProperties.__ = __

@@ -9829,3 +9829,23 @@ Driver {0} already holds vehicle {1},السائق {0} لديه المركبة {1
 Drivers With Multiple Vehicles,سائقون لديهم أكثر من مركبة
 Vehicles Held,عدد المركبات
 {0} {1} is inactive,{0} {1} غير نشط
+{0} removed,أُزيل {0}
+Add at least one photo from the phone,أضف صورة واحدة على الأقل من الجوال
+Body damage,أضرار الهيكل
+Choose what is wrong for every row that needs repair,اختر نوع العطل لكل بند يحتاج إصلاحًا
+Damage marked,تم تحديد الأضرار
+Leak,تسريب
+Loose,مرتخٍ
+No damage,لا توجد أضرار
+No open visit for this vehicle,لا توجد زيارة مفتوحة لهذه المركبة
+Noise,صوت غير طبيعي
+Parts,القطع
+Plate number cleared,تم مسح رقم اللوحة
+Reading cleared,تم مسح القراءة
+Scan the vehicle barcode,امسح باركود المركبة
+Signature cleared,تم مسح التوقيع
+Tap the damaged part,المس الجزء المتضرر
+Vehicle body,هيكل المركبة
+Worn,متآكل
+This language is not available,هذه اللغة غير متاحة
+Choose a body part and a damage type,اختر جزء الهيكل ونوع الضرر

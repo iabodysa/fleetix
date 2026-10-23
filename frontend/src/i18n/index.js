@@ -1,3 +1,15 @@
+export const LANGUAGES = [
+	{ code: "ar", name: "العربية", dir: "rtl" },
+	{ code: "en", name: "English", dir: "ltr" },
+	{ code: "ur", name: "اردو", dir: "rtl" },
+	{ code: "hi", name: "हिन्दी", dir: "ltr" },
+	{ code: "bn", name: "বাংলা", dir: "ltr" },
+]
+
+export function languageOf(code) {
+	return LANGUAGES.find((language) => language.code === code) || LANGUAGES[1]
+}
+
 export function __(text, args) {
 	const boot = (window.frappe && window.frappe.boot) || {}
 	let out = (boot.__messages && boot.__messages[text]) || text
@@ -30,7 +42,7 @@ export function statusLabel(status) {
 }
 
 export function isolate(value) {
-	return "\u2066" + String(value).split("-").join("\u2011") + "\u2069"
+	return "⁦" + String(value).split("-").join("‑") + "⁩"
 }
 
 export function formatKm(value) {

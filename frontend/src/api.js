@@ -1,5 +1,5 @@
 import call from "frappe-ui/src/utils/call.js"
-import { __ } from "./translate.js"
+import { __ } from "./i18n/index.js"
 
 const M = "fleetix.fleetix.api.maintenance."
 
@@ -16,6 +16,7 @@ export const api = {
 			filters: maintenance,
 			fieldname: ["status", "inspection", "docstatus"],
 		}),
+	setLanguage: (lang) => call(M + "set_language", { lang }),
 	login: (usr, pwd) => call("login", { usr, pwd }),
 	logout: () => call("logout"),
 }

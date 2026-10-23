@@ -1,4 +1,4 @@
-import { __, componentLabel, formatKm, isolate } from "./translate.js"
+import { __, componentLabel, formatKm, isolate } from "./i18n/index.js"
 
 function plugin(name) {
 	const capacitor = window.Capacitor

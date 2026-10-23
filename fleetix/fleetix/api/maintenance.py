@@ -24,6 +24,9 @@ COMPONENT_GROUPS = {
 FINISH_ACTIONS = {"Approved": "Start Service", "Service": "Finish Service", "Final Check": "Complete"}
 SOON_KM = 1000
 SOON_DAYS = 14
+APP_LANGUAGES = ("ar", "en", "ur", "hi", "bn")
+RTL_LANGUAGES = ("ar", "ur")
+DAMAGE_KINDS = ("Scratch", "Dent", "Broken", "Missing")
 MAINTENANCE_APK = {"version_code": 4, "version_name": "1.3", "file": "fleetix-maintenance.apk"}
 
 
@@ -33,6 +36,14 @@ def app_version():
 	if os.path.exists(frappe.get_app_path("fleetix", "public", "apk", MAINTENANCE_APK["file"])):
 		url = get_url("/assets/fleetix/apk/" + MAINTENANCE_APK["file"])
 	return {"version_code": MAINTENANCE_APK["version_code"], "version_name": MAINTENANCE_APK["version_name"], "url": url}
+
+
+@frappe.whitelist(methods=["POST"])
+def set_language(lang):
+	frappe.only_for(WORKER_ROLES)
+	if lang not in APP_LANGUAGES or not frappe.db.exists("Language", lang):
+		frappe.throw(_("This language is not available"))
+	frappe.db.set_value("User", frappe.session.user, "language", lang)
 
 
 @frappe.whitelist()
@@ -149,12 +160,13 @@ def get_photo_link(maintenance):
 
 
 @frappe.whitelist(methods=["POST"])
-def send_for_approval(maintenance, odometer, components, photos, driver_signature, inspector_signature):
+def send_for_approval(maintenance, odometer, components, photos, driver_signature, inspector_signature, damages=None):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
 	visit.check_permission("write")
 	components = frappe.parse_json(components) or []
 	photos = frappe.parse_json(photos) or []
+	damages = frappe.parse_json(damages) or []
 	odometer = cint(odometer)
 	last_odometer = cint(frappe.db.get_value("Vehicle", visit.vehicle, "last_odometer"))
 	if odometer < last_odometer:
@@ -174,6 +186,9 @@ def send_for_approval(maintenance, odometer, components, photos, driver_signatur
 			},
 		):
 			frappe.throw(_("Photo {0} does not belong to this visit").format(row.get("caption")))
+	areas = frappe.get_meta("Damage").get_options("area").split("\n")
+	if any(row.get("area") not in areas or row.get("kind") not in DAMAGE_KINDS for row in damages):
+		frappe.throw(_("Choose a body part and a damage type"))
 	if visit.status == "Driver Arrived":
 		visit = apply_workflow(visit, "Start Inspection")
 	if visit.status != "Full Inspection":
@@ -212,6 +227,21 @@ def send_for_approval(maintenance, odometer, components, photos, driver_signatur
 		[{"component": row["component"], "item": row["item"], "qty": flt(row["qty"])} for row in components],
 	)
 	visit.save()
+	record_language = frappe.get_system_settings("language")
+	for row in damages:
+		frappe.get_doc(
+			{
+				"doctype": "Damage",
+				"vehicle": visit.vehicle,
+				"source": "Maintenance",
+				"source_reference": visit.name,
+				"driver": visit.driver,
+				"project": visit.project,
+				"area": row["area"],
+				"description": _(row["kind"], lang=record_language),
+				"status": "Detected",
+			}
+		).insert()
 	return {"maintenance": visit.name, "status": visit.status, "inspection": inspection.name}
 
 
