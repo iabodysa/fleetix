@@ -6,11 +6,11 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "vehicle_request",
   "vehicle",
   "driver",
   "project",
   "customer",
+  "vehicle_request",
   "column_break_assignment",
   "assignment_type",
   "usage_type",
@@ -125,6 +125,7 @@
    "read_only_depends_on": "eval:doc.docstatus == 1"
   },
   {
+   "collapsible": 1,
    "fieldname": "intervals_section",
    "fieldtype": "Section Break",
    "label": "Service Intervals"

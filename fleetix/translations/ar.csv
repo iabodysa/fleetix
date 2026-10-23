@@ -260,7 +260,7 @@ Usage Type,نوع الاستخدام
 Username,اسم المستخدم
 Valid,سارية
 Valid To,صالح حتى
-Vehicle Assignment,تفويض المركبة
+Vehicle Assignment,إسناد مركبة
 Vehicle Checklist Item,بند فحص المركبة
 Vehicle Handover,تسليم المركبة
 Vehicle Inspection,فحص المركبة
@@ -9360,16 +9360,11 @@ Handovers,التسليمات
 Vehicle Requests,طلبات المركبات
 "Good morning, {0}",صباح الخير يا {0}
 Late,متأخر
-Pages,الصفحات
-Numbers,الأرقام
-Records and Settings,السجلات والإعدادات
-Handover and Return,التسليم والإرجاع
 Inspections,الفحوصات
 {} waiting,{} بالانتظار
 {} active,{} نشط
 {} open,{} مفتوح
 {} due,{} مستحق
-Requests Waiting for a Vehicle,طلبات تنتظر مركبة
 Settings,الإعدادات
 Amount before VAT,المبلغ قبل الضريبة
 Claim Amount,مبلغ المطالبة
@@ -9390,7 +9385,7 @@ Upcoming official holidays,الإجازات الرسمية القادمة
 Page links,روابط الصفحة
 Etihad International Car Rental,اتحاد الدولية لتأجير السيارات
 Kingdom of Saudi Arabia. All rights reserved.,المملكة العربية السعودية. جميع الحقوق محفوظة.
-Continue to your workspace,تابع إلى مساحة العمل
+Continue to your workspace,ادخل النظام
 Continue to your account,تابع إلى حسابك
 About us,من نحن
 About Etihad International,عن اتحاد الدولية
@@ -9794,6 +9789,34 @@ Dent,انبعاج
 No Damage,لا توجد أضرار
 Row number in the damage table,رقم السطر في جدول الأضرار
 Scratch,خدش
+Rental Desk,التأجير
+Movement Desk,الحركة
+Project Desk,مشروعي
+Maintenance Desk,متابعة الصيانة
+Accounts Desk,الحسابات
+Start here,ابدأ
+Follow-up,متابعة
+Assign a Vehicle,أسند مركبة
+Record Handover or Return,سجّل تسليم أو إرجاع
+Report an Accident,بلّغ عن حادث
+New Inspection,فحص جديد
+Handovers and Returns,التسليم والإرجاع
+Record Damage,سجّل ضرر
+Request a Vehicle,اطلب مركبة
+My Requests,طلباتي
+Vehicles on My Projects,مركبات مشاريعي
+Record Training,سجّل تدريب
+Project Claims,مطالبات المشروع
+Open Maintenance,صيانة مفتوحة
+Rental Charges,رسوم الإيجار
+Sales Invoices,فواتير المبيعات
+Rental Rates,أسعار التأجير
+Insurance Policies,وثائق التأمين
+Insurance Claims,مطالبات التأمين
+Rental Charges to Invoice,رسوم تنتظر الفوترة
+Finance and Insurance,المالية والتأمين
+Boards,اللوحات
+{} draft,{} مسودة
 Missing Data,بيانات ناقصة
 Missing Data: {0},بيانات ناقصة: {0}
 One Vehicle field name per line. A vehicle with any of them empty is marked Missing Data.,اسم حقل واحد من حقول السيارة في كل سطر. السيارة التي يكون أي منها فارغًا تُعلَّم بيانات ناقصة.

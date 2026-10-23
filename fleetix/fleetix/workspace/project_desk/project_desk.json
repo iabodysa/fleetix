@@ -1,0 +1,129 @@
+{
+ "charts": [],
+ "content": "[{\"id\": \"project-1\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Start here</b></span>\", \"col\": 12}}, {\"id\": \"project-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Request a Vehicle\", \"col\": 4}}, {\"id\": \"project-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"My Requests\", \"col\": 4}}, {\"id\": \"project-4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Vehicles on My Projects\", \"col\": 4}}, {\"id\": \"project-5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Record Training\", \"col\": 4}}, {\"id\": \"project-6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Project Claims\", \"col\": 4}}, {\"id\": \"project-7\", \"type\": \"quick_list\", \"data\": {\"quick_list_name\": \"My Requests\", \"col\": 12}}, {\"id\": \"project-8\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Follow-up</b></span>\", \"col\": 12}}, {\"id\": \"project-9\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Drivers Board\", \"col\": 4}}, {\"id\": \"project-10\", \"type\": \"card\", \"data\": {\"card_name\": \"Records\", \"col\": 6}}]",
+ "creation": "2026-10-23 00:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "project",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Project Desk",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Records",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Driver",
+   "link_count": 0,
+   "link_to": "Driver",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Project",
+   "link_count": 0,
+   "link_to": "Project",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-10-23 17:09:00.000000",
+ "modified_by": "Administrator",
+ "module": "Fleetix",
+ "name": "Project Desk",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Vehicle Request",
+   "label": "My Requests",
+   "quick_list_filter": "{\"project_supervisor\": frappe.session.user}"
+  }
+ ],
+ "roles": [
+  {
+   "role": "Project Supervisor"
+  },
+  {
+   "role": "Rental Manager"
+  },
+  {
+   "role": "System Manager"
+  }
+ ],
+ "sequence_id": 0.3,
+ "shortcuts": [
+  {
+   "color": "Blue",
+   "doc_view": "New",
+   "format": "",
+   "label": "Request a Vehicle",
+   "link_to": "Vehicle Request",
+   "stats_filter": "",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "doc_view": "List",
+   "format": "",
+   "label": "My Requests",
+   "link_to": "Vehicle Request",
+   "stats_filter": "{\"project_supervisor\": frappe.session.user}",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "",
+   "label": "Vehicles on My Projects",
+   "link_to": "Vehicle Assignment",
+   "stats_filter": "",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "doc_view": "New",
+   "format": "",
+   "label": "Record Training",
+   "link_to": "Training Record",
+   "stats_filter": "",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "",
+   "label": "Project Claims",
+   "link_to": "Project Claim",
+   "stats_filter": "",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "",
+   "format": "",
+   "label": "Drivers Board",
+   "link_to": "drivers-board",
+   "stats_filter": "",
+   "type": "Page"
+  }
+ ],
+ "title": "Project Desk"
+}

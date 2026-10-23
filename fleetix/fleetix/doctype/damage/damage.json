@@ -7,15 +7,15 @@
  "engine": "InnoDB",
  "field_order": [
   "vehicle",
+  "area",
+  "driver",
+  "project",
+  "column_break_holder",
+  "customer",
   "city",
   "source",
   "source_reference",
-  "column_break_holder",
-  "driver",
-  "project",
-  "customer",
   "section_break_details",
-  "area",
   "description",
   "photos",
   "section_break_cost",
@@ -126,6 +126,7 @@
    "options": "Damage Cost Item"
   },
   {
+   "collapsible": 1,
    "fieldname": "section_break_responsibility",
    "fieldtype": "Section Break",
    "label": "Responsibility"
