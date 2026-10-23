@@ -1,0 +1,166 @@
+{
+ "charts": [],
+ "content": "[{\"id\": \"accounts-1\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Rental Charges to Invoice\", \"col\": 3}}, {\"id\": \"accounts-2\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Start here</b></span>\", \"col\": 12}}, {\"id\": \"accounts-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Rental Charges\", \"col\": 4}}, {\"id\": \"accounts-4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Sales Invoices\", \"col\": 4}}, {\"id\": \"accounts-5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Rental Charges by Project\", \"col\": 4}}, {\"id\": \"accounts-6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Rental Rates\", \"col\": 4}}, {\"id\": \"accounts-7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Insurance Policies\", \"col\": 4}}, {\"id\": \"accounts-8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Insurance Claims\", \"col\": 4}}, {\"id\": \"accounts-9\", \"type\": \"card\", \"data\": {\"card_name\": \"Claims\", \"col\": 6}}, {\"id\": \"accounts-10\", \"type\": \"card\", \"data\": {\"card_name\": \"Records\", \"col\": 6}}]",
+ "creation": "2026-10-23 00:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "accounting",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Accounts Desk",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Claims",
+   "link_count": 3,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Project Claim",
+   "link_count": 0,
+   "link_to": "Project Claim",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Accident",
+   "link_count": 0,
+   "link_to": "Accident",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Damage",
+   "link_count": 0,
+   "link_to": "Damage",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Records",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer",
+   "link_count": 0,
+   "link_to": "Customer",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Project",
+   "link_count": 0,
+   "link_to": "Project",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-10-23 04:14:00.000000",
+ "modified_by": "Administrator",
+ "module": "Fleetix",
+ "name": "Accounts Desk",
+ "number_cards": [
+  {
+   "label": "Rental Charges to Invoice",
+   "number_card_name": "Rental Charges to Invoice"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Accountant"
+  },
+  {
+   "role": "Rental Manager"
+  },
+  {
+   "role": "System Manager"
+  }
+ ],
+ "sequence_id": 0.5,
+ "shortcuts": [
+  {
+   "color": "Orange",
+   "doc_view": "List",
+   "format": "{} draft",
+   "label": "Rental Charges",
+   "link_to": "Project Rental Charge",
+   "stats_filter": "{\"docstatus\": 0}",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "",
+   "label": "Sales Invoices",
+   "link_to": "Sales Invoice",
+   "stats_filter": "{\"customer\": [\"is\", \"set\"]}",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "",
+   "format": "",
+   "label": "Rental Charges by Project",
+   "link_to": "Rental Charges by Project",
+   "stats_filter": "",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "",
+   "label": "Rental Rates",
+   "link_to": "Rental Rate",
+   "stats_filter": "",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "",
+   "label": "Insurance Policies",
+   "link_to": "Insurance Policy",
+   "stats_filter": "",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "",
+   "label": "Insurance Claims",
+   "link_to": "Insurance Claim",
+   "stats_filter": "",
+   "type": "DocType"
+  }
+ ],
+ "title": "Accounts Desk"
+}

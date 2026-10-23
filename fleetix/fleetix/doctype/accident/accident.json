@@ -122,6 +122,7 @@
    "options": "Vehicle Inspection Photo"
   },
   {
+   "collapsible": 1,
    "fieldname": "section_break_responsibility",
    "fieldtype": "Section Break",
    "label": "Responsibility"

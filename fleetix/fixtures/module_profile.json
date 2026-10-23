@@ -1,0 +1,499 @@
+[
+ {
+  "doctype": "Module Profile",
+  "name": "Fleetix Field",
+  "module_profile_name": "Fleetix Field",
+  "block_modules": [
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Accounts"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Assets"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Automation"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Bulk Transaction"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Buying"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "CRM"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Communication"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Contacts"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Core"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Custom"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Desk"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "EDI"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "ERPNext Integrations"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Email"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Geo"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "HR"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Integrations"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Maintenance"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Manufacturing"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Payroll"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Portal"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Printing"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Projects"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Quality Management"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Regional"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Selling"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Setup"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Social"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Stock"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Subcontracting"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Support"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Telephony"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Utilities"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Website"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Workflow"
+   }
+  ]
+ },
+ {
+  "doctype": "Module Profile",
+  "name": "Fleetix Finance",
+  "module_profile_name": "Fleetix Finance",
+  "block_modules": [
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Assets"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Automation"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Bulk Transaction"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Buying"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "CRM"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Communication"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Contacts"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Core"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Custom"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Desk"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "EDI"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "ERPNext Integrations"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Email"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Geo"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "HR"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Integrations"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Maintenance"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Manufacturing"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Payroll"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Portal"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Printing"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Projects"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Quality Management"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Regional"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Selling"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Setup"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Social"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Stock"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Subcontracting"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Support"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Telephony"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Utilities"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Website"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Workflow"
+   }
+  ]
+ }
+]
