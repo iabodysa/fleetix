@@ -1,6 +1,6 @@
 frappe.provide("fleetix.fleet");
 
-const STATES = ["red", "black", "gray", "suspended", "green"];
+const STATES = ["red", "black", "gray", "suspended", "maintenance", "green"];
 const REFRESH_MS = 60 * 1000;
 const PLATE_LETTERS = {
 	A: "ا",
@@ -46,6 +46,7 @@ fleetix.fleet.STATE_LABELS = {
 	gray: __("Periodic Maintenance Missed"),
 	black: __("Idle, No Assignment"),
 	suspended: __("Suspended"),
+	maintenance: __("In Maintenance"),
 	green: __("All Clear"),
 };
 

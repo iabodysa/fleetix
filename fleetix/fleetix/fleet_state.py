@@ -15,12 +15,11 @@ BOARD_ROLES = (
 	"Accountant",
 	"System Manager",
 )
-STATES = ("red", "black", "gray", "suspended", "green")
+STATES = ("red", "black", "gray", "suspended", "maintenance", "green")
 DELIVERY_STEPS = ("Pending Inspection", "Pending Documentation", "Pending Assignment")
 WAITING_STEPS = ("New", "Pending Vehicle Selection")
 WORKSHOP_STEPS = ("Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
 TRAINING = "Temporary (Training)"
-HELD = ("In Maintenance", "Suspended")
 EXPIRY_WINDOW_DAYS = 14
 VEHICLE_FIELDS = [
 	"name",
@@ -146,15 +145,12 @@ def classify(project=None, city=None):
 			row.update(state="red", reason="open_note", late_hours=0)
 		elif vehicle.status == "Suspended":
 			row.update(state="suspended", reason="")
-		elif (
-			not assignment
-			and vehicle.status not in HELD
-			and vehicle.name not in in_workshop
-			and not row.notes
-		):
+		elif vehicle.status == "In Maintenance" or vehicle.name in in_workshop:
+			row.update(state="maintenance", reason="")
+		elif not assignment and not row.notes:
 			since = last_return.get(vehicle.name) or vehicle.acquisition_date or vehicle.creation
 			row.update(state="black", reason="idle", idle_days=date_diff(today(), since))
-		elif vehicle.name not in in_workshop and (vehicle.name in due_alerts or due):
+		elif vehicle.name in due_alerts or due:
 			alert = due_alerts.get(vehicle.name)
 			row.update(
 				state="gray",

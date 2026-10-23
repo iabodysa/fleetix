@@ -1,0 +1,22 @@
+{
+ "color": "#2563eb",
+ "creation": "2026-10-23 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Vehicle",
+ "dynamic_filters_json": "",
+ "filters_json": "{\"state\": \"maintenance\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "In Maintenance",
+ "method": "fleetix.fleetix.api.fleet_board.count_state",
+ "modified": "2026-10-23 05:34:00.000000",
+ "modified_by": "Administrator",
+ "module": "Fleetix",
+ "name": "In Maintenance",
+ "owner": "Administrator",
+ "show_percentage_stats": 0,
+ "type": "Custom"
+}

@@ -16,7 +16,7 @@ frappe.query_reports["Fleet Status"] = {
 	formatter(value, row, column, data, default_formatter) {
 		value = default_formatter(value, row, column, data);
 		if (column.fieldname === "state" && data && data.state_color) {
-			const pill = { red: "red", black: "darkgrey", gray: "gray", suspended: "orange", green: "green" }[
+			const pill = { red: "red", black: "darkgrey", gray: "gray", suspended: "orange", maintenance: "blue", green: "green" }[
 				data.state_color
 			];
 			return `<span class="indicator-pill ${pill}">${value}</span>`;

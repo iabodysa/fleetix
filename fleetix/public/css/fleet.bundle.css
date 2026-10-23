@@ -5,6 +5,9 @@
 	--st-suspended: #d97706;
 	--st-suspended-tint: #fdf1e1;
 	--st-suspended-glow: rgba(217, 119, 6, 0.5);
+	--st-maintenance: #2563eb;
+	--st-maintenance-tint: #e7effd;
+	--st-maintenance-glow: rgba(37, 99, 235, 0.5);
 	--st-red: #dc2626;
 	--st-red-tint: #fde9e7;
 	--st-red-glow: rgba(220, 38, 38, 0.6);
@@ -32,6 +35,9 @@
 	--st-suspended: #f59e0b;
 	--st-suspended-tint: #2a1e0b;
 	--st-suspended-glow: rgba(245, 158, 11, 0.55);
+	--st-maintenance: #3b82f6;
+	--st-maintenance-tint: #0f1b33;
+	--st-maintenance-glow: rgba(59, 130, 246, 0.55);
 	--st-red: #f04438;
 	--st-red-tint: #2c1414;
 	--st-red-glow: rgba(240, 68, 56, 0.7);
@@ -96,6 +102,7 @@
 .fx-lampbtn.s-gray { color: var(--st-gray); }
 .fx-lampbtn.s-black { color: var(--fx-ink); }
 .fx-lampbtn.s-suspended { color: var(--st-suspended); }
+.fx-lampbtn.s-maintenance { color: var(--st-maintenance); }
 .fx-lampbtn.s-green { color: var(--st-green); }
 .fx-lampbtn.active.s-black { background: var(--st-black); color: var(--st-black-ink); }
 
@@ -104,6 +111,7 @@
 .l-gray { background: var(--st-gray); box-shadow: 0 0 0 3px var(--st-gray-tint); opacity: 0.8; }
 .l-black { background: var(--st-black); box-shadow: inset 0 0 0 2px var(--st-black-line), 0 0 0 1px var(--fx-line); }
 .l-suspended { background: var(--st-suspended); box-shadow: 0 0 0 3px var(--st-suspended-tint), 0 0 8px var(--st-suspended-glow); }
+.l-maintenance { background: var(--st-maintenance); box-shadow: 0 0 0 3px var(--st-maintenance-tint), 0 0 8px var(--st-maintenance-glow); }
 .l-green { background: var(--st-green); box-shadow: 0 0 0 3px var(--st-green-tint), 0 0 8px var(--st-green-glow); }
 @keyframes fx-blink { 50% { opacity: 0.45; } }
 @keyframes fx-pulse {
@@ -158,6 +166,8 @@
 .fx-tile .head { display: flex; align-items: center; gap: 6px; }
 .t-suspended { background: var(--st-suspended-tint); }
 .t-suspended .pl-strip { background: var(--st-suspended); }
+.t-maintenance { background: var(--st-maintenance-tint); }
+.t-maintenance .pl-strip { background: var(--st-maintenance); }
 .t-green { background: var(--st-green-tint); }
 .t-green .pl-strip { background: var(--st-green); }
 .t-gray { background: var(--st-gray-tint); border-style: dashed; }
@@ -252,6 +262,7 @@
 .fx-px.s-gray { background: var(--st-gray); }
 .fx-px.s-black { background: var(--st-black); box-shadow: inset 0 0 0 1px var(--st-black-line); }
 .fx-px.s-suspended { background: var(--st-suspended); }
+.fx-px.s-maintenance { background: var(--st-maintenance); }
 .fx-px.s-green { background: var(--st-green); }
 .fx-region { font-size: 10px; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--fx-line); }
 
