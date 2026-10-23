@@ -102,7 +102,9 @@ def due_components(vehicle):
 def create_due_alerts():
 	open_vehicles = set(frappe.get_all("Maintenance", filters={"docstatus": 0}, pluck="vehicle"))
 	assigned = frappe.get_all(
-		"Vehicle", filters={"current_driver": ("is", "set"), "current_project": ("is", "set")}, pluck="name"
+		"Vehicle",
+		filters={"active": 1, "current_driver": ("is", "set"), "current_project": ("is", "set")},
+		pluck="name",
 	)
 	for name in assigned:
 		vehicle = frappe.get_doc("Vehicle", name)

@@ -26,7 +26,7 @@ VEHICLE_FIELDS = [
 
 def execute(filters=None):
 	filters = frappe._dict(filters or {})
-	conditions = {key: filters[key] for key in ("company", "city") if filters.get(key)}
+	conditions = {"active": 1, **{key: filters[key] for key in ("company", "city") if filters.get(key)}}
 	if filters.project:
 		conditions["current_project"] = filters.project
 	if filters.vehicle:

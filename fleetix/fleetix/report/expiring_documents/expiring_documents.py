@@ -16,6 +16,7 @@ def execute(filters=None):
 
 	vehicles = frappe.get_list(
 		"Vehicle",
+		filters={"active": 1},
 		fields=[
 			"name",
 			"current_driver",
@@ -81,7 +82,7 @@ def execute(filters=None):
 		]
 	for driver in frappe.get_list(
 		"Driver",
-		filters={"status": ("!=", "Left"), **customer},
+		filters={"status": ("!=", "Left"), "active": 1, **customer},
 		fields=["name", "full_name", "customer", "expiry_date"],
 		limit_page_length=0,
 	):

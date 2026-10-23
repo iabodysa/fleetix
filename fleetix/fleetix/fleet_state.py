@@ -20,6 +20,7 @@ DELIVERY_STEPS = ("Pending Inspection", "Pending Documentation", "Pending Assign
 WAITING_STEPS = ("New", "Pending Vehicle Selection")
 WORKSHOP_STEPS = ("Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
 TRAINING = "Temporary (Training)"
+HELD = ("In Maintenance", "Suspended")
 EXPIRY_WINDOW_DAYS = 14
 VEHICLE_FIELDS = [
 	"name",
@@ -46,7 +47,7 @@ VEHICLE_FIELDS = [
 
 
 def classify(project=None, city=None):
-	filters = {"city": city} if city else {}
+	filters = {"active": 1, **({"city": city} if city else {})}
 	vehicles = frappe.get_list("Vehicle", filters=filters, fields=VEHICLE_FIELDS, limit_page_length=0)
 	if not vehicles:
 		return []
@@ -143,7 +144,12 @@ def classify(project=None, city=None):
 			)
 		elif assignment and row.notes:
 			row.update(state="red", reason="open_note", late_hours=0)
-		elif not assignment and vehicle.status != "In Maintenance" and vehicle.name not in in_workshop:
+		elif (
+			not assignment
+			and vehicle.status not in HELD
+			and vehicle.name not in in_workshop
+			and not row.notes
+		):
 			since = last_return.get(vehicle.name) or vehicle.acquisition_date or vehicle.creation
 			row.update(state="black", reason="idle", idle_days=date_diff(today(), since))
 		elif vehicle.name not in in_workshop and (vehicle.name in due_alerts or due):
