@@ -12,7 +12,7 @@ from frappe.utils import cint, date_diff, flt, get_host_name_from_request, get_u
 from fleetix.fleetix.doctype.maintenance.maintenance import COMPONENT_FIELDS, due_components, next_due
 from fleetix.fleetix.document_qr import qr_data_url
 
-WORKER_ROLES = ("Movement Supervisor", "System Manager")
+WORKER_ROLES = ("Movement Supervisor", "Rental Manager", "System Manager")
 OPEN_STATES = ("Due Alert", "Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
 COMPONENT_GROUPS = {
 	"Oil": "Oil",
