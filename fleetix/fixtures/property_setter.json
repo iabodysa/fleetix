@@ -156,6 +156,18 @@
   "value": "1"
  },
  {
+  "doc_type": "Project",
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocType",
+  "field_name": null,
+  "is_system_generated": 0,
+  "module": "Fleetix",
+  "name": "Project-main-show_title_field_in_link",
+  "property": "show_title_field_in_link",
+  "property_type": "Check",
+  "value": "1"
+ },
+ {
   "doc_type": "Vehicle",
   "doctype": "Property Setter",
   "doctype_or_field": "DocField",
