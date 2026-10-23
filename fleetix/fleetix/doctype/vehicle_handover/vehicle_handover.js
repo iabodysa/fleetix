@@ -8,11 +8,13 @@ frappe.ui.form.on("Vehicle Handover", {
 		}));
 	},
 	refresh(frm) {
+		fleetix.vehicle_type.show(frm, "vehicle");
 		if (frm.is_new()) {
 			frm.trigger("vehicle");
 		}
 	},
 	vehicle(frm) {
+		fleetix.vehicle_type.show(frm, "vehicle");
 		if (!frm.doc.vehicle || frm.doc.inspection || frm.doc.docstatus !== 0) {
 			return;
 		}

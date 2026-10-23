@@ -2,7 +2,11 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Vehicle Inspection", {
+	refresh(frm) {
+		fleetix.vehicle_type.show(frm, "vehicle");
+	},
 	vehicle(frm) {
+		fleetix.vehicle_type.show(frm, "vehicle");
 		if (!frm.doc.vehicle || (frm.doc.checklist || []).length) {
 			return;
 		}

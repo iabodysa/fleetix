@@ -2,6 +2,7 @@
 // For license information, please see license.txt
 
 frappe.listview_settings["Project Rental Charge"] = {
+	...fleetix.vehicle_type.list_settings("Project Rental Charge", "vehicle"),
 	onload(listview) {
 		if (!frappe.model.can_create("Sales Invoice")) return;
 		listview.page.add_inner_button(__("Create Monthly Invoice"), () => {

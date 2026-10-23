@@ -144,6 +144,8 @@ fixtures = [
 
 override_doctype_class = {"Vehicle": "fleetix.fleetix.vehicle.VehicleService"}
 
+app_include_js = "/assets/fleetix/js/vehicle_type.js"
+
 doctype_js = {"Vehicle": "public/js/vehicle.js"}
 doctype_list_js = {"Vehicle": "public/js/vehicle_list.js"}
 
