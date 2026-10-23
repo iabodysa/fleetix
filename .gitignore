@@ -59,3 +59,5 @@ fleetix/public/maintenance
 fleetix/www/maintenance.html
 fleetix/public/gate
 fleetix/www/gate.html
+/yarn.lock
+/fleetix/public/node_modules

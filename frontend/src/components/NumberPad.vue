@@ -8,9 +8,11 @@ const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 <template>
 	<div class="number-pad ltr">
 		<button v-for="key in keys" :key="key" class="number-key" type="button" @click="$emit('key', key)">{{ key }}</button>
-		<button class="number-key number-key-soft" type="button" :aria-label="__('Clear')" @click="$emit('clear')">
-			<AppIcon name="close" size="lg" />
-		</button>
+		<slot name="lead">
+			<button class="number-key number-key-soft" type="button" :aria-label="__('Clear')" @click="$emit('clear')">
+				<AppIcon name="close" size="lg" />
+			</button>
+		</slot>
 		<button class="number-key" type="button" @click="$emit('key', '0')">0</button>
 		<button class="number-key number-key-soft" type="button" :aria-label="__('Delete')" @click="$emit('erase')">
 			<AppIcon name="erase" size="lg" />

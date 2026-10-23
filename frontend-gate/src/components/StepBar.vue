@@ -21,7 +21,8 @@ defineProps({ steps: { type: Array, required: true }, current: { type: Number, r
 	margin: 0;
 	padding: 0 16px;
 	max-width: 720px;
-	margin-inline: auto;
+	margin-left: auto;
+	margin-right: auto;
 	width: 100%;
 }
 li {

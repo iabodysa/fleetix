@@ -1,3 +1,4 @@
+import "../../frontend/compat/flex-gap.js"
 import { createApp } from "vue"
 import App from "./App.vue"
 import { __, applyDirection, ensureLanguage } from "./i18n.js"

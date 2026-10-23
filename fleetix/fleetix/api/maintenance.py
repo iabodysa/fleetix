@@ -6,7 +6,7 @@ from urllib.parse import quote
 
 import frappe
 from frappe import _
-from frappe.model.workflow import apply_workflow
+from frappe.model.workflow import apply_workflow, get_transitions
 from frappe.utils import cint, date_diff, flt, get_host_name_from_request, get_url, getdate, today
 
 from fleetix.fleetix.doctype.maintenance.maintenance import COMPONENT_FIELDS, due_components, next_due
@@ -14,13 +14,6 @@ from fleetix.fleetix.document_qr import qr_data_url
 
 WORKER_ROLES = ("Movement Supervisor", "Rental Manager", "System Manager")
 OPEN_STATES = ("Due Alert", "Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
-COMPONENT_GROUPS = {
-	"Oil": "Oil",
-	"Oil Filter": "Oil Filter",
-	"Front Tires": "Tires",
-	"Rear Tires": "Tires",
-	"Battery": "Battery",
-}
 FINISH_ACTIONS = {"Approved": "Start Service", "Service": "Finish Service", "Final Check": "Complete"}
 SOON_KM = 1000
 SOON_DAYS = 14
@@ -80,6 +73,7 @@ def get_due_queue():
 				"last_odometer": cint(vehicle.last_odometer),
 				"due": [row["component"] for row in components if row["state"] == "overdue"],
 				"worst": worst_overdue(components, cint(vehicle.last_odometer)),
+				"actions": [t.action for t in get_transitions(frappe.get_doc("Maintenance", visit.name))],
 			}
 		)
 	return queue
@@ -369,10 +363,18 @@ def worst_overdue(components, reading):
 
 
 def component_items(component, vehicle):
+	rules = [row for row in frappe.get_single("Fleetix Settings").component_items if row.component == component]
+	groups = [row.item_group for row in rules if row.item_group]
+	words = [word.strip() for row in rules for word in (row.keywords or "").splitlines() if word.strip()]
+	if not groups and not words:
+		return []
+	matches = [["item_group", "in", groups]] if groups else []
+	matches += [["item_name", "like", f"%{word}%"] for word in words]
 	warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
 	items = frappe.get_all(
 		"Item",
-		filters={"item_group": COMPONENT_GROUPS[component], "disabled": 0, "is_stock_item": 1},
+		filters={"disabled": 0, "is_stock_item": 1},
+		or_filters=matches,
 		fields=["item_code", "item_name", "stock_uom"],
 		order_by="item_name asc",
 	)

@@ -4,6 +4,7 @@
 	box-sizing: border-box;
 }
 html {
+	font-size: 16px;
 	font-size: clamp(16px, 0.75vw + 9px, 22px);
 	-webkit-text-size-adjust: 100%;
 }

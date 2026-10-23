@@ -107,6 +107,11 @@ onBeforeUnmount(() => clearInterval(timer))
 	object-fit: cover;
 	border-radius: var(--r-md);
 }
+@supports not (aspect-ratio: 1) {
+	.photos-thumb {
+		height: 7rem;
+	}
+}
 @media (max-width: 760px) {
 	.photos {
 		grid-template-columns: minmax(0, 1fr);

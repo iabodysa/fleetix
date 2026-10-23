@@ -102,8 +102,12 @@ function next() {
 	opacity: 0.3;
 }
 .drum-unit {
-	padding-inline-start: var(--s2);
+	padding-left: var(--s2);
 	font-weight: 700;
+}
+html[dir="rtl"] .drum-unit {
+	padding-left: 0;
+	padding-right: var(--s2);
 }
 .odometer-jump {
 	color: var(--wait);

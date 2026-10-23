@@ -40,7 +40,7 @@ const parts = computed(() => parsePlate(props.plate))
 	padding: 2px 10px;
 }
 .block + .block {
-	border-inline-start: 2px solid var(--plate-ink);
+	border-left: 2px solid var(--plate-ink);
 }
 .row {
 	display: flex;

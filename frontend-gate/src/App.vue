@@ -84,6 +84,7 @@ onMounted(() => {
 
 <style>
 #app {
+	min-height: 100vh;
 	min-height: 100dvh;
 	display: flex;
 	flex-direction: column;
@@ -93,6 +94,7 @@ onMounted(() => {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	min-height: 100vh;
 	min-height: 100dvh;
 }
 .head {
@@ -142,7 +144,10 @@ onMounted(() => {
 }
 .veil {
 	position: fixed;
-	inset: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 	z-index: 20;
 	background: rgba(0, 0, 0, 0.5);
 	display: flex;

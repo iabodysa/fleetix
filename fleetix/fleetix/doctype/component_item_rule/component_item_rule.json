@@ -1,0 +1,47 @@
+{
+ "actions": [],
+ "creation": "2026-10-23 20:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "component",
+  "item_group",
+  "keywords"
+ ],
+ "fields": [
+  {
+   "fieldname": "component",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Component",
+   "options": "Oil\nOil Filter\nFront Tires\nRear Tires\nBattery",
+   "reqd": 1
+  },
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Group",
+   "options": "Item Group"
+  },
+  {
+   "fieldname": "keywords",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Keywords"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-10-23 20:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Fleetix",
+ "name": "Component Item Rule",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

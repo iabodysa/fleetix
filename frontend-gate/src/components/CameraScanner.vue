@@ -81,7 +81,10 @@ onBeforeUnmount(() => {
 <style scoped>
 .veil {
 	position: fixed;
-	inset: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 	z-index: 30;
 	background: rgba(0, 0, 0, 0.92);
 	display: flex;
@@ -95,7 +98,8 @@ onBeforeUnmount(() => {
 	width: 100%;
 	max-width: 520px;
 	margin: 0 auto;
-	aspect-ratio: 1;
+	height: calc(100vw - 32px);
+	max-height: 520px;
 	border-radius: var(--radius);
 	overflow: hidden;
 	background: #000;
@@ -107,7 +111,10 @@ video {
 }
 .aim {
 	position: absolute;
-	inset: 18%;
+	top: 18%;
+	right: 18%;
+	bottom: 18%;
+	left: 18%;
 	border: 4px solid var(--accent);
 	border-radius: 12px;
 }

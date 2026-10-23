@@ -31,6 +31,18 @@ function toggle(row) {
 	row.ticked = false
 	offerUndo(__("{0} removed", [componentLabel(row.component)]), () => (row.ticked = true))
 }
+async function findItems(row, txt) {
+	if (txt.trim().length < 2) return (row.found = [])
+	try {
+		const found = await api.searchItems(txt.trim())
+		row.found = found.map((r) => ({ item_code: r.value, item_name: r.description || r.value }))
+	} catch (e) {
+		error.value = errorText(e)
+	}
+}
+function choices(row) {
+	return row.items.length ? row.items : row.found || []
+}
 function next() {
 	if (!ticked.value.length) {
 		error.value = __("Select at least one component")
@@ -73,9 +85,17 @@ onMounted(async () => {
 			</div>
 			<div v-for="row in ticked" :key="row.component" class="card part">
 				<h2 class="part-name"><AppIcon :name="row.component" />{{ componentLabel(row.component) }}</h2>
+				<input
+					v-if="!row.items.length"
+					class="part-search"
+					type="search"
+					:placeholder="__('Search items')"
+					autocomplete="off"
+					@input="findItems(row, $event.target.value)"
+				/>
 				<div class="part-items">
 					<button
-						v-for="item in row.items"
+						v-for="item in choices(row)"
 						:key="item.item_code"
 						class="part-item"
 						:class="{ pressed: row.item === item.item_code }"
@@ -84,7 +104,7 @@ onMounted(async () => {
 						@click="row.item = item.item_code"
 					>
 						<span class="part-item-name">{{ item.item_name }}</span>
-						<span class="muted">{{ __("Stock") }} <span class="ltr">{{ item.stock }}</span> {{ item.stock_uom }}</span>
+						<span v-if="item.stock !== undefined" class="muted">{{ __("Stock") }} <span class="ltr">{{ item.stock }}</span> {{ item.stock_uom }}</span>
 					</button>
 				</div>
 				<div class="stepper ltr">
@@ -114,6 +134,16 @@ onMounted(async () => {
 	display: flex;
 	align-items: center;
 	gap: var(--s2);
+}
+.part-search {
+	width: 100%;
+	min-height: var(--button);
+	margin-bottom: var(--s3);
+	padding: 0 var(--s4);
+	border: 2px solid var(--line);
+	border-radius: var(--r-md);
+	background: var(--surface-2);
+	font-size: var(--t-lg);
 }
 .part-items {
 	display: grid;

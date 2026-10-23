@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue"
 import { __ } from "../../i18n/index.js"
-import { problem } from "../../composables/useFeedback.js"
+import { problem, success } from "../../composables/useFeedback.js"
 import { scanKey } from "../../composables/useBarcode.js"
 import { openVisit, queue, stepForStatus } from "../../store/index.js"
 import BarcodeInput from "../../components/BarcodeInput.vue"
@@ -17,6 +17,7 @@ function scanned(key) {
 	const row = (queue.data || []).find((r) => [r.plate, r.vehicle, r.maintenance].some((value) => scanKey(value) === key))
 	if (row && stepForStatus(row)) {
 		error.value = ""
+		success()
 		openVisit(row)
 		return
 	}

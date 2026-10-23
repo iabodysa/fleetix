@@ -51,7 +51,8 @@ function state(area) {
 	width: 100%;
 	max-width: 16rem;
 	height: auto;
-	margin-inline: auto;
+	margin-left: auto;
+	margin-right: auto;
 	direction: ltr;
 }
 .car-wheel {

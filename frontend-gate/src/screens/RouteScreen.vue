@@ -104,7 +104,7 @@ async function send() {
 	padding: 14px 16px;
 	border-radius: var(--radius);
 	border: 2px solid var(--line);
-	border-inline-start-width: 8px;
+	border-left-width: 8px;
 	background: var(--surface);
 	text-align: start;
 	transition:
@@ -119,13 +119,29 @@ async function send() {
 	opacity: 0.7;
 }
 .tone-ok {
-	border-inline-start-color: var(--ok);
+	border-left-color: var(--ok);
 }
 .tone-warn {
-	border-inline-start-color: var(--warn);
+	border-left-color: var(--warn);
 }
 .tone-bad {
-	border-inline-start-color: var(--bad);
+	border-left-color: var(--bad);
+}
+html[dir="rtl"] .route {
+	border-left-width: 2px;
+	border-right-width: 8px;
+}
+html[dir="rtl"] .tone-ok {
+	border-right-color: var(--ok);
+}
+html[dir="rtl"] .tone-warn {
+	border-right-color: var(--warn);
+}
+html[dir="rtl"] .tone-bad {
+	border-right-color: var(--bad);
+}
+html[dir="rtl"] .route.picked {
+	border-color: var(--accent);
 }
 .picked {
 	border-color: var(--accent);

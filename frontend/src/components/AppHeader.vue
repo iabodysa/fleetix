@@ -19,6 +19,7 @@ defineEmits(["vehicles", "close", "language", "menu"])
 			<PlateChip v-if="plate" :plate="plate" size="sm" />
 			<img v-else class="app-header-brand" src="/assets/fleetix/images/fleetix-logo.svg" alt="Fleetix" />
 		</div>
+		<h1 class="app-header-title">{{ __("Fleetix Maintenance") }}</h1>
 		<div class="app-header-end">
 			<span class="app-header-state" :class="online ? 'tone-done' : 'tone-problem'" :title="online ? __('Online') : __('Offline')">
 				<AppIcon :name="online ? 'online' : 'offline'" />
@@ -55,9 +56,21 @@ defineEmits(["vehicles", "close", "language", "menu"])
 .app-header-start,
 .app-header-end {
 	display: flex;
+	flex: 1 1 0;
 	align-items: center;
 	gap: var(--s2);
 	min-width: 0;
+}
+.app-header-end {
+	justify-content: flex-end;
+}
+.app-header-title {
+	flex: 0 1 auto;
+	font-size: var(--t-lg);
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .app-header-brand {
 	height: 2.25rem;
@@ -84,7 +97,8 @@ defineEmits(["vehicles", "close", "language", "menu"])
 	font-weight: 700;
 }
 @media (max-width: 480px) {
-	.app-header-button span {
+	.app-header-button span,
+	.app-header-title {
 		display: none;
 	}
 }

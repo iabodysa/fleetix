@@ -49,6 +49,7 @@ async function submit() {
 <style scoped>
 .login {
 	max-width: 440px;
+	min-height: 100vh;
 	min-height: 100dvh;
 	justify-content: center;
 }

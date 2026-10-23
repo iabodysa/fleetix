@@ -18,16 +18,17 @@ import AppIcon from "./AppIcon.vue"
 <style>
 .undo-toast {
 	position: fixed;
-	inset-inline: var(--s4);
+	left: var(--s4);
+	right: var(--s4);
 	bottom: calc(var(--button) + var(--s6));
 	z-index: 30;
 	display: flex;
 	align-items: center;
 	gap: var(--s3);
 	max-width: 36rem;
-	margin-inline: auto;
+	margin-left: auto;
+	margin-right: auto;
 	padding: var(--s2) var(--s2) var(--s2) var(--s4);
-	padding-inline-start: var(--s4);
 	border-radius: var(--r-md);
 	background: var(--ink);
 	color: var(--bg);
@@ -58,5 +59,8 @@ import AppIcon from "./AppIcon.vue"
 .undo-leave-to {
 	transform: translateY(1rem);
 	opacity: 0;
+}
+html[dir="rtl"] .undo-toast {
+	padding: var(--s2) var(--s4) var(--s2) var(--s2);
 }
 </style>

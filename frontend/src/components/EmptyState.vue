@@ -28,7 +28,8 @@ defineProps({ label: { type: String, required: true } })
 	text-align: center;
 }
 .empty-state-art {
-	width: min(16rem, 70%);
+	width: 70%;
+	max-width: 16rem;
 	height: auto;
 }
 .empty-ground {

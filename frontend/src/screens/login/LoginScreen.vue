@@ -113,7 +113,8 @@ onMounted(() => {
 	display: flex;
 	flex-direction: column;
 	gap: var(--s4);
-	width: min(30rem, 100%);
+	width: 100%;
+	max-width: 30rem;
 	margin: auto 0;
 	padding: var(--s5);
 }

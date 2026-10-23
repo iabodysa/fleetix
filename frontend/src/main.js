@@ -1,3 +1,4 @@
+import "../compat/flex-gap.js"
 import "./shell.js"
 import { createApp, reactive } from "vue"
 import { setConfig } from "frappe-ui/src/utils/config.js"

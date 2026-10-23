@@ -15,6 +15,7 @@ import LanguagePicker from "../components/LanguagePicker.vue"
 <style scoped>
 .center {
 	justify-content: center;
+	min-height: 100vh;
 	min-height: 100dvh;
 	max-width: 440px;
 }

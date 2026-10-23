@@ -168,7 +168,10 @@ onBeforeUnmount(() => {
 }
 .drawer-veil {
 	position: fixed;
-	inset: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 	z-index: 20;
 	background: rgba(5, 33, 58, 0.45);
 }
@@ -176,15 +179,20 @@ onBeforeUnmount(() => {
 	position: fixed;
 	top: 0;
 	bottom: 0;
-	inset-inline-end: 0;
+	right: 0;
 	z-index: 21;
-	width: min(26rem, 92vw);
+	width: 26rem;
+	max-width: 92vw;
 	padding: var(--s4);
 	overflow-y: auto;
 	background: var(--bg);
 	transform: translateX(calc(var(--flow) * 105%));
 	visibility: hidden;
 	transition: transform var(--slide) var(--ease), visibility var(--slide);
+}
+html[dir="rtl"] .drawer {
+	right: auto;
+	left: 0;
 }
 .drawer.open {
 	transform: none;
