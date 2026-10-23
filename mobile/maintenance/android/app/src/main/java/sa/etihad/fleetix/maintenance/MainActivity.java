@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,6 +65,8 @@ public class MainActivity extends BridgeActivity {
     private int retries;
     private WebView webView;
     private PageBridge pageBridge;
+    private boolean nativePage;
+    private boolean localPageInHistory;
     private WebView errorView;
     private SwipeRefreshLayout swipe;
     private ProgressBar progress;
@@ -81,6 +84,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(ShellPlugin.class);
         registerPlugin(CustomerDisplayPlugin.class);
         baseUrl = ShellPlugin.baseUrl(this);
+        nativePage = !WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT);
         if (baseUrl != null) {
             startUrl = baseUrl + "/maintenance";
             config = siteConfig(startUrl);
@@ -98,12 +102,13 @@ public class MainActivity extends BridgeActivity {
         webView.setWebChromeClient(new ShellChromeClient(bridge));
         setContentView(buildLayout());
         watchNetwork();
-        if (!WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
+        if (nativePage) {
             pageBridge = PageBridge.build(bridge);
             if (pageBridge != null) {
                 webView.addJavascriptInterface(pageBridge, PageBridge.NAME);
-                webView.loadUrl(startUrl);
             }
+            localPageInHistory = true;
+            webView.loadUrl(startUrl);
         }
     }
 
@@ -139,12 +144,16 @@ public class MainActivity extends BridgeActivity {
         } catch (JSONException ignored) {
             plugins = new JSONObject();
         }
-        return new CapConfig.Builder(this)
-            .setServerUrl(url)
+        CapConfig.Builder builder = new CapConfig.Builder(this)
             .setAndroidScheme(bundled.getAndroidScheme())
             .setAllowMixedContent(bundled.isMixedContentAllowed())
-            .setPluginsConfiguration(plugins)
-            .create();
+            .setPluginsConfiguration(plugins);
+        if (nativePage) {
+            builder.setAllowNavigation(new String[] { Uri.parse(url).getHost() });
+        } else {
+            builder.setServerUrl(url);
+        }
+        return builder.create();
     }
 
     private View buildLayout() {
@@ -424,7 +433,7 @@ public class MainActivity extends BridgeActivity {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-            if (pageBridge != null && request.isForMainFrame() && "GET".equals(request.getMethod())) {
+            if (nativePage && request.isForMainFrame() && "GET".equals(request.getMethod())) {
                 return null;
             }
             return super.shouldInterceptRequest(view, request);
@@ -447,6 +456,10 @@ public class MainActivity extends BridgeActivity {
                 return;
             }
             retries = 0;
+            if (localPageInHistory && url.startsWith(baseUrl)) {
+                localPageInHistory = false;
+                view.clearHistory();
+            }
             view.evaluateJavascript(SCROLL_PROBE, null);
             checkUpdate();
         }

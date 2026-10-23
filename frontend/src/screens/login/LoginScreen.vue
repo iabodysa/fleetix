@@ -23,7 +23,7 @@ async function submit() {
 		saveUser(usr.value)
 		const session = await api.boot().catch(() => null)
 		if (!session || session.boot.user === "Guest") {
-			error.value = __("This device did not keep the sign-in. Update Android System WebView and try again.")
+			error.value = __("Sign-in did not stick on this device. Try again.")
 			busy.value = false
 			return
 		}
