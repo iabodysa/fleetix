@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">فلیٹکس مرمت</string>
-    <string name="back">پیچھے</string>
+    <string name="back">واپس</string>
     <string name="refresh">دوبارہ لوڈ کریں</string>
     <string name="home">ہوم</string>
     <string name="settings">ترتیبات</string>

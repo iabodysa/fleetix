@@ -27,7 +27,7 @@ SOON_DAYS = 14
 APP_LANGUAGES = ("ar", "en", "ur", "hi", "bn")
 RTL_LANGUAGES = ("ar", "ur")
 DAMAGE_KINDS = ("Scratch", "Dent", "Broken", "Missing")
-MAINTENANCE_APK = {"version_code": 5, "version_name": "1.4", "file": "fleetix-maintenance.apk"}
+MAINTENANCE_APK = {"version_code": 6, "version_name": "1.5", "file": "fleetix-maintenance.apk"}
 
 
 @frappe.whitelist(allow_guest=True, methods=["GET"])

@@ -12,7 +12,7 @@ from frappe.utils import cint, get_url
 
 from fleetix.fleetix.api.maintenance import WORKER_ROLES
 
-GATE_APK = {"version_code": 1, "version_name": "1.0", "file": "fleetix-gate.apk"}
+GATE_APK = {"version_code": 2, "version_name": "1.1", "file": "fleetix-gate.apk"}
 LANGUAGES = ("ar", "en", "ur", "hi", "bn")
 ARRIVAL_STATES = ("Due Alert", "Driver Arrived")
 ROUTES = ("maintenance", "handover")

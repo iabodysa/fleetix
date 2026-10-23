@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">फ़्लीटिक्स मरम्मत</string>
-    <string name="back">पीछे</string>
+    <string name="back">वापस</string>
     <string name="refresh">रीफ़्रेश करें</string>
     <string name="home">होम</string>
     <string name="settings">सेटिंग्स</string>
