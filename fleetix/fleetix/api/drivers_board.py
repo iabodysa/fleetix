@@ -6,6 +6,9 @@ from frappe.utils import get_datetime, now_datetime, today
 
 from fleetix.fleetix.doctype.vehicle_assignment.vehicle_assignment import LIVE
 from fleetix.fleetix.fleet_state import BOARD_ROLES, STATES, count
+from fleetix.fleetix.report.drivers_with_multiple_vehicles.drivers_with_multiple_vehicles import (
+	multi_vehicle_drivers,
+)
 
 TRAINED = "Trained"
 
@@ -17,7 +20,7 @@ def get_drivers(project=None, city=None):
 	frappe.has_permission("Driver", "read", throw=True)
 	drivers = frappe.get_list(
 		"Driver",
-		filters={"status": "Active"},
+		filters={"status": "Active", "active": 1},
 		fields=["name", "full_name", "cell_number", "training_status", "project"],
 		limit_page_length=0,
 	)
@@ -84,4 +87,15 @@ def get_drivers(project=None, city=None):
 		"counts": count(rows),
 		"projects": [{"value": name, "label": label} for name, label in projects],
 		"cities": frappe.get_list("City", pluck="name", order_by="name"),
+	}
+
+
+@frappe.whitelist()
+def count_multi_vehicle_drivers(filters=None):
+	frappe.only_for(BOARD_ROLES)
+	frappe.has_permission("Vehicle Assignment", "read", throw=True)
+	return {
+		"value": len(multi_vehicle_drivers()),
+		"fieldtype": "Int",
+		"route": ["query-report", "Drivers With Multiple Vehicles"],
 	}

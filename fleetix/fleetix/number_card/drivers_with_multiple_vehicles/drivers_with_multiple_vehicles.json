@@ -1,0 +1,22 @@
+{
+ "color": "#dc2626",
+ "creation": "2026-10-23 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Vehicle Assignment",
+ "dynamic_filters_json": "",
+ "filters_json": "{}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Drivers With Multiple Vehicles",
+ "method": "fleetix.fleetix.api.drivers_board.count_multi_vehicle_drivers",
+ "modified": "2026-10-23 05:19:00.000000",
+ "modified_by": "Administrator",
+ "module": "Fleetix",
+ "name": "Drivers With Multiple Vehicles",
+ "owner": "Administrator",
+ "show_percentage_stats": 0,
+ "type": "Custom"
+}
