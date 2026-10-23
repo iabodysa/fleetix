@@ -1,0 +1,178 @@
+:root {
+	--bg: #e6eaed;
+	--surface: #ffffff;
+	--surface-2: #f1f4f6;
+	--ink: #0d1317;
+	--ink-2: #46515b;
+	--line: #bfc8cf;
+	--accent: #f2a900;
+	--on-accent: #15110a;
+	--ok: #15703d;
+	--on-ok: #ffffff;
+	--ok-bg: #dcf1e4;
+	--ok-ink: #0d5129;
+	--warn: #b26b00;
+	--warn-bg: #ffedb8;
+	--warn-ink: #5e3f00;
+	--bad: #b42318;
+	--bad-bg: #fce2de;
+	--bad-ink: #8c1a11;
+	--plate: #ffffff;
+	--plate-ink: #0d1317;
+	--focus: #1d5fd1;
+	--radius: 14px;
+	--tap: 64px;
+	--move: 180ms;
+	--ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+	--font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Arabic", "Noto Naskh Arabic",
+		"Noto Sans Devanagari", "Noto Sans Bengali", sans-serif;
+	color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--bg: #0d1114;
+		--surface: #171e23;
+		--surface-2: #1f282e;
+		--ink: #f1f4f6;
+		--ink-2: #a9b5be;
+		--line: #34414a;
+		--accent: #ffb81c;
+		--ok: #33ae6b;
+		--on-ok: #04120a;
+		--ok-bg: #0e2c1b;
+		--ok-ink: #86e3ae;
+		--warn: #ffb81c;
+		--warn-bg: #382a06;
+		--warn-ink: #ffd46a;
+		--bad: #ff6b5e;
+		--bad-bg: #3a1411;
+		--bad-ink: #ffa59c;
+		--plate: #f4f6f7;
+		--focus: #86b4ff;
+		color-scheme: dark;
+	}
+}
+:root[data-theme="dark"] {
+	--bg: #0d1114;
+	--surface: #171e23;
+	--surface-2: #1f282e;
+	--ink: #f1f4f6;
+	--ink-2: #a9b5be;
+	--line: #34414a;
+	--accent: #ffb81c;
+	--ok: #33ae6b;
+	--on-ok: #04120a;
+	--ok-bg: #0e2c1b;
+	--ok-ink: #86e3ae;
+	--warn: #ffb81c;
+	--warn-bg: #382a06;
+	--warn-ink: #ffd46a;
+	--bad: #ff6b5e;
+	--bad-bg: #3a1411;
+	--bad-ink: #ffa59c;
+	--plate: #f4f6f7;
+	--focus: #86b4ff;
+	color-scheme: dark;
+}
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--move: 0ms;
+	}
+}
+* {
+	box-sizing: border-box;
+}
+html,
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: var(--font);
+	font-size: 17px;
+	line-height: 1.4;
+	-webkit-tap-highlight-color: transparent;
+	overflow-x: hidden;
+}
+button,
+input {
+	font: inherit;
+	color: inherit;
+}
+button {
+	cursor: pointer;
+}
+:focus-visible {
+	outline: 3px solid var(--focus);
+	outline-offset: 2px;
+}
+h1,
+h2,
+p {
+	margin: 0;
+}
+.screen {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 16px;
+	max-width: 720px;
+	margin: 0 auto;
+	width: 100%;
+}
+.screen-title {
+	font-size: 22px;
+	font-weight: 700;
+}
+.banner {
+	border-radius: var(--radius);
+	padding: 12px 16px;
+	font-weight: 600;
+}
+.banner-bad {
+	background: var(--bad-bg);
+	color: var(--bad-ink);
+}
+.banner-warn {
+	background: var(--warn-bg);
+	color: var(--warn-ink);
+}
+.banner-ok {
+	background: var(--ok-bg);
+	color: var(--ok-ink);
+}
+.dock {
+	position: sticky;
+	bottom: 0;
+	padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+	background: linear-gradient(to top, var(--bg) 70%, transparent);
+	max-width: 720px;
+	margin: auto auto 0;
+	width: 100%;
+}
+.card {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 16px;
+}
+.slide-fwd-enter-active,
+.slide-fwd-leave-active,
+.slide-back-enter-active,
+.slide-back-leave-active {
+	transition:
+		transform var(--move) var(--ease),
+		opacity var(--move) var(--ease);
+}
+.slide-fwd-enter-from,
+.slide-back-leave-to {
+	transform: translateX(calc(32px * var(--flow, 1)));
+	opacity: 0;
+}
+.slide-fwd-leave-to,
+.slide-back-enter-from {
+	transform: translateX(calc(-32px * var(--flow, 1)));
+	opacity: 0;
+}
+[dir="rtl"] {
+	--flow: -1;
+}

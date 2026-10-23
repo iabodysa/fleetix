@@ -1,0 +1,106 @@
+Add damage photo,नुकसान की फ़ोटो जोड़ें
+Already in the workshop,पहले से वर्कशॉप में है
+Back,पीछे
+Camera access is off for this app,इस ऐप के लिए कैमरा अनुमति बंद है
+Car,गाड़ी
+Car plate,गाड़ी की नंबर प्लेट
+Choose one of the listed languages,सूची में से एक भाषा चुनें
+Choose where the car goes next,चुनें कि गाड़ी आगे कहाँ जाएगी
+Close,बंद करें
+Continue without photos,फ़ोटो के बिना जारी रखें
+Damage,नुकसान
+Driver,ड्राइवर
+Driver Arrived,ड्राइवर पहुँच गया
+Due Alert,सर्विस का समय
+Erase,मिटाएँ
+Find car,गाड़ी खोजें
+Fleetix Gate,फ़्लीटिक्स गेट
+Front,सामने
+Handover,सौंपना
+Handover and return,सौंपना और वापसी
+km,किमी
+Language,भाषा
+Last reading,पिछली रीडिंग
+Left side,बायाँ हिस्सा
+Letters,अक्षर
+Log in,लॉग इन
+Log out,लॉग आउट
+Maintenance,मरम्मत
+Menu,मेनू
+New emergency visit,नई आपात मरम्मत
+Next,आगे
+Next car,अगली गाड़ी
+Next stop,अगला पड़ाव
+No car with this plate,इस नंबर प्लेट की कोई गाड़ी नहीं
+No connection to the server,सर्वर से कनेक्शन नहीं
+No driver or project on this car,इस गाड़ी पर कोई ड्राइवर या प्रोजेक्ट नहीं
+No handover request for this car,इस गाड़ी को सौंपने का कोई अनुरोध नहीं
+Odometer,मीटर रीडिंग
+Odometer reading is below the last reading {0},मीटर रीडिंग पिछली रीडिंग {0} से कम है
+Password,पासवर्ड
+Photo {0} of {1},फ़ोटो {0} / {1}
+Photos,फ़ोटो
+Photos can only be added to a maintenance visit or a handover,फ़ोटो केवल मरम्मत या सौंपने में जोड़ी जा सकती हैं
+Project,प्रोजेक्ट
+Return,वापसी
+Right side,दायाँ हिस्सा
+Scan code,कोड स्कैन करें
+Send,भेजें
+Send to handover,सौंपने के लिए भेजें
+Send to maintenance,मरम्मत के लिए भेजें
+Sent to handover,सौंपने के लिए भेज दी गई
+Sent to maintenance,मरम्मत के लिए भेज दी गई
+Settings,सेटिंग्स
+The photo could not be read. Take it again.,फ़ोटो पढ़ी नहीं जा सकी। फिर से लें।
+The server returned an error,सर्वर ने त्रुटि लौटाई
+This account cannot use the gate app,यह खाता गेट ऐप इस्तेमाल नहीं कर सकता
+This car is already in the workshop,यह गाड़ी पहले से वर्कशॉप में है
+This device has no camera,इस डिवाइस में कैमरा नहीं है
+Transfer,स्थानांतरण
+Try again,फिर से कोशिश करें
+User,उपयोगकर्ता
+Fleetix Maintenance,फ़्लीटिक्स मरम्मत
+Refresh,रीफ़्रेश करें
+Home,होम
+Cancel,रद्द करें
+Close the app?,ऐप बंद करें?
+Close app,ऐप बंद करें
+No connection,कोई कनेक्शन नहीं
+"Check the network cable or Wi-Fi, then try again.","नेटवर्क केबल या वाई-फ़ाई जाँचें, फिर से कोशिश करें।"
+"Check mobile data or Wi-Fi, then try again.","मोबाइल डेटा या वाई-फ़ाई जाँचें, फिर से कोशिश करें।"
+The page could not be loaded,पेज लोड नहीं हो सका
+The server returned an error. Try again or go to the home page.,सर्वर ने त्रुटि लौटाई। फिर से कोशिश करें या होम पेज पर जाएँ।
+Secure connection failed,सुरक्षित कनेक्शन नहीं बन सका
+The server certificate could not be verified.,सर्वर प्रमाणपत्र की पुष्टि नहीं हो सकी।
+The page is taking too long,पेज बहुत देर ले रहा है
+The server did not answer within 30 seconds.,सर्वर ने 30 सेकंड में जवाब नहीं दिया।
+The server could not be reached,सर्वर तक नहीं पहुँचा जा सका
+"Check the network, then try again.","नेटवर्क जाँचें, फिर से कोशिश करें।"
+New version available,नया संस्करण उपलब्ध है
+Version {0} is ready to install.,संस्करण {0} इंस्टॉल के लिए तैयार है।
+Update,अपडेट करें
+Check for updates,अपडेट जाँचें
+The app is up to date.,ऐप नवीनतम है।
+Downloading the update,अपडेट डाउनलोड हो रहा है
+The update could not be downloaded. Try again.,अपडेट डाउनलोड नहीं हो सका। फिर से कोशिश करें।
+Enter the settings PIN,सेटिंग्स का पिन डालें
+Choose a settings PIN of 4 to 8 digits,सेटिंग्स के लिए 4 से 8 अंकों का पिन चुनें
+Enter the same PIN again,वही पिन फिर से डालें
+Wrong PIN,गलत पिन
+The two PINs do not match,दोनों पिन मेल नहीं खाते
+Use 4 to 8 digits,4 से 8 अंक इस्तेमाल करें
+OK,ठीक है
+App version,ऐप संस्करण
+Server address,सर्वर का पता
+Save,सहेजें
+Enter an address such as https://example.com,https://example.com जैसा पता डालें
+Checking the server,सर्वर जाँचा जा रहा है
+Test printer,प्रिंटर जाँचें
+Printer is ready,प्रिंटर तैयार है
+Out of paper,कागज़ खत्म हो गया
+Printer cover is open,प्रिंटर का ढक्कन खुला है
+Printer is overheated,प्रिंटर बहुत गर्म है
+Printer not found,प्रिंटर नहीं मिला
+Printer error,प्रिंटर में त्रुटि
+Printer test page,प्रिंटर परीक्षण पृष्ठ
+Welcome,स्वागत है

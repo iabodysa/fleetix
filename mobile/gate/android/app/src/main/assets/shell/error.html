@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<style>
+			html, body { margin: 0; height: 100%; background: #f4f5f7; color: #0d1317; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+			body { display: flex; align-items: center; justify-content: center; }
+			.card { background: #ffffff; border-radius: 16px; padding: 48px 56px; max-width: 640px; text-align: center; box-shadow: 0 2px 12px rgba(13, 19, 23, 0.08); }
+			.mark { width: 72px; height: 72px; border-radius: 50%; background: #fff4d6; color: #b07a00; font-size: 40px; line-height: 72px; font-weight: 700; margin: 0 auto 24px; }
+			h1 { font-size: 30px; margin: 0 0 12px; }
+			p { font-size: 20px; color: #46515b; margin: 0 0 32px; line-height: 1.5; }
+			.code { font-size: 16px; color: #8a949c; margin: -20px 0 28px; direction: ltr; }
+			.actions { display: flex; justify-content: center; }
+			button { font: inherit; font-size: 20px; font-weight: 600; border-radius: 10px; padding: 16px 36px; margin: 0 8px; border: 0; min-width: 180px; }
+			.primary { background: #f2a900; color: #0d1317; }
+			.soft { background: #e8eaed; color: #0d1317; }
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<div class="mark">!</div>
+			<h1 id="title"></h1>
+			<p id="text"></p>
+			<div class="code" id="code"></div>
+			<div class="actions">
+				<button class="primary" id="retry" type="button"></button>
+				<button class="soft" id="home" type="button"></button>
+			</div>
+		</div>
+		<script>
+			function show(state) {
+				document.documentElement.dir = state.dir
+				document.getElementById("title").textContent = state.title
+				document.getElementById("text").textContent = state.text
+				document.getElementById("code").textContent = state.code || ""
+				document.getElementById("retry").textContent = state.retry
+				document.getElementById("home").textContent = state.home
+			}
+			document.getElementById("retry").addEventListener("click", function () { FleetixShellError.retry() })
+			document.getElementById("home").addEventListener("click", function () { FleetixShellError.home() })
+		</script>
+	</body>
+</html>

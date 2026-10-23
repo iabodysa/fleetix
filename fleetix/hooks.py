@@ -163,6 +163,7 @@ jinja = {"methods": ["fleetix.fleetix.document_qr.document_qr", "fleetix.fleetix
 website_route_rules = [
 	{"from_route": "/maintenance/photos/<visit>", "to_route": "maintenance_photos"},
 	{"from_route": "/maintenance/<path:app_path>", "to_route": "maintenance"},
+	{"from_route": "/gate/<path:app_path>", "to_route": "gate"},
 ]
 
 after_install = ["fleetix.fleetix.branding.set_navbar_logo", "frappe.clear_cache"]

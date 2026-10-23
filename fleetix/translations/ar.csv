@@ -9830,3 +9830,42 @@ Drivers With Multiple Vehicles,سائقون لديهم أكثر من مركبة
 Vehicles Held,عدد المركبات
 {0} {1} is inactive,{0} {1} غير نشط
 This device did not keep the sign-in. Update Android System WebView and try again.,لم يحتفظ هذا الجهاز بتسجيل الدخول. حدّث Android System WebView ثم حاول مرة أخرى.
+Add damage photo,أضف صورة ضرر
+Already in the workshop,موجودة في الورشة
+Camera access is off for this app,إذن الكاميرا مغلق لهذا التطبيق
+Car plate,لوحة السيارة
+Choose one of the listed languages,اختر لغة من القائمة
+Choose where the car goes next,اختر وجهة السيارة التالية
+Continue without photos,متابعة بدون صور
+Erase,مسح
+Find car,ابحث عن السيارة
+Fleetix Gate,بوابة فليتكس
+Handover and return,التسليم والاستلام
+Language,اللغة
+Left side,الجانب الأيسر
+Letters,الحروف
+Log out,تسجيل الخروج
+Maintenance,الصيانة
+New emergency visit,زيارة طارئة جديدة
+Next,التالي
+Next car,السيارة التالية
+Next stop,الوجهة التالية
+No car with this plate,لا توجد سيارة بهذه اللوحة
+No driver or project on this car,لا يوجد سائق أو مشروع لهذه السيارة
+No handover request for this car,لا يوجد طلب تسليم لهذه السيارة
+Photo {0} of {1},الصورة {0} من {1}
+Photos can only be added to a maintenance visit or a handover,تضاف الصور إلى زيارة صيانة أو تسليم فقط
+Right side,الجانب الأيمن
+Scan code,امسح الرمز
+Send,إرسال
+Send to handover,أرسل إلى التسليم
+Send to maintenance,أرسل إلى الصيانة
+Sent to handover,أرسلت إلى التسليم
+Sent to maintenance,أرسلت إلى الصيانة
+The photo could not be read. Take it again.,تعذرت قراءة الصورة. التقطها مرة أخرى.
+The server returned an error,أعاد الخادم خطأ
+This account cannot use the gate app,هذا الحساب لا يستخدم تطبيق البوابة
+This car is already in the workshop,هذه السيارة موجودة في الورشة
+This device has no camera,هذا الجهاز بلا كاميرا
+Transfer,نقل
+"Check mobile data or Wi-Fi, then try again.",تأكد من بيانات الجوال أو الواي فاي، ثم أعد المحاولة.
