@@ -16,6 +16,13 @@
     "parent": "Fleetix Field",
     "parentfield": "block_modules",
     "parenttype": "Module Profile",
+    "module": "Afmco"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
     "module": "Assets"
    },
    {
@@ -122,6 +129,13 @@
     "parentfield": "block_modules",
     "parenttype": "Module Profile",
     "module": "Integrations"
+   },
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Field",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "KSA Compliance"
    },
    {
     "doctype": "Block Module",
@@ -256,6 +270,13 @@
   "name": "Fleetix Finance",
   "module_profile_name": "Fleetix Finance",
   "block_modules": [
+   {
+    "doctype": "Block Module",
+    "parent": "Fleetix Finance",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile",
+    "module": "Afmco"
+   },
    {
     "doctype": "Block Module",
     "parent": "Fleetix Finance",
