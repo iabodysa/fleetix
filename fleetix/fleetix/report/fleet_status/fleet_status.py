@@ -11,9 +11,10 @@ STATE_LABELS = {
 	"red": "Due for Handover",
 	"black": "Idle Without Assignment",
 	"gray": "Periodic Maintenance Missed",
+	"suspended": "Suspended",
 	"green": "All Clear",
 }
-STATE_COLORS = {"red": "#dc2626", "black": "#141518", "gray": "#8b919b", "green": "#16a34a"}
+STATE_COLORS = {"red": "#dc2626", "black": "#141518", "gray": "#8b919b", "suspended": "#d97706", "green": "#16a34a"}
 VEHICLE_FIELDS = [
 	"name",
 	"vehicle_type",

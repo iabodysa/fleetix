@@ -15,7 +15,7 @@ BOARD_ROLES = (
 	"Accountant",
 	"System Manager",
 )
-STATES = ("red", "black", "gray", "green")
+STATES = ("red", "black", "gray", "suspended", "green")
 DELIVERY_STEPS = ("Pending Inspection", "Pending Documentation", "Pending Assignment")
 WAITING_STEPS = ("New", "Pending Vehicle Selection")
 WORKSHOP_STEPS = ("Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
@@ -144,6 +144,8 @@ def classify(project=None, city=None):
 			)
 		elif assignment and row.notes:
 			row.update(state="red", reason="open_note", late_hours=0)
+		elif vehicle.status == "Suspended":
+			row.update(state="suspended", reason="")
 		elif (
 			not assignment
 			and vehicle.status not in HELD

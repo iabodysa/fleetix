@@ -1,6 +1,6 @@
 frappe.provide("fleetix.fleet");
 
-const STATES = ["red", "black", "gray", "green"];
+const STATES = ["red", "black", "gray", "suspended", "green"];
 const REFRESH_MS = 60 * 1000;
 const PLATE_LETTERS = {
 	A: "ا",
@@ -45,6 +45,7 @@ fleetix.fleet.STATE_LABELS = {
 	red: __("Due for Handover"),
 	gray: __("Periodic Maintenance Missed"),
 	black: __("Idle, No Assignment"),
+	suspended: __("Suspended"),
 	green: __("All Clear"),
 };
 
@@ -156,11 +157,12 @@ fleetix.fleet.Shell = class Shell {
 	}
 
 	ribbon(counts, active, labels = fleetix.fleet.STATE_LABELS) {
-		const total = STATES.reduce((sum, s) => sum + (counts[s] || 0), 0);
-		const bar = STATES.filter((s) => counts[s])
+		const shown = STATES.filter((s) => s in labels);
+		const total = shown.reduce((sum, s) => sum + (counts[s] || 0), 0);
+		const bar = shown.filter((s) => counts[s])
 			.map((s) => `<i style="flex:${counts[s]};background:var(--st-${s})"></i>`)
 			.join("");
-		const lamps = STATES.map(
+		const lamps = shown.map(
 			(s) => `<button class="fx-lampbtn s-${s} ${
 				active === s ? "active" : ""
 			}" data-state="${s}">
