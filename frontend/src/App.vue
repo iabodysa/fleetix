@@ -59,7 +59,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { __ } from "./translate.js"
 import { api } from "./api.js"
 import { hasPrinter, hasShell, onShellBack, openSettings, showStepOnCustomerDisplay } from "./native.js"
-import { STEPS, backToQueue, queue, stepBack, store } from "./store.js"
+import { STEPS, backToQueue, queue, restoreDraft, stepBack, store } from "./store.js"
 import PlateChip from "./components/PlateChip.vue"
 import QueueList from "./components/QueueList.vue"
 import LoginScreen from "./screens/LoginScreen.vue"
@@ -109,7 +109,7 @@ async function logout() {
 onMounted(() => {
 	window.addEventListener("online", setOnline)
 	window.addEventListener("offline", setOnline)
-	if (boot.is_worker) queue.fetch()
+	if (boot.is_worker) restoreDraft()
 })
 onBeforeUnmount(() => {
 	window.removeEventListener("online", setOnline)

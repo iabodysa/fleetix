@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from "vue"
+import { computed, ref } from "vue"
 import { __, componentLabel, formatKm, statusLabel } from "../translate.js"
 import { api, errorText } from "../api.js"
 import { backToQueue, store } from "../store.js"
@@ -48,11 +48,10 @@ import PlateChip from "../components/PlateChip.vue"
 
 const vehicle = computed(() => store.checklist.vehicle)
 const replaced = store.checklist.components.filter((row) => row.ticked)
-const finalCheck = reactive(
-	store.checklist.final_check.length
-		? store.checklist.final_check.map((row) => Object.assign({}, row))
-		: replaced.map((row) => ({ item: row.component, condition: "Good", notes: "" }))
-)
+if (!store.checklist.final_check.length) {
+	store.checklist.final_check = replaced.map((row) => ({ item: row.component, condition: "Good", notes: "" }))
+}
+const finalCheck = store.checklist.final_check
 const busy = ref(false)
 const error = ref("")
 
