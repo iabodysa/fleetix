@@ -38,6 +38,7 @@ import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.BridgeWebChromeClient;
 import com.getcapacitor.BridgeWebViewClient;
 import com.getcapacitor.CapConfig;
+import java.net.CookieHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -90,6 +91,7 @@ public class MainActivity extends BridgeActivity {
             config = siteConfig(startUrl);
         }
         super.onCreate(savedInstanceState);
+        CookieHandler.setDefault(null);
         if (baseUrl == null) {
             startActivity(new Intent(this, SettingsActivity.class));
             finish();
