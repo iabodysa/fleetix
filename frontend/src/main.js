@@ -1,3 +1,4 @@
+import "./shell.js"
 import { createApp, reactive } from "vue"
 import { setConfig } from "frappe-ui/src/utils/config.js"
 import { frappeRequest } from "frappe-ui/src/utils/frappeRequest.js"

@@ -24,7 +24,7 @@ COMPONENT_GROUPS = {
 FINISH_ACTIONS = {"Approved": "Start Service", "Service": "Finish Service", "Final Check": "Complete"}
 SOON_KM = 1000
 SOON_DAYS = 14
-MAINTENANCE_APK = {"version_code": 4, "version_name": "1.3", "file": "fleetix-maintenance.apk"}
+MAINTENANCE_APK = {"version_code": 5, "version_name": "1.4", "file": "fleetix-maintenance.apk"}
 
 
 @frappe.whitelist(allow_guest=True, methods=["GET"])

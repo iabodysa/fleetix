@@ -25,6 +25,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import androidx.webkit.WebViewFeature;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -62,6 +63,7 @@ public class MainActivity extends BridgeActivity {
     private final Runnable autoRetry = this::retry;
     private int retries;
     private WebView webView;
+    private PageBridge pageBridge;
     private WebView errorView;
     private SwipeRefreshLayout swipe;
     private ProgressBar progress;
@@ -96,6 +98,13 @@ public class MainActivity extends BridgeActivity {
         webView.setWebChromeClient(new ShellChromeClient(bridge));
         setContentView(buildLayout());
         watchNetwork();
+        if (!WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
+            pageBridge = PageBridge.build(bridge);
+            if (pageBridge != null) {
+                webView.addJavascriptInterface(pageBridge, PageBridge.NAME);
+                webView.loadUrl(startUrl);
+            }
+        }
     }
 
     @Override
@@ -411,6 +420,14 @@ public class MainActivity extends BridgeActivity {
                 beginLoad();
             }
             return handled;
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            if (pageBridge != null && request.isForMainFrame() && "GET".equals(request.getMethod())) {
+                return null;
+            }
+            return super.shouldInterceptRequest(view, request);
         }
 
         @Override
