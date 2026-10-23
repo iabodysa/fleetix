@@ -1,6 +1,6 @@
 Add damage photo,नुकसान की फ़ोटो जोड़ें
 Already in the workshop,पहले से वर्कशॉप में है
-Back,पीछे
+Back,वापस
 Camera access is off for this app,इस ऐप के लिए कैमरा अनुमति बंद है
 Car,गाड़ी
 Car plate,गाड़ी की नंबर प्लेट
@@ -104,3 +104,106 @@ Printer not found,प्रिंटर नहीं मिला
 Printer error,प्रिंटर में त्रुटि
 Printer test page,प्रिंटर परीक्षण पृष्ठ
 Welcome,स्वागत है
+Add at least one photo from the phone,फ़ोन से कम से कम एक फ़ोटो जोड़ें
+Approval,मंज़ूरी
+Approved,मंज़ूर
+Battery,बैटरी
+Body damage,बॉडी का नुकसान
+Both signatures are required,दोनों हस्ताक्षर ज़रूरी हैं
+Broken,टूटा हुआ
+Check now,अभी जाँचें
+Choose a body part and a damage type,बॉडी का हिस्सा और नुकसान का प्रकार चुनें
+Choose an item for {0},{0} के लिए आइटम चुनें
+Choose what is wrong for every row that needs repair,मरम्मत वाली हर पंक्ति के लिए खराबी चुनें
+Clear,साफ़ करें
+Completed,पूरा
+Confirm reading,रीडिंग पक्की करें
+Customer screen not connected,ग्राहक स्क्रीन जुड़ी नहीं है
+Damage marked,नुकसान चिह्नित
+Date,तारीख
+Delete,मिटाएँ
+Dent,डेंट
+Difference,अंतर
+"Difference is above 20,000 km","अंतर 20,000 किमी से ज़्यादा है"
+Driver signature,ड्राइवर के हस्ताक्षर
+Due at {0},{0} पर देय
+Due on {0},{0} को देय
+Due soon,जल्द देय
+Enter the odometer reading,मीटर रीडिंग डालें
+Final check,अंतिम जाँच
+Final Check,अंतिम जाँच
+Finish maintenance,मेंटेनेंस पूरा करें
+Finishing,पूरा हो रहा है
+Front Tires,आगे के टायर
+Full Inspection,पूरी जाँच
+Good,ठीक
+Inspector signature,जाँचकर्ता के हस्ताक्षर
+Items and parts,आइटम और पुर्ज़े
+Late by {0},{0} की देरी
+Late by {0} days,{0} दिन की देरी
+Leak,रिसाव
+Left Side,बाईं तरफ़
+Less,कम
+Loading,लोड हो रहा है
+Loose,ढीला
+Maintenance completed,मेंटेनेंस पूरा हुआ
+Missing,गायब
+More,ज़्यादा
+Needs Repair,मरम्मत चाहिए
+Next service,अगली सर्विस
+Next vehicle,अगली गाड़ी
+No damage,कोई नुकसान नहीं
+No open visit for this vehicle,इस गाड़ी की कोई खुली विज़िट नहीं
+No schedule,कोई समय तय नहीं
+No vehicles waiting,कोई गाड़ी इंतज़ार में नहीं
+Noise,आवाज़
+Odometer reading,मीटर रीडिंग
+Offline,ऑफ़लाइन
+Oil,तेल
+Oil Filter,ऑयल फ़िल्टर
+On customer screen,ग्राहक स्क्रीन पर
+Online,ऑनलाइन
+Other vehicle,दूसरी गाड़ी
+Overdue,देर हो गई
+Parts,पुर्ज़े
+Photo {0},फ़ोटो {0}
+Photos added,जोड़ी गई फ़ोटो
+Photos and signatures,फ़ोटो और हस्ताक्षर
+Plate number,प्लेट नंबर
+Plate number cleared,प्लेट नंबर साफ़
+Print again,फिर से प्रिंट
+Printer,प्रिंटर
+Printer not connected,प्रिंटर जुड़ा नहीं है
+Reading cleared,रीडिंग साफ़
+Rear,पीछे
+Rear Tires,पीछे के टायर
+Receipt printed,रसीद प्रिंट हो गई
+Replaced today,आज बदला गया
+Review,समीक्षा
+Right Side,दाईं तरफ़
+Roof,छत
+Scan the vehicle barcode,गाड़ी का बारकोड स्कैन करें
+Scan with your phone to add photos,फ़ोटो जोड़ने के लिए फ़ोन से स्कैन करें
+Scratch,खरोंच
+Select at least one component,कम से कम एक पुर्ज़ा चुनें
+Send for approval,मंज़ूरी के लिए भेजें
+Sending,भेजा जा रहा है
+Sent for approval,मंज़ूरी के लिए भेजा गया
+Service,सर्विस
+Signature cleared,हस्ताक्षर साफ़
+Signatures,हस्ताक्षर
+Status,स्थिति
+Stock,स्टॉक
+Tap the damaged part,खराब हिस्से को छुएँ
+This account cannot use the maintenance app,यह खाता मेंटेनेंस ऐप इस्तेमाल नहीं कर सकता
+This language is not available,यह भाषा उपलब्ध नहीं है
+Undo,पहले जैसा करें
+Vehicle,गाड़ी
+Vehicle body,गाड़ी की बॉडी
+Vehicles,गाड़ियाँ
+Vehicles due,देय गाड़ियाँ
+Waiting for approval,मंज़ूरी का इंतज़ार
+Waiting for driver,ड्राइवर का इंतज़ार
+Waiting for the rental manager to approve,रेंटल मैनेजर की मंज़ूरी का इंतज़ार
+Worn,घिसा हुआ
+{0} removed,{0} हटाया गया

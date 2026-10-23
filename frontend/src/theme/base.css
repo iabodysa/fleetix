@@ -1,0 +1,145 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+html {
+	font-size: clamp(16px, 0.75vw + 9px, 22px);
+	-webkit-text-size-adjust: 100%;
+}
+html,
+body,
+#app {
+	height: 100%;
+	margin: 0;
+}
+body {
+	background: var(--bg);
+	color: var(--ink);
+	font-family: system-ui, Roboto, "Noto Sans", "Noto Sans Arabic", "Noto Nastaliq Urdu", "Noto Sans Devanagari", "Noto Sans Bengali", Tahoma, sans-serif;
+	font-size: var(--t-md);
+	line-height: 1.4;
+	-webkit-tap-highlight-color: transparent;
+	overflow-x: hidden;
+}
+button,
+input,
+select {
+	font: inherit;
+	color: inherit;
+}
+button {
+	cursor: pointer;
+	touch-action: manipulation;
+}
+button:disabled {
+	cursor: default;
+}
+:focus-visible {
+	outline: 3px solid var(--focus);
+	outline-offset: 2px;
+}
+h1,
+h2,
+p {
+	margin: 0;
+}
+h1 {
+	font-size: var(--t-xl);
+	line-height: 1.2;
+	font-weight: 800;
+}
+h2 {
+	font-size: var(--t-lg);
+	font-weight: 700;
+}
+img {
+	max-width: 100%;
+}
+.ltr {
+	direction: ltr;
+	unicode-bidi: isolate;
+}
+.muted {
+	color: var(--ink-2);
+}
+.card {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--r-lg);
+	box-shadow: var(--shadow);
+}
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s1);
+	min-height: 2rem;
+	padding: 0 var(--s3);
+	border-radius: var(--r-pill);
+	font-size: var(--t-sm);
+	font-weight: 700;
+	white-space: nowrap;
+}
+.tone-done {
+	background: var(--done-bg);
+	color: var(--done-ink);
+}
+.tone-wait {
+	background: var(--wait-bg);
+	color: var(--wait-ink);
+}
+.tone-problem {
+	background: var(--problem-bg);
+	color: var(--problem-ink);
+}
+.tone-quiet {
+	background: var(--surface-2);
+	color: var(--ink-2);
+}
+.facts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--s4) var(--s6);
+	margin: 0;
+}
+.facts dt {
+	color: var(--ink-2);
+	font-size: var(--t-sm);
+}
+.facts dd {
+	margin: 0;
+	font-size: var(--t-lg);
+	font-weight: 700;
+}
+.slide-next-enter-active,
+.slide-next-leave-active,
+.slide-back-enter-active,
+.slide-back-leave-active {
+	transition:
+		transform var(--slide) var(--ease),
+		opacity var(--slide) var(--ease);
+}
+.slide-next-enter-from,
+.slide-back-leave-to {
+	transform: translateX(calc(var(--flow) * 2rem));
+	opacity: 0;
+}
+.slide-next-leave-to,
+.slide-back-enter-from {
+	transform: translateX(calc(var(--flow) * -2rem));
+	opacity: 0;
+}
+html[dir="ltr"] {
+	--flow: 1;
+}
+html[dir="rtl"] {
+	--flow: -1;
+}
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0ms !important;
+		transition-duration: 0ms !important;
+	}
+}
