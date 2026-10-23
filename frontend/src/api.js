@@ -18,6 +18,7 @@ export const api = {
 		}),
 	login: (usr, pwd) => call("login", { usr, pwd }),
 	logout: () => call("logout"),
+	boot: () => call(M + "get_boot"),
 }
 
 export const QUEUE_METHOD = M + "get_due_queue"

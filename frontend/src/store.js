@@ -20,7 +20,7 @@ export const store = reactive({
 export const queue = createResource({ url: QUEUE_METHOD, auto: false, initialData: [] })
 
 const DRAFT_STEPS = ["odometer", "components", "photos", "review"]
-const DRAFT_KEY = "fleetix.maintenance.draft." + ((window.frappe && window.frappe.boot && window.frappe.boot.user) || "")
+const draftKey = () => "fleetix.maintenance.draft." + ((window.frappe && window.frappe.boot && window.frappe.boot.user) || "")
 
 function draftFields() {
 	return { step: store.step, visit: store.visit, odometer: store.odometer, checklist: store.checklist, signatures: store.signatures }
@@ -28,8 +28,8 @@ function draftFields() {
 
 function saveDraft() {
 	try {
-		if (store.visit && DRAFT_STEPS.indexOf(store.step) !== -1) localStorage.setItem(DRAFT_KEY, JSON.stringify(draftFields()))
-		else localStorage.removeItem(DRAFT_KEY)
+		if (store.visit && DRAFT_STEPS.indexOf(store.step) !== -1) localStorage.setItem(draftKey(), JSON.stringify(draftFields()))
+		else localStorage.removeItem(draftKey())
 	} catch (e) {
 		return
 	}
@@ -39,7 +39,7 @@ watch(draftFields, saveDraft, { deep: true })
 
 function storedDraft() {
 	try {
-		const draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null")
+		const draft = JSON.parse(localStorage.getItem(draftKey()) || "null")
 		return draft && draft.visit && DRAFT_STEPS.indexOf(draft.step) !== -1 ? draft : null
 	} catch (e) {
 		return null

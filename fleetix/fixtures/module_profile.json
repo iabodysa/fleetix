@@ -450,13 +450,6 @@
     "parent": "Fleetix Finance",
     "parentfield": "block_modules",
     "parenttype": "Module Profile",
-    "module": "Selling"
-   },
-   {
-    "doctype": "Block Module",
-    "parent": "Fleetix Finance",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile",
     "module": "Setup"
    },
    {

@@ -111,6 +111,12 @@ onMounted(() => {
 	window.addEventListener("offline", setOnline)
 	if (boot.is_worker) restoreDraft()
 })
+watch(
+	() => boot.is_worker,
+	(isWorker) => {
+		if (isWorker) restoreDraft()
+	},
+)
 onBeforeUnmount(() => {
 	window.removeEventListener("online", setOnline)
 	window.removeEventListener("offline", setOnline)

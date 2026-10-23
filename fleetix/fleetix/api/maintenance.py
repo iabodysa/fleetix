@@ -36,6 +36,13 @@ def app_version():
 
 
 @frappe.whitelist()
+def get_boot():
+	from fleetix.www.maintenance import get_boot as build_boot
+
+	return {"boot": build_boot(), "csrf_token": frappe.sessions.get_csrf_token()}
+
+
+@frappe.whitelist()
 def get_due_queue():
 	frappe.only_for(WORKER_ROLES)
 	visits = frappe.get_list(

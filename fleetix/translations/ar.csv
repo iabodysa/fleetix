@@ -9829,3 +9829,4 @@ Driver {0} already holds vehicle {1},السائق {0} لديه المركبة {1
 Drivers With Multiple Vehicles,سائقون لديهم أكثر من مركبة
 Vehicles Held,عدد المركبات
 {0} {1} is inactive,{0} {1} غير نشط
+This device did not keep the sign-in. Update Android System WebView and try again.,لم يحتفظ هذا الجهاز بتسجيل الدخول. حدّث Android System WebView ثم حاول مرة أخرى.
