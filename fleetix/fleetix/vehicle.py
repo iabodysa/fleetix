@@ -24,6 +24,8 @@ class VehicleService(Vehicle):
 		super().validate()
 		self.set_policy_intervals()
 		set_next_due(self)
+		settings = frappe.get_cached_doc("Fleetix Settings")
+		self.update(missing_data(self, parse_fieldnames(settings.vehicle_required_fields)))
 
 	def set_policy_intervals(self):
 		region = frappe.db.get_value("City", self.city, "region") if self.city else None
@@ -62,3 +64,13 @@ def due_odometer(last_odometer, interval):
 	if cint(last_odometer) and cint(interval):
 		return cint(last_odometer) + cint(interval)
 	return None
+
+
+def parse_fieldnames(text):
+	return [line.strip() for line in (text or "").splitlines() if line.strip()]
+
+
+def missing_data(vehicle, fieldnames):
+	meta = frappe.get_meta("Vehicle")
+	missing = [meta.get_label(f) for f in fieldnames if meta.has_field(f) and not vehicle.get(f)]
+	return {"data_incomplete": 1 if missing else 0, "missing_fields": ", ".join(missing)}

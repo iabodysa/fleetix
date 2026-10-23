@@ -9823,3 +9823,9 @@ Finance and Insurance,المالية والتأمين
 Boards,اللوحات
 Vehicle Assignments,إسنادات المركبات
 {} draft,{} مسودة
+Missing Data,بيانات ناقصة
+Missing Data: {0},بيانات ناقصة: {0}
+One Vehicle field name per line. A vehicle with any of them empty is marked Missing Data.,اسم حقل واحد من حقول السيارة في كل سطر. السيارة التي يكون أي منها فارغًا تُعلَّم بيانات ناقصة.
+Required Vehicle Fields,حقول السيارة المطلوبة
+These are not Vehicle fields: {0},هذه ليست حقولًا في السيارة: {0}
+Vehicles Missing Data,سيارات ببيانات ناقصة

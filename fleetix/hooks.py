@@ -145,6 +145,9 @@ fixtures = [
 
 override_doctype_class = {"Vehicle": "fleetix.fleetix.vehicle.VehicleService"}
 
+doctype_js = {"Vehicle": "public/js/vehicle.js"}
+doctype_list_js = {"Vehicle": "public/js/vehicle_list.js"}
+
 override_doctype_dashboards = {
 	"Customer": "fleetix.fleetix.dashboard_overrides.get_dashboard_for_customer",
 	"Driver": "fleetix.fleetix.dashboard_overrides.get_dashboard_for_driver",

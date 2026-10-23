@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\": \"rental-1\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Due for Handover\", \"col\": 3}}, {\"id\": \"rental-2\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Periodic Maintenance Missed\", \"col\": 3}}, {\"id\": \"rental-3\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Idle Without Assignment\", \"col\": 3}}, {\"id\": \"rental-4\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"All Clear\", \"col\": 3}}, {\"id\": \"rental-5\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Start here</b></span>\", \"col\": 12}}, {\"id\": \"rental-6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Vehicle Requests\", \"col\": 4}}, {\"id\": \"rental-7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Assign a Vehicle\", \"col\": 4}}, {\"id\": \"rental-8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Record Handover or Return\", \"col\": 4}}, {\"id\": \"rental-9\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Book Maintenance\", \"col\": 4}}, {\"id\": \"rental-10\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Report an Accident\", \"col\": 4}}, {\"id\": \"rental-11\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Fleet Board\", \"col\": 4}}, {\"id\": \"rental-12\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Follow-up</b></span>\", \"col\": 12}}, {\"id\": \"rental-13\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Morning Brief\", \"col\": 4}}, {\"id\": \"rental-14\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Drivers Board\", \"col\": 4}}, {\"id\": \"rental-15\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Assignment Timeline\", \"col\": 4}}, {\"id\": \"rental-16\", \"type\": \"card\", \"data\": {\"card_name\": \"Records\", \"col\": 6}}, {\"id\": \"rental-17\", \"type\": \"card\", \"data\": {\"card_name\": \"Finance and Insurance\", \"col\": 6}}]",
+ "content": "[{\"id\": \"rental-1\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Due for Handover\", \"col\": 3}}, {\"id\": \"rental-2\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Periodic Maintenance Missed\", \"col\": 3}}, {\"id\": \"rental-3\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Idle Without Assignment\", \"col\": 3}}, {\"id\": \"rental-4\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"All Clear\", \"col\": 3}}, {\"id\": \"rental-5\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Vehicles Missing Data\", \"col\": 3}}, {\"id\": \"rental-6\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Start here</b></span>\", \"col\": 12}}, {\"id\": \"rental-7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Vehicle Requests\", \"col\": 4}}, {\"id\": \"rental-8\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Assign a Vehicle\", \"col\": 4}}, {\"id\": \"rental-9\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Record Handover or Return\", \"col\": 4}}, {\"id\": \"rental-10\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Book Maintenance\", \"col\": 4}}, {\"id\": \"rental-11\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Report an Accident\", \"col\": 4}}, {\"id\": \"rental-12\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Fleet Board\", \"col\": 4}}, {\"id\": \"rental-13\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Follow-up</b></span>\", \"col\": 12}}, {\"id\": \"rental-14\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Morning Brief\", \"col\": 4}}, {\"id\": \"rental-15\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Drivers Board\", \"col\": 4}}, {\"id\": \"rental-16\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Assignment Timeline\", \"col\": 4}}, {\"id\": \"rental-17\", \"type\": \"card\", \"data\": {\"card_name\": \"Records\", \"col\": 6}}, {\"id\": \"rental-18\", \"type\": \"card\", \"data\": {\"card_name\": \"Finance and Insurance\", \"col\": 6}}]",
  "creation": "2026-10-23 00:00:00.000000",
  "custom_blocks": [],
  "docstatus": 0,
@@ -140,7 +140,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-10-23 04:14:00.000000",
+ "modified": "2026-10-23 04:15:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Rental Desk",
@@ -160,6 +160,10 @@
   {
    "label": "All Clear",
    "number_card_name": "All Clear"
+  },
+  {
+   "label": "Vehicles Missing Data",
+   "number_card_name": "Vehicles Missing Data"
   }
  ],
  "owner": "Administrator",
