@@ -44,6 +44,8 @@ public class MainActivity extends BridgeActivity {
     static final int INK = Color.parseColor("#0D1317");
     static final int ACCENT = Color.parseColor("#F2A900");
     private static final long TIMEOUT_MS = 30000;
+    private static final long RETRY_MS = 10000;
+    private static final int RETRY_STEPS = 3;
     private static final String ERROR_PAGE = "file:///android_asset/shell/error.html";
     private static final String SCROLL_PROBE =
         "(function(){if(window.__fleetixShell)return;window.__fleetixShell=1;" +
@@ -57,6 +59,8 @@ public class MainActivity extends BridgeActivity {
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable timeout = () -> fail("timeout", "", null);
+    private final Runnable autoRetry = this::retry;
+    private int retries;
     private WebView webView;
     private WebView errorView;
     private SwipeRefreshLayout swipe;
@@ -292,9 +296,16 @@ public class MainActivity extends BridgeActivity {
         }
         errorView.setVisibility(View.VISIBLE);
         renderError();
+        boolean passing = "timeout".equals(errorKind) || "unreachable".equals(errorKind) || code.startsWith("HTTP 5");
+        handler.removeCallbacks(autoRetry);
+        if (passing) {
+            handler.postDelayed(autoRetry, RETRY_MS << retries);
+            retries = Math.min(retries + 1, RETRY_STEPS);
+        }
     }
 
     private void hideError() {
+        handler.removeCallbacks(autoRetry);
         errorKind = null;
         errorView.setVisibility(View.GONE);
     }
@@ -418,6 +429,7 @@ public class MainActivity extends BridgeActivity {
             if (mainFrameFailed) {
                 return;
             }
+            retries = 0;
             view.evaluateJavascript(SCROLL_PROBE, null);
             checkUpdate();
         }

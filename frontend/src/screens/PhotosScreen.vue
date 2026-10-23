@@ -18,8 +18,8 @@
 				</div>
 			</div>
 			<div class="signs">
-				<SignaturePad :label="__('Driver signature')" @change="store.signatures.driver = $event" />
-				<SignaturePad :label="__('Inspector signature')" @change="store.signatures.inspector = $event" />
+				<SignaturePad :label="__('Driver signature')" :value="store.signatures.driver" @change="store.signatures.driver = $event" />
+				<SignaturePad :label="__('Inspector signature')" :value="store.signatures.inspector" @change="store.signatures.inspector = $event" />
 			</div>
 		</div>
 		<footer class="foot">

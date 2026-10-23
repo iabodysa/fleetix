@@ -1,4 +1,4 @@
-import { reactive } from "vue"
+import { reactive, watch } from "vue"
 import { createResource } from "frappe-ui/src/resources/resources.js"
 import { api, QUEUE_METHOD } from "./api.js"
 
@@ -18,6 +18,42 @@ export const store = reactive({
 })
 
 export const queue = createResource({ url: QUEUE_METHOD, auto: false, initialData: [] })
+
+const DRAFT_STEPS = ["odometer", "components", "photos", "review"]
+const DRAFT_KEY = "fleetix.maintenance.draft." + ((window.frappe && window.frappe.boot && window.frappe.boot.user) || "")
+
+function draftFields() {
+	return { step: store.step, visit: store.visit, odometer: store.odometer, checklist: store.checklist, signatures: store.signatures }
+}
+
+function saveDraft() {
+	try {
+		if (store.visit && DRAFT_STEPS.indexOf(store.step) !== -1) localStorage.setItem(DRAFT_KEY, JSON.stringify(draftFields()))
+		else localStorage.removeItem(DRAFT_KEY)
+	} catch (e) {
+		return
+	}
+}
+
+watch(draftFields, saveDraft, { deep: true })
+
+function storedDraft() {
+	try {
+		const draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null")
+		return draft && draft.visit && DRAFT_STEPS.indexOf(draft.step) !== -1 ? draft : null
+	} catch (e) {
+		return null
+	}
+}
+
+export async function restoreDraft() {
+	const draft = storedDraft()
+	const rows = await queue.fetch()
+	if (!draft || queue.error || store.step !== "queue") return
+	const row = (rows || []).find((r) => r.maintenance === draft.visit.maintenance)
+	if (row && row.status === draft.visit.status) Object.assign(store, draft, { drawer: false })
+	else saveDraft()
+}
 
 export function stepForStatus(row) {
 	if (row.status === "Driver Arrived") return "odometer"

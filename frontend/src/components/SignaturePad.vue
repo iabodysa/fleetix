@@ -21,9 +21,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 
-defineProps({ label: String })
+const props = defineProps({ label: String, value: String })
 const emit = defineEmits(["change"])
 const canvas = ref(null)
 let drawing = false
@@ -68,6 +68,12 @@ function end() {
 	drawing = false
 	emit("change", canvas.value.toDataURL("image/png"))
 }
+onMounted(() => {
+	if (!props.value) return
+	const image = new Image()
+	image.onload = () => canvas.value && canvas.value.getContext("2d").drawImage(image, 0, 0)
+	image.src = props.value
+})
 function clear() {
 	canvas.value.getContext("2d").clearRect(0, 0, canvas.value.width, canvas.value.height)
 	emit("change", null)
