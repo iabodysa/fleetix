@@ -1,0 +1,12 @@
+{
+	"appId": "sa.etihad.fleetix.gate",
+	"appName": "Fleetix Gate",
+	"webDir": "www",
+	"server": {
+		"androidScheme": "https",
+		"cleartext": false
+	},
+	"android": {
+		"allowMixedContent": false
+	}
+}

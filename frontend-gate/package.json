@@ -1,0 +1,19 @@
+{
+	"name": "fleetix-gate",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build --base=/assets/fleetix/gate/ && yarn copy-html-entry",
+		"copy-html-entry": "cp ../fleetix/public/gate/index.html ../fleetix/www/gate.html"
+	},
+	"dependencies": {
+		"jsqr": "^1.4.0",
+		"vue": "^3.5.12"
+	},
+	"devDependencies": {
+		"@vitejs/plugin-vue": "^5.1.4",
+		"vite": "^5.4.10"
+	}
+}

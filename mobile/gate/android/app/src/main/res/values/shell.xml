@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fleetix Gate</string>
+    <string name="back">Back</string>
+    <string name="refresh">Refresh</string>
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
+    <string name="retry">Try again</string>
+    <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="exit_title">Close the app?</string>
+    <string name="exit_yes">Close app</string>
+    <string name="error_offline_title">No connection</string>
+    <string name="error_offline_text">Check mobile data or Wi-Fi, then try again.</string>
+    <string name="error_server_title">The page could not be loaded</string>
+    <string name="error_server_text">The server returned an error. Try again or go to the home page.</string>
+    <string name="error_ssl_title">Secure connection failed</string>
+    <string name="error_ssl_text">The server certificate could not be verified.</string>
+    <string name="error_timeout_title">The page is taking too long</string>
+    <string name="error_timeout_text">The server did not answer within 30 seconds.</string>
+    <string name="error_unreachable_title">The server could not be reached</string>
+    <string name="error_unreachable_text">Check the network, then try again.</string>
+    <string name="update_title">New version available</string>
+    <string name="update_text">Version {0} is ready to install.</string>
+    <string name="update_get">Update</string>
+    <string name="update_check">Check for updates</string>
+    <string name="update_none">The app is up to date.</string>
+    <string name="update_downloading">Downloading the update</string>
+    <string name="update_failed">The update could not be downloaded. Try again.</string>
+    <string name="pin_enter">Enter the settings PIN</string>
+    <string name="pin_new">Choose a settings PIN of 4 to 8 digits</string>
+    <string name="pin_repeat">Enter the same PIN again</string>
+    <string name="pin_wrong">Wrong PIN</string>
+    <string name="pin_mismatch">The two PINs do not match</string>
+    <string name="pin_short">Use 4 to 8 digits</string>
+    <string name="ok">OK</string>
+    <string name="app_version">App version</string>
+    <string name="server_address">Server address</string>
+    <string name="save">Save</string>
+    <string name="url_invalid">Enter an address such as https://example.com</string>
+    <string name="url_checking">Checking the server</string>
+    <string name="url_unreachable">The server could not be reached</string>
+    <string name="title_activity_main">Fleetix Gate</string>
+</resources>

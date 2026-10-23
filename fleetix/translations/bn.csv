@@ -1,0 +1,106 @@
+Add damage photo,ক্ষতির ছবি যোগ করুন
+Already in the workshop,আগে থেকেই ওয়ার্কশপে আছে
+Back,পিছনে
+Camera access is off for this app,এই অ্যাপের জন্য ক্যামেরার অনুমতি বন্ধ
+Car,গাড়ি
+Car plate,গাড়ির নম্বর প্লেট
+Choose one of the listed languages,তালিকা থেকে একটি ভাষা বেছে নিন
+Choose where the car goes next,গাড়ি এরপর কোথায় যাবে বেছে নিন
+Close,বন্ধ করুন
+Continue without photos,ছবি ছাড়া চালিয়ে যান
+Damage,ক্ষতি
+Driver,চালক
+Driver Arrived,চালক পৌঁছেছে
+Due Alert,সার্ভিসের সময়
+Erase,মুছুন
+Find car,গাড়ি খুঁজুন
+Fleetix Gate,ফ্লিটিক্স গেট
+Front,সামনে
+Handover,হস্তান্তর
+Handover and return,হস্তান্তর ও ফেরত
+km,কিমি
+Language,ভাষা
+Last reading,শেষ রিডিং
+Left side,বাম পাশ
+Letters,অক্ষর
+Log in,লগ ইন
+Log out,লগ আউট
+Maintenance,মেরামত
+Menu,মেনু
+New emergency visit,নতুন জরুরি মেরামত
+Next,পরবর্তী
+Next car,পরের গাড়ি
+Next stop,পরের গন্তব্য
+No car with this plate,এই নম্বর প্লেটের কোনো গাড়ি নেই
+No connection to the server,সার্ভারের সাথে সংযোগ নেই
+No driver or project on this car,এই গাড়িতে কোনো চালক বা প্রকল্প নেই
+No handover request for this car,এই গাড়ির হস্তান্তরের কোনো অনুরোধ নেই
+Odometer,মিটার রিডিং
+Odometer reading is below the last reading {0},মিটার রিডিং শেষ রিডিং {0} এর চেয়ে কম
+Password,পাসওয়ার্ড
+Photo {0} of {1},ছবি {0} / {1}
+Photos,ছবি
+Photos can only be added to a maintenance visit or a handover,ছবি শুধু মেরামত বা হস্তান্তরে যোগ করা যায়
+Project,প্রকল্প
+Return,ফেরত
+Right side,ডান পাশ
+Scan code,কোড স্ক্যান করুন
+Send,পাঠান
+Send to handover,হস্তান্তরে পাঠান
+Send to maintenance,মেরামতে পাঠান
+Sent to handover,হস্তান্তরে পাঠানো হয়েছে
+Sent to maintenance,মেরামতে পাঠানো হয়েছে
+Settings,সেটিংস
+The photo could not be read. Take it again.,ছবিটি পড়া যায়নি। আবার তুলুন।
+The server returned an error,সার্ভার একটি ত্রুটি দিয়েছে
+This account cannot use the gate app,এই অ্যাকাউন্ট গেট অ্যাপ ব্যবহার করতে পারে না
+This car is already in the workshop,এই গাড়ি আগে থেকেই ওয়ার্কশপে আছে
+This device has no camera,এই ডিভাইসে ক্যামেরা নেই
+Transfer,স্থানান্তর
+Try again,আবার চেষ্টা করুন
+User,ব্যবহারকারী
+Fleetix Maintenance,ফ্লিটিক্স মেরামত
+Refresh,রিফ্রেশ করুন
+Home,হোম
+Cancel,বাতিল
+Close the app?,অ্যাপ বন্ধ করবেন?
+Close app,অ্যাপ বন্ধ করুন
+No connection,সংযোগ নেই
+"Check the network cable or Wi-Fi, then try again.","নেটওয়ার্ক কেবল বা ওয়াই-ফাই দেখুন, তারপর আবার চেষ্টা করুন।"
+"Check mobile data or Wi-Fi, then try again.","মোবাইল ডেটা বা ওয়াই-ফাই দেখুন, তারপর আবার চেষ্টা করুন।"
+The page could not be loaded,পেজ লোড করা যায়নি
+The server returned an error. Try again or go to the home page.,সার্ভার একটি ত্রুটি দিয়েছে। আবার চেষ্টা করুন বা হোম পেজে যান।
+Secure connection failed,নিরাপদ সংযোগ ব্যর্থ
+The server certificate could not be verified.,সার্ভারের সার্টিফিকেট যাচাই করা যায়নি।
+The page is taking too long,পেজ লোড হতে অনেক সময় লাগছে
+The server did not answer within 30 seconds.,সার্ভার ৩০ সেকেন্ডের মধ্যে উত্তর দেয়নি।
+The server could not be reached,সার্ভারে পৌঁছানো যায়নি
+"Check the network, then try again.","নেটওয়ার্ক দেখুন, তারপর আবার চেষ্টা করুন।"
+New version available,নতুন সংস্করণ আছে
+Version {0} is ready to install.,সংস্করণ {0} ইনস্টলের জন্য প্রস্তুত।
+Update,আপডেট করুন
+Check for updates,আপডেট দেখুন
+The app is up to date.,অ্যাপ হালনাগাদ আছে।
+Downloading the update,আপডেট ডাউনলোড হচ্ছে
+The update could not be downloaded. Try again.,আপডেট ডাউনলোড করা যায়নি। আবার চেষ্টা করুন।
+Enter the settings PIN,সেটিংসের পিন দিন
+Choose a settings PIN of 4 to 8 digits,সেটিংসের জন্য ৪ থেকে ৮ সংখ্যার পিন বেছে নিন
+Enter the same PIN again,একই পিন আবার দিন
+Wrong PIN,ভুল পিন
+The two PINs do not match,দুটি পিন মেলেনি
+Use 4 to 8 digits,৪ থেকে ৮টি সংখ্যা ব্যবহার করুন
+OK,ঠিক আছে
+App version,অ্যাপ সংস্করণ
+Server address,সার্ভারের ঠিকানা
+Save,সংরক্ষণ করুন
+Enter an address such as https://example.com,https://example.com এর মতো ঠিকানা দিন
+Checking the server,সার্ভার পরীক্ষা হচ্ছে
+Test printer,প্রিন্টার পরীক্ষা করুন
+Printer is ready,প্রিন্টার প্রস্তুত
+Out of paper,কাগজ শেষ
+Printer cover is open,প্রিন্টারের ঢাকনা খোলা
+Printer is overheated,প্রিন্টার অতিরিক্ত গরম
+Printer not found,প্রিন্টার পাওয়া যায়নি
+Printer error,প্রিন্টারে ত্রুটি
+Printer test page,প্রিন্টার পরীক্ষার পাতা
+Welcome,স্বাগতম

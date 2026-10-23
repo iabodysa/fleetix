@@ -563,6 +563,16 @@
     "state": "Due Alert"
    },
    {
+    "action": "Arrive",
+    "allow_self_approval": 1,
+    "allowed": "Movement Supervisor",
+    "condition": null,
+    "doctype": "Workflow Transition",
+    "next_state": "Driver Arrived",
+    "send_email_to_creator": 0,
+    "state": "Due Alert"
+   },
+   {
     "action": "Start Inspection",
     "allow_self_approval": 1,
     "allowed": "Movement Supervisor",

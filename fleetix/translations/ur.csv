@@ -1,0 +1,106 @@
+Add damage photo,نقصان کی تصویر شامل کریں
+Already in the workshop,پہلے سے ورکشاپ میں ہے
+Back,پیچھے
+Camera access is off for this app,اس ایپ کے لیے کیمرے کی اجازت بند ہے
+Car,گاڑی
+Car plate,گاڑی کی نمبر پلیٹ
+Choose one of the listed languages,فہرست میں سے ایک زبان منتخب کریں
+Choose where the car goes next,منتخب کریں کہ گاڑی آگے کہاں جائے گی
+Close,بند کریں
+Continue without photos,تصاویر کے بغیر جاری رکھیں
+Damage,نقصان
+Driver,ڈرائیور
+Driver Arrived,ڈرائیور پہنچ گیا
+Due Alert,سروس کا وقت
+Erase,مٹائیں
+Find car,گاڑی تلاش کریں
+Fleetix Gate,فلیٹکس گیٹ
+Front,سامنے
+Handover,حوالگی
+Handover and return,حوالگی اور واپسی
+km,کلومیٹر
+Language,زبان
+Last reading,آخری ریڈنگ
+Left side,بائیں طرف
+Letters,حروف
+Log in,لاگ ان
+Log out,لاگ آؤٹ
+Maintenance,مرمت
+Menu,مینو
+New emergency visit,نئی ہنگامی مرمت
+Next,آگے
+Next car,اگلی گاڑی
+Next stop,اگلی منزل
+No car with this plate,اس نمبر پلیٹ کی کوئی گاڑی نہیں
+No connection to the server,سرور سے رابطہ نہیں
+No driver or project on this car,اس گاڑی پر کوئی ڈرائیور یا پروجیکٹ نہیں
+No handover request for this car,اس گاڑی کی حوالگی کی کوئی درخواست نہیں
+Odometer,میٹر ریڈنگ
+Odometer reading is below the last reading {0},میٹر ریڈنگ آخری ریڈنگ {0} سے کم ہے
+Password,پاس ورڈ
+Photo {0} of {1},تصویر {0} از {1}
+Photos,تصاویر
+Photos can only be added to a maintenance visit or a handover,تصاویر صرف مرمت یا حوالگی میں شامل ہو سکتی ہیں
+Project,پروجیکٹ
+Return,واپسی
+Right side,دائیں طرف
+Scan code,کوڈ اسکین کریں
+Send,بھیجیں
+Send to handover,حوالگی کے لیے بھیجیں
+Send to maintenance,مرمت کے لیے بھیجیں
+Sent to handover,حوالگی کے لیے بھیج دی گئی
+Sent to maintenance,مرمت کے لیے بھیج دی گئی
+Settings,ترتیبات
+The photo could not be read. Take it again.,تصویر پڑھی نہیں جا سکی۔ دوبارہ لیں۔
+The server returned an error,سرور نے خرابی بتائی
+This account cannot use the gate app,یہ اکاؤنٹ گیٹ ایپ استعمال نہیں کر سکتا
+This car is already in the workshop,یہ گاڑی پہلے سے ورکشاپ میں ہے
+This device has no camera,اس ڈیوائس میں کیمرا نہیں
+Transfer,منتقلی
+Try again,دوبارہ کوشش کریں
+User,صارف
+Fleetix Maintenance,فلیٹکس مرمت
+Refresh,دوبارہ لوڈ کریں
+Home,ہوم
+Cancel,منسوخ کریں
+Close the app?,ایپ بند کریں؟
+Close app,ایپ بند کریں
+No connection,کوئی کنکشن نہیں
+"Check the network cable or Wi-Fi, then try again.",نیٹ ورک کیبل یا وائی فائی چیک کریں، پھر دوبارہ کوشش کریں۔
+"Check mobile data or Wi-Fi, then try again.",موبائل ڈیٹا یا وائی فائی چیک کریں، پھر دوبارہ کوشش کریں۔
+The page could not be loaded,صفحہ لوڈ نہیں ہو سکا
+The server returned an error. Try again or go to the home page.,سرور نے خرابی بتائی۔ دوبارہ کوشش کریں یا ہوم پیج پر جائیں۔
+Secure connection failed,محفوظ کنکشن نہیں بن سکا
+The server certificate could not be verified.,سرور کا سرٹیفکیٹ تصدیق نہیں ہو سکا۔
+The page is taking too long,صفحہ بہت دیر لگا رہا ہے
+The server did not answer within 30 seconds.,سرور نے 30 سیکنڈ میں جواب نہیں دیا۔
+The server could not be reached,سرور تک رسائی نہیں ہو سکی
+"Check the network, then try again.",نیٹ ورک چیک کریں، پھر دوبارہ کوشش کریں۔
+New version available,نیا ورژن دستیاب ہے
+Version {0} is ready to install.,ورژن {0} انسٹال کے لیے تیار ہے۔
+Update,اپ ڈیٹ کریں
+Check for updates,اپ ڈیٹ چیک کریں
+The app is up to date.,ایپ تازہ ترین ہے۔
+Downloading the update,اپ ڈیٹ ڈاؤن لوڈ ہو رہی ہے
+The update could not be downloaded. Try again.,اپ ڈیٹ ڈاؤن لوڈ نہیں ہو سکی۔ دوبارہ کوشش کریں۔
+Enter the settings PIN,ترتیبات کا پن درج کریں
+Choose a settings PIN of 4 to 8 digits,ترتیبات کے لیے 4 سے 8 ہندسوں کا پن چنیں
+Enter the same PIN again,وہی پن دوبارہ درج کریں
+Wrong PIN,غلط پن
+The two PINs do not match,دونوں پن مختلف ہیں
+Use 4 to 8 digits,4 سے 8 ہندسے استعمال کریں
+OK,ٹھیک ہے
+App version,ایپ ورژن
+Server address,سرور کا پتہ
+Save,محفوظ کریں
+Enter an address such as https://example.com,https://example.com جیسا پتہ درج کریں
+Checking the server,سرور چیک ہو رہا ہے
+Test printer,پرنٹر ٹیسٹ کریں
+Printer is ready,پرنٹر تیار ہے
+Out of paper,کاغذ ختم ہو گیا
+Printer cover is open,پرنٹر کا ڈھکن کھلا ہے
+Printer is overheated,پرنٹر بہت گرم ہے
+Printer not found,پرنٹر نہیں ملا
+Printer error,پرنٹر میں خرابی
+Printer test page,پرنٹر ٹیسٹ صفحہ
+Welcome,خوش آمدید
