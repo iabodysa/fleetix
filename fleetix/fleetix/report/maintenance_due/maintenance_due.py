@@ -15,6 +15,7 @@ from fleetix.fleetix.doctype.maintenance.maintenance import (
 VEHICLE_FIELDS = [
 	"name",
 	"current_project",
+	"current_project.project_name as project_name",
 	"last_odometer",
 	"next_battery_due_date",
 	"filter_interval_km",
@@ -46,6 +47,7 @@ def execute(filters=None):
 				{
 					"vehicle": vehicle.name,
 					"project": vehicle.current_project,
+					"project_name": vehicle.project_name,
 					"component": _(component),
 					"last_done": vehicle.get(fields[0]),
 					"odometer": vehicle.last_odometer,
@@ -77,6 +79,7 @@ def get_columns():
 			"options": "Project",
 			"width": 140,
 		},
+		{"fieldname": "project_name", "label": _("Project Name"), "fieldtype": "Data", "width": 180},
 		{"fieldname": "component", "label": _("Component"), "fieldtype": "Data", "width": 120},
 		{"fieldname": "last_done", "label": _("Last Done"), "fieldtype": "Date", "width": 110},
 		{"fieldname": "odometer", "label": _("Odometer"), "fieldtype": "Int", "width": 100},

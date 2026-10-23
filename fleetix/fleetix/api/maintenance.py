@@ -100,6 +100,7 @@ def get_vehicle_checklist(maintenance, odometer=None):
 			"driver": visit.driver,
 			"driver_name": frappe.db.get_value("Driver", visit.driver, "full_name") if visit.driver else None,
 			"project": visit.project,
+			"project_name": frappe.db.get_value("Project", visit.project, "project_name") if visit.project else None,
 		},
 		"components": components,
 		"final_check": [

@@ -7,7 +7,7 @@
 					<span class="label">{{ __("Vehicle") }}</span>
 					<PlateChip :plate="vehicle.plate" />
 					<div class="value">{{ vehicle.model }}</div>
-					<div class="muted">{{ vehicle.driver_name || vehicle.driver }} · {{ vehicle.project }}</div>
+					<div class="muted">{{ vehicle.driver_name || vehicle.driver }} · {{ vehicle.project_name || vehicle.project }}</div>
 				</div>
 				<div class="card review-card">
 					<span class="label">{{ __("Odometer") }}</span>

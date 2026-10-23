@@ -90,7 +90,7 @@ frappe.pages["assignment-timeline"].on_page_load = (wrapper) => {
 								s.kind,
 								s.start,
 								s.end,
-								s.label === r.project ? r.project_name || s.label : s.label,
+								s.label,
 								doc
 							);
 						}

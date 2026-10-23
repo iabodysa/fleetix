@@ -33,8 +33,8 @@ def get_timeline(start=None, days=DEFAULT_DAYS, project=None, city=None):
 			fields=[
 				"name",
 				"vehicle",
-				"driver",
-				"project",
+				"driver.full_name as driver_name",
+				"project.project_name as project_name",
 				"assignment_type",
 				"from_datetime",
 				"to_datetime",
@@ -48,7 +48,7 @@ def get_timeline(start=None, days=DEFAULT_DAYS, project=None, city=None):
 					"end": a.to_datetime,
 					"doctype": "Vehicle Assignment",
 					"name": a.name,
-					"label": a.project or a.driver,
+					"label": a.project_name or a.driver_name,
 				}
 			)
 		for r in frappe.get_list(
@@ -58,7 +58,7 @@ def get_timeline(start=None, days=DEFAULT_DAYS, project=None, city=None):
 				"workflow_state": ("not in", ("Assigned", "Rejected", "Cancelled")),
 				"required_date": ("<", end),
 			},
-			fields=["name", "selected_vehicle", "project", "required_date"],
+			fields=["name", "selected_vehicle", "project.project_name as project_name", "required_date"],
 		):
 			spans[r.selected_vehicle].append(
 				{
@@ -67,7 +67,7 @@ def get_timeline(start=None, days=DEFAULT_DAYS, project=None, city=None):
 					"end": None,
 					"doctype": "Vehicle Request",
 					"name": r.name,
-					"label": r.project,
+					"label": r.project_name,
 				}
 			)
 		for m in frappe.get_list(
