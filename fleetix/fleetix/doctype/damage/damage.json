@@ -84,7 +84,6 @@
    "options": "Project"
   },
   {
-   "fetch_from": "driver.customer",
    "fieldname": "customer",
    "fieldtype": "Link",
    "label": "Customer",

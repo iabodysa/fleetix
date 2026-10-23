@@ -125,17 +125,26 @@ def held_until(vehicle, driver, since):
 	)
 
 
-def holder_at(vehicle, at):
-	if not (vehicle and at):
+def holder_at(vehicle, at, driver=None):
+	if not ((vehicle or driver) and at):
 		return None
 	for holder in frappe.get_all(
 		"Vehicle Assignment",
-		filters={"vehicle": vehicle, "docstatus": 1, "handover_date": ("<=", at)},
-		fields=["driver", "project", "handover_date"],
+		filters={
+			"docstatus": 1,
+			"handover_date": ("<=", at),
+			**({"vehicle": vehicle} if vehicle else {"driver": driver}),
+		},
+		fields=["vehicle", "driver", "project", "customer", "handover_date"],
 		order_by="handover_date desc",
 		limit=1,
 	):
-		until = held_until(vehicle, holder.driver, holder.handover_date)
+		until = held_until(holder.vehicle, holder.driver, holder.handover_date)
 		if not until or get_datetime(until) > get_datetime(at):
 			return holder
 	return None
+
+
+def customer_at(at, vehicle=None, driver=None):
+	holder = holder_at(vehicle, at, driver=driver)
+	return (holder and holder.customer) or (driver and frappe.db.get_value("Driver", driver, "customer"))

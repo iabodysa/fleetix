@@ -58,7 +58,7 @@ def classify(project=None, city=None):
 	for row in frappe.get_list(
 		"Vehicle Assignment",
 		filters={"docstatus": 1, "status": ("in", LIVE), "vehicle": ("in", names)},
-		fields=["name", "vehicle", "driver", "project", "assignment_type", "from_datetime", "to_datetime"],
+		fields=["name", "vehicle", "driver", "project", "customer", "assignment_type", "from_datetime", "to_datetime"],
 		order_by="from_datetime asc",
 	):
 		live[row.vehicle] = row
@@ -117,6 +117,7 @@ def classify(project=None, city=None):
 			status=vehicle.status,
 			driver=assignment.driver if assignment else vehicle.current_driver,
 			project=assignment.project if assignment else vehicle.current_project,
+			customer=assignment.customer if assignment else None,
 			assignment=assignment.name if assignment else None,
 			chips=[],
 			notes=notes.get(vehicle.name, []),

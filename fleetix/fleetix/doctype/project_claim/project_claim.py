@@ -5,12 +5,16 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils import flt
 
+from fleetix.fleetix.doctype.vehicle_assignment.vehicle_assignment import customer_at
+
 
 class ProjectClaim(Document):
 	def validate(self):
 		for fieldname, value in source_values(frappe.get_doc(self.claim_type, self.source_reference)).items():
 			if not self.get(fieldname):
 				self.set(fieldname, value)
+		if not self.customer:
+			self.customer = customer_at(self.claim_date, driver=self.driver)
 
 	def after_insert(self):
 		if frappe.get_meta(self.claim_type).has_field("project_claim"):

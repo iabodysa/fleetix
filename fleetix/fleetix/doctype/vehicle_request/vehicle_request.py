@@ -3,6 +3,10 @@
 
 from frappe.model.document import Document
 
+from fleetix.fleetix.doctype.vehicle_assignment.vehicle_assignment import customer_at
+
 
 class VehicleRequest(Document):
-	pass
+	def validate(self):
+		if not self.customer:
+			self.customer = customer_at(self.required_date, driver=self.driver)

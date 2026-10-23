@@ -5,7 +5,7 @@ import frappe
 from frappe.model.document import Document
 
 from fleetix.fleetix.doctype.project_claim.project_claim import make_project_claim
-from fleetix.fleetix.doctype.vehicle_assignment.vehicle_assignment import holder_at
+from fleetix.fleetix.doctype.vehicle_assignment.vehicle_assignment import customer_at, holder_at
 
 
 class Accident(Document):
@@ -13,6 +13,8 @@ class Accident(Document):
 		holder = holder_at(self.vehicle, self.accident_datetime)
 		if holder:
 			self.driver, self.project = holder.driver, holder.project
+		if not self.customer:
+			self.customer = customer_at(self.accident_datetime, self.vehicle, self.driver)
 		if self.status == "Responsibility Set" and not self.responsibility_set_by:
 			self.responsibility_set_by = frappe.session.user
 

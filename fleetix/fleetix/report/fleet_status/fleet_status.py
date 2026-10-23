@@ -56,28 +56,19 @@ def execute(filters=None):
 		else {}
 	)
 
-	customers = dict(
-		frappe.get_all(
-			"Driver",
-			filters={"name": ("in", [row.driver for row in rows if row.driver] or [""])},
-			fields=["name", "customer"],
-			as_list=True,
-		)
-	)
 	kept, data = [], []
 	for row in rows:
 		vehicle = vehicles.get(row.vehicle)
 		if not vehicle:
 			continue
-		customer = customers.get(row.driver)
-		if filters.customer and customer != filters.customer:
+		if filters.customer and row.customer != filters.customer:
 			continue
 		if filters.vehicle_type and vehicle.vehicle_type != filters.vehicle_type:
 			continue
 		entry = {
 			"vehicle": row.vehicle,
 			"vehicle_type": vehicle.vehicle_type,
-			"customer": customer,
+			"customer": row.customer,
 			"project": row.project,
 			"project_name": row.project_name,
 			"driver": row.driver,
