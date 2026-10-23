@@ -9802,3 +9802,7 @@ These are not Vehicle fields: {0},هذه ليست حقولًا في السيار
 Vehicles Missing Data,سيارات ببيانات ناقصة
 Claim,مطالبة
 Tires,الإطارات
+Driver {0} already holds vehicle {1},السائق {0} لديه المركبة {1} حاليًا
+Drivers With Multiple Vehicles,سائقون لديهم أكثر من مركبة
+Vehicles Held,عدد المركبات
+{0} {1} is inactive,{0} {1} غير نشط
