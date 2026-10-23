@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -32,6 +33,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeActivity;
@@ -63,6 +67,7 @@ public class MainActivity extends BridgeActivity {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable timeout = () -> fail("timeout", "", null);
     private final Runnable autoRetry = this::retry;
+    private final Runnable autoHide = this::hideBar;
     private int retries;
     private WebView webView;
     private PageBridge pageBridge;
@@ -70,6 +75,10 @@ public class MainActivity extends BridgeActivity {
     private boolean localPageInHistory;
     private WebView errorView;
     private SwipeRefreshLayout swipe;
+    private View bar;
+    private boolean edgePull;
+    private boolean swallowGesture;
+    private float pullStartY;
     private ProgressBar progress;
     private String baseUrl;
     private String startUrl;
@@ -160,10 +169,14 @@ public class MainActivity extends BridgeActivity {
 
     private View buildLayout() {
         ((ViewGroup) webView.getParent()).removeView(webView);
+        FrameLayout frame = new FrameLayout(this);
+        frame.setBackgroundColor(Color.WHITE);
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
-        root.setBackgroundColor(Color.WHITE);
-        root.addView(toolbar(), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(56)));
+        frame.addView(root, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        bar = toolbar();
+        bar.setVisibility(View.GONE);
+        frame.addView(bar, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(56), Gravity.TOP));
         progress = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
         progress.setIndeterminate(true);
         progress.setIndeterminateTintList(ColorStateList.valueOf(ACCENT));
@@ -194,7 +207,7 @@ public class MainActivity extends BridgeActivity {
         errorView.loadUrl(ERROR_PAGE);
         body.addView(errorView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         root.addView(body, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
-        return root;
+        return frame;
     }
 
     private View toolbar() {
@@ -411,7 +424,68 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onResume() {
         super.onResume();
+        immersive();
         ApkUpdater.resume(this);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            immersive();
+        }
+    }
+
+    private void immersive() {
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        controller.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        controller.hide(WindowInsetsCompat.Type.systemBars());
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (bar == null) {
+            return super.dispatchTouchEvent(event);
+        }
+        int action = event.getActionMasked();
+        if (action == MotionEvent.ACTION_DOWN) {
+            edgePull = false;
+            swallowGesture = bar.getVisibility() == View.VISIBLE && event.getY() > bar.getBottom();
+            if (swallowGesture) {
+                hideBar();
+                return true;
+            }
+            edgePull = event.getY() < dp(32);
+            pullStartY = event.getY();
+        } else if (action == MotionEvent.ACTION_MOVE && edgePull && event.getY() - pullStartY > dp(48)) {
+            edgePull = false;
+            swallowGesture = true;
+            showBar();
+            MotionEvent cancel = MotionEvent.obtain(event);
+            cancel.setAction(MotionEvent.ACTION_CANCEL);
+            super.dispatchTouchEvent(cancel);
+            cancel.recycle();
+            return true;
+        }
+        if (swallowGesture) {
+            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+                swallowGesture = false;
+            }
+            return true;
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    private void showBar() {
+        bar.setVisibility(View.VISIBLE);
+        handler.removeCallbacks(autoHide);
+        handler.postDelayed(autoHide, 5000);
+    }
+
+    private void hideBar() {
+        handler.removeCallbacks(autoHide);
+        bar.setVisibility(View.GONE);
     }
 
     private int dp(int value) {
