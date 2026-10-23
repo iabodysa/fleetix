@@ -19,3 +19,5 @@
 {"key": "{} due", "caller": "Fleetix workspace shortcut format"}
 {"key": "Fleetix Accountant", "caller": "Fleetix role profile record name"}
 {"key": "Fleetix Rental Manager", "caller": "Fleetix role profile record name"}
+{"key": "Claim", "caller": "Fleetix fixture Workflow Action Master name"}
+{"key": "Tires", "caller": "Fleetix fixture Item Group name"}

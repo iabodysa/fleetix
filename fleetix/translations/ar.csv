@@ -9800,3 +9800,5 @@ One Vehicle field name per line. A vehicle with any of them empty is marked Miss
 Required Vehicle Fields,حقول السيارة المطلوبة
 These are not Vehicle fields: {0},هذه ليست حقولًا في السيارة: {0}
 Vehicles Missing Data,سيارات ببيانات ناقصة
+Claim,مطالبة
+Tires,الإطارات
