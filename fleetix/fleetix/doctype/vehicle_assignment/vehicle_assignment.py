@@ -16,7 +16,7 @@ INTERVAL_FIELDS = (
 	"tire_interval_km",
 	"battery_interval_months",
 )
-SUBMIT_FIELDS = ("usage_type", "from_datetime", "handover_date")
+SUBMIT_FIELDS = ("usage_type", "from_datetime")
 CONVERTIBLE = ("Active", "Expiring")
 LIVE = ("Active", "Expiring", "Converted to Permanent")
 
@@ -90,11 +90,27 @@ class VehicleAssignment(Document):
 				indicator="orange",
 			)
 
+	def validate_vehicle_free(self):
+		holder = frappe.db.get_value(
+			"Vehicle Assignment",
+			{"vehicle": self.vehicle, "docstatus": 1, "status": ("in", LIVE), "name": ("!=", self.name)},
+			["name", "driver"],
+			as_dict=True,
+		)
+		if holder:
+			frappe.throw(
+				_("Vehicle {0} is already assigned to driver {1} in {2}").format(
+					self.vehicle, holder.driver, holder.name
+				)
+			)
+
 	def before_submit(self):
 		self.validate_active()
+		self.validate_vehicle_free()
 		self.validate_submit_fields()
 		self.validate_driver_licence()
 		self.validate_driver_trained()
+		self.handover_date = delivered_at(self.vehicle, self.driver, self.from_datetime)
 		self.status = "Active"
 
 	def on_submit(self):
@@ -107,6 +123,12 @@ class VehicleAssignment(Document):
 		self.warn_other_vehicles()
 
 	def before_cancel(self):
+		if self.handover_date:
+			frappe.throw(
+				_(
+					"Vehicle {0} was handed to the driver on {1}; record its return with a Vehicle Handover of type Return"
+				).format(self.vehicle, frappe.format_value(self.handover_date, {"fieldtype": "Datetime"}))
+			)
 		self.status = "Cancelled"
 
 	def on_cancel(self):
@@ -126,8 +148,14 @@ class VehicleAssignment(Document):
 		self.flags.ignore_permissions = True
 		self.save()
 
-	def end(self):
+	def record_handover(self, at):
+		self.handover_date = at
+		self.flags.ignore_permissions = True
+		self.save()
+
+	def end(self, at):
 		self.status = "Ended"
+		self.return_datetime = at
 		self.flags.ignore_permissions = True
 		self.save()
 		self.release_vehicle()
@@ -138,6 +166,21 @@ class VehicleAssignment(Document):
 			return
 		vehicle.update({"current_driver": None, "current_project": None, "status": "Available"})
 		vehicle.save()
+
+
+def delivered_at(vehicle, driver, since):
+	return frappe.db.get_value(
+		"Vehicle Handover",
+		{
+			"vehicle": vehicle,
+			"to_driver": driver,
+			"handover_type": "Handover",
+			"docstatus": 1,
+			"handover_datetime": (">=", since),
+		},
+		"handover_datetime",
+		order_by="handover_datetime desc",
+	)
 
 
 def held_until(vehicle, driver, since):

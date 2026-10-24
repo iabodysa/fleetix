@@ -10024,3 +10024,25 @@ Maintenance Invoice Item,بند فاتورة الصيانة
 Call the workshop,اتصل بالورشة
 Download invoice,تحميل الفاتورة
 Your vehicle,سيارتك
+A registration for this ID number is already under review,يوجد طلب تسجيل لرقم الهوية هذا قيد المراجعة
+Create Driver,إنشاء سائق
+Driver Registration,تسجيل سائق
+Driver registration,تسجيل السائقين
+Driving Licence Copy,صورة رخصة القيادة
+Driving Licence Expiry Date,تاريخ انتهاء رخصة القيادة
+Driving Licence Number,رقم رخصة القيادة
+Full Name in Arabic as on the Card,الاسم الكامل بالعربية كما في البطاقة
+Full Name in English as on the Card,الاسم الكامل بالإنجليزية كما في البطاقة
+ID or Iqama Copy,صورة الهوية أو الإقامة
+ID or Iqama Expiry Date,تاريخ انتهاء الهوية أو الإقامة
+National ID or Iqama number must be 10 digits starting with 1 or 2,رقم الهوية أو الإقامة يجب أن يكون 10 أرقام ويبدأ بـ 1 أو 2
+Nationality,الجنسية
+Personal Photo,الصورة الشخصية
+Registration could not be received,تعذر استلام طلب التسجيل
+Return Date and Time,تاريخ ووقت الإرجاع
+Send Registration,إرسال التسجيل
+Thank you. Your registration has been received.,شكراً لك. تم استلام طلب تسجيلك.
+Vehicle {0} is already assigned to driver {1} in {2},المركبة {0} مسندة بالفعل إلى السائق {1} في {2}
+Vehicle {0} was handed to the driver on {1}; record its return with a Vehicle Handover of type Return,سُلّمت المركبة {0} إلى السائق في {1}؛ سجّل إرجاعها بمستند تسليم المركبة من نوع مرتجع
+{0} must be 5 MB or smaller,يجب ألا يتجاوز حجم {0} خمسة ميجابايت
+"{0} must be a JPG, PNG or PDF file",يجب أن يكون {0} ملف JPG أو PNG أو PDF

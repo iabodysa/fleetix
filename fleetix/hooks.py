@@ -143,7 +143,10 @@ fixtures = [
 	},
 ]
 
-override_doctype_class = {"Vehicle": "fleetix.fleetix.vehicle.VehicleService"}
+override_doctype_class = {
+	"Driver": "fleetix.fleetix.driver.DriverService",
+	"Vehicle": "fleetix.fleetix.vehicle.VehicleService",
+}
 
 app_include_js = "/assets/fleetix/js/vehicle_type.js"
 
@@ -181,6 +184,7 @@ after_sync = ["fleetix.fleetix.permissions.grant_core_permissions"]
 after_migrate = [
 	"fleetix.fleetix.permissions.grant_core_permissions",
 	"fleetix.fleetix.branding.set_navbar_logo",
+	"fleetix.fleetix.driver.allow_registration_uploads",
 ]
 before_uninstall = ["fleetix.fleetix.permissions.revoke_core_permissions"]
 

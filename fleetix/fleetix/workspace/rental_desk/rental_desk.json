@@ -17,7 +17,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Records",
-   "link_count": 6,
+   "link_count": 7,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -37,6 +37,16 @@
    "label": "Driver",
    "link_count": 0,
    "link_to": "Driver",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Driver Registration",
+   "link_count": 0,
+   "link_to": "Driver Registration",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -140,7 +150,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-10-23 17:09:00.000000",
+ "modified": "2026-10-24 14:53:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Rental Desk",
