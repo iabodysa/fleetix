@@ -13,6 +13,7 @@ class VehicleHandover(Document):
 		vehicle = frappe.get_doc("Vehicle", self.vehicle)
 		if cint(self.odometer) > cint(vehicle.last_odometer):
 			vehicle.last_odometer = self.odometer
+			vehicle.flags.ignore_mandatory = True
 			vehicle.save()
 		if self.handover_type == "Handover":
 			self.deliver_assignment()

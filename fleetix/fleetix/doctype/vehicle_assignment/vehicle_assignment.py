@@ -117,6 +117,7 @@ class VehicleAssignment(Document):
 		vehicle = frappe.get_doc("Vehicle", self.vehicle)
 		vehicle.update({field: self.get(field) for field in INTERVAL_FIELDS})
 		vehicle.update({"current_driver": self.driver, "current_project": self.project, "status": "Assigned"})
+		vehicle.flags.ignore_mandatory = True
 		vehicle.save()
 		if self.vehicle_request:
 			apply_workflow(frappe.get_doc("Vehicle Request", self.vehicle_request), "Assign")
@@ -165,6 +166,7 @@ class VehicleAssignment(Document):
 		if vehicle.current_driver != self.driver:
 			return
 		vehicle.update({"current_driver": None, "current_project": None, "status": "Available"})
+		vehicle.flags.ignore_mandatory = True
 		vehicle.save()
 
 

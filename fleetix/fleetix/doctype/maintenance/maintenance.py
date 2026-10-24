@@ -50,6 +50,7 @@ class Maintenance(Document):
 			if odometer_field:
 				vehicle.set(odometer_field, self.odometer)
 		set_next_due(vehicle)
+		vehicle.flags.ignore_mandatory = True
 		vehicle.save()
 		for row in self.components_replaced:
 			next_due_odometer, next_due_date = next_due(vehicle, row.component)
@@ -152,6 +153,7 @@ def create_due_alerts():
 		stored_oil_due = vehicle.next_oil_due_odometer
 		set_next_due(vehicle)
 		if vehicle.next_oil_due_odometer != stored_oil_due:
+			vehicle.flags.ignore_mandatory = True
 			vehicle.save()
 		due = due_components(vehicle)
 		if name in open_vehicles or not due:

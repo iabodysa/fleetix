@@ -13,4 +13,5 @@ class InsurancePolicy(Document):
 			if vehicle.insurance_policy == current or (not current and vehicle.insurance_policy != self.name):
 				continue
 			vehicle.insurance_policy = current
+			vehicle.flags.ignore_mandatory = True
 			vehicle.save()
