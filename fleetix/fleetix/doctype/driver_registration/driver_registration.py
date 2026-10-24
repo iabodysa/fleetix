@@ -10,6 +10,7 @@ from fleetix.fleetix.driver import clean_national_id
 ATTACHMENTS = ("id_image", "license_image", "photo")
 FILE_TYPES = (".jpg", ".jpeg", ".png", ".pdf")
 MAX_FILE_BYTES = 5 * 1024 * 1024
+TOKEN_SECONDS = 3600
 
 
 class DriverRegistration(Document):
@@ -17,10 +18,21 @@ class DriverRegistration(Document):
 		if self.company_website:
 			frappe.throw(_("Registration could not be received"))
 		self.national_id = clean_national_id(self.national_id)
+		if frappe.session.user == "Guest":
+			self.validate_upload_token()
+		self.upload_token = None
 		if frappe.db.exists("Driver Registration", {"national_id": self.national_id, "status": "Open"}):
 			frappe.throw(_("A registration for this ID number is already under review"))
 		self.driver = frappe.db.get_value("Driver", {"national_id": self.national_id})
 		self.status = "Linked" if self.driver else "Open"
+
+	def validate_upload_token(self):
+		session = frappe.cache.get_value(token_key(self.upload_token or ""))
+		files = {self.get(fieldname) for fieldname in ATTACHMENTS if self.get(fieldname)}
+		if not (session and files <= set(session["files"])):
+			frappe.throw(_("Registration could not be received"))
+		key = token_key(self.upload_token)
+		frappe.db.after_commit.add(lambda: frappe.cache.delete_value(key))
 
 	def validate(self):
 		self.national_id = clean_national_id(self.national_id)
@@ -96,3 +108,7 @@ class DriverRegistration(Document):
 		self.save()
 		self.copy_files_to_driver()
 		return driver.name
+
+
+def token_key(token):
+	return f"fleetix:driver-registration:{token}"

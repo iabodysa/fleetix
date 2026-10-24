@@ -1,3 +1,4 @@
-[data-fieldname="company_website"] {
+[data-fieldname="company_website"],
+[data-fieldname="upload_token"] {
 	display: none;
 }

@@ -10046,3 +10046,9 @@ Vehicle {0} is already assigned to driver {1} in {2},المركبة {0} مسند
 Vehicle {0} was handed to the driver on {1}; record its return with a Vehicle Handover of type Return,سُلّمت المركبة {0} إلى السائق في {1}؛ سجّل إرجاعها بمستند تسليم المركبة من نوع مرتجع
 {0} must be 5 MB or smaller,يجب ألا يتجاوز حجم {0} خمسة ميجابايت
 "{0} must be a JPG, PNG or PDF file",يجب أن يكون {0} ملف JPG أو PNG أو PDF
+The file must be 5 MB or smaller,يجب ألا يتجاوز حجم الملف خمسة ميجابايت
+"The file must be a JPG, PNG or PDF file",يجب أن يكون الملف بصيغة JPG أو PNG أو PDF
+"The file must be a JPG, PNG or PDF file of 5 MB or smaller",يجب أن يكون الملف بصيغة JPG أو PNG أو PDF وبحجم لا يتجاوز خمسة ميجابايت
+Upload Token,رمز الرفع
+Uploaded,تم الرفع
+Uploading...,جارٍ الرفع...

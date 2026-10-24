@@ -19,6 +19,7 @@
   "license_image",
   "photo",
   "company_website",
+  "upload_token",
   "review_section",
   "status",
   "driver"
@@ -103,6 +104,13 @@
    "label": "Website"
   },
   {
+   "fieldname": "upload_token",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Upload Token",
+   "no_copy": 1
+  },
+  {
    "fieldname": "review_section",
    "fieldtype": "Section Break",
    "label": "Review"
@@ -128,7 +136,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 18:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Driver Registration",

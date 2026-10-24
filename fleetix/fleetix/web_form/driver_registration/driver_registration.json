@@ -22,7 +22,7 @@
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 5,
- "modified": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 18:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "driver-registration",
@@ -129,7 +129,7 @@
   },
   {
    "fieldname": "id_image",
-   "fieldtype": "Attach",
+   "fieldtype": "Data",
    "hidden": 0,
    "label": "ID or Iqama Copy",
    "max_length": 0,
@@ -139,7 +139,7 @@
   },
   {
    "fieldname": "license_image",
-   "fieldtype": "Attach",
+   "fieldtype": "Data",
    "hidden": 0,
    "label": "Driving Licence Copy",
    "max_length": 0,
@@ -149,7 +149,7 @@
   },
   {
    "fieldname": "photo",
-   "fieldtype": "Attach",
+   "fieldtype": "Data",
    "hidden": 0,
    "label": "Personal Photo",
    "max_length": 0,
@@ -162,6 +162,16 @@
    "fieldtype": "Data",
    "hidden": 0,
    "label": "Website",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 0
+  },
+  {
+   "fieldname": "upload_token",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Upload Token",
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,

@@ -23,12 +23,3 @@ class DriverService(Driver):
 
 	def validate(self):
 		self.national_id = clean_national_id(self.national_id)
-
-
-def allow_guest_uploads():
-	if frappe.db.get_single_value("System Settings", "allow_guests_to_upload_files"):
-		return
-	settings = frappe.get_single("System Settings")
-	settings.allow_guests_to_upload_files = 1
-	settings.flags.ignore_permissions = True
-	settings.save()
