@@ -79,7 +79,7 @@ defineEmits(["vehicles", "close", "language", "menu"])
 	align-items: center;
 	gap: var(--s1);
 	min-width: 0;
-	max-width: 16rem;
+	max-width: 20rem;
 	min-height: var(--tap);
 	padding: 0 var(--s3);
 	border-radius: var(--r-md);
@@ -89,6 +89,7 @@ defineEmits(["vehicles", "close", "language", "menu"])
 }
 .app-header-user-name {
 	min-width: 0;
+	unicode-bidi: plaintext;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
