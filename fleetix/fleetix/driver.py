@@ -8,7 +8,6 @@ from erpnext.setup.doctype.driver.driver import Driver
 from frappe import _
 
 NATIONAL_ID = re.compile(r"[12]\d{9}")
-REGISTRATION = "Driver Registration"
 
 
 def clean_national_id(value):
@@ -26,14 +25,10 @@ class DriverService(Driver):
 		self.national_id = clean_national_id(self.national_id)
 
 
-def allow_registration_uploads():
-	settings = frappe.get_single("System Settings")
-	allowed = [
-		row.strip() for row in (settings.allowed_doctypes_for_guest_uploads or "").splitlines() if row.strip()
-	]
-	if settings.allow_guests_to_upload_files and (not allowed or REGISTRATION in allowed):
+def allow_guest_uploads():
+	if frappe.db.get_single_value("System Settings", "allow_guests_to_upload_files"):
 		return
+	settings = frappe.get_single("System Settings")
 	settings.allow_guests_to_upload_files = 1
-	settings.allowed_doctypes_for_guest_uploads = "\n".join([*allowed, REGISTRATION])
 	settings.flags.ignore_permissions = True
 	settings.save()
