@@ -10,7 +10,6 @@ from frappe import _
 from frappe.model.workflow import apply_workflow, get_transitions
 from frappe.utils import cint, date_diff, flt, get_host_name_from_request, get_url, getdate, today
 
-from fleetix.fleetix.api.gate import PLATE_LETTERS
 from fleetix.fleetix.doctype.maintenance.maintenance import (
 	COMPONENT_FIELDS,
 	component_max_qty,
@@ -76,6 +75,8 @@ def get_due_queue():
 @frappe.whitelist()
 def find_vehicles(plate):
 	frappe.only_for(WORKER_ROLES)
+	from fleetix.fleetix.api.gate import PLATE_LETTERS
+
 	text = (plate or "").upper().translate(PLATE_LETTERS)
 	digits = "".join(re.findall(r"[0-9]", text))
 	letters = "".join(re.findall(r"[A-Z]", text))
