@@ -19,11 +19,11 @@ PAPER_MM = 72
 INK_LEVEL = 150
 MIN_INK = 0.01
 BOTTOM_MARGIN = 24
-RENDER_TIMEOUT = 60
+RENDER_TIMEOUT = 30
 
 PAGE = (
 	'<!DOCTYPE html><html><head><meta charset="utf-8"><style>{style}</style>'
-	"<style>html,body{{margin:0;padding:0;background:#FFF}}"
+	"<style>html,body{{margin:0;padding:0;background:#FFF}}::-webkit-scrollbar{{display:none}}"
 	"body .print-format{{width:{mm}mm!important;max-width:none!important;margin:0!important;padding:0!important;min-height:0!important}}</style>"
 	'</head><body><div class="print-format">{html}</div></body></html>'
 )
@@ -69,7 +69,13 @@ def rasterize(html):
 		"utf-8",
 	]
 	command += ["--width", str(DOTS), "--zoom", f"{zoom:.4f}", "--format", "png", "-", "-"]
-	result = subprocess.run(command, input=html.encode(), capture_output=True, timeout=RENDER_TIMEOUT)
+	result = subprocess.run(
+		command,
+		input=html.encode(),
+		capture_output=True,
+		timeout=RENDER_TIMEOUT,
+		env=dict(os.environ, QT_QPA_PLATFORM="offscreen"),
+	)
 	if not result.stdout:
 		frappe.log_error("Thermal print render", result.stderr.decode(errors="replace"))
 		frappe.throw(_("Printer error"))
@@ -77,9 +83,9 @@ def rasterize(html):
 
 
 def black_and_white(image):
-	ink = image.convert("L").point(lambda level: 0 if level < INK_LEVEL else 255)
-	if ink.width != DOTS:
-		ink = ink.resize((DOTS, round(ink.height * DOTS / ink.width)))
+	page = Image.new("L", (DOTS, image.height), 255)
+	page.paste(image.convert("L").crop((0, 0, min(DOTS, image.width), image.height)), (0, 0))
+	ink = page.point(lambda level: 0 if level < INK_LEVEL else 255)
 	box = ink.point(lambda level: 255 - level).getbbox()
 	if box:
 		ink = ink.crop((0, 0, DOTS, min(ink.height, box[3] + BOTTOM_MARGIN)))
