@@ -20,15 +20,15 @@ function serverMessage(data) {
 }
 
 async function send(path, body, json) {
-	const controller = new AbortController()
-	const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
+	const controller = window.AbortController ? new AbortController() : null
+	const timer = controller && setTimeout(() => controller.abort(), TIMEOUT_MS)
 	try {
 		const response = await fetch(path, {
 			method: "POST",
 			credentials: "same-origin",
 			headers: headers(json),
 			body: json ? JSON.stringify(body || {}) : body,
-			signal: controller.signal,
+			signal: controller ? controller.signal : undefined,
 		})
 		const data = await response.json().catch(() => ({}))
 		if (!response.ok) throw new Error(serverMessage(data) || __("The server returned an error"))

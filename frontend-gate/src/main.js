@@ -1,3 +1,4 @@
+import "../../frontend/src/shell.js"
 import "../../frontend/compat/flex-gap.js"
 import { createApp } from "vue"
 import App from "./App.vue"

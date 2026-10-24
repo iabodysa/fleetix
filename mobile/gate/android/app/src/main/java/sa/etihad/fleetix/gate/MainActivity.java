@@ -2,12 +2,14 @@ package sa.etihad.fleetix.gate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,11 +33,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.webkit.WebViewCompat;
+import androidx.webkit.WebViewFeature;
 import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.BridgeWebChromeClient;
 import com.getcapacitor.BridgeWebViewClient;
 import com.getcapacitor.CapConfig;
+import java.net.CookieHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,6 +49,7 @@ public class MainActivity extends BridgeActivity {
     static final int INK = Color.parseColor("#0D1317");
     static final int ACCENT = Color.parseColor("#F2A900");
     private static final long TIMEOUT_MS = 30000;
+    private static final long READY_MS = 15000;
     private static final long RETRY_MS = 10000;
     private static final int RETRY_STEPS = 3;
     private static final String ERROR_PAGE = "file:///android_asset/shell/error.html";
@@ -53,6 +59,8 @@ public class MainActivity extends BridgeActivity {
         "var root=document.scrollingElement||document.documentElement;return root.scrollTop>0}" +
         "document.addEventListener('touchstart',function(ev){var p=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.Shell;" +
         "if(p)p.scrolled({value:up(ev.target)})},{capture:true,passive:true})})()";
+    private static final String READY_PROBE =
+        "(function(){var a=document.getElementById('app');return !!(a&&a.children.length)})()";
     private static final String BACK_PROBE =
         "(function(){try{return !!(window.fleetixShell&&window.fleetixShell.back())}catch(e){return false}})()";
     private static boolean updateChecked;
@@ -60,8 +68,12 @@ public class MainActivity extends BridgeActivity {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable timeout = () -> fail("timeout", "", null);
     private final Runnable autoRetry = this::retry;
+    private final Runnable readyCheck = this::checkReady;
     private int retries;
     private WebView webView;
+    private PageBridge pageBridge;
+    private boolean nativePage;
+    private boolean localPageInHistory;
     private WebView errorView;
     private SwipeRefreshLayout swipe;
     private ProgressBar progress;
@@ -78,11 +90,13 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(ShellPlugin.class);
         baseUrl = ShellPlugin.baseUrl(this);
+        nativePage = !WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT);
         if (baseUrl != null) {
             startUrl = baseUrl + "/gate";
             config = siteConfig(startUrl);
         }
         super.onCreate(savedInstanceState);
+        CookieHandler.setDefault(null);
         if (baseUrl == null) {
             startActivity(new Intent(this, SettingsActivity.class));
             finish();
@@ -95,6 +109,14 @@ public class MainActivity extends BridgeActivity {
         webView.setWebChromeClient(new ShellChromeClient(bridge));
         setContentView(buildLayout());
         watchNetwork();
+        if (nativePage) {
+            pageBridge = PageBridge.build(bridge);
+            if (pageBridge != null) {
+                webView.addJavascriptInterface(pageBridge, PageBridge.NAME);
+            }
+            localPageInHistory = true;
+            webView.loadUrl(startUrl);
+        }
     }
 
     @Override
@@ -124,12 +146,16 @@ public class MainActivity extends BridgeActivity {
     private CapConfig siteConfig(String url) {
         CapConfig bundled = CapConfig.loadDefault(this);
         JSONObject plugins = new JSONObject();
-        return new CapConfig.Builder(this)
-            .setServerUrl(url)
+        CapConfig.Builder builder = new CapConfig.Builder(this)
             .setAndroidScheme(bundled.getAndroidScheme())
             .setAllowMixedContent(bundled.isMixedContentAllowed())
-            .setPluginsConfiguration(plugins)
-            .create();
+            .setPluginsConfiguration(plugins);
+        if (nativePage) {
+            builder.setAllowNavigation(new String[] { Uri.parse(url).getHost() });
+        } else {
+            builder.setServerUrl(url);
+        }
+        return builder.create();
     }
 
     private View buildLayout() {
@@ -298,6 +324,28 @@ public class MainActivity extends BridgeActivity {
         }
     }
 
+    private void checkReady() {
+        if (loading || errorKind != null) {
+            return;
+        }
+        webView.evaluateJavascript(READY_PROBE, value -> {
+            if (!"true".equals(value) && errorKind == null) {
+                fail("blank", "", webView.getUrl());
+            }
+        });
+    }
+
+    private String detail() {
+        StringBuilder out = new StringBuilder(errorCode == null ? "" : errorCode);
+        String url = failedUrl != null ? failedUrl : startUrl;
+        out.append(out.length() > 0 ? "\n" : "").append(url);
+        PackageInfo engine = WebViewCompat.getCurrentWebViewPackage(this);
+        if (engine != null) {
+            out.append("\nWebView ").append(engine.versionName);
+        }
+        return out.toString();
+    }
+
     private void hideError() {
         handler.removeCallbacks(autoRetry);
         errorKind = null;
@@ -322,6 +370,9 @@ public class MainActivity extends BridgeActivity {
         } else if ("unreachable".equals(errorKind)) {
             title = R.string.error_unreachable_title;
             text = R.string.error_unreachable_text;
+        } else if ("blank".equals(errorKind)) {
+            title = R.string.error_blank_title;
+            text = R.string.error_blank_text;
         }
         JSONObject state = new JSONObject();
         try {
@@ -329,7 +380,7 @@ public class MainActivity extends BridgeActivity {
             state.put("dir", rtl ? "rtl" : "ltr");
             state.put("title", getString(title));
             state.put("text", getString(text));
-            state.put("code", errorCode);
+            state.put("code", detail());
             state.put("retry", getString(R.string.retry));
             state.put("home", getString(R.string.home));
         } catch (JSONException e) {
@@ -408,11 +459,23 @@ public class MainActivity extends BridgeActivity {
         }
 
         @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            if (nativePage && request.isForMainFrame() && "GET".equals(request.getMethod())) {
+                return null;
+            }
+            return super.shouldInterceptRequest(view, request);
+        }
+
+        @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             mainFrameFailed = false;
             ShellPlugin.pageScrolled = false;
             beginLoad();
+            handler.removeCallbacks(readyCheck);
+            if (url.startsWith(baseUrl)) {
+                handler.postDelayed(readyCheck, READY_MS);
+            }
         }
 
         @Override
@@ -424,6 +487,10 @@ public class MainActivity extends BridgeActivity {
                 return;
             }
             retries = 0;
+            if (localPageInHistory && url.startsWith(baseUrl)) {
+                localPageInHistory = false;
+                view.clearHistory();
+            }
             view.evaluateJavascript(SCROLL_PROBE, null);
             checkUpdate();
         }

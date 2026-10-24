@@ -18,6 +18,8 @@
     <string name="error_ssl_text">सर्वर प्रमाणपत्र की पुष्टि नहीं हो सकी।</string>
     <string name="error_timeout_title">पेज बहुत देर ले रहा है</string>
     <string name="error_timeout_text">सर्वर ने 30 सेकंड में जवाब नहीं दिया।</string>
+    <string name="error_blank_title">पेज नहीं खुला</string>
+    <string name="error_blank_text">ऐप यह पेज नहीं दिखा सका। फिर से कोशिश करें।</string>
     <string name="error_unreachable_title">सर्वर तक नहीं पहुँचा जा सका</string>
     <string name="error_unreachable_text">नेटवर्क जाँचें, फिर से कोशिश करें।</string>
     <string name="update_title">नया संस्करण उपलब्ध है</string>
