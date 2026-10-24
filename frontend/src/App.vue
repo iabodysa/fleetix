@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { __ } from "./i18n/index.js"
 import { api } from "./api.js"
 import { hasPrinter, hasShell, onShellBack, openSettings } from "./native.js"
+import { reloadOnNewVersion } from "./freshness.js"
 import { useLanguage } from "./composables/useLanguage.js"
 import { publishToCustomer } from "./composables/useCustomerDisplay.js"
 import { STEPS, WALKIN_STEPS, backHome, backToQueue, queue, restoreDraft, stepBack, store } from "./store/index.js"
@@ -107,6 +108,7 @@ onMounted(() => {
 	window.addEventListener("online", setOnline)
 	window.addEventListener("offline", setOnline)
 	if (boot.is_worker && !redirecting) restoreDraft()
+	reloadOnNewVersion(() => customerView || !inVisit.value)
 })
 watch(
 	() => boot.is_worker,

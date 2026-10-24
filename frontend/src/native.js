@@ -67,7 +67,7 @@ export async function printBitmap(bitmap) {
 	const state = await printer.updatePrinterState().catch(() => null)
 	if (state && state.status !== "NormalOperation") throw new Error(PRINTER_ERRORS[state.status] || __("Printer error"))
 	await printer.printerInit()
-	await printer.printBitmapCustom({ bitmap, type: 2 })
+	await printer.printBitmapCustom({ bitmap, type: "Default" })
 	await printer.lineWrap({ lines: 3 })
 	await printer.cutPaper().catch(() => null)
 	return true
@@ -78,9 +78,27 @@ export async function printDocument(doctype, name, format) {
 	return printBitmap(await printImage(doctype, name, format))
 }
 
-export async function printSample(sample) {
-	if (!hasPrinter()) return false
-	return printBitmap(await call(P + "get_sample_image", { label: sample.label }))
+export function sampleImage(sample) {
+	return call(P + "get_sample_image", { label: sample.label })
+}
+
+export function imageStats(bitmap) {
+	return new Promise((resolve) => {
+		const image = new Image()
+		image.onload = () => {
+			const canvas = document.createElement("canvas")
+			canvas.width = image.width
+			canvas.height = image.height
+			const context = canvas.getContext("2d")
+			context.drawImage(image, 0, 0)
+			const pixels = context.getImageData(0, 0, image.width, image.height).data
+			let ink = 0
+			for (let i = 0; i < pixels.length; i += 4) if (pixels[i] < 128 && pixels[i + 3] > 127) ink++
+			resolve({ width: image.width, height: image.height, kb: Math.round((bitmap.length * 3) / 4096), ink: ((100 * ink) / (image.width * image.height)).toFixed(1) })
+		}
+		image.onerror = () => resolve(null)
+		image.src = "data:image/png;base64," + bitmap
+	})
 }
 
 export async function openSettings() {

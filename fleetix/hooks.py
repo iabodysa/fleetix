@@ -179,6 +179,7 @@ website_route_rules = [
 	{"from_route": "/gate/<path:app_path>", "to_route": "gate"},
 ]
 
+after_request = ["fleetix.fleetix.kiosk.revalidate_kiosk_pages"]
 after_install = ["fleetix.fleetix.branding.set_navbar_logo", "frappe.clear_cache"]
 after_sync = ["fleetix.fleetix.permissions.grant_core_permissions"]
 after_migrate = [

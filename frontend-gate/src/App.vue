@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from "vue"
 import { api } from "./api.js"
 import { __, chooseLanguage, storedLanguage } from "./i18n.js"
 import { hasShell, onShellBack, openSettings } from "./native.js"
+import { reloadOnNewVersion } from "../../frontend/src/freshness.js"
 import { STEPS, restoreDraft, stepBack, store } from "./store.js"
 import BigButton from "./components/BigButton.vue"
 import GateIcon from "./components/GateIcon.vue"
@@ -44,6 +45,7 @@ function shellBack() {
 onShellBack(shellBack)
 onMounted(() => {
 	if (boot.is_worker) restoreDraft()
+	reloadOnNewVersion(() => store.step === "plate" && !store.vehicle)
 })
 </script>
 

@@ -4,6 +4,7 @@
 import frappe
 from frappe.boot import load_translations
 
+import fleetix
 from fleetix.fleetix.api.gate import LANGUAGES
 from fleetix.fleetix.api.maintenance import WORKER_ROLES
 
@@ -27,6 +28,7 @@ def get_boot():
 		user=frappe.session.user,
 		full_name=frappe.utils.get_fullname(frappe.session.user),
 		is_worker=bool(set(frappe.get_roles()) & set(WORKER_ROLES)),
+		app_version=fleetix.__version__,
 		languages=LANGUAGES,
 	)
 	load_translations(bootinfo)
