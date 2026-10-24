@@ -23,7 +23,7 @@
     </dl>
   </header>
   {% if sign %}
-  <section class="mt-card mt-sign" data-visit="{{ visit|e }}" data-key="{{ key|e }}" data-csrf="{{ csrf_token|e }}" data-empty="{{ _('Sign in the box') }}" data-failed="{{ _('Could not save, try again') }}">
+  <section class="mt-card mt-sign" data-method="fleetix.fleetix.api.track.sign" data-visit="{{ visit|e }}" data-key="{{ key|e }}" data-csrf="{{ csrf_token|e }}" data-empty="{{ _('Sign in the box') }}" data-failed="{{ _('Could not save, try again') }}">
     <h2>{{ _("Driver signature") }}</h2>
     <canvas class="mt-sign-pad" data-pad></canvas>
     <p class="mt-sign-error" data-error role="alert"></p>

@@ -33,6 +33,9 @@ class Maintenance(Document):
 			self.visit_datetime = now_datetime()
 		if self.status == "Approved" and not self.approved_by:
 			self.approved_by = frappe.session.user
+		if self.has_value_changed("manager_signature"):
+			self.manager_signed_by = frappe.session.user if self.manager_signature else None
+			self.manager_signed_on = now_datetime() if self.manager_signature else None
 		if self.status in ISSUE_STATES and not self.items_issued:
 			self.items_issued = issue_items(self)
 		if cint(self.odometer) > cint(frappe.db.get_value("Vehicle", self.vehicle, "last_odometer")):
@@ -66,6 +69,16 @@ class Maintenance(Document):
 					"next_due_date": next_due_date,
 				}
 			).insert(ignore_permissions=True)
+
+
+def manager_signable(maintenance):
+	visit = frappe.get_doc("Maintenance", maintenance)
+	visit.check_permission("write")
+	if not visit.has_permlevel_access_to("manager_signature", permission_type="write"):
+		raise frappe.PermissionError
+	if visit.docstatus != 0:
+		frappe.throw(_("This visit is not waiting for a signature"))
+	return visit
 
 
 def issue_items(maintenance):

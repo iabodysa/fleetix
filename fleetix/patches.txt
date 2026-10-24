@@ -5,3 +5,4 @@ fleetix.patches.vehicle_missing_data
 fleetix.patches.component_item_rules
 fleetix.patches.close_guest_uploads
 fleetix.patches.photo_slots_by_side
+fleetix.patches.maintenance_inspector_signature

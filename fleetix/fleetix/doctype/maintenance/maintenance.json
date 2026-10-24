@@ -11,15 +11,15 @@
   "driver",
   "project",
   "company",
+  "workshop",
+  "description",
   "column_break_maintenance",
+  "status",
   "visit_datetime",
   "odometer",
   "inspection",
-  "driver_signature",
-  "damage_marks",
-  "photos",
-  "workshop",
-  "description",
+  "photos_section",
+  "photo_gallery",
   "service_section",
   "components_replaced",
   "items_issued",
@@ -29,9 +29,18 @@
   "final_check_section",
   "final_check",
   "findings",
-  "approval_section",
+  "signatures_section",
+  "driver_signature",
+  "column_break_signature_inspector",
+  "inspector_signature",
+  "column_break_signature_manager",
+  "manager_signature",
+  "manager_signed_by",
+  "manager_signed_on",
   "approved_by",
-  "status",
+  "more_section",
+  "photos",
+  "damage_marks",
   "amended_from"
  ],
  "fields": [
@@ -85,8 +94,31 @@
    "reqd": 1
   },
   {
+   "fieldname": "workshop",
+   "fieldtype": "Data",
+   "label": "Workshop"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
    "fieldname": "column_break_maintenance",
    "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Due Alert",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "no_copy": 1,
+   "options": "Due Alert\nDriver Arrived\nFull Inspection\nApproved\nService\nFinal Check\nCompleted",
+   "read_only": 1,
+   "reqd": 1
   },
   {
    "depends_on": "eval:['Driver Arrived', 'Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
@@ -114,34 +146,15 @@
    "options": "Vehicle Inspection"
   },
   {
-   "fieldname": "driver_signature",
-   "fieldtype": "Signature",
-   "label": "Driver Signature",
-   "read_only": 1
+   "depends_on": "eval:(doc.photos || []).length",
+   "fieldname": "photos_section",
+   "fieldtype": "Section Break",
+   "label": "Photos"
   },
   {
-   "fieldname": "damage_marks",
-   "fieldtype": "JSON",
-   "hidden": 1,
-   "label": "Damage Marks",
-   "read_only": 1
-  },
-  {
-   "fieldname": "photos",
-   "fieldtype": "Table",
-   "label": "Photos",
-   "options": "Vehicle Inspection Photo",
-   "read_only": 1
-  },
-  {
-   "fieldname": "workshop",
-   "fieldtype": "Data",
-   "label": "Workshop"
-  },
-  {
-   "fieldname": "description",
-   "fieldtype": "Small Text",
-   "label": "Description"
+   "fieldname": "photo_gallery",
+   "fieldtype": "HTML",
+   "label": "Photo Gallery"
   },
   {
    "depends_on": "eval:['Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
@@ -199,9 +212,50 @@
    "options": "Maintenance Finding"
   },
   {
-   "depends_on": "eval:doc.approved_by",
-   "fieldname": "approval_section",
-   "fieldtype": "Section Break"
+   "depends_on": "eval:['Driver Arrived', 'Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
+   "fieldname": "signatures_section",
+   "fieldtype": "Section Break",
+   "label": "Signatures"
+  },
+  {
+   "fieldname": "driver_signature",
+   "fieldtype": "Signature",
+   "label": "Driver Signature",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_signature_inspector",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "inspection.inspector_signature",
+   "fieldname": "inspector_signature",
+   "fieldtype": "Signature",
+   "label": "Inspector Signature",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_signature_manager",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "manager_signature",
+   "fieldtype": "Signature",
+   "label": "Rental Manager Signature",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "manager_signed_by",
+   "fieldtype": "Link",
+   "label": "Signed By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "manager_signed_on",
+   "fieldtype": "Datetime",
+   "label": "Signed On",
+   "read_only": 1
   },
   {
    "fieldname": "approved_by",
@@ -211,17 +265,24 @@
    "read_only": 1
   },
   {
-   "allow_on_submit": 1,
-   "default": "Due Alert",
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Status",
-   "no_copy": 1,
-   "options": "Due Alert\nDriver Arrived\nFull Inspection\nApproved\nService\nFinal Check\nCompleted",
-   "read_only": 1,
-   "reqd": 1
+   "collapsible": 1,
+   "fieldname": "more_section",
+   "fieldtype": "Section Break",
+   "label": "More Details"
+  },
+  {
+   "fieldname": "photos",
+   "fieldtype": "Table",
+   "label": "Photos",
+   "options": "Vehicle Inspection Photo",
+   "read_only": 1
+  },
+  {
+   "fieldname": "damage_marks",
+   "fieldtype": "JSON",
+   "hidden": 1,
+   "label": "Damage Marks",
+   "read_only": 1
   },
   {
    "fieldname": "amended_from",
@@ -237,7 +298,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-24 21:00:00.000000",
+ "modified": "2026-10-24 22:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Maintenance",
@@ -338,6 +399,42 @@
    "share": 1,
    "submit": 0,
    "write": 1
+  },
+  {
+   "permlevel": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "permlevel": 1,
+   "read": 1,
+   "role": "Rental Manager",
+   "write": 1
+  },
+  {
+   "permlevel": 1,
+   "read": 1,
+   "role": "Movement Supervisor",
+   "write": 0
+  },
+  {
+   "permlevel": 1,
+   "read": 1,
+   "role": "Driver",
+   "write": 0
+  },
+  {
+   "permlevel": 1,
+   "read": 1,
+   "role": "Maintenance Supervisor",
+   "write": 0
+  },
+  {
+   "permlevel": 1,
+   "read": 1,
+   "role": "Accountant",
+   "write": 0
   }
  ],
  "sort_field": "creation",

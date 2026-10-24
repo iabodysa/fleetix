@@ -1,8 +1,6 @@
 # Copyright (c) 2026, Ittihad and contributors
 # For license information, please see license.txt
 
-import base64
-import binascii
 import os
 
 import frappe
@@ -12,10 +10,7 @@ from frappe.rate_limiter import rate_limit
 
 from fleetix.fleetix.api.maintenance import WORKER_ROLES
 from fleetix.fleetix.document_qr import qr_data_url
-from fleetix.fleetix.track import SIGN_STATES, keyed_visit, track_url
-
-SIGNATURE_PREFIX = "data:image/png;base64,"
-SIGNATURE_MAX = 300_000
+from fleetix.fleetix.track import SIGN_STATES, check_signature, keyed_visit, track_url
 
 
 @frappe.whitelist(methods=["POST"])
@@ -53,16 +48,7 @@ def sign(visit, key, signature):
 		frappe.throw(_("This visit is already signed"))
 	if record.status not in SIGN_STATES:
 		frappe.throw(_("This visit is not waiting for a signature"))
-	if (
-		not isinstance(signature, str)
-		or not signature.startswith(SIGNATURE_PREFIX)
-		or len(signature) > SIGNATURE_MAX
-	):
-		frappe.throw(_("Sign in the box"))
-	try:
-		base64.b64decode(signature[len(SIGNATURE_PREFIX) :], validate=True)
-	except binascii.Error:
-		frappe.throw(_("Sign in the box"))
+	check_signature(signature)
 	record.db_set("driver_signature", signature)
 	return {"signed": 1}
 

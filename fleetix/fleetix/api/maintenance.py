@@ -14,6 +14,7 @@ from fleetix.fleetix.doctype.maintenance.maintenance import (
 	COMPONENT_FIELDS,
 	component_max_qty,
 	due_components,
+	manager_signable,
 	next_due,
 	photo_slots,
 	unpriced_items,
@@ -21,7 +22,7 @@ from fleetix.fleetix.doctype.maintenance.maintenance import (
 from fleetix.fleetix.document_qr import qr_data_url
 from fleetix.fleetix.print_samples import print_samples
 from fleetix.fleetix.service_check import checked_rows, finding_rows, last_findings, service_checklist
-from fleetix.fleetix.track import SIGN_STATES
+from fleetix.fleetix.track import SIGN_STATES, check_signature
 from fleetix.fleetix.units import unit_fields
 from fleetix.fleetix.vehicle_diagram import VIEWS, body_type, damage_zone, diagram_views
 
@@ -315,6 +316,24 @@ def get_photo_link(maintenance):
 	frappe.get_doc("Maintenance", maintenance).check_permission("read")
 	url = get_host_name_from_request() + "/maintenance/photos/" + quote(maintenance)
 	return {"url": url, "qr": qr_data_url(url)}
+
+
+@frappe.whitelist()
+def get_sign_link(maintenance):
+	manager_signable(maintenance)
+	url = get_host_name_from_request() + "/maintenance/sign/" + quote(maintenance)
+	return {"url": url, "qr": qr_data_url(url)}
+
+
+@frappe.whitelist(methods=["POST"])
+def sign_as_manager(visit, signature):
+	visit = manager_signable(visit)
+	if visit.manager_signature:
+		frappe.throw(_("This visit is already signed"))
+	check_signature(signature)
+	visit.manager_signature = signature
+	visit.save()
+	return {"signed": 1}
 
 
 @frappe.whitelist(methods=["POST"])

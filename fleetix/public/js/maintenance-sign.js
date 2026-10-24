@@ -54,7 +54,7 @@
 			return
 		}
 		save.disabled = true
-		fetch("/api/method/fleetix.fleetix.api.track.sign", {
+		fetch("/api/method/" + box.dataset.method, {
 			method: "POST",
 			credentials: "same-origin",
 			headers: { Accept: "application/json", "Content-Type": "application/json", "X-Frappe-CSRF-Token": box.dataset.csrf },
