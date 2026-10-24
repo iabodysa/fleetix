@@ -229,3 +229,19 @@ Not enough stock for this item. Tell the store.,इस आइटम का स�
 This step could not be saved. Show the details to your supervisor.,यह चरण सेव नहीं हुआ। विवरण अपने सुपरवाइज़र को दिखाएँ।
 Mark the damage on the vehicle drawing,गाड़ी के चित्र पर नुकसान का निशान लगाएँ
 {0} allows at most {1},{0} अधिकतम {1}
+Take the photo: {0},फ़ोटो लें: {0}
+Choose which photo this is,चुनें यह कौन सी फ़ोटो है
+Engine Bay,इंजन का हिस्सा
+Print test,प्रिंट जाँच
+Damage sheet,नुकसान शीट
+Handover Pass,हैंडओवर पास
+Vehicle Card,गाड़ी कार्ड
+Gate Entry Pass,प्रवेश पास
+Gate Exit Pass,निकास पास
+Maintenance Invoice,रखरखाव बिल
+Delivery,सुपुर्दगी
+Receipt,प्राप्ति
+SUV,एसयूवी
+Bus,बस
+Pickup Truck,पिकअप
+Complete,पूरा करें

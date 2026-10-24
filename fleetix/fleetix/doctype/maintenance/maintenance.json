@@ -15,6 +15,8 @@
   "visit_datetime",
   "odometer",
   "inspection",
+  "damage_marks",
+  "photos",
   "workshop",
   "description",
   "service_section",
@@ -108,6 +110,20 @@
    "label": "Full Inspection",
    "mandatory_depends_on": "eval:['Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
    "options": "Vehicle Inspection"
+  },
+  {
+   "fieldname": "damage_marks",
+   "fieldtype": "JSON",
+   "hidden": 1,
+   "label": "Damage Marks",
+   "read_only": 1
+  },
+  {
+   "fieldname": "photos",
+   "fieldtype": "Table",
+   "label": "Photos",
+   "options": "Vehicle Inspection Photo",
+   "read_only": 1
   },
   {
    "fieldname": "workshop",
@@ -207,7 +223,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-21 19:40:00.000000",
+ "modified": "2026-10-24 13:41:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Maintenance",

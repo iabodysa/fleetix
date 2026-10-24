@@ -15,14 +15,16 @@ from fleetix.fleetix.doctype.maintenance.maintenance import (
 	component_max_qty,
 	due_components,
 	next_due,
+	photo_slots,
 	unpriced_items,
 )
 from fleetix.fleetix.document_qr import qr_data_url
+from fleetix.fleetix.print_samples import print_samples
 from fleetix.fleetix.vehicle_diagram import VIEWS, body_type, damage_zone, diagram_views
 
 WORKER_ROLES = ("Movement Supervisor", "Rental Manager", "System Manager")
 OPEN_STATES = ("Due Alert", "Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
-FINISH_ACTIONS = {"Approved": "Start Service", "Service": "Finish Service", "Final Check": "Complete"}
+FINISH_ACTIONS = {"Approved": "Start Service", "Service": "Finish Service"}
 SOON_KM = 1000
 SOON_DAYS = 14
 APP_LANGUAGES = ("ar", "en", "ur", "hi", "bn")
@@ -213,6 +215,12 @@ def get_vehicle_checklist(maintenance, odometer=None):
 
 
 @frappe.whitelist()
+def get_print_samples():
+	frappe.only_for(WORKER_ROLES)
+	return print_samples()
+
+
+@frappe.whitelist()
 def get_vehicle_diagram(maintenance):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
@@ -221,10 +229,44 @@ def get_vehicle_diagram(maintenance):
 
 
 @frappe.whitelist(methods=["POST"])
-def upload_photo(maintenance):
+def save_damage_marks(maintenance, damages):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
 	visit.check_permission("write")
+	damages = frappe.parse_json(damages) or []
+	if any(
+		row.get("view") not in VIEWS
+		or not 0 <= flt(row.get("x")) <= 1
+		or not 0 <= flt(row.get("y")) <= 1
+		or row.get("kind") not in (None, *DAMAGE_KINDS)
+		for row in damages
+	):
+		frappe.throw(_("Mark the damage on the vehicle drawing"))
+	body = body_type(visit.vehicle)
+	visit.damage_marks = frappe.as_json(
+		[
+			{
+				"view": row["view"],
+				"x": flt(row["x"], 4),
+				"y": flt(row["y"], 4),
+				"kind": row.get("kind"),
+				"area": damage_zone(body, row["view"], flt(row["y"])),
+			}
+			for row in damages
+		]
+	)
+	visit.save()
+	return get_photos(visit.name)
+
+
+@frappe.whitelist(methods=["POST"])
+def upload_photo(maintenance, slot):
+	frappe.only_for(WORKER_ROLES)
+	visit = frappe.get_doc("Maintenance", maintenance)
+	visit.check_permission("write")
+	labels = {row["slot"]: row["label"] for row in photo_slots(visit)}
+	if slot not in labels:
+		frappe.throw(_("Choose which photo this is"))
 	upload = frappe.request.files["file"]
 	photo = frappe.get_doc(
 		{
@@ -236,19 +278,20 @@ def upload_photo(maintenance):
 			"content": upload.stream.read(),
 		}
 	).insert()
-	return {"name": photo.name, "file_url": photo.file_url}
+	visit.append("photos", {"attachment": photo.file_url, "slot": slot, "caption": labels[slot]})
+	visit.save()
+	return {"name": photo.name, "file_url": photo.file_url, "slot": slot}
 
 
 @frappe.whitelist()
 def get_photos(maintenance):
 	frappe.only_for(WORKER_ROLES)
-	frappe.get_doc("Maintenance", maintenance).check_permission("read")
-	return frappe.get_all(
-		"File",
-		filters={"attached_to_doctype": "Maintenance", "attached_to_name": maintenance},
-		fields=["name", "file_url"],
-		order_by="creation asc",
-	)
+	visit = frappe.get_doc("Maintenance", maintenance)
+	visit.check_permission("read")
+	taken = {}
+	for row in visit.photos:
+		taken.setdefault(row.slot, []).append(row.attachment)
+	return [dict(row, photos=taken.get(row["slot"], [])) for row in photo_slots(visit)]
 
 
 @frappe.whitelist()
@@ -260,12 +303,11 @@ def get_photo_link(maintenance):
 
 
 @frappe.whitelist(methods=["POST"])
-def send_for_approval(maintenance, odometer, components, driver_signature, inspector_signature, damages=None):
+def send_for_approval(maintenance, odometer, components, driver_signature, inspector_signature):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
 	visit.check_permission("write")
 	components = frappe.parse_json(components) or []
-	damages = frappe.parse_json(damages) or []
 	odometer = cint(odometer)
 	last_odometer = cint(frappe.db.get_value("Vehicle", visit.vehicle, "last_odometer"))
 	if odometer < last_odometer:
@@ -279,17 +321,10 @@ def send_for_approval(maintenance, odometer, components, driver_signature, inspe
 		if max_qty and flt(row["qty"]) > max_qty:
 			frappe.throw(_("{0} allows at most {1}").format(_(row["component"]), f"{max_qty:g}"))
 	throw_unpriced([row["item"] for row in components], visit.company)
-	photos = get_photos(visit.name)
-	if not photos:
-		frappe.throw(_("Add at least one photo from the phone"))
-	if any(
-		row.get("view") not in VIEWS
-		or not 0 <= flt(row.get("x")) <= 1
-		or not 0 <= flt(row.get("y")) <= 1
-		or row.get("kind") not in (None, *DAMAGE_KINDS)
-		for row in damages
-	):
-		frappe.throw(_("Mark the damage on the vehicle drawing"))
+	missing = [row["label"] for row in get_photos(visit.name) if not row["photos"]]
+	if missing:
+		frappe.throw(_("Take the photo: {0}").format(", ".join(missing)))
+	damages = frappe.parse_json(visit.damage_marks) or []
 	if visit.status == "Driver Arrived":
 		visit = apply_workflow(visit, "Start Inspection")
 	if visit.status != "Full Inspection":
@@ -307,17 +342,19 @@ def send_for_approval(maintenance, odometer, components, driver_signature, inspe
 				for component in COMPONENT_FIELDS
 			],
 			"photos": [
-				{"attachment": row.file_url, "caption": _("Photo {0}").format(index)}
-				for index, row in enumerate(photos, start=1)
+				{"attachment": row.attachment, "caption": row.caption, "slot": row.slot}
+				for row in visit.photos
 			],
 			"driver_signature": driver_signature,
 			"inspector_signature": inspector_signature,
 		}
 	).insert()
-	for row in photos:
+	for photo in frappe.get_all(
+		"File", filters={"attached_to_doctype": "Maintenance", "attached_to_name": visit.name}, pluck="name"
+	):
 		frappe.db.set_value(
 			"File",
-			row.name,
+			photo,
 			{
 				"attached_to_doctype": "Vehicle Inspection",
 				"attached_to_name": inspection.name,
@@ -332,9 +369,7 @@ def send_for_approval(maintenance, odometer, components, driver_signature, inspe
 	)
 	visit.save()
 	record_language = frappe.get_system_settings("language")
-	body = body_type(visit.vehicle)
-	for row in damages:
-		area = damage_zone(body, row["view"], flt(row["y"]))
+	for no, row in enumerate(damages, start=1):
 		frappe.get_doc(
 			{
 				"doctype": "Damage",
@@ -343,11 +378,16 @@ def send_for_approval(maintenance, odometer, components, driver_signature, inspe
 				"source_reference": visit.name,
 				"driver": visit.driver,
 				"project": visit.project,
-				"area": area,
+				"area": row["area"],
 				"diagram_view": row["view"],
-				"mark_x": flt(row["x"], 4),
-				"mark_y": flt(row["y"], 4),
-				"description": _(row.get("kind") or area, lang=record_language),
+				"mark_x": row["x"],
+				"mark_y": row["y"],
+				"description": _(row.get("kind") or row["area"], lang=record_language),
+				"photos": [
+					{"attachment": photo.attachment, "caption": photo.caption, "slot": photo.slot}
+					for photo in visit.photos
+					if photo.slot == f"damage-{no}"
+				],
 				"status": "Detected",
 			}
 		).insert()

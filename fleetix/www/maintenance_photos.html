@@ -19,11 +19,18 @@
   <ol class="mp-steps">
     {% for step in steps %}<li class="{{ step.state }}">{{ step.label }}</li>{% endfor %}
   </ol>
-  <label class="mp-take">
-    <input type="file" accept="image/*" capture="environment" multiple>
-    <span data-label>{{ _("Take photos") }}</span>
-  </label>
-  <p class="mp-count"><span>{{ _("Photos added") }}</span> <strong data-count>{{ photo_count }}</strong></p>
+  <ul class="mp-slots">
+    {% for slot in slots %}
+    <li class="mp-slot{{ ' mp-slot-done' if slot.photos else '' }}">
+      <label class="mp-take">
+        <input type="file" accept="image/*" capture="environment" data-slot="{{ slot.slot|e }}">
+        {% if slot.photos %}<img class="mp-thumb" src="{{ slot.photos[-1]|e }}" alt="">{% endif %}
+        <span class="mp-slot-label">{{ slot.label|e }}</span>
+        <strong class="mp-slot-count">{{ slot.photos|length }}</strong>
+      </label>
+    </li>
+    {% endfor %}
+  </ul>
   <p class="mp-error" data-error role="alert"></p>
 </main>
 </body>

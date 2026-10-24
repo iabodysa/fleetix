@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from "vue"
+import { computed, onBeforeUnmount, onMounted, ref } from "vue"
 import { __ } from "../../i18n/index.js"
 import { api, errorText } from "../../api.js"
 import { go, store } from "../../store/index.js"
@@ -12,6 +12,7 @@ const error = ref("")
 const link = ref(null)
 const checking = ref(false)
 let timer = null
+const filled = computed(() => store.photos.filter((slot) => slot.photos.length).length)
 
 async function poll() {
 	try {
@@ -30,8 +31,9 @@ async function next() {
 	} finally {
 		checking.value = false
 	}
-	if (!store.photos.length) {
-		error.value = __("Add at least one photo from the phone")
+	const missing = store.photos.filter((slot) => !slot.photos.length)
+	if (missing.length) {
+		error.value = { text: __("Take the photo: {0}", [missing[0].label]), detail: missing.map((slot) => slot.label).join(", ") }
 		return
 	}
 	go("signatures")
@@ -57,10 +59,14 @@ onBeforeUnmount(() => clearInterval(timer))
 			</div>
 			<div class="photos-landed">
 				<p class="photos-count">
-					<span class="pill" :class="store.photos.length ? 'tone-done' : 'tone-wait'">{{ __("Photos added") }} <span class="ltr">{{ store.photos.length }}</span></span>
+					<span class="pill" :class="filled === store.photos.length ? 'tone-done' : 'tone-wait'">{{ __("Photos added") }} <span class="ltr">{{ filled }} / {{ store.photos.length }}</span></span>
 				</p>
-				<div class="photos-strip">
-					<img v-for="photo in store.photos" :key="photo.name" class="photos-thumb" :src="photo.file_url" alt="" />
+				<div class="photos-slots">
+					<div v-for="slot in store.photos" :key="slot.slot" class="card photos-slot" :class="{ 'photos-slot-done': slot.photos.length }">
+						<img v-if="slot.photos.length" class="photos-thumb" :src="slot.photos[slot.photos.length - 1]" alt="" />
+						<span v-else class="photos-empty"><AppIcon :name="slot.damage ? 'damage' : 'photos'" size="lg" /></span>
+						<span class="photos-label">{{ slot.label }}</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -106,21 +112,39 @@ onBeforeUnmount(() => clearInterval(timer))
 	gap: var(--s3);
 	min-width: 0;
 }
-.photos-strip {
+.photos-slots {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
 	gap: var(--s2);
+}
+.photos-slot {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--s1);
+	padding: var(--s2);
+	border: 2px dashed var(--line);
+	text-align: center;
+}
+.photos-slot-done {
+	border: 2px solid var(--done);
+}
+.photos-empty {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 5rem;
+	color: var(--ink-2);
+}
+.photos-label {
+	font-weight: 700;
 }
 .photos-thumb {
 	width: 100%;
-	aspect-ratio: 1;
+	height: 5rem;
 	object-fit: cover;
 	border-radius: var(--r-md);
-}
-@supports not (aspect-ratio: 1) {
-	.photos-thumb {
-		height: 7rem;
-	}
 }
 @media (max-width: 760px) {
 	.photos {

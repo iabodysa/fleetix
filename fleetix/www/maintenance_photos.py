@@ -28,7 +28,7 @@ def get_context(context):
 	context.direction = "rtl" if is_rtl() else "ltr"
 	context.visit = visit
 	context.odometer = "{:,}".format(max(visit["odometer"], visit["vehicle"]["last_odometer"]))
-	context.photo_count = len(get_photos(visit["maintenance"]))
+	context.slots = get_photos(visit["maintenance"])
 	context.steps = [
 		{"label": label, "state": "done" if index < current else "current" if index == current else ""}
 		for index, label in enumerate(steps)

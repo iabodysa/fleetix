@@ -165,6 +165,13 @@ export async function printDocument(doctype, name, format) {
 	return printCanvas(printer, await formatCanvas(page.html))
 }
 
+export async function printSample(sample) {
+	const printer = plugin("SunmiPrinter")
+	if (!printer) return false
+	const page = await call("frappe.www.printview.get_html_and_style", { doc: JSON.stringify(sample.doc), print_format: sample.format, no_letterhead: 1 })
+	return printCanvas(printer, await formatCanvas(page.html))
+}
+
 export async function printReceipt(result) {
 	const printer = plugin("SunmiPrinter")
 	if (!printer) return false

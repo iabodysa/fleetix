@@ -1,10 +1,6 @@
 const sheet = document.querySelector(".mp")
-const input = sheet.querySelector("input[type=file]")
-const label = sheet.querySelector("[data-label]")
-const count = sheet.querySelector("[data-count]")
 const error = sheet.querySelector("[data-error]")
 const method = "/api/method/fleetix.fleetix.api.maintenance."
-const idle = label.textContent
 
 function downscale(file, max) {
 	return new Promise((resolve, reject) => {
@@ -24,10 +20,11 @@ function downscale(file, max) {
 	})
 }
 
-async function upload(file, index) {
+async function upload(file, slot) {
 	const form = new FormData()
-	form.append("file", await downscale(file, 1600), "phone-" + Date.now() + "-" + index + ".jpg")
+	form.append("file", await downscale(file, 1600), "phone-" + slot + "-" + Date.now() + ".jpg")
 	form.append("maintenance", sheet.dataset.maintenance)
+	form.append("slot", slot)
 	const response = await fetch(method + "upload_photo", {
 		method: "POST",
 		body: form,
@@ -36,30 +33,23 @@ async function upload(file, index) {
 	if (!response.ok) throw new Error(response.statusText)
 }
 
-async function refresh() {
-	const response = await fetch(method + "get_photos?maintenance=" + encodeURIComponent(sheet.dataset.maintenance), {
-		headers: { Accept: "application/json" },
-	})
-	if (response.ok) count.textContent = (await response.json()).message.length
-}
-
-input.addEventListener("change", async () => {
-	const files = Array.from(input.files)
-	if (!files.length) return
-	input.disabled = true
-	label.textContent = sheet.dataset.busy
-	error.textContent = ""
-	let failed = false
-	for (let index = 0; index < files.length; index++) {
+sheet.querySelectorAll("input[type=file]").forEach((input) => {
+	input.addEventListener("change", async () => {
+		const file = input.files[0]
+		if (!file) return
+		const label = input.parentNode.querySelector(".mp-slot-label")
+		const idle = label.textContent
+		input.disabled = true
+		label.textContent = sheet.dataset.busy
+		error.textContent = ""
 		try {
-			await upload(files[index], index)
+			await upload(file, input.dataset.slot)
+			window.location.reload()
 		} catch (e) {
-			failed = true
+			input.value = ""
+			input.disabled = false
+			label.textContent = idle
+			error.textContent = sheet.dataset.failed
 		}
-	}
-	input.value = ""
-	input.disabled = false
-	label.textContent = idle
-	error.textContent = failed ? sheet.dataset.failed : ""
-	await refresh()
+	})
 })

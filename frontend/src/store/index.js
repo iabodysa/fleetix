@@ -69,7 +69,7 @@ export async function restoreDraft() {
 export function stepForStatus(row) {
 	if (row.status === "Driver Arrived") return "odometer"
 	if (row.status === "Full Inspection") return row.inspection ? "await" : "odometer"
-	if (["Approved", "Service", "Final Check"].indexOf(row.status) !== -1) return "review"
+	if (["Approved", "Service"].indexOf(row.status) !== -1) return "review"
 	return null
 }
 

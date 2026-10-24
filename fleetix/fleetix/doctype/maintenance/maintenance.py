@@ -4,10 +4,11 @@
 import erpnext
 import frappe
 from erpnext.stock.stock_ledger import get_valuation_rate
+from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, flt, getdate, now_datetime, today
 
-from fleetix.fleetix.vehicle import due_odometer, set_next_due
+from fleetix.fleetix.vehicle import due_odometer, parse_fieldnames, set_next_due
 
 COMPONENT_FIELDS = {
 	"Oil": ("last_oil_change_date", "last_oil_change_odometer"),
@@ -22,6 +23,7 @@ NEXT_DUE_FIELDS = {
 	"Rear Tires": "next_rear_tires_due_odometer",
 }
 ISSUE_STATES = ("Service", "Final Check")
+DEFAULT_PHOTO_SLOTS = ("Odometer", "Front", "Rear", "Left Side", "Right Side", "Engine Bay")
 DEFAULT_MAX_QTY = {"Oil Filter": 1, "Battery": 1, "Front Tires": 2, "Rear Tires": 2}
 
 
@@ -87,6 +89,15 @@ def component_max_qty(component):
 	rules = frappe.get_cached_doc("Fleetix Settings").component_items
 	configured = [flt(row.max_qty) for row in rules if row.component == component and flt(row.max_qty)]
 	return max(configured) if configured else DEFAULT_MAX_QTY.get(component, 0)
+
+
+def photo_slots(visit):
+	configured = parse_fieldnames(frappe.get_cached_doc("Fleetix Settings").photo_slots)
+	slots = [{"slot": name, "label": _(name)} for name in configured or DEFAULT_PHOTO_SLOTS]
+	for no, mark in enumerate(frappe.parse_json(visit.damage_marks) or [], start=1):
+		label = " - ".join(_(part) for part in (mark["area"], mark.get("kind")) if part)
+		slots.append({"slot": f"damage-{no}", "label": f"{no}. {label}", "damage": no})
+	return slots
 
 
 def unpriced_items(item_codes, company):

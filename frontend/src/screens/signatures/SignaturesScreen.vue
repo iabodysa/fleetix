@@ -26,7 +26,6 @@ async function send() {
 			maintenance: store.visit.maintenance,
 			odometer: Number(store.odometer),
 			components: JSON.stringify(components),
-			damages: JSON.stringify(store.damages),
 			driver_signature: store.signatures.driver,
 			inspector_signature: store.signatures.inspector,
 		})

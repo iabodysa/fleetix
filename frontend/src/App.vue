@@ -8,6 +8,7 @@ import { publishToCustomer } from "./composables/useCustomerDisplay.js"
 import { STEPS, backToQueue, queue, restoreDraft, stepBack, store } from "./store/index.js"
 import AppHeader from "./components/AppHeader.vue"
 import AppIcon from "./components/AppIcon.vue"
+import PrintTest from "./components/PrintTest.vue"
 import QueueList from "./components/QueueList.vue"
 import StepBar from "./components/StepBar.vue"
 import UndoToast from "./components/UndoToast.vue"
@@ -44,6 +45,7 @@ language.applyDocument()
 const redirecting = !customerView && language.followDevice()
 const picking = ref(!customerView && !language.chosen())
 const menu = ref(false)
+const printTest = ref(false)
 const online = ref(navigator.onLine)
 const printer = hasPrinter()
 const shell = hasShell()
@@ -120,9 +122,11 @@ onBeforeUnmount(() => {
 			/>
 			<div v-if="menu" class="card app-menu">
 				<p class="app-menu-name">{{ boot.full_name }}</p>
+				<button class="app-header-button" type="button" @click="(printTest = true), (menu = false)">{{ __("Print test") }}</button>
 				<button v-if="shell" class="app-header-button" type="button" @click="openSettings">{{ __("Settings") }}</button>
 				<button class="app-header-button" type="button" @click="logout">{{ __("Log out") }}</button>
 			</div>
+			<PrintTest v-if="printTest" @close="printTest = false" />
 			<StepBar v-if="inVisit" :steps="STEP_LABELS" :current="stepIndex" />
 			<main class="app-body">
 				<Transition :name="'slide-' + store.flow" mode="out-in">
