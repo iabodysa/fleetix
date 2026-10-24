@@ -49,5 +49,6 @@
     <string name="printer_error">প্রিন্টারে ত্রুটি</string>
     <string name="printer_sample">প্রিন্টার পরীক্ষার পাতা</string>
     <string name="idle_welcome">স্বাগতম</string>
+    <string name="idle_track">আপনার গাড়ির খবর পেতে কোডটি স্ক্যান করুন</string>
     <string name="title_activity_main">ফ্লিটিক্স মেরামত</string>
 </resources>

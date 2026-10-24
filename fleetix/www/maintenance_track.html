@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="{{ lang }}" dir="{{ direction }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0D1317">
+<meta name="robots" content="noindex">
+<title>{{ _("Your vehicle") }}</title>
+<link rel="icon" href="/assets/fleetix/images/fleetix-favicon.svg">
+<link rel="stylesheet" href="/assets/fleetix/css/maintenance-track.css">
+</head>
+<body>
+<main class="mt">
+  <img class="mt-logo" src="/assets/fleetix/images/etihad-lockup.png" alt="">
+  <header class="mt-card mt-vehicle">
+    <p class="mt-plate"><bdi>{{ plate|e }}</bdi></p>
+    <p class="mt-muted">{{ model|e }}</p>
+    <p class="mt-status">{{ status|e }}</p>
+    <dl class="mt-facts">
+      <div><dt>{{ _("Odometer") }}</dt><dd><bdi>{{ odometer }} {{ _("km") }}</bdi></dd></div>
+      {% if delegate %}<div><dt>{{ _("Driver") }}</dt><dd>{{ delegate|e }}</dd></div>{% endif %}
+    </dl>
+  </header>
+  <ol class="mt-card mt-stages">
+    {% for stage in stages %}<li class="{{ stage.state }}">{{ stage.label }}</li>{% endfor %}
+  </ol>
+  {% if findings %}
+  <section class="mt-card">
+    <h2>{{ _("Findings") }}</h2>
+    <ul class="mt-list">{% for row in findings %}<li>{{ row|e }}</li>{% endfor %}</ul>
+  </section>
+  {% endif %}
+  {% if parts or labour %}
+  <section class="mt-card">
+    <h2>{{ _("Cost") }}</h2>
+    {% for group, rows in ((_("Parts"), parts), (_("Labour"), labour)) if rows %}
+    <h3>{{ group }}</h3>
+    <ul class="mt-lines">
+      {% for row in rows %}<li><span>{{ row.label|e }} <bdi>× {{ row.qty }}</bdi></span><bdi>{{ row.amount }}</bdi></li>{% endfor %}
+    </ul>
+    {% endfor %}
+    <ul class="mt-lines mt-sum">
+      <li><span>{{ _("Subtotal") }}</span><bdi>{{ subtotal }}</bdi></li>
+      <li><span>{{ _("VAT") }} <bdi>{{ vat_rate }}%</bdi></span><bdi>{{ vat }}</bdi></li>
+      <li class="mt-total"><span>{{ _("Total") }}</span><bdi>{{ total }}</bdi></li>
+    </ul>
+  </section>
+  {% endif %}
+  {% if photos %}
+  <section class="mt-card">
+    <h2>{{ _("Photos") }}</h2>
+    <ul class="mt-photos">
+      {% for row in photos %}<li><a href="{{ row.src|e }}"><img src="{{ row.src|e }}" alt="{{ row.caption|e }}" loading="lazy"></a><span>{{ row.caption|e }}</span></li>{% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+  <nav class="mt-actions">
+    {% if invoice_url %}<a class="mt-button mt-primary" href="{{ invoice_url|e }}">{{ _("Download invoice") }}</a>{% endif %}
+    {% if phone %}<a class="mt-button" href="tel:{{ phone|e }}">{{ _("Call the workshop") }}</a>{% endif %}
+  </nav>
+</main>
+</body>
+</html>

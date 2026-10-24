@@ -34,7 +34,7 @@ RTL_LANGUAGES = ("ar", "ur")
 DAMAGE_KINDS = ("Scratch", "Dent", "Broken", "Missing")
 FIND_LIMIT = 30
 FIND_ORDER = {"overdue": 0, "soon": 1, "ok": 2, "none": 3}
-MAINTENANCE_APK = {"version_code": 9, "version_name": "1.8", "file": "fleetix-maintenance.apk"}
+MAINTENANCE_APK = {"version_code": 10, "version_name": "1.9", "file": "fleetix-maintenance.apk"}
 
 
 @frappe.whitelist(allow_guest=True, methods=["GET"])

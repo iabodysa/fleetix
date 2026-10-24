@@ -61,12 +61,14 @@ public class CustomerDisplayPlugin extends Plugin {
     public void step(PluginCall call) {
         String plate = call.getString("plate", "");
         String step = call.getString("step", "");
+        String delegate = call.getString("delegate", "");
+        JSArray qr = call.getArray("qr", new JSArray());
         getActivity().runOnUiThread(() -> {
             if (!ensure()) {
                 call.reject("NO_SECOND_DISPLAY");
                 return;
             }
-            presentation.step(plate, step);
+            presentation.step(plate, step, delegate, qr);
             call.resolve();
         });
     }

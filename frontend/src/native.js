@@ -30,10 +30,10 @@ export function onShellBack(handler) {
 	window.fleetixShell = { back: handler }
 }
 
-export function showStepOnCustomerDisplay(plate, step) {
+export function showStepOnCustomerDisplay(plate, step, card) {
 	const display = plugin("CustomerDisplay")
 	if (!display) return
-	const call = plate ? display.step({ plate, step }) : display.idle()
+	const call = plate ? display.step({ plate, step, delegate: (card && card.delegate) || "", qr: (card && card.qr) || [] }) : display.idle()
 	call.catch(() => null)
 }
 

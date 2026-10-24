@@ -19,6 +19,7 @@ export const api = {
 	result: (maintenance) => call(M + "get_visit_result", { maintenance }),
 	photos: (maintenance) => call(M + "get_photos", { maintenance }),
 	photoLink: (maintenance) => call(M + "get_photo_link", { maintenance }),
+	trackCard: (maintenance) => call("fleetix.fleetix.api.track.get_track_card", { maintenance }),
 	diagram: (maintenance) => call(M + "get_vehicle_diagram", { maintenance }),
 	printSamples: () => call(M + "get_print_samples"),
 	saveMarks: (maintenance, damages) => call(M + "save_damage_marks", { maintenance, damages: JSON.stringify(damages) }),

@@ -94,11 +94,12 @@ async function logout() {
 watch(
 	() => [store.step, plate.value],
 	([step, plate]) => {
-		if (step === "done" || step === "walkinInvoice") return publishToCustomer({ plate, status: __("Completed"), tone: "done" })
+		const maintenance = !walkin.value && store.visit ? store.visit.maintenance : null
+		if (step === "done" || step === "walkinInvoice") return publishToCustomer({ plate, maintenance, status: __("Completed"), tone: "done" })
 		if (walkin.value) return publishToCustomer({ plate, status: WALKIN_LABELS[WALKIN_STEPS.indexOf(step)], tone: "quiet" })
 		if (step === "home") return publishToCustomer({ plate: "", status: "", tone: "quiet" })
 		const status = step === "photos" || step === "signatures" ? __("Photos and signatures") : STEP_LABELS[STEPS.indexOf(step)]
-		publishToCustomer({ plate: step === "queue" ? "" : plate, status, tone: step === "await" ? "wait" : "quiet" })
+		publishToCustomer({ plate: step === "queue" ? "" : plate, maintenance, status, tone: step === "await" ? "wait" : "quiet" })
 	},
 )
 onShellBack(shellBack)

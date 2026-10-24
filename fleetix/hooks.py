@@ -171,6 +171,7 @@ jinja = {
 
 website_route_rules = [
 	{"from_route": "/maintenance/photos/<visit>", "to_route": "maintenance_photos"},
+	{"from_route": "/maintenance/track/<visit>", "to_route": "maintenance_track"},
 	{"from_route": "/maintenance/<path:app_path>", "to_route": "maintenance"},
 	{"from_route": "/gate/<path:app_path>", "to_route": "gate"},
 ]

@@ -49,5 +49,6 @@
     <string name="printer_error">خطأ في الطابعة</string>
     <string name="printer_sample">صفحة اختبار الطابعة</string>
     <string name="idle_welcome">أهلًا وسهلًا</string>
+    <string name="idle_track">امسح الرمز لمتابعة سيارتك</string>
     <string name="title_activity_main">صيانة فليتكس</string>
 </resources>

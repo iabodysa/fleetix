@@ -49,5 +49,6 @@
     <string name="printer_error">پرنٹر میں خرابی</string>
     <string name="printer_sample">پرنٹر ٹیسٹ صفحہ</string>
     <string name="idle_welcome">خوش آمدید</string>
+    <string name="idle_track">اپنی گاڑی کی خبر کے لیے کوڈ اسکین کریں</string>
     <string name="title_activity_main">فلیٹکس مرمت</string>
 </resources>

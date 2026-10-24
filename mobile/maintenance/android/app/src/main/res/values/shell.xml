@@ -49,5 +49,6 @@
     <string name="printer_error">Printer error</string>
     <string name="printer_sample">Printer test page</string>
     <string name="idle_welcome">Welcome</string>
+    <string name="idle_track">Scan the code to follow your vehicle</string>
     <string name="title_activity_main">Fleetix Maintenance</string>
 </resources>
