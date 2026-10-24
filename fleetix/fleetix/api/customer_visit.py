@@ -11,7 +11,6 @@ from fleetix.fleetix.doctype.customer_visit.customer_visit import (
 	PAYMENT_MODES,
 	item_rates,
 	mobile_digits,
-	mode_problem,
 	setup_problems,
 	walkin_customer,
 	walkin_invoice,
@@ -28,9 +27,7 @@ def get_walkin_setup():
 	return {
 		"company": company,
 		"problems": setup_problems(company),
-		"modes": [
-			{"mode": mode, "label": _(mode), "problem": mode_problem(mode, company)} for mode in PAYMENT_MODES
-		],
+		"modes": [{"mode": mode, "label": _(mode)} for mode in PAYMENT_MODES],
 		"service_checklist": service_checklist(),
 	}
 
@@ -42,7 +39,7 @@ def find_customer(mobile):
 	if len(digits) < MIN_MOBILE_DIGITS:
 		return None
 	return frappe.db.get_value(
-		"Customer", {"mobile_no": digits, "disabled": 0}, ["name", "customer_name"], as_dict=True
+		"Maintenance Customer", {"mobile_no": digits, "disabled": 0}, ["name", "customer_name"], as_dict=True
 	)
 
 
@@ -72,7 +69,7 @@ def finish_customer_visit(
 		frappe.throw(_("Add at least one item"))
 	if mode_of_payment not in PAYMENT_MODES:
 		frappe.throw(_("Choose how the customer pays"))
-	problems = setup_problems(company) + list(filter(None, [mode_problem(mode_of_payment, company)]))
+	problems = setup_problems(company)
 	if problems:
 		frappe.throw(_("Customer maintenance is not set up: {0}").format("; ".join(problems)))
 	stock_items = set(
@@ -83,30 +80,28 @@ def finish_customer_visit(
 	checked = checked_rows(
 		frappe.parse_json(final_check), [r["item_code"] for r in rows if r["item_code"] in stock_items]
 	)
-	customer = walkin_customer(customer_name.strip(), mobile)
-	invoice = walkin_invoice(customer, company, rows, mode_of_payment)
 	visit = frappe.get_doc(
 		{
 			"doctype": "Customer Visit",
 			"plate": plate.strip(),
-			"customer": customer,
+			"customer": walkin_customer(customer_name.strip(), mobile),
 			"mobile_no": mobile,
 			"company": company,
 			"visit_datetime": now_datetime(),
 			"odometer": cint(odometer),
-			"sales_invoice": invoice.name,
 			"checklist": checked,
 			"findings": finding_rows(frappe.parse_json(findings), checked),
 		}
 	)
 	visit.insert()
+	invoice = walkin_invoice(visit, rows, mode_of_payment)
 	return {
 		"visit": visit.name,
-		"sales_invoice": invoice.name,
+		"maintenance_invoice": invoice.name,
 		"customer_name": invoice.customer_name,
 		"plate": visit.plate,
 		"net_total": invoice.net_total,
-		"tax": invoice.total_taxes_and_charges,
-		"grand_total": invoice.rounded_total or invoice.grand_total,
+		"tax": invoice.vat_amount,
+		"grand_total": invoice.grand_total,
 		"mode_of_payment": _(mode_of_payment),
 	}

@@ -4,11 +4,10 @@
 import re
 
 import frappe
-from erpnext.accounts.doctype.sales_invoice.sales_invoice import get_bank_cash_account
 from erpnext.stock.get_item_details import get_price_list_rate_for
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import flt, today
+from frappe.utils import flt, now_datetime, today
 
 from fleetix.fleetix.units import unit_fields
 
@@ -27,29 +26,13 @@ def selling_price_list():
 	return frappe.db.get_single_value("Selling Settings", "selling_price_list") or "Standard Selling"
 
 
-def mode_problem(mode, company):
-	if not frappe.db.exists("Mode of Payment", mode):
-		return _("Payment method {0} is not set up").format(_(mode))
-	if not frappe.db.get_value("Mode of Payment", mode, "enabled"):
-		return _("Payment method {0} is disabled").format(_(mode))
-	if not frappe.db.get_value(
-		"Mode of Payment Account", {"parent": mode, "company": company}, "default_account"
-	):
-		return _("Payment method {0} has no account for {1}").format(_(mode), company)
-	return None
-
-
 def setup_problems(company):
 	problems = []
 	if not company:
 		problems.append(_("No default company is set"))
 		return problems
-	if not frappe.db.get_single_value("Stock Settings", "default_warehouse"):
-		problems.append(_("No default warehouse is set in Stock Settings"))
 	if not frappe.db.exists("Price List", {"name": selling_price_list(), "selling": 1, "enabled": 1}):
 		problems.append(_("Selling price list {0} is missing").format(selling_price_list()))
-	if not frappe.db.exists("Sales Taxes and Charges Template", {"company": company, "is_default": 1}):
-		problems.append(_("No default sales tax template for {0}").format(company))
 	return problems
 
 
@@ -78,57 +61,50 @@ def item_rates(item_codes):
 
 
 def walkin_customer(customer_name, mobile):
-	existing = frappe.db.get_value("Customer", {"mobile_no": mobile, "disabled": 0}, "name")
+	existing = frappe.db.get_value("Maintenance Customer", {"mobile_no": mobile}, "name")
 	if existing:
 		return existing
 	customer = frappe.get_doc(
-		{
-			"doctype": "Customer",
-			"customer_name": customer_name,
-			"customer_type": "Individual",
-			"customer_group": frappe.db.get_single_value("Selling Settings", "customer_group"),
-			"territory": frappe.db.get_single_value("Selling Settings", "territory"),
-			"mobile_no": mobile,
-		}
+		{"doctype": "Maintenance Customer", "customer_name": customer_name, "mobile_no": mobile}
 	)
 	customer.insert()
 	return customer.name
 
 
-def walkin_invoice(customer, company, items, mode):
-	warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
-	invoice = frappe.new_doc("Sales Invoice")
-	invoice.update(
+def walkin_invoice(visit, items, mode):
+	priced = {row["item_code"]: row for row in item_rates({row["item_code"] for row in items})}
+	unpriced = [row["item_code"] for row in items if not flt(priced.get(row["item_code"], {}).get("rate"))]
+	if unpriced:
+		frappe.throw(
+			_("No selling price for {0}. Tell the accountant.").format(
+				", ".join(priced[code]["item_name"] if code in priced else code for code in unpriced)
+			)
+		)
+	invoice = frappe.get_doc(
 		{
-			"customer": customer,
-			"company": company,
-			"is_pos": 1,
-			"update_stock": 1,
-			"set_warehouse": warehouse,
-			"selling_price_list": selling_price_list(),
+			"doctype": "Maintenance Invoice",
+			"customer": visit.customer,
+			"plate": visit.plate,
+			"company": visit.company,
+			"posting_datetime": now_datetime(),
+			"customer_visit": visit.name,
+			"status": "Issued",
+			"mode_of_payment": mode,
+			"paid": 1,
 		}
 	)
 	for row in items:
+		item = priced[row["item_code"]]
 		invoice.append(
-			"items", {"item_code": row["item_code"], "qty": flt(row["qty"]), "warehouse": warehouse}
+			"items",
+			{
+				"item_code": item["item_code"],
+				"description": item["item_name"],
+				"kind": "Part" if item["is_stock_item"] else "Labour",
+				"qty": flt(row["qty"]),
+				"uom": item["stock_uom"],
+				"rate": item["rate"],
+			},
 		)
-	invoice.taxes_and_charges = frappe.db.get_value(
-		"Sales Taxes and Charges Template", {"is_default": 1, "company": company}
-	)
-	invoice.append_taxes_from_master()
-	invoice.set_missing_values()
-	invoice.calculate_taxes_and_totals()
-	unpriced = [row.item_name for row in invoice.items if not flt(row.rate)]
-	if unpriced:
-		frappe.throw(_("No selling price for {0}. Tell the accountant.").format(", ".join(unpriced)))
-	invoice.append(
-		"payments",
-		{
-			"mode_of_payment": mode,
-			"amount": invoice.rounded_total or invoice.grand_total,
-			"account": get_bank_cash_account(mode, company)["account"],
-		},
-	)
 	invoice.insert()
-	invoice.submit()
 	return invoice

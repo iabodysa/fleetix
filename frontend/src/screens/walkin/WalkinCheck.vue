@@ -59,13 +59,11 @@ async function finish() {
 						type="button"
 						class="walkin-mode"
 						:class="{ pressed: walkin.mode === row.mode }"
-						:disabled="!!row.problem"
 						:aria-pressed="walkin.mode === row.mode ? 'true' : 'false'"
 						@click="walkin.mode = row.mode"
 					>
 						<AppIcon :name="row.mode" size="lg" />
 						<b>{{ row.label }}</b>
-						<span v-if="row.problem" class="muted walkin-mode-problem">{{ row.problem }}</span>
 					</button>
 				</div>
 			</div>
@@ -105,12 +103,5 @@ async function finish() {
 .walkin-mode.pressed {
 	border-color: var(--primary);
 	box-shadow: inset 0 0 0 2px var(--primary);
-}
-.walkin-mode:disabled {
-	opacity: 0.55;
-}
-.walkin-mode-problem {
-	font-size: var(--t-sm);
-	text-align: center;
 }
 </style>

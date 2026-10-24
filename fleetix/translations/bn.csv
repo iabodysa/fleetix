@@ -292,13 +292,8 @@ Customer,গ্রাহক
 Items,আইটেম
 Invoice,ইনভয়েস
 Answer every row of the final check: {0},চূড়ান্ত পরীক্ষার প্রতিটি সারি পূরণ করুন: {0}
-Payment method {0} is not set up,পেমেন্ট পদ্ধতি {0} সেট করা নেই
-Payment method {0} is disabled,পেমেন্ট পদ্ধতি {0} বন্ধ
-Payment method {0} has no account for {1},পেমেন্ট পদ্ধতি {0}-এর {1}-এর জন্য হিসাব নেই
 No default company is set,কোনো ডিফল্ট কোম্পানি নেই
-No default warehouse is set in Stock Settings,স্টক সেটিংসে ডিফল্ট গুদাম নেই
 Selling price list {0} is missing,বিক্রয় মূল্য তালিকা {0} নেই
-No default sales tax template for {0},{0}-এর জন্য বিক্রয় কর টেমপ্লেট নেই
 "Enter the plate, the customer name and the mobile number","প্লেট, গ্রাহকের নাম ও মোবাইল নম্বর লিখুন"
 Customer maintenance is not set up: {0},গ্রাহক রক্ষণাবেক্ষণ সেট নেই: {0}
 Note,নোট

@@ -292,13 +292,8 @@ Customer,کسٹمر
 Items,آئٹمز
 Invoice,انوائس
 Answer every row of the final check: {0},آخری جانچ کی ہر لائن مکمل کریں: {0}
-Payment method {0} is not set up,ادائیگی کا طریقہ {0} سیٹ نہیں
-Payment method {0} is disabled,ادائیگی کا طریقہ {0} بند ہے
-Payment method {0} has no account for {1},ادائیگی کے طریقہ {0} کا {1} کے لیے اکاؤنٹ نہیں
 No default company is set,کوئی ڈیفالٹ کمپنی نہیں
-No default warehouse is set in Stock Settings,اسٹاک سیٹنگز میں ڈیفالٹ گودام نہیں
 Selling price list {0} is missing,فروخت کی قیمت فہرست {0} موجود نہیں
-No default sales tax template for {0},{0} کے لیے سیلز ٹیکس ٹیمپلیٹ نہیں
 "Enter the plate, the customer name and the mobile number",پلیٹ، کسٹمر کا نام اور موبائل نمبر لکھیں
 Customer maintenance is not set up: {0},کسٹمر مرمت سیٹ نہیں: {0}
 Note,نوٹ

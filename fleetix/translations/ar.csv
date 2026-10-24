@@ -9996,13 +9996,8 @@ Customer maintenance completed,اكتملت صيانة العميل
 Print invoice,طباعة الفاتورة
 New customer,عميل جديد
 Answer every row of the final check: {0},أكمل كل بنود الفحص النهائي: {0}
-Payment method {0} is not set up,طريقة الدفع {0} غير معرّفة
-Payment method {0} is disabled,طريقة الدفع {0} موقوفة
-Payment method {0} has no account for {1},طريقة الدفع {0} بلا حساب لشركة {1}
 No default company is set,لا توجد شركة افتراضية
-No default warehouse is set in Stock Settings,لا يوجد مستودع افتراضي في إعدادات المخزون
 Selling price list {0} is missing,قائمة أسعار البيع {0} غير موجودة
-No default sales tax template for {0},لا يوجد قالب ضريبة مبيعات افتراضي لـ {0}
 "Enter the plate, the customer name and the mobile number",أدخل اللوحة واسم العميل ورقم الجوال
 Customer maintenance is not set up: {0},صيانة العملاء غير مهيأة: {0}
 Maintenance Finding,ملاحظة صيانة
@@ -10023,3 +10018,7 @@ Battery Terminals,أقطاب البطارية
 Belts,السيور
 Air Filter Check,فحص فلتر الهواء
 Mada,مدى
+Date and Time,التاريخ والوقت
+Kind,النوع
+Maintenance Customer,عميل الصيانة
+Maintenance Invoice Item,بند فاتورة الصيانة

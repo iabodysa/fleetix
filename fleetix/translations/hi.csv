@@ -285,13 +285,8 @@ Print invoice,बिल प्रिंट करें
 New customer,नया ग्राहक
 Invoice,बिल
 Answer every row of the final check: {0},अंतिम जाँच की हर पंक्ति पूरी करें: {0}
-Payment method {0} is not set up,भुगतान तरीका {0} सेट नहीं है
-Payment method {0} is disabled,भुगतान तरीका {0} बंद है
-Payment method {0} has no account for {1},भुगतान तरीका {0} का {1} के लिए खाता नहीं
 No default company is set,कोई डिफ़ॉल्ट कंपनी नहीं
-No default warehouse is set in Stock Settings,स्टॉक सेटिंग्स में डिफ़ॉल्ट गोदाम नहीं
 Selling price list {0} is missing,बिक्री मूल्य सूची {0} नहीं है
-No default sales tax template for {0},{0} के लिए बिक्री कर टेम्पलेट नहीं
 "Enter the plate, the customer name and the mobile number","प्लेट, ग्राहक का नाम और मोबाइल नंबर लिखें"
 Customer maintenance is not set up: {0},ग्राहक रखरखाव सेट नहीं: {0}
 Maintenance Finding,रखरखाव टिप्पणी

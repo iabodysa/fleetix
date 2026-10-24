@@ -21,7 +21,7 @@ function money(value) {
 async function print() {
 	busy.value = true
 	try {
-		walkin.printed = await printDocument("Sales Invoice", invoice.sales_invoice, PRINT_FORMAT)
+		walkin.printed = await printDocument("Maintenance Invoice", invoice.maintenance_invoice, PRINT_FORMAT)
 	} catch (e) {
 		error.value = errorText(e)
 	}
@@ -35,7 +35,7 @@ onMounted(() => {
 <template>
 	<ScreenFrame :title="__('Invoice issued')" v-model:error="error">
 		<template #meta>
-			<span class="muted ltr">{{ invoice.sales_invoice }}</span>
+			<span class="muted ltr">{{ invoice.maintenance_invoice }}</span>
 		</template>
 		<SuccessCheck :label="__('Customer maintenance completed')" />
 		<div class="card walkin-bill">

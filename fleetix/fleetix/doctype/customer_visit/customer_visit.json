@@ -13,7 +13,6 @@
   "company",
   "visit_datetime",
   "odometer",
-  "sales_invoice",
   "checklist_section",
   "checklist",
   "findings"
@@ -32,7 +31,7 @@
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Customer",
-   "options": "Customer",
+   "options": "Maintenance Customer",
    "reqd": 1
   },
   {
@@ -73,13 +72,6 @@
    "label": "Odometer (km)"
   },
   {
-   "fieldname": "sales_invoice",
-   "fieldtype": "Link",
-   "label": "Sales Invoice",
-   "options": "Sales Invoice",
-   "read_only": 1
-  },
-  {
    "fieldname": "checklist_section",
    "fieldtype": "Section Break",
    "label": "Final Check"
@@ -99,7 +91,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-24 18:00:00.000000",
+ "modified": "2026-10-24 22:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Customer Visit",
