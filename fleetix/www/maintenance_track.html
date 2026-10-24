@@ -8,6 +8,7 @@
 <title>{{ _("Your vehicle") }}</title>
 <link rel="icon" href="/assets/fleetix/images/fleetix-favicon.svg">
 <link rel="stylesheet" href="/assets/fleetix/css/maintenance-track.css">
+{% if sign %}<script src="/assets/fleetix/js/maintenance-sign.js" defer></script>{% endif %}
 </head>
 <body>
 <main class="mt">
@@ -17,10 +18,22 @@
     <p class="mt-muted">{{ model|e }}</p>
     <p class="mt-status">{{ status|e }}</p>
     <dl class="mt-facts">
-      <div><dt>{{ _("Odometer") }}</dt><dd><bdi>{{ odometer }} {{ _("km") }}</bdi></dd></div>
+      {% if odometer %}<div><dt>{{ _("Odometer") }}</dt><dd><bdi>{{ odometer }} {{ _("km") }}</bdi></dd></div>{% endif %}
       {% if delegate %}<div><dt>{{ _("Driver") }}</dt><dd>{{ delegate|e }}</dd></div>{% endif %}
     </dl>
   </header>
+  {% if sign %}
+  <section class="mt-card mt-sign" data-visit="{{ visit|e }}" data-key="{{ key|e }}" data-csrf="{{ csrf_token|e }}" data-empty="{{ _('Sign in the box') }}" data-failed="{{ _('Could not save, try again') }}">
+    <h2>{{ _("Driver signature") }}</h2>
+    <canvas class="mt-sign-pad" data-pad></canvas>
+    <p class="mt-sign-error" data-error role="alert"></p>
+    <div class="mt-sign-actions">
+      <button type="button" class="mt-button" data-clear>{{ _("Clear") }}</button>
+      <button type="button" class="mt-button mt-primary" data-save>{{ _("Save signature") }}</button>
+    </div>
+  </section>
+  {% endif %}
+  <p class="mt-card mt-signed" data-signed{{ '' if signed else ' hidden' }}>{{ _("Signature saved") }}</p>
   <ol class="mt-card mt-stages">
     {% for stage in stages %}<li class="{{ stage.state }}">{{ stage.label }}</li>{% endfor %}
   </ol>

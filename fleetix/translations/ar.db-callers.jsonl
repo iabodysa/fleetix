@@ -32,3 +32,6 @@
 {"key": "Belts", "caller": "Fleetix Settings service checklist row"}
 {"key": "Air Filter Check", "caller": "Fleetix Settings service checklist row"}
 {"key": "Mada", "caller": "Mode of Payment record name"}
+{"key": "Front Side", "caller": "Fleetix Settings photo slot name"}
+{"key": "Rear Side", "caller": "Fleetix Settings photo slot name"}
+{"key": "Odometer Photo", "caller": "Fleetix Settings photo slot name"}

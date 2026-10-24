@@ -21,6 +21,7 @@ from fleetix.fleetix.doctype.maintenance.maintenance import (
 from fleetix.fleetix.document_qr import qr_data_url
 from fleetix.fleetix.print_samples import print_samples
 from fleetix.fleetix.service_check import checked_rows, finding_rows, last_findings, service_checklist
+from fleetix.fleetix.track import SIGN_STATES
 from fleetix.fleetix.units import unit_fields
 from fleetix.fleetix.vehicle_diagram import VIEWS, body_type, damage_zone, diagram_views
 
@@ -314,6 +315,20 @@ def get_photo_link(maintenance):
 	frappe.get_doc("Maintenance", maintenance).check_permission("read")
 	url = get_host_name_from_request() + "/maintenance/photos/" + quote(maintenance)
 	return {"url": url, "qr": qr_data_url(url)}
+
+
+@frappe.whitelist(methods=["POST"])
+def save_odometer(maintenance, odometer):
+	frappe.only_for(WORKER_ROLES)
+	visit = frappe.get_doc("Maintenance", maintenance)
+	visit.check_permission("write")
+	odometer = cint(odometer)
+	if visit.status not in SIGN_STATES or odometer < cint(
+		frappe.db.get_value("Vehicle", visit.vehicle, "last_odometer")
+	):
+		return cint(visit.odometer)
+	visit.db_set("odometer", odometer)
+	return odometer
 
 
 @frappe.whitelist(methods=["POST"])

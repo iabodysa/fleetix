@@ -48,6 +48,10 @@ export function useCardProgress(items) {
 	function show(key) {
 		scrollToElement(card(key))
 	}
+	function showBelow(key) {
+		const el = card(key)
+		if (el && el.getBoundingClientRect().top > 0) scrollToElement(el)
+	}
 	function pulse(key) {
 		const el = card(key)
 		if (!el) return
@@ -68,8 +72,12 @@ export function useCardProgress(items) {
 	watch(
 		() => items.value.filter((row) => row.done).map((row) => row.key),
 		(done, before) => {
-			const fresh = done.some((key) => (before || []).indexOf(key) === -1)
-			if (fresh && missing.value.length) nextTick(() => show(missing.value[0].key))
+			const fresh = done.filter((key) => (before || []).indexOf(key) === -1)
+			if (fresh.length !== 1) return
+			const keys = items.value.map((row) => row.key)
+			const answered = keys.indexOf(fresh[0])
+			const below = items.value.find((row, index) => index > answered && !row.done)
+			if (below) nextTick(() => showBelow(below.key))
 		},
 	)
 	return { missing, show, guard, nextLabel }

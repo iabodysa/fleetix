@@ -2,15 +2,17 @@
 import { onMounted, ref } from "vue"
 import { __, componentLabel, statusLabel } from "../../i18n/index.js"
 import { errorText } from "../../api.js"
-import { dueText, hasPrinter, printDocument, printReceipt, receiptCanvas, showOnCustomerDisplay } from "../../native.js"
+import { dueText, hasPrinter, printBitmap, printDocument, printImage, showOnCustomerDisplay } from "../../native.js"
 import { backToQueue, store } from "../../store/index.js"
 import AppIcon from "../../components/AppIcon.vue"
 import BigButton from "../../components/BigButton.vue"
 import ScreenFrame from "../../components/ScreenFrame.vue"
 import SuccessCheck from "../../components/SuccessCheck.vue"
 
+const INVOICE = "Thermal Maintenance Invoice"
+const EXIT_PASS = "Thermal Gate Exit Pass"
 const result = store.result
-const receipt = receiptCanvas(result).toDataURL("image/png")
+const invoice = ref("")
 const error = ref("")
 const busy = ref(false)
 const TONE = { overdue: "problem", soon: "wait", ok: "done" }
@@ -19,16 +21,17 @@ const STATE_TEXT = { overdue: __("Overdue"), soon: __("Due soon"), ok: __("Good"
 async function print() {
 	busy.value = true
 	try {
-		store.printed = await printReceipt(result)
+		if (!invoice.value) invoice.value = await printImage("Maintenance", result.maintenance, INVOICE)
+		store.printed = await printBitmap(invoice.value)
 	} catch (e) {
 		error.value = errorText(e)
 	}
 	busy.value = false
 }
-async function printForm(format) {
+async function printExitPass() {
 	busy.value = true
 	try {
-		await printDocument("Maintenance", result.maintenance, format)
+		await printDocument("Maintenance", result.maintenance, EXIT_PASS)
 	} catch (e) {
 		error.value = errorText(e)
 	}
@@ -41,6 +44,7 @@ onMounted(async () => {
 		error.value = errorText(e)
 	}
 	if (!store.printed) await print()
+	else invoice.value = await printImage("Maintenance", result.maintenance, INVOICE).catch(() => "")
 })
 </script>
 
@@ -64,11 +68,10 @@ onMounted(async () => {
 					<span class="pill" :class="store.display ? 'tone-done' : 'tone-quiet'"><AppIcon name="screen" />{{ store.display ? __("On customer screen") : __("Customer screen not connected") }}</span>
 				</div>
 				<div v-if="hasPrinter()" class="done-devices">
-					<BigButton icon="printer" tone="quiet" :label="__('Maintenance Invoice')" :busy="busy" @press="printForm('Thermal Maintenance Invoice')" />
-					<BigButton icon="printer" tone="quiet" :label="__('Gate Exit Pass')" :busy="busy" @press="printForm('Thermal Gate Exit Pass')" />
+					<BigButton icon="printer" tone="quiet" :label="__('Gate Exit Pass')" :busy="busy" @press="printExitPass" />
 				</div>
 			</div>
-			<img class="done-receipt" :src="receipt" alt="" />
+			<img v-if="invoice" class="done-receipt" :src="'data:image/png;base64,' + invoice" alt="" />
 		</div>
 		<template #back>
 			<BigButton icon="printer" tone="quiet" :label="__('Print again')" :busy="busy" @press="print" />

@@ -7,6 +7,8 @@ import frappe
 from frappe.utils import get_host_name_from_request, today
 from frappe.www.printview import validate_key
 
+SIGN_STATES = ("Driver Arrived", "Full Inspection")
+
 
 def share_key(visit):
 	key = frappe.db.get_value(

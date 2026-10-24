@@ -15,6 +15,7 @@
   "visit_datetime",
   "odometer",
   "inspection",
+  "driver_signature",
   "damage_marks",
   "photos",
   "workshop",
@@ -111,6 +112,12 @@
    "label": "Full Inspection",
    "mandatory_depends_on": "eval:['Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
    "options": "Vehicle Inspection"
+  },
+  {
+   "fieldname": "driver_signature",
+   "fieldtype": "Signature",
+   "label": "Driver Signature",
+   "read_only": 1
   },
   {
    "fieldname": "damage_marks",
@@ -230,7 +237,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-24 18:00:00.000000",
+ "modified": "2026-10-24 21:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Maintenance",

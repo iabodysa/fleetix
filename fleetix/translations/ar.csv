@@ -10064,3 +10064,14 @@ Front Side,الجهة الأمامية
 Rear Side,الجهة الخلفية
 Odometer Photo,صورة العداد
 Show list,عرض القائمة
+"Could not save, try again",تعذّر الحفظ، حاول مرة أخرى
+Print format {0} not found,نموذج الطباعة {0} غير موجود
+Printing is not installed on the server,الطباعة غير مثبتة على الخادم
+Save signature,حفظ التوقيع
+Sign in the box,وقّع داخل المربع
+Sign on this device,توقيع على الجهاز
+Signature saved,تم حفظ التوقيع
+"The print came out empty, nothing was sent to the printer",خرجت الطباعة فارغة، لم يُرسل شيء إلى الطابعة
+This visit is already signed,تم توقيع هذه الزيارة مسبقاً
+This visit is not waiting for a signature,هذه الزيارة لا تنتظر توقيعاً
+Waiting for the driver to sign,بانتظار توقيع المندوب

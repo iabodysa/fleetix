@@ -2,6 +2,7 @@
 import { computed, ref } from "vue"
 import { __, formatKm } from "../../i18n/index.js"
 import { offerUndo } from "../../composables/useUndo.js"
+import { api } from "../../api.js"
 import { backToQueue, go, store } from "../../store/index.js"
 import BigButton from "../../components/BigButton.vue"
 import NumberPad from "../../components/NumberPad.vue"
@@ -34,6 +35,7 @@ function next() {
 		error.value = __("Odometer reading is below the last reading {0}", [formatKm(last.value)])
 		return
 	}
+	api.saveOdometer(store.visit.maintenance, reading.value).catch(() => null)
 	go("parts")
 	if (diff.value > BIG_JUMP_KM) offerUndo(__("Difference is above 20,000 km"), () => go("odometer"))
 }

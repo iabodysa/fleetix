@@ -9,7 +9,7 @@ from frappe.utils import cint, fmt_money
 from frappe.utils.jinja_globals import is_rtl
 
 from fleetix.fleetix.maintenance_invoice import maintenance_invoice
-from fleetix.fleetix.track import keyed_visit
+from fleetix.fleetix.track import SIGN_STATES, keyed_visit
 
 no_cache = 1
 
@@ -19,6 +19,8 @@ INVOICE_FORMAT = "Thermal Maintenance Invoice"
 
 def get_context(context):
 	key = frappe.form_dict.key
+	csrf_token = frappe.sessions.get_csrf_token()
+	frappe.db.commit()
 	visit = keyed_visit(frappe.form_dict.visit, key)
 	vehicle = frappe.db.get_value(
 		"Vehicle", visit.vehicle, ["license_plate", "make", "model", "last_odometer"], as_dict=True
@@ -30,7 +32,8 @@ def get_context(context):
 	context.direction = "rtl" if is_rtl() else "ltr"
 	context.plate = vehicle.license_plate
 	context.model = " ".join(filter(None, (vehicle.make, vehicle.model)))
-	context.odometer = "{:,}".format(max(cint(visit.odometer), cint(vehicle.last_odometer)))
+	reading = cint(visit.odometer) or cint(vehicle.last_odometer)
+	context.odometer = "{:,}".format(reading) if reading else None
 	context.status = _(visit.status)
 	context.delegate = frappe.db.get_value("Driver", visit.driver, "full_name") if visit.driver else None
 	context.stages = [
@@ -44,6 +47,11 @@ def get_context(context):
 	context.vat = fmt_money(bill.vat, currency=currency)
 	context.total = fmt_money(bill.total, currency=currency)
 	context.findings = findings(visit)
+	context.visit = visit.name
+	context.key = key
+	context.csrf_token = csrf_token
+	context.sign = visit.status in SIGN_STATES and not visit.driver_signature
+	context.signed = bool(visit.driver_signature)
 	context.photos = [
 		{
 			"caption": row.caption,
