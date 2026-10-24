@@ -1,6 +1,6 @@
 {% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
 {% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["license_plate", "make", "model", "company"], as_dict=True) if doc.vehicle else None %}
-{% set damages = frappe.get_all("Damage", filters={"source": ("in", ["Vehicle Inspection", "Maintenance"]), "source_reference": ("in", [doc.name, doc.reference_name or doc.name])}, fields=["area", "description", "diagram_view", "mark_x", "mark_y"], order_by="creation asc") %}
+{% set damages = frappe.get_all("Damage", filters={"source": ("in", ["Vehicle Inspection", "Maintenance"]), "source_reference": ("in", [doc.name, doc.reference_name or doc.name])}, fields=["name", "area", "description", "diagram_view", "mark_x", "mark_y"], order_by="creation asc") %}
 {% set marks = [] %}
 {% for d in damages %}{% set _x = marks.append({"no": loop.index, "area": d.area, "view": d.diagram_view, "x": d.mark_x, "y": d.mark_y}) %}{% endfor %}
 {% set drawing = vehicle_views(doc.vehicle, marks) %}
@@ -47,7 +47,7 @@
 <colgroup><col style="width:7mm"><col style="width:9mm"><col></colgroup>
 <tr class="tp-h"><td>#</td><td>{{ _("Zone") }}<i>Zone</i></td><td>{{ _("Description") }}<i>Description</i></td></tr>
 {% for n in range([damages | length, 4] | max) %}{% set d = damages[n] if n < damages | length else None %}
-<tr><td class="tp-n" style="height:6.5mm">{{ n + 1 }}</td><td class="tp-n">{{ zone_no.get(d.area, "") if d else "" }}</td><td class="tp-s">{{ (d.description or _(d.area or "")) if d else "" }}</td></tr>
+<tr><td class="tp-n" style="height:6.5mm">{{ n + 1 }}</td><td class="tp-n">{{ zone_no.get(d.area, "") if d else "" }}</td><td class="tp-s">{% if d %}{{ d.description or _(d.area or "") }}{% set shots = frappe.db.count("Vehicle Inspection Photo", {"parent": d.name, "parenttype": "Damage"}) %}{% if shots %} · {{ _("Photos") }} {{ shots }}{% endif %}{% endif %}</td></tr>
 {% endfor %}
 </table>
 {{ tp.signatures([(_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None, doc.driver_signature), (_("Inspector"), "Inspector", frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None, doc.inspector_signature)]) }}
