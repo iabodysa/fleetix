@@ -57,7 +57,7 @@ function marksOn(name) {
 .car-diagram {
 	direction: ltr;
 	width: 100%;
-	max-width: 46rem;
+	max-width: 36rem;
 	margin: 0 auto;
 }
 .car-row {
