@@ -5,7 +5,10 @@ const props = defineProps({
 	labels: { type: Object, required: true },
 })
 const emit = defineEmits(["mark", "unmark"])
-const ORDER = [["right"], ["left"], ["front", "rear"]]
+const ORDER = [
+	["right", "front"],
+	["left", "rear"],
+]
 
 function view(name) {
 	return props.views.find((row) => row.view === name)
@@ -28,7 +31,7 @@ function marksOn(name) {
 <template>
 	<div class="car-diagram" role="group" :aria-label="labels.title">
 		<div v-for="(row, index) in rows()" :key="index" class="car-row">
-			<figure v-for="item in row" :key="item.view" class="car-view" :class="'car-view-' + item.view">
+			<figure v-for="item in row" :key="item.view" class="car-view" :style="{ flex: item.aspect + ' 1 0px' }">
 				<div class="car-canvas" :style="{ paddingBottom: 100 / item.aspect + '%' }" @click="place(item, $event)">
 					<div class="car-svg" v-html="item.svg"></div>
 					<button
@@ -54,6 +57,8 @@ function marksOn(name) {
 .car-diagram {
 	direction: ltr;
 	width: 100%;
+	max-width: 46rem;
+	margin: 0 auto;
 }
 .car-row {
 	display: flex;
@@ -73,10 +78,6 @@ function marksOn(name) {
 }
 .car-view + .car-view {
 	margin-left: var(--s3);
-}
-.car-view-front,
-.car-view-rear {
-	max-width: 50%;
 }
 .car-canvas {
 	position: relative;
