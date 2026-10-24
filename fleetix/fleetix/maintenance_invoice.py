@@ -4,7 +4,6 @@
 import re
 
 import frappe
-from erpnext.controllers.accounts_controller import _get_default_taxes_and_charges
 from frappe import _
 from frappe.utils import flt
 
@@ -12,10 +11,21 @@ LABOUR_GROUP = re.compile(r"labou?r|service", re.I)
 
 
 def vat_rate(company):
-	taxes = (_get_default_taxes_and_charges("Sales Taxes and Charges Template", company=company) or {}).get(
-		"taxes"
+	template = (
+		frappe.db.get_value("Sales Taxes and Charges Template", {"is_default": 1, "company": company})
+		if company
+		else None
 	)
-	if rate := sum(flt(tax.get("rate")) for tax in taxes or []):
+	rates = (
+		frappe.get_all(
+			"Sales Taxes and Charges",
+			filters={"parent": template, "parenttype": "Sales Taxes and Charges Template"},
+			pluck="rate",
+		)
+		if template
+		else []
+	)
+	if rate := sum(flt(rate) for rate in rates):
 		return rate
 	settings = frappe.get_cached_doc("Fleetix Settings")
 	return flt(
