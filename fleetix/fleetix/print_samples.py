@@ -8,7 +8,7 @@ from frappe.utils import now_datetime
 SAMPLE_NAME = "SAMPLE"
 SAMPLE_ODOMETER = 48210
 DAMAGE_BODIES = ("Car", "SUV", "Bus", "Pickup Truck")
-HANDOVER_KINDS = (("Handover", "Delivery"), ("Return", "Receipt"))
+HANDOVER_TYPES = ("Handover", "Return")
 
 
 def body_vehicle(body):
@@ -65,10 +65,10 @@ def print_samples():
 		sample(_("Gate Exit Pass"), "Maintenance", "Thermal Gate Exit Pass", visit),
 		sample(_("Vehicle Card"), "Vehicle", "Thermal Vehicle Card", vehicle.as_dict(no_default_fields=True)),
 	]
-	for handover_type, label in HANDOVER_KINDS:
+	for handover_type in HANDOVER_TYPES:
 		samples.append(
 			sample(
-				_("Handover Pass") + " · " + _(label),
+				_("Handover Pass") + " · " + _(handover_type),
 				"Vehicle Handover",
 				"Thermal Handover Pass",
 				{

@@ -4,7 +4,7 @@
 import re
 
 import frappe
-from erpnext.controllers.accounts_controller import get_default_taxes_and_charges
+from erpnext.controllers.accounts_controller import _get_default_taxes_and_charges
 from frappe import _
 from frappe.utils import flt
 
@@ -12,7 +12,7 @@ LABOUR_GROUP = re.compile(r"labou?r|service", re.I)
 
 
 def vat_rate(company):
-	taxes = (get_default_taxes_and_charges("Sales Taxes and Charges Template", company=company) or {}).get(
+	taxes = (_get_default_taxes_and_charges("Sales Taxes and Charges Template", company=company) or {}).get(
 		"taxes"
 	)
 	if rate := sum(flt(tax.get("rate")) for tax in taxes or []):
