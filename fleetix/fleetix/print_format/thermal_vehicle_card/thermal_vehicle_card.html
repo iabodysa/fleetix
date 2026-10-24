@@ -22,9 +22,9 @@
 {% if due %}
 {{ tp.bar(_("Next service"), "Next service") }}
 <table class="tp-grid">
-<colgroup><col><col style="width:22mm"><col style="width:22mm"></colgroup>
+<colgroup><col><col style="width:150px"><col style="width:150px"></colgroup>
 <tr class="tp-h"><td>{{ _("Component") }}<i>Component</i></td><td>{{ _("Due at km") }}<i>km</i></td><td>{{ _("Due Date") }}<i>Date</i></td></tr>
-{% for component, due_km, due_date in due %}<tr><td class="tp-s" style="font-size:10pt;font-weight:700">{{ _(component) }}</td><td class="tp-n" style="font-size:10pt">{{ tp.km(due_km) }}</td><td class="tp-n" style="font-size:10pt">{{ frappe.utils.formatdate(due_date, "yyyy-MM-dd") if due_date else "" }}</td></tr>{% endfor %}
+{% for component, due_km, due_date in due %}<tr><td class="tp-s">{{ _(component) }}</td><td class="tp-n">{{ tp.km(due_km) }}</td><td class="tp-n">{{ frappe.utils.formatdate(due_date, "yyyy-MM-dd") if due_date else "" }}</td></tr>{% endfor %}
 </table>
 {% endif %}
 {{ tp.qr(doc) }}

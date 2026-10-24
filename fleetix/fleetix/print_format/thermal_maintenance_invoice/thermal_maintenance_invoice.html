@@ -4,9 +4,9 @@
 {% macro lines(title, title_en, rows, subtotal) -%}
 {{ tp.bar(title, title_en) }}
 <table class="tp-grid">
-<colgroup><col><col style="width:14mm"><col style="width:14mm"><col style="width:17mm"></colgroup>
+<colgroup><col><col style="width:96px"><col style="width:112px"><col style="width:128px"></colgroup>
 <tr class="tp-h"><td>{{ _("Item", context="Print Line") }}<i>Item</i></td><td>{{ _("Qty", context="Print Line") }}<i>Qty</i></td><td>{{ _("Rate", context="Print Line") }}<i>Rate</i></td><td>{{ _("Amount", context="Print Line") }}<i>Amount</i></td></tr>
-{% for r in rows %}<tr><td class="tp-s">{{ r[0] }}</td><td class="tp-n">{{ "{:g}".format(r[1] or 0) }}{% if r | length > 4 and r[4] %} {{ r[4] }}{% endif %}</td><td class="tp-n">{{ tp.money(r[2]) if r[2] is not none else "" }}</td><td class="tp-n">{{ tp.money(r[3]) if r[3] is not none else "" }}</td></tr>{% endfor %}
+{% for r in rows %}<tr><td class="tp-s">{{ r[0] }}</td><td class="tp-q">{{ tp.qty(r[1], r[4] if r | length > 4 else None) }}</td><td class="tp-n">{{ tp.money(r[2]) if r[2] is not none else "" }}</td><td class="tp-n">{{ tp.money(r[3]) if r[3] is not none else "" }}</td></tr>{% endfor %}
 {% if subtotal %}<tr class="tp-sub"><td class="tp-s" colspan="3"><b>{{ _("Subtotal") }}</b> <i>{{ title_en }} subtotal</i></td><td class="tp-n">{{ tp.money(subtotal) }}</td></tr>{% endif %}
 </table>
 {%- endmacro %}
@@ -24,7 +24,7 @@
 {{ tp.big(_("Odometer"), "Odometer km", tp.km(doc.odometer)) }}
 {% if bill.parts %}{{ lines(_("Spare Parts"), "Parts", bill.parts, bill.parts_total) }}{% endif %}
 {% if bill.labour %}{{ lines(_("Labour"), "Labour", bill.labour, bill.labour_total) }}{% endif %}
-<table class="tp-sum" style="margin-top:2mm">
+<table class="tp-sum">
 <tr><td><b>{{ _("Total before VAT") }}</b> <i>Subtotal</i></td><td class="tp-n">{{ tp.money(bill.subtotal) }}</td></tr>
 <tr><td><b>{{ _("VAT {0}%").format("{:g}".format(bill.vat_rate)) }}</b> <i>VAT {{ "{:g}".format(bill.vat_rate) }}%</i></td><td class="tp-n">{{ tp.money(bill.vat) }}</td></tr>
 <tr class="tp-grand"><td>{{ _("Total") }}<i>Total incl. VAT</i></td><td class="tp-n">{{ tp.money(bill.total) }}</td></tr>

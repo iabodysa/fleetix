@@ -12,7 +12,7 @@
 {% macro view(name, zone, box) -%}
 {% set svg, width = views[name] %}
 {% set scale = [box / width, 1.3] | min %}
-<div style="width:{{ (width * scale) | round(1) }}mm;height:{{ (24 * scale) | round(1) }}mm;margin:0 auto">{{ svg | replace('width="', 'data-w="') | replace('height="', 'data-h="') | replace('<svg ', '<svg width="100%" height="100%" ') }}</div>
+<div style="width:{{ (width * scale * 8) | round | int }}px;height:{{ (24 * scale * 8) | round | int }}px;margin:0 auto">{{ svg | replace('width="', 'data-w="') | replace('height="', 'data-h="') | replace('<svg ', '<svg width="100%" height="100%" ') }}</div>
 {%- endmacro %}
 {% macro caption(zone) -%}
 <span class="tp-z">{{ zone[1] }}</span>{{ zone[2] }}<i>{{ zone[3] }}</i>
@@ -31,7 +31,7 @@
 ]) }}
 {{ tp.big(_("Odometer"), "Odometer km", tp.km(doc.odometer) or "") }}
 {{ tp.bar(_("Fuel Level"), "Fuel level") }}
-<table class="tp-grid" style="direction:ltr"><tr>{% for label in ["E", "1/4", "1/2", "3/4", "F"] %}<td class="{{ 'tp-on' if loop.index0 <= fuel_at else '' }}" style="font-size:11pt">{{ label }}</td>{% endfor %}</tr></table>
+<table class="tp-grid tp-fuel" style="direction:ltr"><tr>{% for label in ["E", "1/4", "1/2", "3/4", "F"] %}<td class="{{ 'tp-on' if loop.index0 <= fuel_at else '' }}">{{ label }}</td>{% endfor %}</tr></table>
 {{ tp.bar(_("Damage Diagram"), "Damage diagram") }}
 <table class="tp-veh">
 <tr><td>{{ view("right", zones[2], 68) }}</td></tr>
@@ -44,10 +44,10 @@
 <div class="tp-legend"><span>{{ caption(zones[4]) }}</span><span>{{ caption(zones[5]) }}</span><br>{% for code, label in [("S", _("Scratch")), ("D", _("Dent")), ("C", _("Crack")), ("B", _("Broken")), ("M", _("Missing"))] %}<span><b>{{ code }}</b> {{ label }}</span>{% endfor %}</div>
 {{ tp.bar(_("Damages"), "Damages") }}
 <table class="tp-grid">
-<colgroup><col style="width:7mm"><col style="width:9mm"><col></colgroup>
+<colgroup><col style="width:56px"><col style="width:80px"><col></colgroup>
 <tr class="tp-h"><td>#</td><td>{{ _("Zone") }}<i>Zone</i></td><td>{{ _("Description") }}<i>Description</i></td></tr>
 {% for n in range([damages | length, 4] | max) %}{% set d = damages[n] if n < damages | length else None %}
-<tr><td class="tp-n" style="height:6.5mm">{{ n + 1 }}</td><td class="tp-n">{{ zone_no.get(d.area, "") if d else "" }}</td><td class="tp-s">{% if d %}{{ d.description or _(d.area or "") }}{% set shots = frappe.db.count("Vehicle Inspection Photo", {"parent": d.name, "parenttype": "Damage"}) %}{% if shots %} · {{ _("Photos") }} {{ shots }}{% endif %}{% endif %}</td></tr>
+<tr><td class="tp-n" style="height:52px">{{ n + 1 }}</td><td class="tp-n">{{ zone_no.get(d.area, "") if d else "" }}</td><td class="tp-s">{% if d %}{{ d.description or _(d.area or "") }}{% set shots = frappe.db.count("Vehicle Inspection Photo", {"parent": d.name, "parenttype": "Damage"}) %}{% if shots %} · {{ _("Photos") }} {{ shots }}{% endif %}{% endif %}</td></tr>
 {% endfor %}
 </table>
 {% set visit = frappe.db.get_value("Maintenance", {"inspection": doc.name}, "name") if doc.name else None %}

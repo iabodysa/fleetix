@@ -30,11 +30,11 @@
 	(_("Damages Found"), "Damages found", doc.damages_found | length if doc.damages_found else None),
 ]) }}
 {{ tp.pair([(_("Odometer"), "Odometer km", tp.km(doc.odometer or (inspection.odometer if inspection else None))), (_("Fuel Level"), "Fuel", _(inspection.fuel_level) if inspection and inspection.fuel_level else None)]) }}
-<table class="tp-grid" style="direction:ltr"><tr>{% for label in ["E", "1/4", "1/2", "3/4", "F"] %}<td class="{{ 'tp-on' if loop.index0 <= fuel_at else '' }}" style="font-size:11pt">{{ label }}</td>{% endfor %}</tr></table>
+<table class="tp-grid tp-fuel" style="direction:ltr"><tr>{% for label in ["E", "1/4", "1/2", "3/4", "F"] %}<td class="{{ 'tp-on' if loop.index0 <= fuel_at else '' }}">{{ label }}</td>{% endfor %}</tr></table>
 {% if checklist %}
 {{ tp.bar(_("Checklist"), "Items and accessories") }}
 <table class="tp-grid">
-<colgroup><col><col style="width:13mm"><col style="width:13mm"></colgroup>
+<colgroup><col><col style="width:104px"><col style="width:104px"></colgroup>
 <tr class="tp-h"><td>{{ _("Item", context="Print Line") }}<i>Item</i></td><td>{{ _("Good") }}<i>OK</i></td><td>{{ _("Needs Repair") }}<i>Repair</i></td></tr>
 {% for r in checklist %}<tr><td class="tp-s">{{ _(r.item) }}</td><td>{{ tp.check(r.condition == "Good") }}</td><td>{{ tp.check(r.condition == "Needs Repair") }}</td></tr>{% endfor %}
 </table>

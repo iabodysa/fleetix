@@ -15,16 +15,18 @@ from frappe.www.printview import get_html_and_style
 from PIL import Image
 
 DOTS = 576
-PAPER_MM = 72
-INK_LEVEL = 150
-MIN_INK = 0.01
+SIDE_MARGIN = 8
+TOP_MARGIN = 8
 BOTTOM_MARGIN = 24
-RENDER_TIMEOUT = 30
+SUPERSAMPLE = 2
+INK_LEVEL = 160
+MIN_INK = 0.01
+RENDER_TIMEOUT = 60
 
 PAGE = (
 	'<!DOCTYPE html><html><head><meta charset="utf-8"><style>{style}</style>'
-	"<style>html,body{{margin:0;padding:0;background:#FFF}}::-webkit-scrollbar{{display:none}}"
-	"body .print-format{{width:{mm}mm!important;max-width:none!important;margin:0!important;padding:0!important;min-height:0!important}}</style>"
+	"<style>html{{zoom:{zoom}}}html,body{{margin:0;padding:0;background:#FFF}}::-webkit-scrollbar{{display:none}}"
+	"body .print-format{{width:{dots}px!important;max-width:none!important;margin:0!important;padding:0!important;min-height:0!important}}</style>"
 	'</head><body><div class="print-format">{html}</div></body></html>'
 )
 LOCAL_URL = r"""(?P<q>["'(])(?P<host>{host})?/(?P<root>assets|files|private/files)/(?P<path>[^"')?#]+)"""
@@ -52,14 +54,15 @@ def page_html(doc, name, print_format):
 	page = get_html_and_style(doc, name, print_format=print_format, no_letterhead=1)
 	if not page.get("html"):
 		frappe.throw(_("Print format {0} not found").format(print_format))
-	return localize(PAGE.format(style=page.get("style") or "", html=page["html"], mm=PAPER_MM))
+	return localize(
+		PAGE.format(style=page.get("style") or "", html=page["html"], dots=DOTS, zoom=SUPERSAMPLE)
+	)
 
 
 def rasterize(html):
 	binary = shutil.which("wkhtmltoimage")
 	if not binary:
 		frappe.throw(_("Printing is not installed on the server"))
-	zoom = DOTS / (PAPER_MM / 25.4 * 96)
 	command = [
 		binary,
 		"--quiet",
@@ -68,7 +71,7 @@ def rasterize(html):
 		"--encoding",
 		"utf-8",
 	]
-	command += ["--width", str(DOTS), "--zoom", f"{zoom:.4f}", "--format", "png", "-", "-"]
+	command += ["--width", str(DOTS * SUPERSAMPLE), "--zoom", "1", "--format", "png", "-", "-"]
 	result = subprocess.run(
 		command,
 		input=html.encode(),
@@ -82,13 +85,26 @@ def rasterize(html):
 	return Image.open(BytesIO(result.stdout))
 
 
+def ink_box(gray):
+	return gray.point(lambda level: 255 if level < INK_LEVEL else 0).getbbox()
+
+
+def fit_width(gray, box):
+	left, top, right, bottom = box
+	width = DOTS - 2 * SIDE_MARGIN
+	height = round((bottom - top) * width / (right - left))
+	content = gray.crop(box).resize((width, height), Image.LANCZOS)
+	page = Image.new("L", (DOTS, TOP_MARGIN + height + BOTTOM_MARGIN), 255)
+	page.paste(content, (SIDE_MARGIN, TOP_MARGIN))
+	return page
+
+
 def black_and_white(image):
-	page = Image.new("L", (DOTS, image.height), 255)
-	page.paste(image.convert("L").crop((0, 0, min(DOTS, image.width), image.height)), (0, 0))
-	ink = page.point(lambda level: 0 if level < INK_LEVEL else 255)
-	box = ink.point(lambda level: 255 - level).getbbox()
-	if box:
-		ink = ink.crop((0, 0, DOTS, min(ink.height, box[3] + BOTTOM_MARGIN)))
+	gray = image.convert("L")
+	box = ink_box(gray)
+	if not box:
+		frappe.throw(_("The print came out empty, nothing was sent to the printer"))
+	ink = fit_width(gray, box).point(lambda level: 0 if level < INK_LEVEL else 255)
 	ratio = ink.histogram()[0] / (ink.width * ink.height)
 	if ratio < MIN_INK:
 		frappe.throw(_("The print came out empty, nothing was sent to the printer"))

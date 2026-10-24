@@ -2,87 +2,93 @@
 {% include "fleetix/templates/print/fonts.html" %}
 <style>
 .print-format{page-size:Custom;page-width:80mm;page-height:297mm;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0}
-@media screen{.print-format{max-width:80mm!important;min-height:0!important;padding:4mm!important;border-radius:0!important}}
-.tp{width:72mm;margin:0 auto;background:#FFF;color:#000;font-family:"Tajawal",sans-serif;font-size:10pt;font-weight:400;line-height:1.3;direction:rtl;text-align:right;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media screen{.print-format{width:600px!important;max-width:none!important;min-height:0!important;padding:12px!important;border-radius:0!important}}
+@media print{.tp{zoom:.4722}}
+.tp{width:576px;margin:0 auto;padding:0 8px;box-sizing:border-box;overflow:hidden;background:#FFF;color:#000;font-family:"Tajawal",sans-serif;font-size:24px;font-weight:700;line-height:1.4;direction:rtl;text-align:right;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .tp b{font-weight:700}
 .tp i{font-style:normal}
 .tp table{width:100%;border-collapse:collapse;table-layout:fixed}
-.tp td{padding:0;vertical-align:middle}
-.tp .ltr{direction:ltr;unicode-bidi:embed;display:inline-block}
-.tp-logo{text-align:center;padding:0 0 2mm}
-.tp-logo img{height:11mm;max-width:60mm;filter:grayscale(1) contrast(4);-webkit-filter:grayscale(1) contrast(4)}
-.tp-title{background:#000;color:#FFF;text-align:center;padding:1.6mm 2mm 1.4mm}
-.tp-title b{display:block;font-size:15pt;line-height:1.15}
-.tp-title i{display:block;font-size:9pt;line-height:1.2;letter-spacing:.4pt}
-.tp-no{text-align:center;border-bottom:2px solid #000;padding:1.6mm 0 1.4mm}
-.tp-no span{font-size:13pt;font-weight:700;direction:ltr;unicode-bidi:embed;display:inline-block;letter-spacing:.5pt}
-.tp-bar{border-top:2px solid #000;border-bottom:1px solid #000;margin:2.5mm 0 0;padding:.8mm 0 .6mm}
-.tp-bar td{font-size:11pt;font-weight:700}
-.tp-bar .tp-en{text-align:left;font-size:9pt;font-weight:400;direction:ltr}
-.tp-kv td{border-bottom:1px dotted #000;padding:1mm 0 .8mm}
-.tp-kv .tp-k{width:42%;line-height:1.1}
-.tp-k b{display:block;font-size:10pt}
-.tp-k i{display:block;font-size:9pt}
-.tp-kv .tp-v{font-size:11pt;font-weight:700;text-align:left}
-.tp-big{text-align:center;padding:1.5mm 0 1mm;border-bottom:1px solid #000}
+.tp td{padding:0;vertical-align:middle;word-wrap:break-word;overflow-wrap:break-word;overflow:hidden}
+.tp .ltr{direction:ltr;unicode-bidi:embed;display:inline-block;white-space:nowrap}
+.tp-logo{text-align:center;padding:8px 0 14px}
+.tp-logo img{height:96px;max-width:480px;filter:grayscale(1) contrast(4);-webkit-filter:grayscale(1) contrast(4)}
+.tp-title{background:#000;color:#FFF;text-align:center;padding:12px 8px 10px}
+.tp-title b{display:block;font-size:40px;line-height:1.25}
+.tp-title i{display:block;font-size:22px;line-height:1.3;letter-spacing:1px}
+.tp-no{text-align:center;border-bottom:4px solid #000;padding:10px 0 8px}
+.tp-no .ltr{font-size:32px;letter-spacing:1px}
+.tp-bar{border-top:4px solid #000;border-bottom:2px solid #000;margin:18px 0 0;padding:6px 0 4px}
+.tp-bar td{font-size:26px}
+.tp-bar .tp-en{text-align:left;font-size:20px;direction:ltr}
+.tp-kv td{border-bottom:2px dotted #000;padding:8px 0 6px}
+.tp-kv .tp-k{width:40%;line-height:1.25}
+.tp-k b{display:block;font-size:22px}
+.tp-k i{display:block;font-size:18px}
+.tp-kv .tp-v{font-size:26px;text-align:left}
+.tp-big{text-align:center;padding:10px 0 8px;border-bottom:2px solid #000}
 .tp-big .tp-k b,.tp-big .tp-k i{display:inline}
-.tp-big .tp-k i{margin-right:1.5mm}
-.tp-big .tp-num{font-size:22pt;font-weight:700;line-height:1.1;direction:ltr;unicode-bidi:embed;display:block}
-.tp-plate{border:2.5px solid #000;margin:2mm auto 1mm;width:68mm;direction:ltr}
-.tp-plate td{text-align:center;font-weight:700;line-height:1.05}
-.tp-plate .tp-pd{font-size:19pt;letter-spacing:1pt;border-right:2px solid #000}
-.tp-plate .tp-pl{font-size:19pt;letter-spacing:2.5pt;border-right:2px solid #000}
-.tp-plate .tp-ar td{border-bottom:2px solid #000;padding:1mm 0 .6mm}
-.tp-plate .tp-la td{padding:.8mm 0 .6mm}
-.tp-plate .tp-ksa{width:15.5mm;background:#000;color:#FFF;font-size:9pt;line-height:1.15;padding:0}
-.tp-pair td{width:50%;text-align:center;vertical-align:top;padding:1.5mm 0 1mm;border-bottom:1px solid #000}
-.tp-pair td+td{border-right:1px solid #000}
-.tp-pair .tp-num{font-size:18pt;font-weight:700;line-height:1.1;direction:ltr;unicode-bidi:embed;display:block}
-.tp-plain{text-align:center;font-size:20pt;font-weight:700;border:2.5px solid #000;width:62mm;margin:2mm auto 1mm;padding:1mm 0;direction:ltr}
-.tp-grid td{border:1px solid #000;text-align:center;padding:.8mm .5mm .6mm;font-size:9pt;line-height:1.15}
-.tp-grid .tp-h td{background:#000;color:#FFF;font-weight:700;font-size:9pt}
-.tp-grid .tp-h i{display:block;font-weight:400}
-.tp-grid .tp-s{text-align:right;padding-right:1mm}
-.tp-grid .tp-n{direction:ltr;font-weight:700}
-.tp-grid .tp-on{background:#000;color:#FFF;font-weight:700}
-.tp-grid .tp-sub td{border-top:2px solid #000;font-size:9.5pt}
-.tp-grid .tp-sub i{font-size:8pt;margin-right:1mm}
-.tp-sum td{padding:.9mm 0 .7mm;font-size:10.5pt;border-bottom:1px dotted #000}
-.tp-sum .tp-n{text-align:left;direction:ltr;font-weight:700;width:30mm}
-.tp-sum .tp-grand td{background:#000;color:#FFF;font-size:13pt;font-weight:700;padding:1.4mm 1.5mm 1.2mm;border:0}
-.tp-sum .tp-grand i{font-size:9pt;font-weight:400;margin-right:1.5mm}
-.tp-cb{display:inline-block;width:3.6mm;height:3.6mm;border:1.5px solid #000;vertical-align:-.7mm;margin-left:1.2mm;text-align:center;line-height:3.2mm;font-size:9pt;font-weight:700;box-sizing:border-box}
+.tp-big .tp-k i{margin-right:10px}
+.tp-num{display:block;direction:ltr;white-space:nowrap;line-height:1.15}
+.tp-big .tp-num{font-size:48px}
+.tp-plate{border:4px solid #000;margin:14px auto 8px;direction:ltr}
+.tp-plate td{text-align:center;line-height:1.15;white-space:nowrap}
+.tp-plate .tp-pd{font-size:52px;letter-spacing:2px;border-right:3px solid #000}
+.tp-plate .tp-pl{font-size:48px;letter-spacing:2px;border-right:3px solid #000}
+.tp-plate .tp-ar td{border-bottom:3px solid #000;padding:8px 0 4px}
+.tp-plate .tp-la td{padding:6px 0 4px}
+.tp-plate .tp-d{display:inline-block;margin:0 7px}
+.tp-plate .tp-ksa{background:#000;color:#FFF;font-size:22px;line-height:1.3;white-space:normal;padding:0}
+.tp-pair td{width:50%;text-align:center;vertical-align:top;padding:10px 0 8px;border-bottom:2px solid #000}
+.tp-pair td+td{border-right:2px solid #000}
+.tp-pair .tp-num{font-size:40px}
+.tp-plain{text-align:center;font-size:44px;border:4px solid #000;margin:14px auto 8px;padding:6px 8px;direction:ltr;white-space:nowrap;overflow:hidden}
+.tp-grid td{border:2px solid #000;text-align:center;padding:6px 4px 4px;font-size:22px;line-height:1.3}
+.tp-grid .tp-h td{background:#000;color:#FFF;font-size:20px}
+.tp-grid .tp-h i{display:block;font-size:18px}
+.tp-grid .tp-s{text-align:right;padding-right:6px}
+.tp-grid .tp-n{direction:ltr;white-space:nowrap}
+.tp-grid .tp-q{direction:rtl}
+.tp-grid .tp-on{background:#000;color:#FFF}
+.tp-grid .tp-fuel td{font-size:26px}
+.tp-grid .tp-sub td{border-top:4px solid #000}
+.tp-grid .tp-sub i{font-size:18px;margin-right:8px}
+.tp-sum{margin-top:16px}
+.tp-sum td{padding:8px 0 6px;font-size:24px;border-bottom:2px dotted #000}
+.tp-sum i{font-size:18px;display:inline-block;direction:ltr;unicode-bidi:embed}
+.tp-sum .tp-n{text-align:left;direction:ltr;width:210px;white-space:nowrap;font-size:28px}
+.tp-sum .tp-grand td{background:#000;color:#FFF;font-size:34px;padding:12px 10px 10px;border:0}
+.tp-sum .tp-grand i{font-size:20px;margin-right:10px}
+.tp-cb{display:inline-block;width:30px;height:30px;border:3px solid #000;vertical-align:-6px;margin-left:8px;text-align:center;line-height:24px;font-size:22px;box-sizing:border-box}
 .tp-cb.on{background:#000;color:#FFF}
-.tp-opts td{font-size:10pt;padding:1.2mm 0 1mm;text-align:center}
-.tp-opts i{display:block;font-size:9pt}
-.tp-veh td{text-align:center;vertical-align:bottom;padding:.5mm 0 0}
+.tp-opts td{font-size:24px;padding:10px 0 8px;text-align:center}
+.tp-opts i{display:block;font-size:18px}
+.tp-veh td{text-align:center;vertical-align:bottom;padding:4px 0 0}
 .tp-veh svg{display:block;margin:0 auto}
-.tp-veh .tp-cap td{font-size:9pt;font-weight:700;padding:.3mm 0 1.2mm;vertical-align:top}
-.tp-veh .tp-cap i{font-weight:400;margin-right:1mm}
-.tp-z{display:inline-block;min-width:4.4mm;height:4.4mm;line-height:4.4mm;border-radius:2.2mm;background:#000;color:#FFF;font-size:9pt;font-weight:700;text-align:center;margin-left:1mm;padding:0 .4mm;box-sizing:border-box}
-.tp-legend{border:1px solid #000;margin-top:1mm;padding:1mm 1.5mm;font-size:9pt;line-height:1.5;text-align:center}
-.tp-legend span{display:inline-block;white-space:nowrap;margin:0 1.2mm}
-.tp-legend i{margin-right:1mm}
-.tp-line td{border-bottom:1px dotted #000;height:7mm;font-size:10pt}
-.tp-sg{margin-top:3mm}
-.tp-sg td{border:1.5px solid #000;text-align:center;vertical-align:top;padding:.8mm .8mm 0}
+.tp-veh .tp-cap td{font-size:22px;padding:2px 0 10px;vertical-align:top}
+.tp-veh .tp-cap i{margin-right:8px}
+.tp-z{display:inline-block;min-width:36px;height:36px;line-height:36px;border-radius:18px;background:#000;color:#FFF;font-size:22px;text-align:center;margin-left:8px;padding:0 3px;box-sizing:border-box}
+.tp-legend{border:2px solid #000;margin-top:8px;padding:8px 12px;font-size:22px;line-height:1.7;text-align:center}
+.tp-legend span{display:inline-block;white-space:nowrap;margin:0 10px}
+.tp-legend i{margin-right:8px}
+.tp-sg{margin-top:24px}
+.tp-sg td{border:3px solid #000;text-align:center;vertical-align:top;padding:6px 6px 0}
 .tp-sg .tp-k b,.tp-sg .tp-k i{display:block}
-.tp-sg .tp-pad{height:15mm;padding:0}
-.tp-sg .tp-pad img{max-height:14mm;max-width:100%;filter:grayscale(1) contrast(4);-webkit-filter:grayscale(1) contrast(4)}
-.tp-sg .tp-name{font-size:9pt;border-top:1px dotted #000;height:5.5mm;vertical-align:middle;padding:0 .5mm}
-.tp-qr{text-align:center;padding:3mm 0 1mm}
-.tp-qr img{width:28mm;height:28mm}
-.tp-qr span{display:block;font-size:9pt;direction:ltr}
-.tp-foot{border-top:2px solid #000;margin-top:2mm;padding-top:1.2mm;text-align:center;font-size:9pt;line-height:1.35}
-.tp-foot b{display:block;font-size:10pt}
-.tp-cut{border-top:1.5px dashed #000;margin-top:3mm;height:4mm}
+.tp-sg .tp-pad{height:120px;padding:0}
+.tp-sg .tp-pad img{max-height:112px;max-width:100%;filter:grayscale(1) contrast(4);-webkit-filter:grayscale(1) contrast(4)}
+.tp-sg .tp-name{font-size:20px;border-top:2px dotted #000;height:44px;vertical-align:middle;padding:0 4px}
+.tp-qr{text-align:center;padding:24px 0 8px}
+.tp-qr img{display:block;margin:0 auto}
+.tp-qr .ltr{font-size:26px;margin-top:6px}
+.tp-foot{border-top:4px solid #000;margin-top:16px;padding-top:10px;text-align:center;font-size:20px;line-height:1.5}
+.tp-foot b{display:block;font-size:24px}
+.tp-cut{border-top:3px dashed #000;margin-top:24px;height:32px}
 </style>
 {%- endmacro %}
 
 {% macro head(doc, title, title_en, number=None) -%}
 <div class="tp-logo"><img src="/assets/fleetix/images/etihad-lockup.png"></div>
 <div class="tp-title"><b>{{ title }}</b><i>{{ title_en }}</i></div>
-<div class="tp-no"><span>{{ number or doc.name }}</span></div>
+<div class="tp-no"><bdi dir="ltr" class="ltr">{{ number or doc.name }}</bdi></div>
 {%- endmacro %}
 
 {% macro bar(title, title_en) -%}
@@ -90,7 +96,7 @@
 {%- endmacro %}
 
 {% macro kv(rows) -%}
-<table class="tp-kv">{% for r in rows if r[2] is not none and r[2] != "" %}<tr><td class="tp-k"><b>{{ r[0] }}</b><i>{{ r[1] }}</i></td><td class="tp-v">{% if r | length > 3 and r[3] %}<span class="ltr">{{ r[2] }}</span>{% else %}{{ r[2] }}{% endif %}</td></tr>{% endfor %}</table>
+<table class="tp-kv">{% for r in rows if r[2] is not none and r[2] != "" %}<tr><td class="tp-k"><b>{{ r[0] }}</b><i>{{ r[1] }}</i></td><td class="tp-v">{% if r | length > 3 and r[3] %}<bdi dir="ltr" class="ltr">{{ r[2] }}</bdi>{% else %}{{ r[2] }}{% endif %}</td></tr>{% endfor %}</table>
 {%- endmacro %}
 
 {% macro big(ar, en, value) -%}
@@ -104,8 +110,8 @@
 {% macro plate(text) -%}
 {% set p = saudi_plate(text) %}
 {% if p %}<table class="tp-plate">
-<colgroup><col style="width:25mm"><col><col style="width:15.5mm"></colgroup>
-<tr class="tp-ar"><td class="tp-pd">{{ p.digits_ar }}</td><td class="tp-pl" dir="rtl">{{ p.letters_ar }}</td><td class="tp-ksa" rowspan="2">{{ _("Saudi Arabia", context="Vehicle Plate") }}<br>KSA</td></tr>
+<colgroup><col style="width:232px"><col><col style="width:112px"></colgroup>
+<tr class="tp-ar"><td class="tp-pd">{% for d in p.digits_ar.split(" ") %}<span class="tp-d">{{ d }}</span>{% endfor %}</td><td class="tp-pl" dir="rtl">{{ p.letters_ar }}</td><td class="tp-ksa" rowspan="2">{{ _("Saudi Arabia", context="Vehicle Plate") }}<br>KSA</td></tr>
 <tr class="tp-la"><td class="tp-pd">{{ p.digits }}</td><td class="tp-pl">{{ p.letters }}</td></tr>
 </table>{% elif text %}<div class="tp-plain">{{ text }}</div>{% endif %}
 {%- endmacro %}
@@ -119,11 +125,15 @@
 {%- endmacro %}
 
 {% macro dt(value) -%}
-{% if value %}<span class="ltr">{{ frappe.utils.format_datetime(value, "yyyy-MM-dd  HH:mm") }}</span>{% endif %}
+{% if value %}<bdi dir="ltr" class="ltr">{{ frappe.utils.format_datetime(value, "yyyy-MM-dd  HH:mm") }}</bdi>{% endif %}
 {%- endmacro %}
 
 {% macro km(value) -%}
 {{ "{:,}".format(value | int) if value else "" }}
+{%- endmacro %}
+
+{% macro qty(value, unit=None) -%}
+<bdi dir="ltr" class="ltr">{{ "{:g}".format(value or 0) }}</bdi>{% if unit %} {{ unit }}{% endif %}
 {%- endmacro %}
 
 {% macro money(value) -%}
@@ -139,19 +149,19 @@
 {% macro findings(rows) -%}
 {% if rows %}{{ bar(_("Findings"), "Findings") }}
 <table class="tp-grid">
-<colgroup><col style="width:24mm"><col></colgroup>
+<colgroup><col style="width:190px"><col></colgroup>
 <tr class="tp-h"><td>{{ _("Part") }}<i>Part</i></td><td>{{ _("Note") }}<i>Note</i></td></tr>
 {% for r in rows %}<tr><td class="tp-s">{{ _(r.part) }}</td><td class="tp-s">{{ _(r.reason) if r.reason else "" }}{% if r.note %} · {{ r.note }}{% endif %}</td></tr>{% endfor %}
 </table>{% endif %}
 {%- endmacro %}
 
 {% macro qr(doc) -%}
-<div class="tp-qr"><img src="{{ document_qr(doc.doctype, doc.name) }}"><span>{{ doc.name }}</span></div>
+<div class="tp-qr"><img src="{{ document_qr(doc.doctype, doc.name, 410) }}"><bdi dir="ltr" class="ltr">{{ doc.name }}</bdi></div>
 {%- endmacro %}
 
 {% macro foot(company=None) -%}
 {% set company_name = company or frappe.db.get_single_value("Global Defaults", "default_company") %}
 {% set co = frappe.db.get_value("Company", company_name, ["company_name", "tax_id", "phone_no"], as_dict=True) if company_name else None %}
-{% if co %}<div class="tp-foot"><b>{{ co.company_name }}</b>{% for label, value in [(_("VAT No."), co.tax_id), (_("Phone"), co.phone_no)] if value %}{{ label }} <span class="ltr">{{ value }}</span>{% if not loop.last %} | {% endif %}{% endfor %}</div>{% endif %}
+{% if co %}<div class="tp-foot"><b>{{ co.company_name }}</b>{% for label, value in [(_("VAT No."), co.tax_id), (_("Phone"), co.phone_no)] if value %}{{ label }} <bdi dir="ltr" class="ltr">{{ value }}</bdi>{% if not loop.last %} | {% endif %}{% endfor %}</div>{% endif %}
 <div class="tp-cut"></div>
 {%- endmacro %}
