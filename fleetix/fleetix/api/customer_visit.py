@@ -8,7 +8,6 @@ from frappe.utils import cint, flt, now_datetime
 
 from fleetix.fleetix.api.maintenance import WORKER_ROLES
 from fleetix.fleetix.doctype.customer_visit.customer_visit import (
-	PAYMENT_MODES,
 	item_rates,
 	mobile_digits,
 	setup_problems,
@@ -27,7 +26,6 @@ def get_walkin_setup():
 	return {
 		"company": company,
 		"problems": setup_problems(company),
-		"modes": [{"mode": mode, "label": _(mode)} for mode in PAYMENT_MODES],
 		"service_checklist": service_checklist(),
 	}
 
@@ -56,9 +54,7 @@ def get_plate_findings(plate):
 
 
 @frappe.whitelist(methods=["POST"])
-def finish_customer_visit(
-	plate, customer_name, mobile_no, items, final_check, findings=None, mode_of_payment=None, odometer=None
-):
+def finish_customer_visit(plate, customer_name, mobile_no, items, final_check, findings=None, odometer=None):
 	frappe.only_for(WORKER_ROLES)
 	company = erpnext.get_default_company()
 	mobile = mobile_digits(mobile_no)
@@ -67,8 +63,6 @@ def finish_customer_visit(
 		frappe.throw(_("Enter the plate, the customer name and the mobile number"))
 	if not rows:
 		frappe.throw(_("Add at least one item"))
-	if mode_of_payment not in PAYMENT_MODES:
-		frappe.throw(_("Choose how the customer pays"))
 	problems = setup_problems(company)
 	if problems:
 		frappe.throw(_("Customer maintenance is not set up: {0}").format("; ".join(problems)))
@@ -94,7 +88,7 @@ def finish_customer_visit(
 		}
 	)
 	visit.insert()
-	invoice = walkin_invoice(visit, rows, mode_of_payment)
+	invoice = walkin_invoice(visit, rows)
 	return {
 		"visit": visit.name,
 		"maintenance_invoice": invoice.name,
@@ -103,5 +97,5 @@ def finish_customer_visit(
 		"net_total": invoice.net_total,
 		"tax": invoice.vat_amount,
 		"grand_total": invoice.grand_total,
-		"mode_of_payment": _(mode_of_payment),
+		"mode_of_payment": _(invoice.mode_of_payment),
 	}

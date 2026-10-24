@@ -23,7 +23,7 @@ export const store = reactive({
 })
 
 export function newWalkin() {
-	store.walkin = { plate: "", name: "", mobile: "", customer: null, items: [], checks: [], findings: [], last: null, mode: "", invoice: null, printed: false }
+	store.walkin = { plate: "", name: "", mobile: "", customer: null, items: [], checks: [], findings: [], last: null, invoice: null, printed: false }
 	go("walkin")
 }
 

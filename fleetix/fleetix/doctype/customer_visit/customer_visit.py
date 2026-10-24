@@ -11,8 +11,6 @@ from frappe.utils import flt, now_datetime, today
 
 from fleetix.fleetix.units import unit_fields
 
-PAYMENT_MODES = ("Cash", "Mada")
-
 
 class CustomerVisit(Document):
 	pass
@@ -71,7 +69,7 @@ def walkin_customer(customer_name, mobile):
 	return customer.name
 
 
-def walkin_invoice(visit, items, mode):
+def walkin_invoice(visit, items):
 	priced = {row["item_code"]: row for row in item_rates({row["item_code"] for row in items})}
 	unpriced = [row["item_code"] for row in items if not flt(priced.get(row["item_code"], {}).get("rate"))]
 	if unpriced:
@@ -89,7 +87,7 @@ def walkin_invoice(visit, items, mode):
 			"posting_datetime": now_datetime(),
 			"customer_visit": visit.name,
 			"status": "Issued",
-			"mode_of_payment": mode,
+			"mode_of_payment": "Cash",
 			"paid": 1,
 		}
 	)

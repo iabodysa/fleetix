@@ -44,8 +44,6 @@ export const ICONS = {
 	litre: "droplet",
 	fleet: "truck",
 	note: "file-text",
-	Cash: "dollar-sign",
-	Mada: "credit-card",
 	phone: "phone",
 	labour: "tool",
 }
