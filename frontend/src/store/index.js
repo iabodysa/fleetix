@@ -79,6 +79,7 @@ export function stepForStatus(row) {
 	if (row.status === "Driver Arrived") return "odometer"
 	if (row.status === "Full Inspection") return row.inspection ? "await" : "odometer"
 	if (["Approved", "Service"].indexOf(row.status) !== -1) return "review"
+	if (row.status === "Final Check") return "await"
 	return null
 }
 

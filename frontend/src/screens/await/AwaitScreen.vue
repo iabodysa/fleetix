@@ -9,6 +9,7 @@ import ScreenFrame from "../../components/ScreenFrame.vue"
 
 const POLL_MS = 15000
 const status = ref(store.visit.status)
+const signing = store.visit.status === "Final Check"
 const error = ref("")
 const busy = ref(false)
 let timer = null
@@ -18,7 +19,7 @@ async function check() {
 	try {
 		const value = await api.status(store.visit.maintenance)
 		status.value = value.status
-		if (value.status !== "Full Inspection") await openVisit(Object.assign({}, store.visit, value))
+		if (value.status !== store.visit.status) await openVisit(Object.assign({}, store.visit, value))
 	} catch (e) {
 		error.value = errorText(e)
 	}
@@ -31,10 +32,10 @@ onBeforeUnmount(() => clearInterval(timer))
 </script>
 
 <template>
-	<ScreenFrame :title="__('Sent for approval')" v-model:error="error">
+	<ScreenFrame :title="signing ? __('Final check') : __('Sent for approval')" v-model:error="error">
 		<div class="await">
 			<span class="await-mark tone-wait"><AppIcon name="waiting" size="xl" /></span>
-			<p class="await-lead">{{ __("Waiting for the rental manager to approve") }}</p>
+			<p class="await-lead">{{ signing ? __("Waiting for the rental manager signature") : __("Waiting for the rental manager to approve") }}</p>
 			<dl class="facts">
 				<div>
 					<dt>{{ __("Odometer") }}</dt>
