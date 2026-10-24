@@ -1,108 +1,140 @@
 <script setup>
 const props = defineProps({
-	marked: { type: Array, default: () => [] },
-	selected: { type: String, default: "" },
+	views: { type: Array, default: () => [] },
+	marks: { type: Array, default: () => [] },
 	labels: { type: Object, required: true },
 })
-defineEmits(["pick"])
+const emit = defineEmits(["mark", "unmark"])
+const ORDER = [["right"], ["left"], ["front", "rear"]]
 
-const ZONES = [
-	{ area: "Front", fill: "M40 20 H160 V100 H40 Z", hit: "M0 0 H200 V100 H0 Z", label: [100, 62] },
-	{ area: "Rear", fill: "M40 280 H160 V350 H40 Z", hit: "M0 280 H200 V370 H0 Z", label: [100, 318] },
-	{ area: "Left Side", fill: "M40 100 H72 V280 H40 Z", hit: "M0 100 H72 V280 H0 Z", label: [56, 190] },
-	{ area: "Right Side", fill: "M128 100 H160 V280 H128 Z", hit: "M128 100 H200 V280 H128 Z", label: [144, 190] },
-	{ area: "Roof", fill: "M72 100 H128 V280 H72 Z", hit: "M72 100 H128 V280 H72 Z", label: [100, 190] },
-]
-
-function state(area) {
-	if (props.selected === area) return "selected"
-	return props.marked.indexOf(area) !== -1 ? "marked" : "clear"
+function view(name) {
+	return props.views.find((row) => row.view === name)
+}
+function rows() {
+	return ORDER.map((names) => names.map(view).filter(Boolean)).filter((row) => row.length)
+}
+function place(row, event) {
+	const box = event.currentTarget.getBoundingClientRect()
+	const x = (event.clientX - box.left) / box.width
+	const y = (event.clientY - box.top) / box.height
+	if (x < 0 || x > 1 || y < 0 || y > 1) return
+	emit("mark", { view: row.view, x: Math.round(x * 10000) / 10000, y: Math.round(y * 10000) / 10000 })
+}
+function marksOn(name) {
+	return props.marks.map((mark, index) => ({ mark, no: index + 1 })).filter((row) => row.mark.view === name)
 }
 </script>
 
 <template>
-	<svg class="car-diagram" viewBox="0 0 200 370" role="group" :aria-label="labels.title">
-		<defs>
-			<clipPath id="car-diagram-body">
-				<path d="M100 18 C134 18 158 26 160 60 V318 C160 344 140 352 100 352 C60 352 40 344 40 318 V60 C42 26 66 18 100 18 Z" />
-			</clipPath>
-		</defs>
-		<rect class="car-wheel" x="28" y="74" width="14" height="40" rx="6" />
-		<rect class="car-wheel" x="158" y="74" width="14" height="40" rx="6" />
-		<rect class="car-wheel" x="28" y="262" width="14" height="40" rx="6" />
-		<rect class="car-wheel" x="158" y="262" width="14" height="40" rx="6" />
-		<g clip-path="url(#car-diagram-body)">
-			<path v-for="zone in ZONES" :key="'f' + zone.area" class="car-zone" :class="'car-zone-' + state(zone.area)" :d="zone.fill" />
-		</g>
-		<path class="car-outline" d="M100 18 C134 18 158 26 160 60 V318 C160 344 140 352 100 352 C60 352 40 344 40 318 V60 C42 26 66 18 100 18 Z" />
-		<path class="car-glass" d="M60 104 Q100 90 140 104 L132 136 Q100 128 68 136 Z" />
-		<path class="car-glass" d="M66 262 Q100 270 134 262 L140 282 Q100 294 60 282 Z" />
-		<path class="car-line" d="M40 100 H160 M40 280 H160 M72 136 V262 M128 136 V262" />
-		<g v-for="zone in ZONES" :key="'h' + zone.area" class="car-hit" role="button" :aria-label="labels[zone.area]" :aria-pressed="state(zone.area) !== 'clear' ? 'true' : 'false'" tabindex="0" @click="$emit('pick', zone.area)" @keydown.enter.prevent="$emit('pick', zone.area)">
-			<path :d="zone.hit" />
-			<circle v-if="state(zone.area) !== 'clear'" class="car-pin" :class="'car-pin-' + state(zone.area)" :cx="zone.label[0]" :cy="zone.label[1]" r="13" />
-		</g>
-	</svg>
+	<div class="car-diagram" role="group" :aria-label="labels.title">
+		<div v-for="(row, index) in rows()" :key="index" class="car-row">
+			<figure v-for="item in row" :key="item.view" class="car-view" :class="'car-view-' + item.view">
+				<div class="car-canvas" :style="{ paddingBottom: 100 / item.aspect + '%' }" @click="place(item, $event)">
+					<div class="car-svg" v-html="item.svg"></div>
+					<button
+						v-for="entry in marksOn(item.view)"
+						:key="entry.no"
+						class="car-x"
+						type="button"
+						:aria-label="labels.remove"
+						:style="{ left: entry.mark.x * 100 + '%', top: entry.mark.y * 100 + '%' }"
+						@click.stop="emit('unmark', entry.mark)"
+					>
+						<svg class="car-x-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5L19 19M19 5L5 19" /></svg>
+						<span class="car-x-no">{{ entry.no }}</span>
+					</button>
+				</div>
+				<figcaption class="car-caption">{{ labels[item.view] }}</figcaption>
+			</figure>
+		</div>
+	</div>
 </template>
 
 <style>
 .car-diagram {
+	direction: ltr;
+	width: 100%;
+}
+.car-row {
+	display: flex;
+	justify-content: center;
+}
+.car-row + .car-row {
+	margin-top: var(--s3);
+}
+.car-view {
+	flex: 1 1 0;
+	min-width: 0;
+	margin: 0;
+	padding: var(--s2);
+	border: 2px solid var(--line);
+	border-radius: var(--r-md);
+	background: #ffffff;
+}
+.car-view + .car-view {
+	margin-left: var(--s3);
+}
+.car-view-front,
+.car-view-rear {
+	max-width: 50%;
+}
+.car-canvas {
+	position: relative;
+	height: 0;
+	cursor: crosshair;
+	touch-action: manipulation;
+}
+.car-svg {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	pointer-events: none;
+}
+.car-svg svg {
 	display: block;
 	width: 100%;
-	max-width: 16rem;
-	height: auto;
-	margin-left: auto;
-	margin-right: auto;
-	direction: ltr;
+	height: 100%;
 }
-.car-wheel {
-	fill: var(--ink-2);
+.car-x {
+	position: absolute;
+	width: 2.75rem;
+	height: 2.75rem;
+	margin: -1.375rem 0 0 -1.375rem;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--problem);
 }
-.car-zone {
-	transition: fill 120ms var(--ease);
-}
-.car-zone-clear {
-	fill: var(--surface);
-}
-.car-zone-marked {
-	fill: var(--problem-bg);
-}
-.car-zone-selected {
-	fill: var(--wait-bg);
-}
-.car-outline {
+.car-x-glyph {
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 0.5rem;
 	fill: none;
-	stroke: var(--ink);
-	stroke-width: 3;
+	stroke: currentColor;
+	stroke-width: 4;
+	stroke-linecap: round;
 }
-.car-glass {
-	fill: var(--surface-2);
-	stroke: var(--ink-2);
-	stroke-width: 2;
+.car-x-no {
+	position: absolute;
+	top: -0.25rem;
+	right: -0.25rem;
+	min-width: 1.25rem;
+	height: 1.25rem;
+	border-radius: 0.625rem;
+	background: var(--problem);
+	color: #ffffff;
+	font-size: 0.75rem;
+	font-weight: 800;
+	line-height: 1.25rem;
+	text-align: center;
 }
-.car-line {
-	fill: none;
-	stroke: var(--line);
-	stroke-width: 2;
-	stroke-dasharray: 4 4;
-}
-.car-hit {
-	cursor: pointer;
-}
-.car-hit path {
-	fill: transparent;
-}
-.car-hit:focus {
-	outline: none;
-}
-.car-hit:focus-visible path {
-	stroke: var(--focus);
-	stroke-width: 3;
-}
-.car-pin-marked {
-	fill: var(--problem);
-}
-.car-pin-selected {
-	fill: var(--wait);
+.car-caption {
+	margin-top: var(--s1);
+	color: var(--ink-2);
+	font-weight: 700;
+	text-align: center;
 }
 </style>

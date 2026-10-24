@@ -15,6 +15,7 @@ POLICY_DEFAULTS = (
 	("oil_interval_summer_km", "Oil", SUMMER, "interval_km"),
 	("oil_interval_winter_km", "Oil", WINTER, "interval_km"),
 	("filter_interval_km", "Oil Filter", None, "interval_km"),
+	("tire_interval_km", "Front Tires", None, "interval_km"),
 	("battery_interval_months", "Battery", None, "interval_months"),
 )
 

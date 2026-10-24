@@ -4,6 +4,7 @@ import { api, errorText } from "../../api.js"
 import { __ } from "../../i18n/index.js"
 import AppIcon from "../../components/AppIcon.vue"
 import BigButton from "../../components/BigButton.vue"
+import ErrorCard from "../../components/ErrorCard.vue"
 
 defineEmits(["language"])
 const boot = window.frappe.boot
@@ -95,7 +96,7 @@ onMounted(() => {
 					required
 				/>
 			</label>
-			<p v-if="error" class="screen-error" role="alert">{{ error }}</p>
+			<ErrorCard :error="error" @dismiss="error = ''" />
 			<BigButton icon="login" :label="__('Log in')" :busy="busy" type="submit" block />
 		</form>
 	</div>

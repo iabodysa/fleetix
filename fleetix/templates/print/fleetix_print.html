@@ -131,7 +131,7 @@
 
 {% macro vehicle(vehicle_name, damages, title, title_en) -%}
 {% set marks = [] %}
-{% for d in damages %}{% set _x = marks.append({"no": loop.index, "area": d.area}) %}{% endfor %}
+{% for d in damages %}{% set _x = marks.append({"no": loop.index, "area": d.area, "view": d.diagram_view, "x": d.mark_x, "y": d.mark_y}) %}{% endfor %}
 {% set d = vehicle_views(vehicle_name, marks) %}
 {% set caps = {"left": (_("Left Side"), "Left side"), "front": (_("Front"), "Front"), "rear": (_("Rear"), "Rear"), "right": (_("Right Side"), "Right side")} %}
 <table class="fx-g">

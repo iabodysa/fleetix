@@ -22,12 +22,10 @@ async function send() {
 		const components = store.checklist.components
 			.filter((row) => row.ticked)
 			.map((row) => ({ component: row.component, item: row.item, qty: row.qty }))
-		const photos = store.photos.map((photo, index) => ({ file: photo.name, file_url: photo.file_url, caption: __("Photo {0}", [index + 1]) }))
 		const response = await api.send({
 			maintenance: store.visit.maintenance,
 			odometer: Number(store.odometer),
 			components: JSON.stringify(components),
-			photos: JSON.stringify(photos),
 			damages: JSON.stringify(store.damages),
 			driver_signature: store.signatures.driver,
 			inspector_signature: store.signatures.inspector,
@@ -43,7 +41,7 @@ async function send() {
 </script>
 
 <template>
-	<ScreenFrame :title="__('Signatures')" :error="error">
+	<ScreenFrame :title="__('Signatures')" v-model:error="error">
 		<div class="signs">
 			<SignaturePad :label="__('Driver signature')" :value="store.signatures.driver" @change="store.signatures.driver = $event" />
 			<SignaturePad :label="__('Inspector signature')" :value="store.signatures.inspector" @change="store.signatures.inspector = $event" />

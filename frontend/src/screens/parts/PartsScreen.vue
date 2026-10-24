@@ -17,6 +17,13 @@ const ticked = computed(() => (store.checklist ? store.checklist.components.filt
 function step(row) {
 	return row.component === "Oil" ? 0.5 : 1
 }
+function canAdd(row) {
+	return !row.max_qty || row.qty + step(row) <= row.max_qty
+}
+function unpriced(row) {
+	const item = row.items.find((i) => i.item_code === row.item)
+	return item && item.priced === false
+}
 function dueLine(row) {
 	if (row.due_km) return __("Due at {0}", [formatKm(row.due_km)])
 	if (row.due_date) return __("Due on {0}", [isolate(row.due_date)])
@@ -53,6 +60,11 @@ function next() {
 		error.value = __("Choose an item for {0}", [componentLabel(short.component)])
 		return
 	}
+	const noRate = ticked.value.find(unpriced)
+	if (noRate) {
+		error.value = { text: __("The item has no valuation rate. Tell the store."), detail: noRate.item }
+		return
+	}
 	go("damage")
 }
 onMounted(async () => {
@@ -66,7 +78,7 @@ onMounted(async () => {
 </script>
 
 <template>
-	<ScreenFrame :title="__('Items and parts')" :error="error">
+	<ScreenFrame :title="__('Items and parts')" v-model:error="error">
 		<p v-if="!store.checklist" class="muted">{{ __("Loading") }}</p>
 		<template v-else>
 			<div class="tile-grid">
@@ -105,12 +117,13 @@ onMounted(async () => {
 					>
 						<span class="part-item-name">{{ item.item_name }}</span>
 						<span v-if="item.stock !== undefined" class="muted">{{ __("Stock") }} <span class="ltr">{{ item.stock }}</span> {{ item.stock_uom }}</span>
+						<span v-if="item.priced === false" class="pill tone-problem">{{ __("No valuation rate") }}</span>
 					</button>
 				</div>
-				<div class="stepper ltr">
+				<div v-if="row.max_qty !== 1" class="stepper ltr">
 					<button class="stepper-button" type="button" :aria-label="__('Less')" @click="row.qty = Math.max(step(row), row.qty - step(row))"><AppIcon name="minus" size="lg" /></button>
 					<span class="stepper-value">{{ row.qty }}</span>
-					<button class="stepper-button" type="button" :aria-label="__('More')" @click="row.qty = row.qty + step(row)"><AppIcon name="plus" size="lg" /></button>
+					<button class="stepper-button" type="button" :aria-label="__('More')" :disabled="!canAdd(row)" @click="canAdd(row) && (row.qty = row.qty + step(row))"><AppIcon name="plus" size="lg" /></button>
 				</div>
 			</div>
 		</template>
@@ -183,6 +196,9 @@ onMounted(async () => {
 	border: 2px solid var(--line);
 	border-radius: var(--r-md);
 	background: var(--surface-2);
+}
+.stepper-button:disabled {
+	opacity: 0.4;
 }
 .stepper-value {
 	min-width: 4rem;

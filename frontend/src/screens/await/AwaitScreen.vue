@@ -31,7 +31,7 @@ onBeforeUnmount(() => clearInterval(timer))
 </script>
 
 <template>
-	<ScreenFrame :title="__('Sent for approval')" :error="error">
+	<ScreenFrame :title="__('Sent for approval')" v-model:error="error">
 		<div class="await">
 			<span class="await-mark tone-wait"><AppIcon name="waiting" size="xl" /></span>
 			<p class="await-lead">{{ __("Waiting for the rental manager to approve") }}</p>

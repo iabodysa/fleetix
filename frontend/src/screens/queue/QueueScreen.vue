@@ -9,6 +9,7 @@ import BigButton from "../../components/BigButton.vue"
 import PlateKeypad from "../../components/PlateKeypad.vue"
 import QueueList from "../../components/QueueList.vue"
 import ScreenFrame from "../../components/ScreenFrame.vue"
+import VehicleResults from "../../components/VehicleResults.vue"
 
 const filter = ref("")
 const error = ref("")
@@ -27,11 +28,12 @@ function scanned(key) {
 </script>
 
 <template>
-	<ScreenFrame :title="__('Vehicles due')" :error="error">
+	<ScreenFrame :title="filter ? __('Vehicles') : __('Vehicles due')" v-model:error="error">
 		<template #meta>
 			<BigButton icon="refresh" tone="quiet" :label="__('Refresh')" :busy="queue.loading" @press="queue.fetch()" />
 		</template>
-		<QueueList :filter="filter" />
+		<VehicleResults v-if="filter" :filter="filter" />
+		<QueueList v-else />
 		<template #aside>
 			<div class="queue-find">
 				<BarcodeInput @scan="scanned" />

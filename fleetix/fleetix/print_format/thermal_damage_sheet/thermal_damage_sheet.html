@@ -1,8 +1,8 @@
 {% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
 {% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["license_plate", "make", "model", "company"], as_dict=True) if doc.vehicle else None %}
-{% set damages = frappe.get_all("Damage", filters={"source": "Vehicle Inspection", "source_reference": doc.name}, fields=["area", "description"], order_by="creation asc") %}
+{% set damages = frappe.get_all("Damage", filters={"source": ("in", ["Vehicle Inspection", "Maintenance"]), "source_reference": ("in", [doc.name, doc.reference_name or doc.name])}, fields=["area", "description", "diagram_view", "mark_x", "mark_y"], order_by="creation asc") %}
 {% set marks = [] %}
-{% for d in damages %}{% set _x = marks.append({"no": loop.index, "area": d.area}) %}{% endfor %}
+{% for d in damages %}{% set _x = marks.append({"no": loop.index, "area": d.area, "view": d.diagram_view, "x": d.mark_x, "y": d.mark_y}) %}{% endfor %}
 {% set drawing = vehicle_views(doc.vehicle, marks) %}
 {% set views = {} %}
 {% for name, svg, width in drawing.views %}{% set _x = views.update({name: (svg, width)}) %}{% endfor %}

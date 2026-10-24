@@ -212,3 +212,20 @@ Numbers,সংখ্যা
 Ready to scan. Point the scanner at the vehicle barcode,"স্ক্যানের জন্য প্রস্তুত, স্ক্যানারটি গাড়ির বারকোডের দিকে ধরুন"
 Arrive,আগমন নথিভুক্ত করুন
 Search items,আইটেম খুঁজুন
+Details,বিস্তারিত
+Hide details,বিস্তারিত লুকান
+Due now,এখন বাকি
+Opening,খুলছে
+{0} left,{0} বাকি
+No maintenance data,রক্ষণাবেক্ষণের কোনো তথ্য নেই
+No vehicle with this plate,এই নম্বর প্লেটের কোনো গাড়ি নেই
+Open visit,খোলা ভিজিট
+Remove mark,চিহ্ন সরান
+Mark removed,চিহ্ন সরানো হয়েছে
+Tap where the damage is,যেখানে ক্ষতি সেখানে ছুঁয়ে দিন
+No valuation rate,মূল্যায়ন দর নেই
+The item has no valuation rate. Tell the store.,এই আইটেমের মূল্যায়ন দর নেই। স্টোরকে জানান।
+Not enough stock for this item. Tell the store.,এই আইটেমের যথেষ্ট স্টক নেই। স্টোরকে জানান।
+This step could not be saved. Show the details to your supervisor.,এই ধাপটি সংরক্ষণ হয়নি। বিস্তারিত আপনার সুপারভাইজারকে দেখান।
+Mark the damage on the vehicle drawing,গাড়ির ছবিতে ক্ষতির চিহ্ন দিন
+{0} allows at most {1},{0} সর্বোচ্চ {1}

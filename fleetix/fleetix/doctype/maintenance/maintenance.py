@@ -1,9 +1,11 @@
 # Copyright (c) 2026, Ittihad and contributors
 # For license information, please see license.txt
 
+import erpnext
 import frappe
+from erpnext.stock.stock_ledger import get_valuation_rate
 from frappe.model.document import Document
-from frappe.utils import cint, getdate, now_datetime, today
+from frappe.utils import cint, flt, getdate, now_datetime, today
 
 from fleetix.fleetix.vehicle import due_odometer, set_next_due
 
@@ -20,6 +22,7 @@ NEXT_DUE_FIELDS = {
 	"Rear Tires": "next_rear_tires_due_odometer",
 }
 ISSUE_STATES = ("Service", "Final Check")
+DEFAULT_MAX_QTY = {"Oil Filter": 1, "Battery": 1, "Front Tires": 2, "Rear Tires": 2}
 
 
 class Maintenance(Document):
@@ -78,6 +81,33 @@ def issue_items(maintenance):
 		}
 	).insert()
 	return entry.name
+
+
+def component_max_qty(component):
+	rules = frappe.get_cached_doc("Fleetix Settings").component_items
+	configured = [flt(row.max_qty) for row in rules if row.component == component and flt(row.max_qty)]
+	return max(configured) if configured else DEFAULT_MAX_QTY.get(component, 0)
+
+
+def unpriced_items(item_codes, company):
+	if not cint(erpnext.is_perpetual_inventory_enabled(company)):
+		return []
+	warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
+	currency = erpnext.get_company_currency(company)
+	return [
+		item_code
+		for item_code in dict.fromkeys(item_codes)
+		if get_valuation_rate(
+			item_code,
+			warehouse,
+			"Stock Entry",
+			None,
+			currency=currency,
+			company=company,
+			raise_error_if_no_rate=False,
+		)
+		is None
+	]
 
 
 def next_due(vehicle, component):

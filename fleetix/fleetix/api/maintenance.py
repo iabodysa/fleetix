@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import os
+import re
 from urllib.parse import quote
 
 import frappe
@@ -9,8 +10,16 @@ from frappe import _
 from frappe.model.workflow import apply_workflow, get_transitions
 from frappe.utils import cint, date_diff, flt, get_host_name_from_request, get_url, getdate, today
 
-from fleetix.fleetix.doctype.maintenance.maintenance import COMPONENT_FIELDS, due_components, next_due
+from fleetix.fleetix.api.gate import PLATE_LETTERS
+from fleetix.fleetix.doctype.maintenance.maintenance import (
+	COMPONENT_FIELDS,
+	component_max_qty,
+	due_components,
+	next_due,
+	unpriced_items,
+)
 from fleetix.fleetix.document_qr import qr_data_url
+from fleetix.fleetix.vehicle_diagram import VIEWS, body_type, damage_zone, diagram_views
 
 WORKER_ROLES = ("Movement Supervisor", "Rental Manager", "System Manager")
 OPEN_STATES = ("Due Alert", "Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
@@ -20,6 +29,8 @@ SOON_DAYS = 14
 APP_LANGUAGES = ("ar", "en", "ur", "hi", "bn")
 RTL_LANGUAGES = ("ar", "ur")
 DAMAGE_KINDS = ("Scratch", "Dent", "Broken", "Missing")
+FIND_LIMIT = 30
+FIND_ORDER = {"overdue": 0, "soon": 1, "ok": 2, "none": 3}
 MAINTENANCE_APK = {"version_code": 9, "version_name": "1.8", "file": "fleetix-maintenance.apk"}
 
 
@@ -28,7 +39,11 @@ def app_version():
 	url = None
 	if os.path.exists(frappe.get_app_path("fleetix", "public", "apk", MAINTENANCE_APK["file"])):
 		url = get_url("/assets/fleetix/apk/" + MAINTENANCE_APK["file"])
-	return {"version_code": MAINTENANCE_APK["version_code"], "version_name": MAINTENANCE_APK["version_name"], "url": url}
+	return {
+		"version_code": MAINTENANCE_APK["version_code"],
+		"version_name": MAINTENANCE_APK["version_name"],
+		"url": url,
+	}
 
 
 @frappe.whitelist(methods=["POST"])
@@ -55,28 +70,100 @@ def get_due_queue():
 		fields=["name", "vehicle", "status", "driver", "project", "inspection", "odometer", "modified"],
 		order_by="modified desc",
 	)
-	queue = []
-	for visit in visits:
-		vehicle = frappe.get_doc("Vehicle", visit.vehicle)
-		components = component_states(vehicle, cint(vehicle.last_odometer))
-		queue.append(
-			{
-				"maintenance": visit.name,
-				"status": visit.status,
-				"vehicle": vehicle.name,
-				"plate": vehicle.license_plate,
-				"model": " ".join(filter(None, (vehicle.make, vehicle.model))),
-				"driver": visit.driver,
-				"project": visit.project,
-				"inspection": visit.inspection,
-				"odometer": cint(visit.odometer),
-				"last_odometer": cint(vehicle.last_odometer),
-				"due": [row["component"] for row in components if row["state"] == "overdue"],
-				"worst": worst_overdue(components, cint(vehicle.last_odometer)),
-				"actions": [t.action for t in get_transitions(frappe.get_doc("Maintenance", visit.name))],
-			}
+	return [queue_row(visit) for visit in visits]
+
+
+@frappe.whitelist()
+def find_vehicles(plate):
+	frappe.only_for(WORKER_ROLES)
+	text = (plate or "").upper().translate(PLATE_LETTERS)
+	digits = "".join(re.findall(r"[0-9]", text))
+	letters = "".join(re.findall(r"[A-Z]", text))
+	if not digits and not letters:
+		return []
+	open_visits = dict(
+		frappe.get_all(
+			"Maintenance",
+			filters={"docstatus": 0, "status": ("in", OPEN_STATES)},
+			fields=["vehicle", "name"],
+			order_by="modified asc",
+			as_list=True,
 		)
-	return queue
+	)
+	found = []
+	for row in frappe.get_list("Vehicle", fields=["name", "license_plate"], limit_page_length=0):
+		key = (row.license_plate or "").upper().translate(PLATE_LETTERS)
+		if digits in "".join(re.findall(r"[0-9]", key)) and letters in "".join(re.findall(r"[A-Z]", key)):
+			found.append(vehicle_row(frappe.get_doc("Vehicle", row.name), open_visits.get(row.name)))
+	found.sort(
+		key=lambda row: (
+			FIND_ORDER[row["state"]],
+			row["remaining_km"] if row["remaining_km"] is not None else 0,
+		)
+	)
+	return found[:FIND_LIMIT]
+
+
+@frappe.whitelist(methods=["POST"])
+def open_vehicle_visit(vehicle):
+	frappe.only_for(WORKER_ROLES)
+	frappe.has_permission("Vehicle", "read", vehicle, throw=True)
+	name = frappe.db.get_value(
+		"Maintenance",
+		{"vehicle": vehicle, "docstatus": 0, "status": ("in", OPEN_STATES)},
+		"name",
+		order_by="modified desc",
+	)
+	if name:
+		visit = frappe.get_doc("Maintenance", name)
+	else:
+		visit = frappe.get_doc(
+			{"doctype": "Maintenance", "maintenance_type": "Periodic", "vehicle": vehicle}
+		).insert()
+	if visit.status == "Due Alert":
+		visit = apply_workflow(visit, "Arrive")
+	return queue_row(visit)
+
+
+def queue_row(visit):
+	vehicle = frappe.get_doc("Vehicle", visit.vehicle)
+	components = component_states(vehicle, cint(vehicle.last_odometer))
+	return {
+		"maintenance": visit.name,
+		"status": visit.status,
+		"vehicle": vehicle.name,
+		"plate": vehicle.license_plate,
+		"model": " ".join(filter(None, (vehicle.make, vehicle.model))),
+		"driver": visit.driver,
+		"project": visit.project,
+		"inspection": visit.inspection,
+		"odometer": cint(visit.odometer),
+		"last_odometer": cint(vehicle.last_odometer),
+		"due": [row["component"] for row in components if row["state"] == "overdue"],
+		"worst": worst_overdue(components, cint(vehicle.last_odometer)),
+		"actions": [t.action for t in get_transitions(frappe.get_doc("Maintenance", visit.name))],
+	}
+
+
+def vehicle_row(vehicle, maintenance):
+	components = [
+		row
+		for row in component_states(vehicle, cint(vehicle.last_odometer))
+		if row["due_km"] or row["due_date"]
+	]
+	remaining = [row["remaining_km"] for row in components if row["remaining_km"] is not None]
+	states = {row["state"] for row in components}
+	state = next((name for name in ("overdue", "soon", "ok") if name in states), "none")
+	return {
+		"vehicle": vehicle.name,
+		"plate": vehicle.license_plate,
+		"model": " ".join(filter(None, (vehicle.make, vehicle.model))),
+		"maintenance": maintenance,
+		"state": state,
+		"remaining_km": min(remaining) if remaining else None,
+		"due": [row["component"] for row in components if row["state"] == "overdue"],
+		"worst": worst_overdue(components, cint(vehicle.last_odometer)),
+	}
 
 
 @frappe.whitelist()
@@ -89,13 +176,14 @@ def get_vehicle_checklist(maintenance, odometer=None):
 	replaced = {row.component: row for row in visit.components_replaced}
 	components = []
 	for row in component_states(vehicle, reading):
-		items = component_items(row["component"], vehicle.name)
+		items = component_items(row["component"], vehicle.name, visit.company)
 		chosen = replaced.get(row["component"])
 		row.update(
 			{
 				"ticked": bool(chosen) if replaced else row["state"] == "overdue",
 				"item": chosen.item if chosen else (items[0]["item_code"] if items else None),
 				"qty": flt(chosen.qty) if chosen else 1,
+				"max_qty": component_max_qty(row["component"]),
 				"items": items,
 			}
 		)
@@ -112,13 +200,23 @@ def get_vehicle_checklist(maintenance, odometer=None):
 			"driver": visit.driver,
 			"driver_name": frappe.db.get_value("Driver", visit.driver, "full_name") if visit.driver else None,
 			"project": visit.project,
-			"project_name": frappe.db.get_value("Project", visit.project, "project_name") if visit.project else None,
+			"project_name": frappe.db.get_value("Project", visit.project, "project_name")
+			if visit.project
+			else None,
 		},
 		"components": components,
 		"final_check": [
 			{"item": row.item, "condition": row.condition, "notes": row.notes} for row in visit.final_check
 		],
 	}
+
+
+@frappe.whitelist()
+def get_vehicle_diagram(maintenance):
+	frappe.only_for(WORKER_ROLES)
+	visit = frappe.get_doc("Maintenance", maintenance)
+	visit.check_permission("read")
+	return diagram_views(visit.vehicle)
 
 
 @frappe.whitelist(methods=["POST"])
@@ -161,12 +259,11 @@ def get_photo_link(maintenance):
 
 
 @frappe.whitelist(methods=["POST"])
-def send_for_approval(maintenance, odometer, components, photos, driver_signature, inspector_signature, damages=None):
+def send_for_approval(maintenance, odometer, components, driver_signature, inspector_signature, damages=None):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
 	visit.check_permission("write")
 	components = frappe.parse_json(components) or []
-	photos = frappe.parse_json(photos) or []
 	damages = frappe.parse_json(damages) or []
 	odometer = cint(odometer)
 	last_odometer = cint(frappe.db.get_value("Vehicle", visit.vehicle, "last_odometer"))
@@ -176,20 +273,22 @@ def send_for_approval(maintenance, odometer, components, photos, driver_signatur
 		frappe.throw(_("Select at least one component"))
 	if any(not row.get("item") or flt(row.get("qty")) <= 0 for row in components):
 		frappe.throw(_("Every selected component needs an item and a quantity"))
-	for row in photos:
-		if not frappe.db.exists(
-			"File",
-			{
-				"name": row.get("file"),
-				"file_url": row.get("file_url"),
-				"attached_to_doctype": "Maintenance",
-				"attached_to_name": visit.name,
-			},
-		):
-			frappe.throw(_("Photo {0} does not belong to this visit").format(row.get("caption")))
-	areas = frappe.get_meta("Damage").get_options("area").split("\n")
-	if any(row.get("area") not in areas or row.get("kind") not in DAMAGE_KINDS for row in damages):
-		frappe.throw(_("Choose a body part and a damage type"))
+	for row in components:
+		max_qty = component_max_qty(row["component"])
+		if max_qty and flt(row["qty"]) > max_qty:
+			frappe.throw(_("{0} allows at most {1}").format(_(row["component"]), f"{max_qty:g}"))
+	throw_unpriced([row["item"] for row in components], visit.company)
+	photos = get_photos(visit.name)
+	if not photos:
+		frappe.throw(_("Add at least one photo from the phone"))
+	if any(
+		row.get("view") not in VIEWS
+		or not 0 <= flt(row.get("x")) <= 1
+		or not 0 <= flt(row.get("y")) <= 1
+		or row.get("kind") not in (None, *DAMAGE_KINDS)
+		for row in damages
+	):
+		frappe.throw(_("Mark the damage on the vehicle drawing"))
 	if visit.status == "Driver Arrived":
 		visit = apply_workflow(visit, "Start Inspection")
 	if visit.status != "Full Inspection":
@@ -206,7 +305,10 @@ def send_for_approval(maintenance, odometer, components, photos, driver_signatur
 				{"item": component, "condition": "Needs Repair" if component in ticked else "Good"}
 				for component in COMPONENT_FIELDS
 			],
-			"photos": [{"attachment": row["file_url"], "caption": row.get("caption")} for row in photos],
+			"photos": [
+				{"attachment": row.file_url, "caption": _("Photo {0}").format(index)}
+				for index, row in enumerate(photos, start=1)
+			],
 			"driver_signature": driver_signature,
 			"inspector_signature": inspector_signature,
 		}
@@ -214,7 +316,7 @@ def send_for_approval(maintenance, odometer, components, photos, driver_signatur
 	for row in photos:
 		frappe.db.set_value(
 			"File",
-			row["file"],
+			row.name,
 			{
 				"attached_to_doctype": "Vehicle Inspection",
 				"attached_to_name": inspection.name,
@@ -229,7 +331,9 @@ def send_for_approval(maintenance, odometer, components, photos, driver_signatur
 	)
 	visit.save()
 	record_language = frappe.get_system_settings("language")
+	body = body_type(visit.vehicle)
 	for row in damages:
+		area = damage_zone(body, row["view"], flt(row["y"]))
 		frappe.get_doc(
 			{
 				"doctype": "Damage",
@@ -238,8 +342,11 @@ def send_for_approval(maintenance, odometer, components, photos, driver_signatur
 				"source_reference": visit.name,
 				"driver": visit.driver,
 				"project": visit.project,
-				"area": row["area"],
-				"description": _(row["kind"], lang=record_language),
+				"area": area,
+				"diagram_view": row["view"],
+				"mark_x": flt(row["x"], 4),
+				"mark_y": flt(row["y"], 4),
+				"description": _(row.get("kind") or area, lang=record_language),
 				"status": "Detected",
 			}
 		).insert()
@@ -253,6 +360,7 @@ def finish_maintenance(maintenance, final_check):
 	visit.check_permission("write")
 	if visit.status not in FINISH_ACTIONS:
 		frappe.throw(_("This visit is not approved yet"))
+	throw_unpriced([row.item for row in visit.components_replaced if row.item], visit.company)
 	rows = frappe.parse_json(final_check) or []
 	if any(row.get("condition") == "Needs Repair" and not row.get("notes") for row in rows):
 		frappe.throw(_("Add a note to every row that needs repair"))
@@ -319,6 +427,12 @@ def get_history(vehicle):
 	}
 
 
+def throw_unpriced(item_codes, company):
+	missing = unpriced_items(item_codes, company)
+	if missing:
+		frappe.throw(_("The item has no valuation rate. Tell the store.") + " (" + ", ".join(missing) + ")")
+
+
 def component_states(vehicle, reading):
 	vehicle.last_odometer = reading
 	due = set(due_components(vehicle))
@@ -362,8 +476,10 @@ def worst_overdue(components, reading):
 	return None
 
 
-def component_items(component, vehicle):
-	rules = [row for row in frappe.get_single("Fleetix Settings").component_items if row.component == component]
+def component_items(component, vehicle, company):
+	rules = [
+		row for row in frappe.get_single("Fleetix Settings").component_items if row.component == component
+	]
 	groups = [row.item_group for row in rules if row.item_group]
 	words = [word.strip() for row in rules for word in (row.keywords or "").splitlines() if word.strip()]
 	if not groups and not words:
@@ -392,7 +508,9 @@ def component_items(component, vehicle):
 		"item",
 		order_by="replacement_date desc, creation desc",
 	)
+	unpriced = set(unpriced_items([row.item_code for row in items], company))
 	for row in items:
 		row["stock"] = flt(stock.get(row.item_code))
+		row["priced"] = row.item_code not in unpriced
 	items.sort(key=lambda row: row.item_code != last_item)
 	return items

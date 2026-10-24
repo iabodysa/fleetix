@@ -41,7 +41,7 @@ async function finish() {
 </script>
 
 <template>
-	<ScreenFrame :title="__('Final check')" :error="error">
+	<ScreenFrame :title="__('Final check')" v-model:error="error">
 		<template #meta>
 			<span class="pill tone-done">{{ statusLabel(store.checklist.status) }}</span>
 		</template>

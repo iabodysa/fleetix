@@ -112,6 +112,7 @@ onBeforeUnmount(() => {
 				:online="online"
 				:printer="printer"
 				:language="language.current.name"
+				:user="boot.full_name"
 				@vehicles="openDrawer"
 				@close="backToQueue"
 				@language="picking = true"

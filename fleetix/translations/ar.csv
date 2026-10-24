@@ -9929,3 +9929,27 @@ Vehicle Receipt Pass,تصريح استلام مركبة
 Vehicle Transfer Pass,تصريح نقل مركبة
 Delivery,تسليم,Handover Pass
 Receipt,استلام,Handover Pass
+Hide details,إخفاء التفاصيل
+Due now,مستحقة الآن
+Opening,جارٍ الفتح
+{0} left,متبقي {0}
+No maintenance data,لا توجد بيانات صيانة
+No vehicle with this plate,لا توجد مركبة بهذه اللوحة
+Open visit,زيارة مفتوحة
+Remove mark,إزالة العلامة
+Mark removed,أزيلت العلامة
+Tap where the damage is,المس مكان الضرر
+No valuation rate,بدون سعر تقييم
+The item has no valuation rate. Tell the store.,الصنف بدون سعر تقييم، بلّغ المستودع
+Not enough stock for this item. Tell the store.,الكمية غير كافية في المستودع، بلّغ المستودع
+This step could not be saved. Show the details to your supervisor.,تعذر حفظ هذه الخطوة، اعرض التفاصيل على المشرف
+Mark the damage on the vehicle drawing,حدد الضرر على رسم المركبة
+{0} allows at most {1},الحد الأقصى لـ {0} هو {1}
+Diagram View,جهة الرسم
+Mark X,موضع العلامة الأفقي
+Mark Y,موضع العلامة العمودي
+Max Quantity,الحد الأقصى للكمية
+front,الأمام
+rear,الخلف
+left,الجانب الأيسر
+right,الجانب الأيمن

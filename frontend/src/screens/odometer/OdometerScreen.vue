@@ -40,7 +40,7 @@ function next() {
 </script>
 
 <template>
-	<ScreenFrame :title="__('Odometer reading')" :error="error">
+	<ScreenFrame :title="__('Odometer reading')" v-model:error="error">
 		<div class="odometer">
 			<div class="drum ltr">
 				<span v-for="(digit, index) in cells" :key="index" class="drum-cell" :class="{ lead: digit === '0' && index < lead }">{{ digit }}</span>

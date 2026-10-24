@@ -45,7 +45,7 @@ onMounted(async () => {
 </script>
 
 <template>
-	<ScreenFrame :title="__('Next service')" :error="error">
+	<ScreenFrame :title="__('Next service')" v-model:error="error">
 		<template #meta>
 			<span class="muted ltr">{{ result.maintenance }}</span>
 		</template>

@@ -212,3 +212,20 @@ Numbers,अंक
 Ready to scan. Point the scanner at the vehicle barcode,"स्कैन के लिए तैयार, स्कैनर को गाड़ी के बारकोड की ओर करें"
 Arrive,आगमन दर्ज करें
 Search items,आइटम खोजें
+Details,विवरण
+Hide details,विवरण छिपाएँ
+Due now,अभी देय
+Opening,खुल रहा है
+{0} left,{0} बाकी
+No maintenance data,रखरखाव का कोई डेटा नहीं
+No vehicle with this plate,इस नंबर प्लेट की कोई गाड़ी नहीं
+Open visit,खुली विज़िट
+Remove mark,निशान हटाएँ
+Mark removed,निशान हटाया गया
+Tap where the damage is,जहाँ नुकसान है वहाँ छुएँ
+No valuation rate,मूल्यांकन दर नहीं
+The item has no valuation rate. Tell the store.,इस आइटम की मूल्यांकन दर नहीं है। स्टोर को बताएँ।
+Not enough stock for this item. Tell the store.,इस आइटम का स्टॉक पर्याप्त नहीं है। स्टोर को बताएँ।
+This step could not be saved. Show the details to your supervisor.,यह चरण सेव नहीं हुआ। विवरण अपने सुपरवाइज़र को दिखाएँ।
+Mark the damage on the vehicle drawing,गाड़ी के चित्र पर नुकसान का निशान लगाएँ
+{0} allows at most {1},{0} अधिकतम {1}

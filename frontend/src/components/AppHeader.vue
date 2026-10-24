@@ -9,6 +9,7 @@ defineProps({
 	online: Boolean,
 	printer: Boolean,
 	language: { type: String, required: true },
+	user: { type: String, default: "" },
 })
 defineEmits(["vehicles", "close", "language", "menu"])
 </script>
@@ -18,6 +19,7 @@ defineEmits(["vehicles", "close", "language", "menu"])
 		<div class="app-header-start">
 			<PlateChip v-if="plate" :plate="plate" size="sm" />
 			<img v-else class="app-header-brand" src="/assets/fleetix/images/fleetix-logo.svg" alt="Fleetix" />
+			<span v-if="user" class="app-header-user" :title="user"><AppIcon name="user" /><span class="app-header-user-name">{{ user }}</span></span>
 		</div>
 		<h1 class="app-header-title">{{ __("Fleetix Maintenance") }}</h1>
 		<div class="app-header-end">
@@ -70,6 +72,25 @@ defineEmits(["vehicles", "close", "language", "menu"])
 	text-align: center;
 	white-space: nowrap;
 	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.app-header-user {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s1);
+	min-width: 0;
+	max-width: 16rem;
+	min-height: var(--tap);
+	padding: 0 var(--s3);
+	border-radius: var(--r-md);
+	background: var(--surface-2);
+	font-size: var(--t-md);
+	font-weight: 800;
+}
+.app-header-user-name {
+	min-width: 0;
+	overflow: hidden;
+	white-space: nowrap;
 	text-overflow: ellipsis;
 }
 .app-header-brand {

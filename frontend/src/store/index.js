@@ -60,7 +60,9 @@ export async function restoreDraft() {
 	const rows = await queue.fetch()
 	if (!draft || queue.error || store.step !== "queue") return
 	const row = (rows || []).find((r) => r.maintenance === draft.visit.maintenance)
-	if (row && row.status === draft.visit.status) Object.assign(store, { damages: [] }, draft, { drawer: false, flow: "next" })
+	if (row && row.status === draft.visit.status) {
+		Object.assign(store, draft, { damages: (draft.damages || []).filter((spot) => spot.view), drawer: false, flow: "next" })
+	}
 	else saveDraft()
 }
 

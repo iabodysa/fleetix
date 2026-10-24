@@ -10,6 +10,7 @@ import ScreenFrame from "../../components/ScreenFrame.vue"
 const POLL_MS = 5000
 const error = ref("")
 const link = ref(null)
+const checking = ref(false)
 let timer = null
 
 async function poll() {
@@ -19,7 +20,16 @@ async function poll() {
 		error.value = errorText(e)
 	}
 }
-function next() {
+async function next() {
+	checking.value = true
+	try {
+		store.photos = await api.photos(store.visit.maintenance)
+	} catch (e) {
+		error.value = errorText(e)
+		return
+	} finally {
+		checking.value = false
+	}
 	if (!store.photos.length) {
 		error.value = __("Add at least one photo from the phone")
 		return
@@ -39,7 +49,7 @@ onBeforeUnmount(() => clearInterval(timer))
 </script>
 
 <template>
-	<ScreenFrame :title="__('Photos')" :error="error">
+	<ScreenFrame :title="__('Photos')" v-model:error="error">
 		<div class="photos">
 			<div class="card photos-qr">
 				<img v-if="link" class="photos-qr-code" :src="link.qr" alt="" />
@@ -58,7 +68,7 @@ onBeforeUnmount(() => clearInterval(timer))
 			<BigButton icon="back" tone="quiet" :label="__('Back')" @press="go('damage')" />
 		</template>
 		<template #primary>
-			<BigButton icon="next" :label="__('Next')" @press="next" />
+			<BigButton icon="next" :label="__('Next')" :busy="checking" @press="next" />
 		</template>
 	</ScreenFrame>
 </template>

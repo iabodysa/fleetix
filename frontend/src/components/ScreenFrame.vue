@@ -1,5 +1,8 @@
 <script setup>
-defineProps({ title: { type: String, required: true }, error: { type: String, default: "" } })
+import ErrorCard from "./ErrorCard.vue"
+
+defineProps({ title: { type: String, required: true }, error: { type: [String, Object], default: "" } })
+defineEmits(["update:error"])
 </script>
 
 <template>
@@ -12,9 +15,10 @@ defineProps({ title: { type: String, required: true }, error: { type: String, de
 		<aside v-if="$slots.aside" class="screen-aside"><slot name="aside" /></aside>
 		<footer class="screen-actions">
 			<slot name="back" />
-			<p class="screen-error" role="alert">{{ error }}</p>
+			<span class="screen-gap"></span>
 			<slot name="primary" />
 		</footer>
+		<ErrorCard :error="error" @dismiss="$emit('update:error', '')" />
 	</section>
 </template>
 
@@ -74,10 +78,12 @@ html.no-flex-gap .screen.screen-split > :not(:last-child) {
 	background: linear-gradient(to top, var(--bg) 75%, transparent);
 }
 .screen-error {
-	flex: 1;
-	min-width: 0;
 	color: var(--problem);
 	font-weight: 700;
+}
+.screen-gap {
+	flex: 1;
+	min-width: 0;
 }
 .screen-actions > .big-button-primary,
 .screen-actions > .big-button-done {
@@ -95,10 +101,6 @@ html.no-flex-gap .screen.screen-split > :not(:last-child) {
 	}
 	.screen-actions {
 		flex-wrap: wrap;
-	}
-	.screen-error {
-		order: -1;
-		flex-basis: 100%;
 	}
 	.screen-actions > .big-button-primary,
 	.screen-actions > .big-button-done {

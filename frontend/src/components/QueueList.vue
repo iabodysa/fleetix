@@ -7,30 +7,24 @@ import { openVisit, queue, stepForStatus, store } from "../store/index.js"
 import AppIcon from "./AppIcon.vue"
 import BigButton from "./BigButton.vue"
 import EmptyState from "./EmptyState.vue"
+import ErrorCard from "./ErrorCard.vue"
 import PlateChip from "./PlateChip.vue"
-import { plateKey } from "./plate.js"
 
-const props = defineProps({ compact: Boolean, filter: { type: String, default: "" } })
-const rows = computed(() => {
-	const wanted = plateKey(props.filter)
-	return (queue.data || []).filter((row) => {
-		const plate = plateKey(row.plate)
-		return plate.digits.indexOf(wanted.digits) !== -1 && plate.letters.indexOf(wanted.letters) !== -1
-	})
-})
+defineProps({ compact: Boolean })
+const rows = computed(() => queue.data || [])
 
 const acting = ref("")
-const failed = ref({})
+const failed = ref("")
 
 async function act(row) {
 	acting.value = row.maintenance
-	failed.value = {}
+	failed.value = ""
 	try {
 		await api.act(row.maintenance, row.actions[0])
 		success()
 		await queue.fetch()
 	} catch (e) {
-		failed.value = { [row.maintenance]: errorText(e) }
+		failed.value = errorText(e)
 		problem()
 	}
 	acting.value = ""
@@ -80,8 +74,8 @@ function late(row) {
 			</span>
 			<span v-if="row.worst" class="visit-late">{{ late(row) }}</span>
 			<BigButton v-if="nextAction(row) && !compact" :label="__(nextAction(row))" :busy="acting === row.maintenance" block @press="act(row)" />
-			<span v-if="failed[row.maintenance]" class="screen-error" role="alert">{{ failed[row.maintenance] }}</span>
 		</component>
+		<ErrorCard :error="failed" @dismiss="failed = ''" />
 	</div>
 </template>
 
