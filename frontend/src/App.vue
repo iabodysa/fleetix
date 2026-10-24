@@ -5,7 +5,7 @@ import { api } from "./api.js"
 import { hasPrinter, hasShell, onShellBack, openSettings } from "./native.js"
 import { useLanguage } from "./composables/useLanguage.js"
 import { publishToCustomer } from "./composables/useCustomerDisplay.js"
-import { STEPS, backToQueue, queue, restoreDraft, stepBack, store } from "./store/index.js"
+import { STEPS, WALKIN_STEPS, backHome, backToQueue, queue, restoreDraft, stepBack, store } from "./store/index.js"
 import AppHeader from "./components/AppHeader.vue"
 import AppIcon from "./components/AppIcon.vue"
 import PrintTest from "./components/PrintTest.vue"
@@ -16,6 +16,7 @@ import AwaitScreen from "./screens/await/AwaitScreen.vue"
 import CustomerScreen from "./screens/customer/CustomerScreen.vue"
 import DamageScreen from "./screens/damage/DamageScreen.vue"
 import DoneScreen from "./screens/done/DoneScreen.vue"
+import HomeScreen from "./screens/home/HomeScreen.vue"
 import LanguageScreen from "./screens/language/LanguageScreen.vue"
 import LoginScreen from "./screens/login/LoginScreen.vue"
 import OdometerScreen from "./screens/odometer/OdometerScreen.vue"
@@ -24,8 +25,17 @@ import PhotosScreen from "./screens/photos/PhotosScreen.vue"
 import QueueScreen from "./screens/queue/QueueScreen.vue"
 import ReviewScreen from "./screens/review/ReviewScreen.vue"
 import SignaturesScreen from "./screens/signatures/SignaturesScreen.vue"
+import WalkinCheck from "./screens/walkin/WalkinCheck.vue"
+import WalkinDetails from "./screens/walkin/WalkinDetails.vue"
+import WalkinInvoice from "./screens/walkin/WalkinInvoice.vue"
+import WalkinItems from "./screens/walkin/WalkinItems.vue"
 
 const SCREENS = {
+	home: HomeScreen,
+	walkin: WalkinDetails,
+	walkinItems: WalkinItems,
+	walkinCheck: WalkinCheck,
+	walkinInvoice: WalkinInvoice,
 	queue: QueueScreen,
 	odometer: OdometerScreen,
 	parts: PartsScreen,
@@ -37,6 +47,7 @@ const SCREENS = {
 	done: DoneScreen,
 }
 const STEP_LABELS = [__("Vehicle"), __("Odometer"), __("Parts"), __("Damage"), __("Photos"), __("Signatures"), __("Approval"), __("Review")]
+const WALKIN_LABELS = [__("Customer"), __("Items"), __("Final check"), __("Invoice")]
 
 const boot = window.frappe.boot
 const customerView = new URLSearchParams(window.location.search).get("view") === "customer"
@@ -49,8 +60,13 @@ const printTest = ref(false)
 const online = ref(navigator.onLine)
 const printer = hasPrinter()
 const shell = hasShell()
-const stepIndex = computed(() => (store.step === "done" ? STEPS.length - 1 : STEPS.indexOf(store.step)))
-const inVisit = computed(() => store.step !== "queue")
+const walkin = computed(() => WALKIN_STEPS.indexOf(store.step) !== -1)
+const stepIndex = computed(() => {
+	if (walkin.value) return WALKIN_STEPS.indexOf(store.step)
+	return store.step === "done" ? STEPS.length - 1 : STEPS.indexOf(store.step)
+})
+const inVisit = computed(() => ["home", "queue"].indexOf(store.step) === -1)
+const plate = computed(() => (walkin.value ? store.walkin.plate : store.visit ? store.visit.plate : ""))
 
 function shellBack() {
 	if (picking.value && language.chosen()) {
@@ -76,9 +92,11 @@ async function logout() {
 }
 
 watch(
-	() => [store.step, store.visit && store.visit.plate],
+	() => [store.step, plate.value],
 	([step, plate]) => {
-		if (step === "done") return publishToCustomer({ plate, status: __("Completed"), tone: "done" })
+		if (step === "done" || step === "walkinInvoice") return publishToCustomer({ plate, status: __("Completed"), tone: "done" })
+		if (walkin.value) return publishToCustomer({ plate, status: WALKIN_LABELS[WALKIN_STEPS.indexOf(step)], tone: "quiet" })
+		if (step === "home") return publishToCustomer({ plate: "", status: "", tone: "quiet" })
 		const status = step === "photos" || step === "signatures" ? __("Photos and signatures") : STEP_LABELS[STEPS.indexOf(step)]
 		publishToCustomer({ plate: step === "queue" ? "" : plate, status, tone: step === "await" ? "wait" : "quiet" })
 	},
@@ -108,7 +126,7 @@ onBeforeUnmount(() => {
 		<LoginScreen v-else-if="!boot.is_worker" @language="picking = true" />
 		<template v-else>
 			<AppHeader
-				:plate="store.visit ? store.visit.plate : ''"
+				:plate="plate"
 				:vehicles="queue.data.length"
 				:in-visit="inVisit"
 				:online="online"
@@ -116,7 +134,7 @@ onBeforeUnmount(() => {
 				:language="language.current.name"
 				:user="boot.full_name"
 				@vehicles="openDrawer"
-				@close="backToQueue"
+				@close="walkin ? backHome() : backToQueue()"
 				@language="picking = true"
 				@menu="menu = !menu"
 			/>
@@ -127,7 +145,7 @@ onBeforeUnmount(() => {
 				<button class="app-header-button" type="button" @click="logout">{{ __("Log out") }}</button>
 			</div>
 			<PrintTest v-if="printTest" @close="printTest = false" />
-			<StepBar v-if="inVisit" :steps="STEP_LABELS" :current="stepIndex" />
+			<StepBar v-if="inVisit" :steps="walkin ? WALKIN_LABELS : STEP_LABELS" :current="stepIndex" />
 			<main class="app-body">
 				<Transition :name="'slide-' + store.flow" mode="out-in">
 					<component :is="SCREENS[store.step]" :key="store.step" />

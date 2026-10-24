@@ -1,0 +1,46 @@
+{
+ "actions": [],
+ "creation": "2026-10-24 18:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "part",
+  "reason",
+  "note"
+ ],
+ "fields": [
+  {
+   "fieldname": "part",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Part",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Reason",
+   "options": "\nLeak\nWorn\nNoise\nLoose\nLow Level\nDamaged\nNeeds Replacement\nNot Done"
+  },
+  {
+   "fieldname": "note",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Note"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-10-24 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Fleetix",
+ "name": "Maintenance Finding",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

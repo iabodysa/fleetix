@@ -113,8 +113,6 @@ Both signatures are required,দুটি স্বাক্ষরই প্র�
 Broken,ভাঙা
 Check now,এখন দেখুন
 Choose a body part and a damage type,বডির অংশ ও ক্ষতির ধরন বাছুন
-Choose an item for {0},{0} এর জন্য আইটেম বাছুন
-Choose what is wrong for every row that needs repair,মেরামত দরকার এমন প্রতিটি সারির জন্য সমস্যা বাছুন
 Clear,মুছুন
 Completed,সম্পন্ন
 Confirm reading,রিডিং নিশ্চিত করুন
@@ -245,3 +243,88 @@ SUV,এসইউভি
 Bus,বাস
 Pickup Truck,পিকআপ
 Complete,সম্পন্ন করুন
+Installed,লাগানো হয়েছে
+Done,হয়েছে
+Not Done,হয়নি
+Findings,পর্যবেক্ষণ
+Part,যন্ত্রাংশ
+Reason,কারণ
+Short note,ছোট নোট
+Add note,নোট যোগ করুন
+Remove,সরান
+Engine,ইঞ্জিন
+Brakes,ব্রেক
+Suspension,সাসপেনশন
+Air Conditioning,এসি
+Electrical,বৈদ্যুতিক
+Body,বডি
+Notes from last visit,আগের ভিজিটের নোট
+Low Level,লেভেল কম
+Damaged,ক্ষতিগ্রস্ত
+Needs Replacement,বদলাতে হবে
+{0} left: {1},{0} বাকি: {1}
+Approve exit,বের হওয়া অনুমোদন
+Etihad fleet maintenance,ইত্তিহাদ কোম্পানির গাড়ি রক্ষণাবেক্ষণ
+Customer maintenance,গ্রাহকের গাড়ি রক্ষণাবেক্ষণ
+{0} vehicles waiting,{0}টি গাড়ি অপেক্ষায়
+Enter the plate number,প্লেট নম্বর লিখুন
+Enter the customer name,গ্রাহকের নাম লিখুন
+Enter the mobile number,মোবাইল নম্বর লিখুন
+Customer name,গ্রাহকের নাম
+Mobile number,মোবাইল নম্বর
+Existing customer,নিবন্ধিত গ্রাহক
+Items and labour,যন্ত্রাংশ ও মজুরি
+Labour,মজুরি
+No price,দাম নেই
+Total before VAT,ভ্যাটের আগে মোট
+No selling price for {0}. Tell the accountant.,{0}-এর বিক্রয়মূল্য নেই। হিসাবরক্ষককে জানান।
+Add at least one item,অন্তত একটি আইটেম যোগ করুন
+Choose how the customer pays,পেমেন্টের ধরন বেছে নিন
+Payment,পেমেন্ট
+Issue invoice,ইনভয়েস দিন
+Invoice issued,ইনভয়েস হয়েছে
+Customer maintenance completed,গ্রাহকের রক্ষণাবেক্ষণ সম্পন্ন
+VAT,ভ্যাট
+Total,মোট
+Print invoice,ইনভয়েস প্রিন্ট
+New customer,নতুন গ্রাহক
+Customer,গ্রাহক
+Items,আইটেম
+Invoice,ইনভয়েস
+Answer every row of the final check: {0},চূড়ান্ত পরীক্ষার প্রতিটি সারি পূরণ করুন: {0}
+Payment method {0} is not set up,পেমেন্ট পদ্ধতি {0} সেট করা নেই
+Payment method {0} is disabled,পেমেন্ট পদ্ধতি {0} বন্ধ
+Payment method {0} has no account for {1},পেমেন্ট পদ্ধতি {0}-এর {1}-এর জন্য হিসাব নেই
+No default company is set,কোনো ডিফল্ট কোম্পানি নেই
+No default warehouse is set in Stock Settings,স্টক সেটিংসে ডিফল্ট গুদাম নেই
+Selling price list {0} is missing,বিক্রয় মূল্য তালিকা {0} নেই
+No default sales tax template for {0},{0}-এর জন্য বিক্রয় কর টেমপ্লেট নেই
+"Enter the plate, the customer name and the mobile number","প্লেট, গ্রাহকের নাম ও মোবাইল নম্বর লিখুন"
+Customer maintenance is not set up: {0},গ্রাহক রক্ষণাবেক্ষণ সেট নেই: {0}
+Note,নোট
+Maintenance Finding,রক্ষণাবেক্ষণ পর্যবেক্ষণ
+Customer Visit,গ্রাহক ভিজিট
+Plate,প্লেট
+Customer Name,গ্রাহকের নাম
+Mobile No,মোবাইল নম্বর
+Company,কোম্পানি
+Visit Date and Time,ভিজিটের তারিখ ও সময়
+Odometer (km),ওডোমিটার (কিমি)
+Sales Invoice,বিক্রয় ইনভয়েস
+Service Checklist,সার্ভিস চেকলিস্ট
+VAT {0}%,ভ্যাট {0}%
+litre,লিটার
+piece,পিস
+tyre,টায়ার
+More below,নিচে আরও আছে
+Wipers,ওয়াইপার
+Washer Fluid,ওয়াশারের পানি
+Radiator Coolant,রেডিয়েটরের পানি
+Brake Fluid,ব্রেক অয়েল
+Tyre Pressure,টায়ারের চাপ
+Lights,লাইট
+Windscreen Cleaned,কাচ পরিষ্কার
+Battery Terminals,ব্যাটারির টার্মিনাল
+Belts,বেল্ট
+Air Filter Check,এয়ার ফিল্টার পরীক্ষা
+Mada,মাদা

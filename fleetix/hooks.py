@@ -165,6 +165,7 @@ jinja = {
 		"fleetix.fleetix.plate.saudi_plate",
 		"fleetix.fleetix.doctype.maintenance.maintenance.next_due",
 		"fleetix.fleetix.maintenance_invoice.maintenance_invoice",
+		"fleetix.fleetix.units.unit_label",
 	]
 }
 

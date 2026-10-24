@@ -113,8 +113,6 @@ Both signatures are required,دونوں دستخط ضروری ہیں
 Broken,ٹوٹا ہوا
 Check now,ابھی چیک کریں
 Choose a body part and a damage type,باڈی کا حصہ اور نقصان کی قسم چنیں
-Choose an item for {0},{0} کے لیے آئٹم چنیں
-Choose what is wrong for every row that needs repair,ہر مرمت والی لائن کے لیے خرابی چنیں
 Clear,صاف کریں
 Completed,مکمل
 Confirm reading,ریڈنگ کی تصدیق کریں
@@ -245,3 +243,88 @@ SUV,ایس یو وی
 Bus,بس
 Pickup Truck,پک اپ
 Complete,مکمل کریں
+Installed,لگا دیا
+Done,ہو گیا
+Not Done,نہیں ہوا
+Findings,مشاہدات
+Part,پرزہ
+Reason,وجہ
+Short note,مختصر نوٹ
+Add note,نوٹ شامل کریں
+Remove,ہٹائیں
+Engine,انجن
+Brakes,بریک
+Suspension,سسپنشن
+Air Conditioning,اے سی
+Electrical,بجلی کا نظام
+Body,باڈی
+Notes from last visit,پچھلی وزٹ کے نوٹس
+Low Level,سطح کم
+Damaged,خراب
+Needs Replacement,بدلنے کی ضرورت
+{0} left: {1},{0} باقی: {1}
+Approve exit,روانگی کی منظوری
+Etihad fleet maintenance,اتحاد کمپنی کی گاڑیوں کی مرمت
+Customer maintenance,کسٹمر کی گاڑی کی مرمت
+{0} vehicles waiting,{0} گاڑیاں انتظار میں
+Enter the plate number,پلیٹ نمبر لکھیں
+Enter the customer name,کسٹمر کا نام لکھیں
+Enter the mobile number,موبائل نمبر لکھیں
+Customer name,کسٹمر کا نام
+Mobile number,موبائل نمبر
+Existing customer,رجسٹرڈ کسٹمر
+Items and labour,پرزے اور مزدوری
+Labour,مزدوری
+No price,قیمت نہیں
+Total before VAT,ٹیکس سے پہلے کل
+No selling price for {0}. Tell the accountant.,{0} کی فروخت قیمت نہیں۔ اکاؤنٹنٹ کو بتائیں۔
+Add at least one item,کم از کم ایک آئٹم شامل کریں
+Choose how the customer pays,ادائیگی کا طریقہ چنیں
+Payment,ادائیگی
+Issue invoice,انوائس بنائیں
+Invoice issued,انوائس بن گئی
+Customer maintenance completed,کسٹمر کی مرمت مکمل
+VAT,ٹیکس
+Total,کل
+Print invoice,انوائس پرنٹ کریں
+New customer,نیا کسٹمر
+Customer,کسٹمر
+Items,آئٹمز
+Invoice,انوائس
+Answer every row of the final check: {0},آخری جانچ کی ہر لائن مکمل کریں: {0}
+Payment method {0} is not set up,ادائیگی کا طریقہ {0} سیٹ نہیں
+Payment method {0} is disabled,ادائیگی کا طریقہ {0} بند ہے
+Payment method {0} has no account for {1},ادائیگی کے طریقہ {0} کا {1} کے لیے اکاؤنٹ نہیں
+No default company is set,کوئی ڈیفالٹ کمپنی نہیں
+No default warehouse is set in Stock Settings,اسٹاک سیٹنگز میں ڈیفالٹ گودام نہیں
+Selling price list {0} is missing,فروخت کی قیمت فہرست {0} موجود نہیں
+No default sales tax template for {0},{0} کے لیے سیلز ٹیکس ٹیمپلیٹ نہیں
+"Enter the plate, the customer name and the mobile number",پلیٹ، کسٹمر کا نام اور موبائل نمبر لکھیں
+Customer maintenance is not set up: {0},کسٹمر مرمت سیٹ نہیں: {0}
+Note,نوٹ
+Maintenance Finding,مرمت کا مشاہدہ
+Customer Visit,کسٹمر وزٹ
+Plate,پلیٹ
+Customer Name,کسٹمر کا نام
+Mobile No,موبائل نمبر
+Company,کمپنی
+Visit Date and Time,وزٹ کی تاریخ اور وقت
+Odometer (km),میٹر (کلومیٹر)
+Sales Invoice,سیلز انوائس
+Service Checklist,سروس چیک لسٹ
+VAT {0}%,ٹیکس {0}%
+litre,لیٹر
+piece,عدد
+tyre,ٹائر
+More below,نیچے مزید ہے
+Wipers,وائپر
+Washer Fluid,وائپر کا پانی
+Radiator Coolant,ریڈی ایٹر کا پانی
+Brake Fluid,بریک آئل
+Tyre Pressure,ٹائر کا پریشر
+Lights,لائٹس
+Windscreen Cleaned,شیشہ صاف
+Battery Terminals,بیٹری کے ٹرمینل
+Belts,بیلٹ
+Air Filter Check,ایئر فلٹر کی جانچ
+Mada,مدی

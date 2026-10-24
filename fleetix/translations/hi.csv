@@ -113,8 +113,6 @@ Both signatures are required,दोनों हस्ताक्षर ज़�
 Broken,टूटा हुआ
 Check now,अभी जाँचें
 Choose a body part and a damage type,बॉडी का हिस्सा और नुकसान का प्रकार चुनें
-Choose an item for {0},{0} के लिए आइटम चुनें
-Choose what is wrong for every row that needs repair,मरम्मत वाली हर पंक्ति के लिए खराबी चुनें
 Clear,साफ़ करें
 Completed,पूरा
 Confirm reading,रीडिंग पक्की करें
@@ -245,3 +243,78 @@ SUV,एसयूवी
 Bus,बस
 Pickup Truck,पिकअप
 Complete,पूरा करें
+Installed,लगा दिया
+Not Done,नहीं हुआ
+Findings,टिप्पणियाँ
+Part,पुर्ज़ा
+Short note,छोटा नोट
+Add note,नोट जोड़ें
+Engine,इंजन
+Brakes,ब्रेक
+Suspension,सस्पेंशन
+Air Conditioning,एसी
+Electrical,बिजली
+Body,बॉडी
+Notes from last visit,पिछली विज़िट के नोट
+Low Level,स्तर कम
+Damaged,खराब
+Needs Replacement,बदलना ज़रूरी
+{0} left: {1},{0} बाकी: {1}
+Approve exit,निकास मंज़ूर करें
+Etihad fleet maintenance,इत्तिहाद कंपनी की गाड़ियों का रखरखाव
+Customer maintenance,ग्राहक की गाड़ी का रखरखाव
+{0} vehicles waiting,{0} गाड़ियाँ इंतज़ार में
+Enter the plate number,प्लेट नंबर लिखें
+Enter the customer name,ग्राहक का नाम लिखें
+Enter the mobile number,मोबाइल नंबर लिखें
+Customer name,ग्राहक का नाम
+Mobile number,मोबाइल नंबर
+Existing customer,पंजीकृत ग्राहक
+Items and labour,पुर्ज़े और मज़दूरी
+Labour,मज़दूरी
+No price,कीमत नहीं
+Total before VAT,वैट से पहले कुल
+No selling price for {0}. Tell the accountant.,{0} की बिक्री कीमत नहीं है। अकाउंटेंट को बताएँ।
+Add at least one item,कम से कम एक आइटम जोड़ें
+Choose how the customer pays,भुगतान का तरीका चुनें
+Issue invoice,बिल बनाएँ
+Invoice issued,बिल बन गया
+Customer maintenance completed,ग्राहक का रखरखाव पूरा
+VAT,वैट
+Print invoice,बिल प्रिंट करें
+New customer,नया ग्राहक
+Invoice,बिल
+Answer every row of the final check: {0},अंतिम जाँच की हर पंक्ति पूरी करें: {0}
+Payment method {0} is not set up,भुगतान तरीका {0} सेट नहीं है
+Payment method {0} is disabled,भुगतान तरीका {0} बंद है
+Payment method {0} has no account for {1},भुगतान तरीका {0} का {1} के लिए खाता नहीं
+No default company is set,कोई डिफ़ॉल्ट कंपनी नहीं
+No default warehouse is set in Stock Settings,स्टॉक सेटिंग्स में डिफ़ॉल्ट गोदाम नहीं
+Selling price list {0} is missing,बिक्री मूल्य सूची {0} नहीं है
+No default sales tax template for {0},{0} के लिए बिक्री कर टेम्पलेट नहीं
+"Enter the plate, the customer name and the mobile number","प्लेट, ग्राहक का नाम और मोबाइल नंबर लिखें"
+Customer maintenance is not set up: {0},ग्राहक रखरखाव सेट नहीं: {0}
+Maintenance Finding,रखरखाव टिप्पणी
+Customer Visit,ग्राहक विज़िट
+Plate,प्लेट
+Mobile No,मोबाइल नंबर
+Visit Date and Time,विज़िट की तारीख और समय
+Odometer (km),ओडोमीटर (किमी)
+Sales Invoice,बिक्री बिल
+Service Checklist,सर्विस चेकलिस्ट
+VAT {0}%,वैट {0}%
+litre,लीटर
+piece,नग
+tyre,टायर
+More below,नीचे और है
+Wipers,वाइपर
+Washer Fluid,वाइपर का पानी
+Radiator Coolant,रेडिएटर का पानी
+Brake Fluid,ब्रेक ऑयल
+Tyre Pressure,टायर प्रेशर
+Lights,लाइटें
+Windscreen Cleaned,शीशा साफ़
+Battery Terminals,बैटरी टर्मिनल
+Belts,बेल्ट
+Air Filter Check,एयर फ़िल्टर जाँच
+Mada,मदा

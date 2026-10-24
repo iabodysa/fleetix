@@ -1,5 +1,6 @@
 <script setup>
 import ErrorCard from "./ErrorCard.vue"
+import MoreBelow from "./MoreBelow.vue"
 
 defineProps({ title: { type: String, required: true }, error: { type: [String, Object], default: "" } })
 defineEmits(["update:error"])
@@ -14,6 +15,7 @@ defineEmits(["update:error"])
 		<div class="screen-body"><slot /></div>
 		<aside v-if="$slots.aside" class="screen-aside"><slot name="aside" /></aside>
 		<footer class="screen-actions">
+			<MoreBelow />
 			<slot name="back" />
 			<span class="screen-gap"></span>
 			<slot name="primary" />

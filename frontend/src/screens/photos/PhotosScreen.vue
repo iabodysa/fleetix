@@ -2,9 +2,11 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue"
 import { __ } from "../../i18n/index.js"
 import { api, errorText } from "../../api.js"
+import { useCardProgress } from "../../composables/useCardProgress.js"
 import { go, store } from "../../store/index.js"
 import AppIcon from "../../components/AppIcon.vue"
 import BigButton from "../../components/BigButton.vue"
+import CardProgress from "../../components/CardProgress.vue"
 import ScreenFrame from "../../components/ScreenFrame.vue"
 
 const POLL_MS = 5000
@@ -13,6 +15,8 @@ const link = ref(null)
 const checking = ref(false)
 let timer = null
 const filled = computed(() => store.photos.filter((slot) => slot.photos.length).length)
+const cards = computed(() => store.photos.map((slot) => ({ key: slot.slot, label: slot.label, icon: slot.damage ? "damage" : "photos", done: slot.photos.length > 0 })))
+const progress = useCardProgress(cards)
 
 async function poll() {
 	try {
@@ -31,11 +35,7 @@ async function next() {
 	} finally {
 		checking.value = false
 	}
-	const missing = store.photos.filter((slot) => !slot.photos.length)
-	if (missing.length) {
-		error.value = { text: __("Take the photo: {0}", [missing[0].label]), detail: missing.map((slot) => slot.label).join(", ") }
-		return
-	}
+	if (progress.guard()) return
 	go("signatures")
 }
 onMounted(async () => {
@@ -52,6 +52,7 @@ onBeforeUnmount(() => clearInterval(timer))
 
 <template>
 	<ScreenFrame :title="__('Photos')" v-model:error="error">
+		<CardProgress :items="cards" @show="progress.show" />
 		<div class="photos">
 			<div class="card photos-qr">
 				<img v-if="link" class="photos-qr-code" :src="link.qr" alt="" />
@@ -62,7 +63,7 @@ onBeforeUnmount(() => clearInterval(timer))
 					<span class="pill" :class="filled === store.photos.length ? 'tone-done' : 'tone-wait'">{{ __("Photos added") }} <span class="ltr">{{ filled }} / {{ store.photos.length }}</span></span>
 				</p>
 				<div class="photos-slots">
-					<div v-for="slot in store.photos" :key="slot.slot" class="card photos-slot" :class="{ 'photos-slot-done': slot.photos.length }">
+					<div v-for="slot in store.photos" :key="slot.slot" class="card photos-slot" :class="{ 'photos-slot-done': slot.photos.length }" :data-card="slot.slot">
 						<img v-if="slot.photos.length" class="photos-thumb" :src="slot.photos[slot.photos.length - 1]" alt="" />
 						<span v-else class="photos-empty"><AppIcon :name="slot.damage ? 'damage' : 'photos'" size="lg" /></span>
 						<span class="photos-label">{{ slot.label }}</span>
@@ -74,7 +75,7 @@ onBeforeUnmount(() => clearInterval(timer))
 			<BigButton icon="back" tone="quiet" :label="__('Back')" @press="go('damage')" />
 		</template>
 		<template #primary>
-			<BigButton icon="next" :label="__('Next')" :busy="checking" @press="next" />
+			<BigButton icon="next" :label="progress.nextLabel(__('Next'))" :busy="checking" @press="next" />
 		</template>
 	</ScreenFrame>
 </template>

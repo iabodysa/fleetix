@@ -136,6 +136,15 @@
 <tr>{% for b in boxes %}<td class="tp-name">{{ b[2] or "" }}</td>{% endfor %}</tr></table>
 {%- endmacro %}
 
+{% macro findings(rows) -%}
+{% if rows %}{{ bar(_("Findings"), "Findings") }}
+<table class="tp-grid">
+<colgroup><col style="width:24mm"><col></colgroup>
+<tr class="tp-h"><td>{{ _("Part") }}<i>Part</i></td><td>{{ _("Note") }}<i>Note</i></td></tr>
+{% for r in rows %}<tr><td class="tp-s">{{ _(r.part) }}</td><td class="tp-s">{{ _(r.reason) if r.reason else "" }}{% if r.note %} · {{ r.note }}{% endif %}</td></tr>{% endfor %}
+</table>{% endif %}
+{%- endmacro %}
+
 {% macro qr(doc) -%}
 <div class="tp-qr"><img src="{{ document_qr(doc.doctype, doc.name) }}"><span>{{ doc.name }}</span></div>
 {%- endmacro %}

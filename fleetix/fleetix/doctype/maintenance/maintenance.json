@@ -27,6 +27,7 @@
   "related_damage",
   "final_check_section",
   "final_check",
+  "findings",
   "approval_section",
   "approved_by",
   "status",
@@ -185,6 +186,12 @@
    "options": "Vehicle Checklist Item"
   },
   {
+   "fieldname": "findings",
+   "fieldtype": "Table",
+   "label": "Findings",
+   "options": "Maintenance Finding"
+  },
+  {
    "depends_on": "eval:doc.approved_by",
    "fieldname": "approval_section",
    "fieldtype": "Section Break"
@@ -223,7 +230,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-24 13:41:00.000000",
+ "modified": "2026-10-24 18:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Maintenance",

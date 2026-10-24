@@ -9449,10 +9449,8 @@ How it works,آلية العمل
 Our clients,عملاؤنا
 Our services,خدماتنا
 "Number of vehicles, type and project duration.",عدد المركبات ونوعها ومدة المشروع.
-Add a note to every row that needs repair,أضف ملاحظة لكل بند يحتاج إصلاح
 Both signatures are required,التوقيعان مطلوبان
 Check now,تحقق الآن
-Choose an item for {0},اختر صنفاً لـ {0}
 Confirm reading,تأكيد القراءة
 Customer screen not connected,شاشة العميل غير متصلة
 "Difference is above 20,000 km","الفرق أكثر من 20,000 كم"
@@ -9871,7 +9869,6 @@ Transfer,نقل
 {0} removed,أُزيل {0}
 Add at least one photo from the phone,أضف صورة واحدة على الأقل من الجوال
 Body damage,أضرار الهيكل
-Choose what is wrong for every row that needs repair,اختر نوع العطل لكل بند يحتاج إصلاحًا
 Damage marked,تم تحديد الأضرار
 Leak,تسريب
 Loose,مرتخٍ
@@ -9963,3 +9960,66 @@ Vehicle Card,بطاقة المركبة
 Damage Marks,علامات الأضرار
 Required Photos,الصور المطلوبة
 Slot,خانة الصورة
+Installed,تم التركيب
+Not Done,لم يتم
+Findings,الملاحظات
+Part,القطعة
+Short note,ملاحظة قصيرة
+Add note,أضف الملاحظة
+Engine,المحرك
+Brakes,الفرامل
+Suspension,نظام التعليق
+Air Conditioning,المكيف
+Notes from last visit,ملاحظات الزيارة السابقة
+Low Level,المستوى ناقص
+Damaged,تالف
+Needs Replacement,يحتاج تغيير
+{0} left: {1},باقي {0}: {1}
+Approve exit,اعتماد الخروج
+Etihad fleet maintenance,صيانة سيارات شركة اتحاد
+Customer maintenance,صيانة العملاء
+{0} vehicles waiting,{0} سيارات بالانتظار
+Enter the plate number,أدخل رقم اللوحة
+Enter the customer name,أدخل اسم العميل
+Enter the mobile number,أدخل رقم الجوال
+Customer name,اسم العميل
+Mobile number,رقم الجوال
+Existing customer,عميل مسجل
+Items and labour,القطع والأجور
+No price,بدون سعر
+No selling price for {0}. Tell the accountant.,لا يوجد سعر بيع لـ {0}. أبلغ المحاسب.
+Add at least one item,أضف صنفًا واحدًا على الأقل
+Choose how the customer pays,اختر طريقة الدفع
+Issue invoice,إصدار الفاتورة
+Invoice issued,صدرت الفاتورة
+Customer maintenance completed,اكتملت صيانة العميل
+Print invoice,طباعة الفاتورة
+New customer,عميل جديد
+Answer every row of the final check: {0},أكمل كل بنود الفحص النهائي: {0}
+Payment method {0} is not set up,طريقة الدفع {0} غير معرّفة
+Payment method {0} is disabled,طريقة الدفع {0} موقوفة
+Payment method {0} has no account for {1},طريقة الدفع {0} بلا حساب لشركة {1}
+No default company is set,لا توجد شركة افتراضية
+No default warehouse is set in Stock Settings,لا يوجد مستودع افتراضي في إعدادات المخزون
+Selling price list {0} is missing,قائمة أسعار البيع {0} غير موجودة
+No default sales tax template for {0},لا يوجد قالب ضريبة مبيعات افتراضي لـ {0}
+"Enter the plate, the customer name and the mobile number",أدخل اللوحة واسم العميل ورقم الجوال
+Customer maintenance is not set up: {0},صيانة العملاء غير مهيأة: {0}
+Maintenance Finding,ملاحظة صيانة
+Customer Visit,زيارة عميل
+Service Checklist,قائمة فحص الخدمة
+litre,لتر
+piece,حبة
+tyre,كفر
+More below,يوجد المزيد بالأسفل
+Wipers,المساحات
+Washer Fluid,ماء المساحات
+Radiator Coolant,ماء الرديتر
+Brake Fluid,زيت الفرامل
+Tyre Pressure,ضغط الكفرات
+Lights,الأنوار
+Windscreen Cleaned,تنظيف الزجاج
+Battery Terminals,أقطاب البطارية
+Belts,السيور
+Air Filter Check,فحص فلتر الهواء
+Mada,مدى

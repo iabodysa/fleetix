@@ -3,10 +3,14 @@ import { computed, onMounted, ref } from "vue"
 import { __, componentLabel, formatKm, isolate } from "../../i18n/index.js"
 import { api, errorText } from "../../api.js"
 import { offerUndo } from "../../composables/useUndo.js"
+import { useCardProgress } from "../../composables/useCardProgress.js"
 import { go, store } from "../../store/index.js"
 import AppIcon from "../../components/AppIcon.vue"
+import CardProgress from "../../components/CardProgress.vue"
 import BigButton from "../../components/BigButton.vue"
 import IconTile from "../../components/IconTile.vue"
+import LastFindings from "../../components/LastFindings.vue"
+import QtyStepper from "../../components/QtyStepper.vue"
 import ScreenFrame from "../../components/ScreenFrame.vue"
 
 const error = ref("")
@@ -14,12 +18,22 @@ const TONE = { overdue: "problem", soon: "wait", ok: "done" }
 const STATE_TEXT = { overdue: __("Overdue"), soon: __("Due soon"), ok: __("Good") }
 const ticked = computed(() => (store.checklist ? store.checklist.components.filter((row) => row.ticked) : []))
 
-function step(row) {
-	return row.component === "Oil" ? 0.5 : 1
+const FALLBACK_UNIT = { Oil: __("litre"), "Front Tires": __("tyre"), "Rear Tires": __("tyre") }
+function chosen(row) {
+	return row.items.concat(row.found || []).find((i) => i.item_code === row.item)
 }
-function canAdd(row) {
-	return !row.max_qty || row.qty + step(row) <= row.max_qty
+function unitOf(row) {
+	const item = chosen(row)
+	return (item && item.unit) || FALLBACK_UNIT[row.component] || __("piece")
 }
+function litresOf(row) {
+	const item = chosen(row)
+	return item && item.unit ? !!item.litres : row.component === "Oil"
+}
+const cards = computed(() =>
+	ticked.value.map((row) => ({ key: row.component, label: componentLabel(row.component), icon: row.component, done: !!row.item && row.qty > 0 && !unpriced(row) })),
+)
+const progress = useCardProgress(cards)
 function unpriced(row) {
 	const item = row.items.find((i) => i.item_code === row.item)
 	return item && item.priced === false
@@ -55,16 +69,7 @@ function next() {
 		error.value = __("Select at least one component")
 		return
 	}
-	const short = ticked.value.find((row) => !row.item || row.qty <= 0)
-	if (short) {
-		error.value = __("Choose an item for {0}", [componentLabel(short.component)])
-		return
-	}
-	const noRate = ticked.value.find(unpriced)
-	if (noRate) {
-		error.value = { text: __("The item has no valuation rate. Tell the store."), detail: noRate.item }
-		return
-	}
+	if (progress.guard()) return
 	go("damage")
 }
 onMounted(async () => {
@@ -81,6 +86,8 @@ onMounted(async () => {
 	<ScreenFrame :title="__('Items and parts')" v-model:error="error">
 		<p v-if="!store.checklist" class="muted">{{ __("Loading") }}</p>
 		<template v-else>
+			<CardProgress :items="cards" @show="progress.show" />
+			<LastFindings :last="store.checklist.last_findings" />
 			<div class="tile-grid">
 				<IconTile
 					v-for="row in store.checklist.components"
@@ -95,7 +102,7 @@ onMounted(async () => {
 					<span class="pill" :class="'tone-' + TONE[row.state]">{{ STATE_TEXT[row.state] }}</span>
 				</IconTile>
 			</div>
-			<div v-for="row in ticked" :key="row.component" class="card part">
+			<div v-for="row in ticked" :key="row.component" class="card part" :data-card="row.component">
 				<h2 class="part-name"><AppIcon :name="row.component" />{{ componentLabel(row.component) }}</h2>
 				<input
 					v-if="!row.items.length"
@@ -120,18 +127,14 @@ onMounted(async () => {
 						<span v-if="item.priced === false" class="pill tone-problem">{{ __("No valuation rate") }}</span>
 					</button>
 				</div>
-				<div v-if="row.max_qty !== 1" class="stepper ltr">
-					<button class="stepper-button" type="button" :aria-label="__('Less')" @click="row.qty = Math.max(step(row), row.qty - step(row))"><AppIcon name="minus" size="lg" /></button>
-					<span class="stepper-value">{{ row.qty }}</span>
-					<button class="stepper-button" type="button" :aria-label="__('More')" :disabled="!canAdd(row)" @click="canAdd(row) && (row.qty = row.qty + step(row))"><AppIcon name="plus" size="lg" /></button>
-				</div>
+				<QtyStepper v-if="row.max_qty !== 1" v-model="row.qty" :unit="unitOf(row)" :litres="litresOf(row)" :packs="(chosen(row) || {}).packs || []" :max="row.max_qty || 0" :min="litresOf(row) ? 0.5 : 1" />
 			</div>
 		</template>
 		<template #back>
 			<BigButton icon="back" tone="quiet" :label="__('Back')" @press="go('odometer')" />
 		</template>
 		<template #primary>
-			<BigButton icon="next" :label="__('Next')" :disabled="!store.checklist" @press="next" />
+			<BigButton icon="next" :label="progress.nextLabel(__('Next'))" :disabled="!store.checklist" @press="next" />
 		</template>
 	</ScreenFrame>
 </template>
@@ -181,29 +184,5 @@ onMounted(async () => {
 }
 .part-item-name {
 	font-weight: 800;
-}
-.stepper {
-	display: flex;
-	align-items: center;
-	gap: var(--s3);
-}
-.stepper-button {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: var(--button);
-	height: var(--button);
-	border: 2px solid var(--line);
-	border-radius: var(--r-md);
-	background: var(--surface-2);
-}
-.stepper-button:disabled {
-	opacity: 0.4;
-}
-.stepper-value {
-	min-width: 4rem;
-	font-size: var(--t-xl);
-	font-weight: 800;
-	text-align: center;
 }
 </style>

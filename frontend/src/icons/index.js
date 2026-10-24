@@ -39,6 +39,15 @@ export const ICONS = {
 	Broken: "x-octagon",
 	Missing: "help-circle",
 	item: "package",
+	customer: "users",
+	down: "chevrons-down",
+	litre: "droplet",
+	fleet: "truck",
+	note: "file-text",
+	Cash: "dollar-sign",
+	Mada: "credit-card",
+	phone: "phone",
+	labour: "tool",
 }
 
 export const MIRRORED = ["next", "back", "send", "logout"]

@@ -29,6 +29,21 @@ export function componentLabel(component) {
 	}[component]
 }
 
+export const FINDING_REASONS = ["Leak", "Worn", "Noise", "Loose", "Low Level", "Damaged", "Needs Replacement"]
+
+export function reasonLabel(reason) {
+	return {
+		Leak: __("Leak"),
+		Worn: __("Worn"),
+		Noise: __("Noise"),
+		Loose: __("Loose"),
+		"Low Level": __("Low Level"),
+		Damaged: __("Damaged"),
+		"Needs Replacement": __("Needs Replacement"),
+		"Not Done": __("Not Done"),
+	}[reason]
+}
+
 export function statusLabel(status) {
 	return {
 		"Due Alert": __("Due Alert"),

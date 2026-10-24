@@ -2,12 +2,19 @@ import call from "frappe-ui/src/utils/call.js"
 import { __ } from "./i18n/index.js"
 
 const M = "fleetix.fleetix.api.maintenance."
+const C = "fleetix.fleetix.api.customer_visit."
 
 export const api = {
 	checklist: (maintenance, odometer) => call(M + "get_vehicle_checklist", { maintenance, odometer }),
 	send: (args) => call(M + "send_for_approval", args),
-	finish: (maintenance, final_check) => call(M + "finish_maintenance", { maintenance, final_check }),
-	searchItems: (txt) => call("frappe.desk.search.search_link", { doctype: "Item", txt, filters: { disabled: 0, is_stock_item: 1 }, page_length: 20 }),
+	finish: (maintenance, finalCheck, findings) =>
+		call(M + "finish_maintenance", { maintenance, final_check: JSON.stringify(finalCheck), findings: JSON.stringify(findings) }),
+	searchItems: (txt, stock = 1) => call("frappe.desk.search.search_link", { doctype: "Item", txt, filters: { disabled: 0, is_stock_item: stock }, page_length: 20 }),
+	walkinSetup: () => call(C + "get_walkin_setup"),
+	findCustomer: (mobile) => call(C + "find_customer", { mobile }),
+	itemRates: (items) => call(C + "get_item_rates", { items: JSON.stringify(items) }),
+	plateFindings: (plate) => call(C + "get_plate_findings", { plate }),
+	finishWalkin: (args) => call(C + "finish_customer_visit", args),
 	act: (maintenance, action) => call("frappe.model.workflow.apply_workflow", { doc: { doctype: "Maintenance", name: maintenance }, action }),
 	result: (maintenance) => call(M + "get_visit_result", { maintenance }),
 	photos: (maintenance) => call(M + "get_photos", { maintenance }),

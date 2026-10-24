@@ -20,6 +20,8 @@ from fleetix.fleetix.doctype.maintenance.maintenance import (
 )
 from fleetix.fleetix.document_qr import qr_data_url
 from fleetix.fleetix.print_samples import print_samples
+from fleetix.fleetix.service_check import checked_rows, finding_rows, last_findings, service_checklist
+from fleetix.fleetix.units import unit_fields
 from fleetix.fleetix.vehicle_diagram import VIEWS, body_type, damage_zone, diagram_views
 
 WORKER_ROLES = ("Movement Supervisor", "Rental Manager", "System Manager")
@@ -145,7 +147,17 @@ def queue_row(visit):
 		"due": [row["component"] for row in components if row["state"] == "overdue"],
 		"worst": worst_overdue(components, cint(vehicle.last_odometer)),
 		"actions": [t.action for t in get_transitions(frappe.get_doc("Maintenance", visit.name))],
+		"findings": visit_findings(visit.name) if visit.status == "Final Check" else [],
 	}
+
+
+def visit_findings(maintenance):
+	return frappe.get_all(
+		"Maintenance Finding",
+		filters={"parent": maintenance, "parenttype": "Maintenance"},
+		fields=["part", "reason", "note"],
+		order_by="idx asc",
+	)
 
 
 def vehicle_row(vehicle, maintenance):
@@ -211,6 +223,9 @@ def get_vehicle_checklist(maintenance, odometer=None):
 		"final_check": [
 			{"item": row.item, "condition": row.condition, "notes": row.notes} for row in visit.final_check
 		],
+		"service_checklist": service_checklist(),
+		"findings": visit_findings(visit.name),
+		"last_findings": last_findings("Maintenance", {"vehicle": visit.vehicle, "docstatus": 1}, visit.name),
 	}
 
 
@@ -395,22 +410,19 @@ def send_for_approval(maintenance, odometer, components, driver_signature, inspe
 
 
 @frappe.whitelist(methods=["POST"])
-def finish_maintenance(maintenance, final_check):
+def finish_maintenance(maintenance, final_check, findings=None):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
 	visit.check_permission("write")
 	if visit.status not in FINISH_ACTIONS:
 		frappe.throw(_("This visit is not approved yet"))
 	throw_unpriced([row.item for row in visit.components_replaced if row.item], visit.company)
-	rows = frappe.parse_json(final_check) or []
-	if any(row.get("condition") == "Needs Repair" and not row.get("notes") for row in rows):
-		frappe.throw(_("Add a note to every row that needs repair"))
-	if rows:
-		visit.set(
-			"final_check",
-			[{"item": row["item"], "condition": row["condition"], "notes": row.get("notes")} for row in rows],
-		)
-		visit.save()
+	checked = checked_rows(
+		frappe.parse_json(final_check), [row.component for row in visit.components_replaced]
+	)
+	visit.set("final_check", checked)
+	visit.set("findings", finding_rows(frappe.parse_json(findings), checked))
+	visit.save()
 	while visit.status in FINISH_ACTIONS:
 		visit = apply_workflow(visit, FINISH_ACTIONS[visit.status])
 	return get_visit_result(visit.name)
@@ -554,4 +566,4 @@ def component_items(component, vehicle, company):
 		row["stock"] = flt(stock.get(row.item_code))
 		row["priced"] = row.item_code not in unpriced
 	items.sort(key=lambda row: row.item_code != last_item)
-	return items
+	return unit_fields(items, component)

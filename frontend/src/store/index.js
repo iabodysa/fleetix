@@ -3,9 +3,11 @@ import { createResource } from "frappe-ui/src/resources/resources.js"
 import { api, QUEUE_METHOD } from "../api.js"
 
 export const STEPS = ["queue", "odometer", "parts", "damage", "photos", "signatures", "await", "review"]
+export const WALKIN_STEPS = ["walkin", "walkinItems", "walkinCheck", "walkinInvoice"]
+const ORDER = ["home"].concat(STEPS, ["done"], WALKIN_STEPS)
 
 export const store = reactive({
-	step: "queue",
+	step: "home",
 	flow: "next",
 	drawer: false,
 	visit: null,
@@ -17,7 +19,13 @@ export const store = reactive({
 	result: null,
 	display: false,
 	printed: false,
+	walkin: null,
 })
+
+export function newWalkin() {
+	store.walkin = { plate: "", name: "", mobile: "", customer: null, items: [], checks: [], findings: [], last: null, mode: "", invoice: null, printed: false }
+	go("walkin")
+}
 
 export const queue = createResource({ url: QUEUE_METHOD, auto: false, initialData: [] })
 
@@ -58,7 +66,7 @@ function storedDraft() {
 export async function restoreDraft() {
 	const draft = storedDraft()
 	const rows = await queue.fetch()
-	if (!draft || queue.error || store.step !== "queue") return
+	if (!draft || queue.error || ["home", "queue"].indexOf(store.step) === -1) return
 	const row = (rows || []).find((r) => r.maintenance === draft.visit.maintenance)
 	if (row && row.status === draft.visit.status) {
 		Object.assign(store, draft, { damages: (draft.damages || []).filter((spot) => spot.view), drawer: false, flow: "next" })
@@ -74,7 +82,7 @@ export function stepForStatus(row) {
 }
 
 export function go(step) {
-	store.flow = STEPS.indexOf(step) < STEPS.indexOf(store.step) ? "back" : "next"
+	store.flow = ORDER.indexOf(step) < ORDER.indexOf(store.step) ? "back" : "next"
 	store.step = step
 }
 
@@ -96,6 +104,11 @@ export async function openVisit(row) {
 }
 
 const PREVIOUS_STEP = {
+	queue: "home",
+	walkin: "home",
+	walkinItems: "walkin",
+	walkinCheck: "walkinItems",
+	walkinInvoice: "home",
 	odometer: "queue",
 	parts: "odometer",
 	damage: "parts",
@@ -114,6 +127,7 @@ export function stepBack() {
 	const previous = PREVIOUS_STEP[store.step]
 	if (!previous) return false
 	if (previous === "queue") backToQueue()
+	else if (previous === "home") backHome()
 	else go(previous)
 	return true
 }
@@ -124,4 +138,11 @@ export function backToQueue() {
 	store.step = "queue"
 	store.drawer = false
 	queue.fetch()
+}
+
+export function backHome() {
+	store.visit = null
+	store.walkin = null
+	store.drawer = false
+	go("home")
 }

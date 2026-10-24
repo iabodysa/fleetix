@@ -2,7 +2,7 @@
 import { computed, ref } from "vue"
 import { api, errorText } from "../api.js"
 import { problem, success } from "../composables/useFeedback.js"
-import { __, componentLabel, formatKm, statusLabel } from "../i18n/index.js"
+import { __, componentLabel, formatKm, reasonLabel, statusLabel } from "../i18n/index.js"
 import { openVisit, queue, stepForStatus, store } from "../store/index.js"
 import AppIcon from "./AppIcon.vue"
 import BigButton from "./BigButton.vue"
@@ -31,6 +31,10 @@ async function act(row) {
 }
 function nextAction(row) {
 	return !stepForStatus(row) && row.actions && row.actions.length ? row.actions[0] : ""
+}
+const ACTION_LABELS = { Complete: __("Approve exit") }
+function actionLabel(action) {
+	return ACTION_LABELS[action] || __(action)
 }
 function stageText(row) {
 	if (row.status === "Due Alert") return __("Waiting for driver")
@@ -73,7 +77,14 @@ function late(row) {
 				</span>
 			</span>
 			<span v-if="row.worst" class="visit-late">{{ late(row) }}</span>
-			<BigButton v-if="nextAction(row) && !compact" :label="__(nextAction(row))" :busy="acting === row.maintenance" block @press="act(row)" />
+			<span v-if="row.findings && row.findings.length" class="visit-findings">
+				<span v-for="(finding, index) in row.findings" :key="index" class="visit-finding">
+					<b>{{ __(finding.part) }}</b>
+					<span v-if="finding.reason" class="pill" :class="finding.reason === 'Not Done' ? 'tone-problem' : 'tone-wait'">{{ reasonLabel(finding.reason) }}</span>
+					<span v-if="finding.note" class="muted">{{ finding.note }}</span>
+				</span>
+			</span>
+			<BigButton v-if="nextAction(row) && !compact" :label="actionLabel(nextAction(row))" :busy="acting === row.maintenance" block @press="act(row)" />
 		</component>
 		<ErrorCard :error="failed" @dismiss="failed = ''" />
 	</div>
@@ -84,6 +95,17 @@ function late(row) {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
 	gap: var(--s3);
+}
+.visit-findings {
+	display: grid;
+	gap: var(--s1);
+}
+.visit-finding {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: var(--s2);
+	font-size: var(--t-sm);
 }
 .queue-compact {
 	grid-template-columns: minmax(0, 1fr);

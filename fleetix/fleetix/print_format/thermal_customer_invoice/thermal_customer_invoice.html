@@ -1,0 +1,28 @@
+{% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
+{% set visit = frappe.db.get_value("Customer Visit", {"sales_invoice": doc.name}, ["name", "plate", "odometer"], as_dict=True) if doc.name else None %}
+{{ tp.style() }}
+<div class="tp">
+{{ tp.head(doc, _("Maintenance Invoice"), "Maintenance Invoice") }}
+{{ tp.plate(visit.plate if visit else None) }}
+{{ tp.kv([
+	(_("Customer"), "Customer", doc.customer_name),
+	(_("Mobile No"), "Mobile", frappe.db.get_value("Customer", doc.customer, "mobile_no") if doc.customer else None, 1),
+	(_("Date"), "Date", tp.dt(frappe.utils.get_datetime((doc.posting_date | string) + " " + (doc.posting_time | string))) if doc.posting_date else None),
+	(_("Odometer"), "Odometer km", tp.km(visit.odometer) if visit and visit.odometer else None),
+]) }}
+{{ tp.bar(_("Items"), "Items") }}
+<table class="tp-grid">
+<colgroup><col><col style="width:14mm"><col style="width:14mm"><col style="width:17mm"></colgroup>
+<tr class="tp-h"><td>{{ _("Item", context="Print Line") }}<i>Item</i></td><td>{{ _("Qty", context="Print Line") }}<i>Qty</i></td><td>{{ _("Rate", context="Print Line") }}<i>Rate</i></td><td>{{ _("Amount", context="Print Line") }}<i>Amount</i></td></tr>
+{% for r in doc.items %}<tr><td class="tp-s">{{ r.item_name }}</td><td class="tp-n">{{ "{:g}".format(r.qty or 0) }} {{ unit_label(r.stock_uom or r.uom) }}</td><td class="tp-n">{{ tp.money(r.rate) }}</td><td class="tp-n">{{ tp.money(r.amount) }}</td></tr>{% endfor %}
+</table>
+<table class="tp-sum" style="margin-top:2mm">
+<tr><td><b>{{ _("Total before VAT") }}</b> <i>Subtotal</i></td><td class="tp-n">{{ tp.money(doc.net_total) }}</td></tr>
+{% for t in doc.taxes %}<tr><td><b>{{ _("VAT {0}%").format("{:g}".format(t.rate or 0)) }}</b> <i>VAT {{ "{:g}".format(t.rate or 0) }}%</i></td><td class="tp-n">{{ tp.money(t.tax_amount) }}</td></tr>{% endfor %}
+<tr class="tp-grand"><td>{{ _("Total") }}<i>Total incl. VAT</i></td><td class="tp-n">{{ tp.money(doc.rounded_total or doc.grand_total) }}</td></tr>
+{% for p in doc.payments if p.amount %}<tr><td><b>{{ _(p.mode_of_payment) }}</b> <i>{{ p.mode_of_payment }}</i></td><td class="tp-n">{{ tp.money(p.amount) }}</td></tr>{% endfor %}
+</table>
+{{ tp.findings(frappe.get_all("Maintenance Finding", filters={"parent": visit.name, "parenttype": "Customer Visit"}, fields=["part", "reason", "note"], order_by="idx asc") if visit else []) }}
+{{ tp.qr(doc) }}
+{{ tp.foot(doc.company) }}
+</div>

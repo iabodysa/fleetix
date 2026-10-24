@@ -21,3 +21,14 @@
 {"key": "Fleetix Rental Manager", "caller": "Fleetix role profile record name"}
 {"key": "Claim", "caller": "Fleetix fixture Workflow Action Master name"}
 {"key": "Tires", "caller": "Fleetix fixture Item Group name"}
+{"key": "Wipers", "caller": "Fleetix Settings service checklist row"}
+{"key": "Washer Fluid", "caller": "Fleetix Settings service checklist row"}
+{"key": "Radiator Coolant", "caller": "Fleetix Settings service checklist row"}
+{"key": "Brake Fluid", "caller": "Fleetix Settings service checklist row"}
+{"key": "Tyre Pressure", "caller": "Fleetix Settings service checklist row"}
+{"key": "Lights", "caller": "Fleetix Settings service checklist row"}
+{"key": "Windscreen Cleaned", "caller": "Fleetix Settings service checklist row"}
+{"key": "Battery Terminals", "caller": "Fleetix Settings service checklist row"}
+{"key": "Belts", "caller": "Fleetix Settings service checklist row"}
+{"key": "Air Filter Check", "caller": "Fleetix Settings service checklist row"}
+{"key": "Mada", "caller": "Mode of Payment record name"}

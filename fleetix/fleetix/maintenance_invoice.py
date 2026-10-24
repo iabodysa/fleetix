@@ -7,6 +7,8 @@ import frappe
 from frappe import _
 from frappe.utils import flt
 
+from fleetix.fleetix.units import unit_label
+
 LABOUR_GROUP = re.compile(r"labou?r|service", re.I)
 
 
@@ -48,17 +50,34 @@ def maintenance_invoice(doc):
 	rows = []
 	if doc.items_issued:
 		rows = [
-			(row.item_code, row.item_name or row.item_code, row.qty, row.basic_rate, row.amount)
+			(
+				row.item_code,
+				row.item_name or row.item_code,
+				row.qty,
+				row.basic_rate,
+				row.amount,
+				unit_label(row.stock_uom),
+			)
 			for row in frappe.get_all(
 				"Stock Entry Detail",
 				filters={"parent": doc.items_issued, "parenttype": "Stock Entry"},
-				fields=["item_code", "item_name", "qty", "basic_rate", "amount"],
+				fields=["item_code", "item_name", "qty", "basic_rate", "amount", "stock_uom"],
 				order_by="idx asc",
 			)
 		]
 	if not rows:
 		rows = [
-			(row.item, _(row.component) + (f" - {row.item}" if row.item else ""), row.qty or 1, None, None)
+			(
+				row.item,
+				_(row.component) + (f" - {row.item}" if row.item else ""),
+				row.qty or 1,
+				None,
+				None,
+				unit_label(
+					frappe.get_cached_value("Item", row.item, "stock_uom") if row.item else None,
+					row.component,
+				),
+			)
 			for row in doc.components_replaced or []
 		]
 	labour_codes = _labour_codes({row[0] for row in rows if row[0]})

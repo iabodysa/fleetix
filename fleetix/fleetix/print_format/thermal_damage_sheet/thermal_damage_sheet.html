@@ -50,6 +50,8 @@
 <tr><td class="tp-n" style="height:6.5mm">{{ n + 1 }}</td><td class="tp-n">{{ zone_no.get(d.area, "") if d else "" }}</td><td class="tp-s">{% if d %}{{ d.description or _(d.area or "") }}{% set shots = frappe.db.count("Vehicle Inspection Photo", {"parent": d.name, "parenttype": "Damage"}) %}{% if shots %} · {{ _("Photos") }} {{ shots }}{% endif %}{% endif %}</td></tr>
 {% endfor %}
 </table>
+{% set visit = frappe.db.get_value("Maintenance", {"inspection": doc.name}, "name") if doc.name else None %}
+{{ tp.findings(frappe.get_all("Maintenance Finding", filters={"parent": visit, "parenttype": "Maintenance"}, fields=["part", "reason", "note"], order_by="idx asc") if visit else []) }}
 {{ tp.signatures([(_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None, doc.driver_signature), (_("Inspector"), "Inspector", frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None, doc.inspector_signature)]) }}
 {{ tp.qr(doc) }}
 {{ tp.foot(vehicle.company if vehicle else None) }}
