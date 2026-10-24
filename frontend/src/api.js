@@ -46,8 +46,15 @@ function shortText(error) {
 	return ""
 }
 
+const BUSY_STATUS = [502, 503, 504]
+
+export function isBusy(error) {
+	return error instanceof TypeError || BUSY_STATUS.indexOf(error && error.status) !== -1
+}
+
 export function errorText(error) {
 	if (error instanceof TypeError && /fetch/i.test(error.message)) return { text: __("No connection to the server"), detail: "" }
+	if (isBusy(error)) return { text: __("The server is busy, try again"), detail: String(error.message || "") }
 	const parts = error && error.messages && error.messages.length ? error.messages : [error && error.message]
 	const raw = parts.filter(Boolean).join(" ")
 	const plain = raw.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()

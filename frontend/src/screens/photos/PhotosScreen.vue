@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from "vue"
 import { __ } from "../../i18n/index.js"
-import { api, errorText } from "../../api.js"
+import { api, errorText, isBusy } from "../../api.js"
 import { useCardProgress } from "../../composables/useCardProgress.js"
 import { go, store } from "../../store/index.js"
 import AppIcon from "../../components/AppIcon.vue"
@@ -22,7 +22,7 @@ async function poll() {
 	try {
 		store.photos = await api.photos(store.visit.maintenance)
 	} catch (e) {
-		error.value = errorText(e)
+		if (!isBusy(e)) error.value = errorText(e)
 	}
 }
 async function next() {
@@ -30,7 +30,7 @@ async function next() {
 	try {
 		store.photos = await api.photos(store.visit.maintenance)
 	} catch (e) {
-		error.value = errorText(e)
+		if (!progress.guard()) error.value = Object.assign(errorText(e), { retry: next })
 		return
 	} finally {
 		checking.value = false
@@ -64,7 +64,8 @@ onBeforeUnmount(() => clearInterval(timer))
 				</p>
 				<div class="photos-slots">
 					<div v-for="slot in store.photos" :key="slot.slot" class="card photos-slot" :class="{ 'photos-slot-done': slot.photos.length }" :data-card="slot.slot">
-						<img v-if="slot.photos.length" class="photos-thumb" :src="slot.photos[slot.photos.length - 1]" alt="" />
+						<img v-if="slot.photos.length" class="photos-thumb" :src="slot.photos[0]" alt="" />
+						<span v-if="slot.photos.length > 1" class="pill tone-done photos-count-badge ltr">{{ slot.photos.length }}</span>
 						<span v-else class="photos-empty"><AppIcon :name="slot.damage ? 'damage' : 'photos'" size="lg" /></span>
 						<span class="photos-label">{{ slot.label }}</span>
 					</div>
@@ -118,7 +119,17 @@ onBeforeUnmount(() => clearInterval(timer))
 	grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
 	gap: var(--s2);
 }
+.photos-count-badge {
+	position: absolute;
+	top: var(--s1);
+	right: var(--s1);
+}
+html[dir="rtl"] .photos-count-badge {
+	right: auto;
+	left: var(--s1);
+}
 .photos-slot {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

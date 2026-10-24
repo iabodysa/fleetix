@@ -10,7 +10,7 @@
 <script src="/assets/fleetix/js/maintenance-photos.js" defer></script>
 </head>
 <body>
-<main class="mp" data-maintenance="{{ visit.maintenance|e }}" data-csrf="{{ csrf_token|e }}" data-busy="{{ _('Uploading') }}" data-failed="{{ _('Upload failed') }}">
+<main class="mp" data-maintenance="{{ visit.maintenance|e }}" data-csrf="{{ csrf_token|e }}" data-busy="{{ _('Uploading') }}" data-failed="{{ _('Upload failed') }}" data-next="{{ _('Next photo: {0}') }}">
   <header class="mp-vehicle">
     <p class="mp-plate"><bdi>{{ visit.vehicle.plate|e }}</bdi></p>
     <p class="mp-model">{{ visit.vehicle.model|e }}</p>
@@ -19,12 +19,13 @@
   <ol class="mp-steps">
     {% for step in steps %}<li class="{{ step.state }}">{{ step.label }}</li>{% endfor %}
   </ol>
+  <button class="mp-start" type="button" data-start{{ ' hidden' if not slots|rejectattr('photos')|list else '' }}>{{ _("Start photos") }}</button>
   <ul class="mp-slots">
     {% for slot in slots %}
-    <li class="mp-slot{{ ' mp-slot-done' if slot.photos else '' }}">
+    <li class="mp-slot{{ ' mp-slot-done' if slot.photos else '' }}" data-slot="{{ slot.slot|e }}" data-label="{{ slot.label|e }}"{{ ' data-done' if slot.photos else '' }}>
       <label class="mp-take">
         <input type="file" accept="image/*" capture="environment" data-slot="{{ slot.slot|e }}">
-        {% if slot.photos %}<img class="mp-thumb" src="{{ slot.photos[-1]|e }}" alt="">{% endif %}
+        {% if slot.photos %}<img class="mp-thumb" src="{{ slot.photos[0]|e }}" alt="">{% endif %}
         <span class="mp-slot-label">{{ slot.label|e }}</span>
         <strong class="mp-slot-count">{{ slot.photos|length }}</strong>
       </label>
@@ -32,6 +33,23 @@
     {% endfor %}
   </ul>
   <p class="mp-error" data-error role="alert"></p>
+  <section class="mp-cam" data-cam hidden>
+    <video class="mp-cam-video" playsinline muted autoplay></video>
+    <header class="mp-cam-head">
+      <p class="mp-cam-label" data-cam-label></p>
+      <p class="mp-cam-progress" data-cam-progress dir="ltr"></p>
+      <p class="mp-cam-error" data-cam-error role="alert"></p>
+    </header>
+    <footer class="mp-cam-actions">
+      <button class="mp-cam-side" type="button" data-retake disabled>{{ _("Retake last") }}</button>
+      <button class="mp-shutter" type="button" data-shutter aria-label="{{ _('Take photo') }}"></button>
+      <button class="mp-cam-side" type="button" data-list>{{ _("Show list") }}</button>
+    </footer>
+    <div class="mp-cam-choice" data-choice hidden>
+      <button class="mp-cam-extra" type="button" data-extra>{{ _("Extra photo of the same side") }}</button>
+      <button class="mp-cam-next" type="button" data-advance>{{ _("Next") }}</button>
+    </div>
+  </section>
 </main>
 </body>
 </html>

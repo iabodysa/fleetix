@@ -229,7 +229,6 @@ Mark the damage on the vehicle drawing,গাড়ির ছবিতে ক্
 {0} allows at most {1},{0} সর্বোচ্চ {1}
 Take the photo: {0},ছবি তুলুন: {0}
 Choose which photo this is,এটি কোন ছবি তা বেছে নিন
-Engine Bay,ইঞ্জিনের অংশ
 Print test,প্রিন্ট পরীক্ষা
 Damage sheet,ক্ষতির শিট
 Handover Pass,হস্তান্তর পাস
@@ -329,3 +328,13 @@ Subtotal,উপমোট
 Exit approved,বের হওয়া অনুমোদিত
 All vehicles,সব গাড়ি
 Show more ({0} of {1}),আরও দেখান ({1} এর মধ্যে {0})
+"The server is busy, try again","সার্ভার ব্যস্ত, আবার চেষ্টা করুন"
+Next photo: {0},পরের ছবি: {0}
+Start photos,ছবি তোলা শুরু করুন
+Retake last,শেষ ছবি আবার তুলুন
+Show list,তালিকা দেখান
+Take photo,ছবি তুলুন
+Extra photo of the same side,একই দিকের অতিরিক্ত ছবি
+Front Side,সামনের দিক
+Rear Side,পেছনের দিক
+Odometer Photo,মিটারের ছবি

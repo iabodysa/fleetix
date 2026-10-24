@@ -9952,7 +9952,6 @@ left,الجانب الأيسر
 right,الجانب الأيمن
 Take the photo: {0},التقط الصورة: {0}
 Choose which photo this is,اختر نوع هذه الصورة
-Engine Bay,حجرة المحرك
 Print test,اختبار الطباعة
 Damage sheet,كشف الأضرار
 Handover Pass,إذن التسليم
@@ -10055,3 +10054,13 @@ Uploading...,جارٍ الرفع...
 Exit approved,تم اعتماد الخروج
 All vehicles,كل المركبات
 Show more ({0} of {1}),عرض المزيد ({0} من {1})
+"The server is busy, try again",الخادم مشغول، حاول مرة ثانية
+Next photo: {0},الصورة التالية: {0}
+Start photos,ابدأ التصوير
+Retake last,أعد آخر صورة
+Take photo,التقط صورة
+Extra photo of the same side,صورة إضافية لنفس الجهة
+Front Side,الجهة الأمامية
+Rear Side,الجهة الخلفية
+Odometer Photo,صورة العداد
+Show list,عرض القائمة

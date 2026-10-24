@@ -7,6 +7,13 @@ const emit = defineEmits(["dismiss"])
 const open = ref(false)
 const text = computed(() => (props.error && typeof props.error === "object" ? props.error.text : props.error))
 const detail = computed(() => (props.error && typeof props.error === "object" ? props.error.detail : ""))
+const retry = computed(() => (props.error && typeof props.error === "object" && typeof props.error.retry === "function" ? props.error.retry : null))
+
+function again() {
+	const run = retry.value
+	emit("dismiss")
+	run()
+}
 
 watch(
 	() => props.error,
@@ -21,6 +28,7 @@ watch(
 			<p class="error-text">{{ text }}</p>
 			<button v-if="detail" class="error-more" type="button" @click="open = !open">{{ open ? __("Hide details") : __("Details") }}</button>
 			<p v-if="detail && open" class="error-detail">{{ detail }}</p>
+			<button v-if="retry" class="error-ok" type="button" @click="again">{{ __("Try again") }}</button>
 			<button class="error-ok" type="button" @click="emit('dismiss')">{{ __("OK") }}</button>
 		</div>
 	</div>

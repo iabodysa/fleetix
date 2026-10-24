@@ -23,7 +23,7 @@ NEXT_DUE_FIELDS = {
 	"Rear Tires": "next_rear_tires_due_odometer",
 }
 ISSUE_STATES = ("Service", "Final Check")
-DEFAULT_PHOTO_SLOTS = ("Odometer", "Front", "Rear", "Left Side", "Right Side", "Engine Bay")
+DEFAULT_PHOTO_SLOTS = ("Front Side", "Rear Side", "Right Side", "Left Side", "Odometer Photo")
 DEFAULT_MAX_QTY = {"Oil Filter": 1, "Battery": 1, "Front Tires": 2, "Rear Tires": 2}
 
 
