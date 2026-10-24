@@ -4,6 +4,15 @@ fail_fast: false
 
 
 repos:
+  - repo: local
+    hooks:
+      - id: prod-compat-gate
+        name: "Scan frappe/erpnext/hrms imports against pinned prod versions"
+        entry: python3 tools/prod_compat/gate.py
+        language: system
+        files: '^fleetix/.*\.py$'
+        pass_filenames: false
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
