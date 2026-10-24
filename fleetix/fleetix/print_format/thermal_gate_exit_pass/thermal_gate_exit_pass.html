@@ -1,0 +1,24 @@
+{% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["license_plate", "make", "model", "company", "last_odometer"], as_dict=True) if doc.vehicle else None %}
+{% set driver = frappe.db.get_value("Driver", doc.driver, ["full_name", "cell_number", "customer"], as_dict=True) if doc.driver else None %}
+{% set work = [] %}
+{% for r in doc.components_replaced %}{% set _x = work.append(_(r.component)) %}{% endfor %}
+{{ tp.style() }}
+<div class="tp">
+{{ tp.head(doc, _("Gate Exit Pass"), "Gate Exit Pass") }}
+{{ tp.plate(vehicle.license_plate if vehicle else doc.vehicle) }}
+{{ tp.big(_("Time Out"), "Time out", tp.dt(frappe.utils.now_datetime())) }}
+{{ tp.options([("Maintenance", _("Maintenance"), "Maintenance"), ("Handover", _("Handover"), "Handover"), ("Return", _("Return"), "Return")], "Maintenance") }}
+{{ tp.kv([
+	(_("Vehicle"), "Vehicle", " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),
+	(_("Driver"), "Driver", driver.full_name if driver else None),
+	(_("Customer"), "Customer", driver.customer if driver else None),
+	(_("Time In"), "Time in", tp.dt(doc.visit_datetime)),
+	(_("Work Done"), "Work done", " / ".join(work) if work else None),
+	(_("Status"), "Status", _(doc.status) if doc.status else None),
+]) }}
+{{ tp.pair([(_("Odometer In"), "Km in", tp.km(doc.odometer)), (_("Odometer Out"), "Km out", tp.km(vehicle.last_odometer if vehicle else None))]) }}
+{{ tp.signatures([(_("Authorised By", context="Gate Pass"), "Authorised by", frappe.db.get_value("User", doc.approved_by, "full_name") if doc.approved_by else None), (_("Gate Supervisor"), "Gate supervisor", frappe.db.get_value("User", frappe.session.user, "full_name")), (_("Driver"), "Driver", driver.full_name if driver else None)]) }}
+{{ tp.qr(doc) }}
+{{ tp.foot(doc.company or (vehicle.company if vehicle else None)) }}
+</div>

@@ -1,0 +1,32 @@
+{% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
+{% set due = [] %}
+{% for component in ["Oil", "Oil Filter", "Front Tires", "Rear Tires", "Battery"] %}{% set at = next_due(doc, component) %}{% if at[0] or at[1] %}{% set _x = due.append((component, at[0], at[1])) %}{% endif %}{% endfor %}
+{{ tp.style() }}
+<div class="tp">
+{{ tp.head(doc, _("Vehicle Data Card"), "Vehicle Data Card") }}
+{{ tp.plate(doc.license_plate) }}
+{{ tp.kv([
+	(_("Make", context="Vehicle Card"), "Make", doc.make),
+	(_("Model"), "Model", doc.model),
+	(_("Model Year"), "Year", doc.model_year, 1),
+	(_("Color"), "Colour", doc.color),
+	(_("Vehicle Type"), "Type", doc.vehicle_type),
+	(_("Chassis No"), "VIN", doc.chassis_no, 1),
+	(_("Istimara No"), "Registration no.", doc.istimara_no, 1),
+	(_("Registration Expiry"), "Registration expiry", frappe.utils.formatdate(doc.registration_expiry, "yyyy-MM-dd") if doc.registration_expiry else None, 1),
+	(_("Periodic Inspection Expiry"), "Inspection expiry", frappe.utils.formatdate(doc.periodic_inspection_expiry, "yyyy-MM-dd") if doc.periodic_inspection_expiry else None, 1),
+	(_("City"), "City", doc.city),
+	(_("Driver"), "Driver", frappe.db.get_value("Driver", doc.current_driver, "full_name") if doc.current_driver else None),
+]) }}
+{{ tp.big(_("Odometer"), "Odometer km", tp.km(doc.last_odometer)) }}
+{% if due %}
+{{ tp.bar(_("Next service"), "Next service") }}
+<table class="tp-grid">
+<colgroup><col><col style="width:22mm"><col style="width:22mm"></colgroup>
+<tr class="tp-h"><td>{{ _("Component") }}<i>Component</i></td><td>{{ _("Due at km") }}<i>km</i></td><td>{{ _("Due Date") }}<i>Date</i></td></tr>
+{% for component, due_km, due_date in due %}<tr><td class="tp-s" style="font-size:10pt;font-weight:700">{{ _(component) }}</td><td class="tp-n" style="font-size:10pt">{{ tp.km(due_km) }}</td><td class="tp-n" style="font-size:10pt">{{ frappe.utils.formatdate(due_date, "yyyy-MM-dd") if due_date else "" }}</td></tr>{% endfor %}
+</table>
+{% endif %}
+{{ tp.qr(doc) }}
+{{ tp.foot(doc.company) }}
+</div>

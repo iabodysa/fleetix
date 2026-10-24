@@ -1,0 +1,21 @@
+{% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["license_plate", "make", "model", "company"], as_dict=True) if doc.vehicle else None %}
+{% set driver = frappe.db.get_value("Driver", doc.driver, ["full_name", "cell_number", "customer"], as_dict=True) if doc.driver else None %}
+{{ tp.style() }}
+<div class="tp">
+{{ tp.head(doc, _("Gate Entry Pass"), "Gate Entry Pass") }}
+{{ tp.plate(vehicle.license_plate if vehicle else doc.vehicle) }}
+{{ tp.big(_("Time In"), "Time in", tp.dt(doc.visit_datetime)) }}
+{{ tp.options([("Maintenance", _("Maintenance"), "Maintenance"), ("Handover", _("Handover"), "Handover"), ("Return", _("Return"), "Return")], "Maintenance") }}
+{{ tp.kv([
+	(_("Vehicle"), "Vehicle", " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),
+	(_("Driver"), "Driver", driver.full_name if driver else None),
+	(_("Mobile"), "Mobile", driver.cell_number if driver else None, 1),
+	(_("Customer"), "Customer", driver.customer if driver else None),
+	(_("Project"), "Project", doc.project),
+]) }}
+{{ tp.big(_("Odometer In"), "Km in", tp.km(doc.odometer)) }}
+{{ tp.signatures([(_("Gate Supervisor"), "Gate supervisor", frappe.db.get_value("User", frappe.session.user, "full_name")), (_("Driver"), "Driver", driver.full_name if driver else None)]) }}
+{{ tp.qr(doc) }}
+{{ tp.foot(doc.company or (vehicle.company if vehicle else None)) }}
+</div>

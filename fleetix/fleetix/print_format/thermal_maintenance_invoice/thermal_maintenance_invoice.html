@@ -1,0 +1,44 @@
+{% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["license_plate", "make", "model", "company"], as_dict=True) if doc.vehicle else None %}
+{% set parts = frappe.get_all("Stock Entry Detail", filters={"parent": doc.items_issued, "parenttype": "Stock Entry"}, fields=["item_name", "item_code", "qty", "basic_rate", "amount"], order_by="idx asc") if doc.items_issued else [] %}
+{% set labour = frappe.get_all("Damage Cost Item", filters={"parent": doc.related_damage, "parenttype": "Damage", "item_type": "Labour"}, fields=["description", "qty", "rate"], order_by="idx asc") if doc.related_damage else [] %}
+{% set parts_total = parts | sum(attribute="amount") %}
+{% set labour_total = namespace(v=0) %}
+{% for row in labour %}{% set labour_total.v = labour_total.v + (row.qty or 0) * (row.rate or 0) %}{% endfor %}
+{% set total = (parts_total + labour_total.v) or doc.cost or 0 %}
+{% macro lines(title, title_en, rows) -%}
+{{ tp.bar(title, title_en) }}
+<table class="tp-grid">
+<colgroup><col><col style="width:9mm"><col style="width:15mm"><col style="width:17mm"></colgroup>
+<tr class="tp-h"><td>{{ _("Item", context="Print Line") }}<i>Item</i></td><td>{{ _("Qty", context="Print Line") }}<i>Qty</i></td><td>{{ _("Rate", context="Print Line") }}<i>Rate</i></td><td>{{ _("Amount", context="Print Line") }}<i>Amount</i></td></tr>
+{% for r in rows %}<tr><td class="tp-s">{{ r[0] }}</td><td class="tp-n">{{ "{:g}".format(r[1] or 0) }}</td><td class="tp-n">{{ tp.money(r[2]) if r[2] is not none else "" }}</td><td class="tp-n">{{ tp.money(r[3]) if r[3] is not none else "" }}</td></tr>{% endfor %}
+</table>
+{%- endmacro %}
+{{ tp.style() }}
+<div class="tp">
+{{ tp.head(doc, _("Maintenance Invoice"), "Maintenance Invoice") }}
+{{ tp.plate(vehicle.license_plate if vehicle else doc.vehicle) }}
+{{ tp.kv([
+	(_("Vehicle"), "Vehicle", " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),
+	(_("Date"), "Date", tp.dt(doc.visit_datetime)),
+	(_("Maintenance Type"), "Type", _(doc.maintenance_type) if doc.maintenance_type else None),
+	(_("Workshop"), "Workshop", doc.workshop),
+	(_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None),
+]) }}
+{{ tp.big(_("Odometer"), "Odometer km", tp.km(doc.odometer)) }}
+{% set part_rows = [] %}
+{% for r in parts %}{% set _x = part_rows.append((r.item_name or r.item_code, r.qty, r.basic_rate, r.amount)) %}{% endfor %}
+{% if not part_rows %}{% for r in doc.components_replaced %}{% set _x = part_rows.append((_(r.component) ~ (" - " ~ r.item if r.item else ""), r.qty or 1, None, None)) %}{% endfor %}{% endif %}
+{% set labour_rows = [] %}
+{% for r in labour %}{% set _x = labour_rows.append((r.description, r.qty, r.rate, (r.qty or 0) * (r.rate or 0))) %}{% endfor %}
+{% if part_rows %}{{ lines(_("Spare Parts"), "Spare parts", part_rows) }}{% endif %}
+{% if labour_rows %}{{ lines(_("Labour"), "Labour", labour_rows) }}{% endif %}
+<table class="tp-sum" style="margin-top:2mm">
+{% if parts %}<tr><td><b>{{ _("Spare Parts") }}</b> <i>Parts</i></td><td class="tp-n">{{ tp.money(parts_total) }}</td></tr>{% endif %}
+{% if labour_rows %}<tr><td><b>{{ _("Labour") }}</b> <i>Labour</i></td><td class="tp-n">{{ tp.money(labour_total.v) }}</td></tr>{% endif %}
+<tr class="tp-grand"><td>{{ _("Total") }}<i>Total SAR</i></td><td class="tp-n">{{ tp.money(total) }}</td></tr>
+</table>
+{{ tp.signatures([(_("Workshop"), "Workshop", frappe.db.get_value("User", doc.approved_by, "full_name") if doc.approved_by else None), (_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None)]) }}
+{{ tp.qr(doc) }}
+{{ tp.foot(doc.company or (vehicle.company if vehicle else None)) }}
+</div>

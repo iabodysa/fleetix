@@ -1,0 +1,146 @@
+{% macro style() -%}
+{% include "fleetix/templates/print/fonts.html" %}
+<style>
+.print-format{page-size:Custom;page-width:80mm;page-height:297mm;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0}
+@media screen{.print-format{max-width:80mm!important;min-height:0!important;padding:4mm!important;border-radius:0!important}}
+.tp{width:72mm;margin:0 auto;background:#FFF;color:#000;font-family:"Tajawal",sans-serif;font-size:10pt;font-weight:400;line-height:1.3;direction:rtl;text-align:right;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tp b{font-weight:700}
+.tp i{font-style:normal}
+.tp table{width:100%;border-collapse:collapse;table-layout:fixed}
+.tp td{padding:0;vertical-align:middle}
+.tp .ltr{direction:ltr;unicode-bidi:embed;display:inline-block}
+.tp-logo{text-align:center;padding:0 0 2mm}
+.tp-logo img{height:11mm;max-width:60mm;filter:grayscale(1) contrast(4);-webkit-filter:grayscale(1) contrast(4)}
+.tp-title{background:#000;color:#FFF;text-align:center;padding:1.6mm 2mm 1.4mm}
+.tp-title b{display:block;font-size:15pt;line-height:1.15}
+.tp-title i{display:block;font-size:9pt;line-height:1.2;letter-spacing:.4pt}
+.tp-no{text-align:center;border-bottom:2px solid #000;padding:1.6mm 0 1.4mm}
+.tp-no span{font-size:13pt;font-weight:700;direction:ltr;unicode-bidi:embed;display:inline-block;letter-spacing:.5pt}
+.tp-bar{border-top:2px solid #000;border-bottom:1px solid #000;margin:2.5mm 0 0;padding:.8mm 0 .6mm}
+.tp-bar td{font-size:11pt;font-weight:700}
+.tp-bar .tp-en{text-align:left;font-size:9pt;font-weight:400;direction:ltr}
+.tp-kv td{border-bottom:1px dotted #000;padding:1mm 0 .8mm}
+.tp-kv .tp-k{width:42%;line-height:1.1}
+.tp-k b{display:block;font-size:10pt}
+.tp-k i{display:block;font-size:9pt}
+.tp-kv .tp-v{font-size:11pt;font-weight:700;text-align:left}
+.tp-big{text-align:center;padding:1.5mm 0 1mm;border-bottom:1px solid #000}
+.tp-big .tp-k b,.tp-big .tp-k i{display:inline}
+.tp-big .tp-k i{margin-right:1.5mm}
+.tp-big .tp-num{font-size:22pt;font-weight:700;line-height:1.1;direction:ltr;unicode-bidi:embed;display:block}
+.tp-plate{border:2.5px solid #000;margin:2mm auto 1mm;width:68mm;direction:ltr}
+.tp-plate td{text-align:center;font-weight:700;line-height:1.05}
+.tp-plate .tp-pd{font-size:19pt;letter-spacing:1pt;border-right:2px solid #000}
+.tp-plate .tp-pl{font-size:19pt;letter-spacing:2.5pt;border-right:2px solid #000}
+.tp-plate .tp-ar td{border-bottom:2px solid #000;padding:1mm 0 .6mm}
+.tp-plate .tp-la td{padding:.8mm 0 .6mm}
+.tp-plate .tp-ksa{width:15.5mm;background:#000;color:#FFF;font-size:9pt;line-height:1.15;padding:0}
+.tp-pair td{width:50%;text-align:center;vertical-align:top;padding:1.5mm 0 1mm;border-bottom:1px solid #000}
+.tp-pair td+td{border-right:1px solid #000}
+.tp-pair .tp-num{font-size:18pt;font-weight:700;line-height:1.1;direction:ltr;unicode-bidi:embed;display:block}
+.tp-plain{text-align:center;font-size:20pt;font-weight:700;border:2.5px solid #000;width:62mm;margin:2mm auto 1mm;padding:1mm 0;direction:ltr}
+.tp-grid td{border:1px solid #000;text-align:center;padding:.8mm .5mm .6mm;font-size:9pt;line-height:1.15}
+.tp-grid .tp-h td{background:#000;color:#FFF;font-weight:700;font-size:9pt}
+.tp-grid .tp-h i{display:block;font-weight:400}
+.tp-grid .tp-s{text-align:right;padding-right:1mm}
+.tp-grid .tp-n{direction:ltr;font-weight:700}
+.tp-grid .tp-on{background:#000;color:#FFF;font-weight:700}
+.tp-sum td{padding:.9mm 0 .7mm;font-size:10.5pt;border-bottom:1px dotted #000}
+.tp-sum .tp-n{text-align:left;direction:ltr;font-weight:700;width:30mm}
+.tp-sum .tp-grand td{background:#000;color:#FFF;font-size:13pt;font-weight:700;padding:1.4mm 1.5mm 1.2mm;border:0}
+.tp-sum .tp-grand i{font-size:9pt;font-weight:400;margin-right:1.5mm}
+.tp-cb{display:inline-block;width:3.6mm;height:3.6mm;border:1.5px solid #000;vertical-align:-.7mm;margin-left:1.2mm;text-align:center;line-height:3.2mm;font-size:9pt;font-weight:700;box-sizing:border-box}
+.tp-cb.on{background:#000;color:#FFF}
+.tp-opts td{font-size:10pt;padding:1.2mm 0 1mm;text-align:center}
+.tp-opts i{display:block;font-size:9pt}
+.tp-veh td{text-align:center;vertical-align:bottom;padding:.5mm 0 0}
+.tp-veh svg{display:block;margin:0 auto}
+.tp-veh .tp-cap td{font-size:9pt;font-weight:700;padding:.3mm 0 1.2mm;vertical-align:top}
+.tp-veh .tp-cap i{font-weight:400;margin-right:1mm}
+.tp-z{display:inline-block;min-width:4.4mm;height:4.4mm;line-height:4.4mm;border-radius:2.2mm;background:#000;color:#FFF;font-size:9pt;font-weight:700;text-align:center;margin-left:1mm;padding:0 .4mm;box-sizing:border-box}
+.tp-legend{border:1px solid #000;margin-top:1mm;padding:1mm 1.5mm;font-size:9pt;line-height:1.5;text-align:center}
+.tp-legend span{display:inline-block;white-space:nowrap;margin:0 1.2mm}
+.tp-legend i{margin-right:1mm}
+.tp-line td{border-bottom:1px dotted #000;height:7mm;font-size:10pt}
+.tp-sg{margin-top:3mm}
+.tp-sg td{border:1.5px solid #000;text-align:center;vertical-align:top;padding:.8mm .8mm 0}
+.tp-sg .tp-k b,.tp-sg .tp-k i{display:block}
+.tp-sg .tp-pad{height:15mm;padding:0}
+.tp-sg .tp-pad img{max-height:14mm;max-width:100%;filter:grayscale(1) contrast(4);-webkit-filter:grayscale(1) contrast(4)}
+.tp-sg .tp-name{font-size:9pt;border-top:1px dotted #000;height:5.5mm;vertical-align:middle;padding:0 .5mm}
+.tp-qr{text-align:center;padding:3mm 0 1mm}
+.tp-qr img{width:28mm;height:28mm}
+.tp-qr span{display:block;font-size:9pt;direction:ltr}
+.tp-foot{border-top:2px solid #000;margin-top:2mm;padding-top:1.2mm;text-align:center;font-size:9pt;line-height:1.35}
+.tp-foot b{display:block;font-size:10pt}
+.tp-cut{border-top:1.5px dashed #000;margin-top:3mm;height:4mm}
+</style>
+{%- endmacro %}
+
+{% macro head(doc, title, title_en, number=None) -%}
+<div class="tp-logo"><img src="/assets/fleetix/images/etihad-lockup.png"></div>
+<div class="tp-title"><b>{{ title }}</b><i>{{ title_en }}</i></div>
+<div class="tp-no"><span>{{ number or doc.name }}</span></div>
+{%- endmacro %}
+
+{% macro bar(title, title_en) -%}
+<table class="tp-bar"><tr><td>{{ title }}</td><td class="tp-en">{{ title_en }}</td></tr></table>
+{%- endmacro %}
+
+{% macro kv(rows) -%}
+<table class="tp-kv">{% for r in rows if r[2] is not none and r[2] != "" %}<tr><td class="tp-k"><b>{{ r[0] }}</b><i>{{ r[1] }}</i></td><td class="tp-v">{% if r | length > 3 and r[3] %}<span class="ltr">{{ r[2] }}</span>{% else %}{{ r[2] }}{% endif %}</td></tr>{% endfor %}</table>
+{%- endmacro %}
+
+{% macro big(ar, en, value) -%}
+<div class="tp-big"><div class="tp-k"><b>{{ ar }}</b><i>{{ en }}</i></div><span class="tp-num">{{ value if value is not none else "" }}</span></div>
+{%- endmacro %}
+
+{% macro pair(cells) -%}
+<table class="tp-pair"><tr>{% for ar, en, value in cells %}<td><div class="tp-k"><b>{{ ar }}</b><i>{{ en }}</i></div><span class="tp-num">{{ value if value is not none else "" }}</span></td>{% endfor %}</tr></table>
+{%- endmacro %}
+
+{% macro plate(text) -%}
+{% set p = saudi_plate(text) %}
+{% if p %}<table class="tp-plate">
+<colgroup><col style="width:25mm"><col><col style="width:15.5mm"></colgroup>
+<tr class="tp-ar"><td class="tp-pd">{{ p.digits_ar }}</td><td class="tp-pl" dir="rtl">{{ p.letters_ar }}</td><td class="tp-ksa" rowspan="2">{{ _("Saudi Arabia", context="Vehicle Plate") }}<br>KSA</td></tr>
+<tr class="tp-la"><td class="tp-pd">{{ p.digits }}</td><td class="tp-pl">{{ p.letters }}</td></tr>
+</table>{% elif text %}<div class="tp-plain">{{ text }}</div>{% endif %}
+{%- endmacro %}
+
+{% macro check(on) -%}
+<span class="tp-cb{% if on %} on{% endif %}">{% if on %}&#10003;{% endif %}</span>
+{%- endmacro %}
+
+{% macro options(items, chosen) -%}
+<table class="tp-opts"><tr>{% for key, ar, en in items %}<td>{{ check(key == chosen) }}<b>{{ ar }}</b><i>{{ en }}</i></td>{% endfor %}</tr></table>
+{%- endmacro %}
+
+{% macro dt(value) -%}
+{% if value %}<span class="ltr">{{ frappe.utils.format_datetime(value, "yyyy-MM-dd  HH:mm") }}</span>{% endif %}
+{%- endmacro %}
+
+{% macro km(value) -%}
+{{ "{:,}".format(value | int) if value else "" }}
+{%- endmacro %}
+
+{% macro money(value) -%}
+{{ "{:,.2f}".format(value or 0) }}
+{%- endmacro %}
+
+{% macro signatures(boxes) -%}
+<table class="tp-sg"><tr>{% for b in boxes %}<td class="tp-k"><b>{{ b[0] }}</b><i>{{ b[1] }}</i></td>{% endfor %}</tr>
+<tr>{% for b in boxes %}<td class="tp-pad">{% if b | length > 3 and b[3] %}<img src="{{ b[3] }}">{% endif %}</td>{% endfor %}</tr>
+<tr>{% for b in boxes %}<td class="tp-name">{{ b[2] or "" }}</td>{% endfor %}</tr></table>
+{%- endmacro %}
+
+{% macro qr(doc) -%}
+<div class="tp-qr"><img src="{{ document_qr(doc.doctype, doc.name) }}"><span>{{ doc.name }}</span></div>
+{%- endmacro %}
+
+{% macro foot(company=None) -%}
+{% set company_name = company or frappe.db.get_single_value("Global Defaults", "default_company") %}
+{% set co = frappe.db.get_value("Company", company_name, ["company_name", "tax_id", "phone_no"], as_dict=True) if company_name else None %}
+{% if co %}<div class="tp-foot"><b>{{ co.company_name }}</b>{% for label, value in [(_("VAT No."), co.tax_id), (_("Phone"), co.phone_no)] if value %}{{ label }} <span class="ltr">{{ value }}</span>{% if not loop.last %} | {% endif %}{% endfor %}</div>{% endif %}
+<div class="tp-cut"></div>
+{%- endmacro %}

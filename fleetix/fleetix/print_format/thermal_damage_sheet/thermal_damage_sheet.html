@@ -1,0 +1,56 @@
+{% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["license_plate", "make", "model", "company"], as_dict=True) if doc.vehicle else None %}
+{% set damages = frappe.get_all("Damage", filters={"source": "Vehicle Inspection", "source_reference": doc.name}, fields=["area", "description"], order_by="creation asc") %}
+{% set marks = [] %}
+{% for d in damages %}{% set _x = marks.append({"no": loop.index, "area": d.area}) %}{% endfor %}
+{% set drawing = vehicle_views(doc.vehicle, marks) %}
+{% set views = {} %}
+{% for name, svg, width in drawing.views %}{% set _x = views.update({name: (svg, width)}) %}{% endfor %}
+{% set zones = [("Front", 1, _("Front"), "Front"), ("Rear", 2, _("Rear"), "Rear"), ("Right Side", 3, _("Right Side"), "Right"), ("Left Side", 4, _("Left Side"), "Left"), ("Roof", 5, _("Roof"), "Roof"), ("Interior", 6, _("Interior"), "Interior")] %}
+{% set zone_no = {} %}
+{% for z in zones %}{% set _x = zone_no.update({z[0]: z[1]}) %}{% endfor %}
+{% macro view(name, zone, box) -%}
+{% set svg, width = views[name] %}
+{% set scale = [box / width, 1.3] | min %}
+<div style="width:{{ (width * scale) | round(1) }}mm;height:{{ (24 * scale) | round(1) }}mm;margin:0 auto">{{ svg | replace('width="', 'data-w="') | replace('height="', 'data-h="') | replace('<svg ', '<svg width="100%" height="100%" ') }}</div>
+{%- endmacro %}
+{% macro caption(zone) -%}
+<span class="tp-z">{{ zone[1] }}</span>{{ zone[2] }}<i>{{ zone[3] }}</i>
+{%- endmacro %}
+{% set fuel = ["Empty", "1/4", "1/2", "3/4", "Full"] %}
+{% set fuel_at = fuel.index(doc.fuel_level) if doc.fuel_level in fuel else -1 %}
+{{ tp.style() }}
+<div class="tp">
+{{ tp.head(doc, _("Vehicle Damage Sheet"), "Vehicle Damage Sheet") }}
+{{ tp.plate(vehicle.license_plate if vehicle else doc.vehicle) }}
+{{ tp.kv([
+	(_("Vehicle"), "Vehicle", " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),
+	(_("Date"), "Date", tp.dt(doc.inspection_datetime)),
+	(_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None),
+	(_("Inspector"), "Inspector", frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None),
+]) }}
+{{ tp.big(_("Odometer"), "Odometer km", tp.km(doc.odometer) or "") }}
+{{ tp.bar(_("Fuel Level"), "Fuel level") }}
+<table class="tp-grid" style="direction:ltr"><tr>{% for label in ["E", "1/4", "1/2", "3/4", "F"] %}<td class="{{ 'tp-on' if loop.index0 <= fuel_at else '' }}" style="font-size:11pt">{{ label }}</td>{% endfor %}</tr></table>
+{{ tp.bar(_("Damage Diagram"), "Damage diagram") }}
+<table class="tp-veh">
+<tr><td>{{ view("right", zones[2], 68) }}</td></tr>
+<tr class="tp-cap"><td>{{ caption(zones[2]) }}</td></tr>
+<tr><td>{{ view("left", zones[3], 68) }}</td></tr>
+<tr class="tp-cap"><td>{{ caption(zones[3]) }}</td></tr>
+</table>
+<table class="tp-veh"><tr><td>{{ view("front", zones[0], 33) }}</td><td>{{ view("rear", zones[1], 33) }}</td></tr>
+<tr class="tp-cap"><td>{{ caption(zones[0]) }}</td><td>{{ caption(zones[1]) }}</td></tr></table>
+<div class="tp-legend"><span>{{ caption(zones[4]) }}</span><span>{{ caption(zones[5]) }}</span><br>{% for code, label in [("S", _("Scratch")), ("D", _("Dent")), ("C", _("Crack")), ("B", _("Broken")), ("M", _("Missing"))] %}<span><b>{{ code }}</b> {{ label }}</span>{% endfor %}</div>
+{{ tp.bar(_("Damages"), "Damages") }}
+<table class="tp-grid">
+<colgroup><col style="width:7mm"><col style="width:9mm"><col></colgroup>
+<tr class="tp-h"><td>#</td><td>{{ _("Zone") }}<i>Zone</i></td><td>{{ _("Description") }}<i>Description</i></td></tr>
+{% for n in range([damages | length, 4] | max) %}{% set d = damages[n] if n < damages | length else None %}
+<tr><td class="tp-n" style="height:6.5mm">{{ n + 1 }}</td><td class="tp-n">{{ zone_no.get(d.area, "") if d else "" }}</td><td class="tp-s">{{ (d.description or _(d.area or "")) if d else "" }}</td></tr>
+{% endfor %}
+</table>
+{{ tp.signatures([(_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None, doc.driver_signature), (_("Inspector"), "Inspector", frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None, doc.inspector_signature)]) }}
+{{ tp.qr(doc) }}
+{{ tp.foot(vehicle.company if vehicle else None) }}
+</div>

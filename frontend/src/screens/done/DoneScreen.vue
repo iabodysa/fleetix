@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue"
 import { __, componentLabel, statusLabel } from "../../i18n/index.js"
 import { errorText } from "../../api.js"
-import { dueText, printReceipt, receiptCanvas, showOnCustomerDisplay } from "../../native.js"
+import { dueText, hasPrinter, printDocument, printReceipt, receiptCanvas, showOnCustomerDisplay } from "../../native.js"
 import { backToQueue, store } from "../../store/index.js"
 import AppIcon from "../../components/AppIcon.vue"
 import BigButton from "../../components/BigButton.vue"
@@ -20,6 +20,15 @@ async function print() {
 	busy.value = true
 	try {
 		store.printed = await printReceipt(result)
+	} catch (e) {
+		error.value = errorText(e)
+	}
+	busy.value = false
+}
+async function printForm(format) {
+	busy.value = true
+	try {
+		await printDocument("Maintenance", result.maintenance, format)
 	} catch (e) {
 		error.value = errorText(e)
 	}
@@ -53,6 +62,10 @@ onMounted(async () => {
 				<div class="done-devices">
 					<span class="pill" :class="store.printed ? 'tone-done' : 'tone-quiet'"><AppIcon name="printer" />{{ store.printed ? __("Receipt printed") : __("Printer not connected") }}</span>
 					<span class="pill" :class="store.display ? 'tone-done' : 'tone-quiet'"><AppIcon name="screen" />{{ store.display ? __("On customer screen") : __("Customer screen not connected") }}</span>
+				</div>
+				<div v-if="hasPrinter()" class="done-devices">
+					<BigButton icon="printer" tone="quiet" :label="__('Maintenance Invoice')" :busy="busy" @press="printForm('Thermal Maintenance Invoice')" />
+					<BigButton icon="printer" tone="quiet" :label="__('Gate Exit Pass')" :busy="busy" @press="printForm('Thermal Gate Exit Pass')" />
 				</div>
 			</div>
 			<img class="done-receipt" :src="receipt" alt="" />

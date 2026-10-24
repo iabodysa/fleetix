@@ -9895,3 +9895,24 @@ Search items,ابحث عن صنف
 Component Item Rule,قاعدة أصناف المكون
 Component Items,أصناف المكونات
 Keywords,كلمات البحث
+Due at km,الاستحقاق عند كم
+Gate Entry Pass,تصريح دخول
+Gate Exit Pass,تصريح خروج
+Gate Supervisor,مشرف البوابة
+Maintenance Invoice,فاتورة صيانة
+Odometer In,العداد عند الدخول
+Odometer Out,العداد عند الخروج
+Periodic Inspection Expiry,انتهاء الفحص الدوري
+Registration Expiry,انتهاء الاستمارة
+Time In,وقت الدخول
+Time Out,وقت الخروج
+Vehicle Damage Sheet,نموذج أضرار المركبة
+Vehicle Data Card,بطاقة بيانات المركبة
+Zone,المنطقة
+Saudi Arabia,السعودية,Vehicle Plate
+Item,الصنف,Print Line
+Qty,الكمية,Print Line
+Rate,السعر,Print Line
+Amount,المبلغ,Print Line
+Authorised By,المعتمد,Gate Pass
+Make,الشركة المصنعة,Vehicle Card

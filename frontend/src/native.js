@@ -1,3 +1,4 @@
+import call from "frappe-ui/src/utils/call.js"
 import { __, componentLabel, formatKm, isolate } from "./i18n/index.js"
 
 function plugin(name) {
@@ -92,12 +93,88 @@ export function receiptCanvas(result) {
 	return canvas
 }
 
+function dataUrl(src) {
+	return fetch(src, { credentials: "same-origin" })
+		.then((response) => response.blob())
+		.then(
+			(blob) =>
+				new Promise((resolve) => {
+					const reader = new FileReader()
+					reader.onload = () => resolve(reader.result)
+					reader.readAsDataURL(blob)
+				})
+		)
+}
+
+function loadImage(src) {
+	return new Promise((resolve, reject) => {
+		const image = new Image()
+		image.onload = () => resolve(image)
+		image.onerror = () => reject(new Error(__("Printer error")))
+		image.src = src
+	})
+}
+
+export async function formatCanvas(html) {
+	const width = 576
+	const holder = document.createElement("div")
+	holder.style.cssText = "position:fixed;left:-10000px;top:0;background:#FFFFFF"
+	holder.innerHTML = html
+	document.body.appendChild(holder)
+	try {
+		const images = Array.prototype.slice.call(holder.querySelectorAll("img"))
+		await Promise.all(
+			images
+				.filter((img) => (img.getAttribute("src") || "").indexOf("data:") !== 0)
+				.map((img) => dataUrl(img.src).then((src) => img.setAttribute("src", src)))
+		)
+		const page = holder.querySelector(".tp") || holder
+		const cssWidth = page.offsetWidth
+		const cssHeight = holder.scrollHeight
+		const scale = width / cssWidth
+		const body = new XMLSerializer().serializeToString(holder)
+		const svg =
+			'<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + Math.ceil(cssHeight * scale) + '" viewBox="0 0 ' + cssWidth + " " + cssHeight + '">' +
+			'<foreignObject x="0" y="0" width="' + cssWidth + '" height="' + cssHeight + '">' + body + "</foreignObject></svg>"
+		const image = await loadImage("data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg))
+		const canvas = document.createElement("canvas")
+		canvas.width = width
+		canvas.height = Math.ceil(cssHeight * scale)
+		const ctx = canvas.getContext("2d")
+		ctx.fillStyle = "#FFFFFF"
+		ctx.fillRect(0, 0, canvas.width, canvas.height)
+		ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+		const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height)
+		const data = pixels.data
+		for (let i = 0; i < data.length; i += 4) {
+			const ink = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114 < 150 ? 0 : 255
+			data[i] = data[i + 1] = data[i + 2] = ink
+			data[i + 3] = 255
+		}
+		ctx.putImageData(pixels, 0, 0)
+		return canvas
+	} finally {
+		document.body.removeChild(holder)
+	}
+}
+
+export async function printDocument(doctype, name, format) {
+	const printer = plugin("SunmiPrinter")
+	if (!printer) return false
+	const page = await call("frappe.www.printview.get_html_and_style", { doc: doctype, name, print_format: format, no_letterhead: 1 })
+	return printCanvas(printer, await formatCanvas(page.html))
+}
+
 export async function printReceipt(result) {
 	const printer = plugin("SunmiPrinter")
 	if (!printer) return false
+	return printCanvas(printer, receiptCanvas(result))
+}
+
+async function printCanvas(printer, canvas) {
 	const state = await printer.updatePrinterState().catch(() => null)
 	if (state && state.status !== "NormalOperation") throw new Error(PRINTER_ERRORS[state.status] || __("Printer error"))
-	const bitmap = receiptCanvas(result).toDataURL("image/png").split(",")[1]
+	const bitmap = canvas.toDataURL("image/png").split(",")[1]
 	await printer.printerInit()
 	await printer.printBitmapCustom({ bitmap, type: 2 })
 	await printer.lineWrap({ lines: 3 })
