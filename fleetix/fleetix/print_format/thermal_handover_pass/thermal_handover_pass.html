@@ -1,0 +1,51 @@
+{% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
+{% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["license_plate", "make", "model", "company"], as_dict=True) if doc.vehicle else None %}
+{% set inspection = frappe.db.get_value("Vehicle Inspection", doc.inspection, ["fuel_level", "odometer"], as_dict=True) if doc.inspection else None %}
+{% set checklist = frappe.get_all("Vehicle Checklist Item", filters={"parent": doc.inspection, "parenttype": "Vehicle Inspection"}, fields=["item", "condition"], order_by="idx asc") if doc.inspection else [] %}
+{% set from_driver = frappe.db.get_value("Driver", doc.from_driver, ["full_name", "cell_number"], as_dict=True) if doc.from_driver else None %}
+{% set to_driver = frappe.db.get_value("Driver", doc.to_driver, ["full_name", "cell_number"], as_dict=True) if doc.to_driver else None %}
+{% set project_name = doc.to_project if doc.handover_type == "Handover" else doc.from_project or doc.to_project %}
+{% set project = frappe.db.get_value("Project", project_name, ["project_name", "customer", "company"], as_dict=True) if project_name else None %}
+{% set supervisor = frappe.db.get_value("User", frappe.session.user, "full_name") %}
+{% set titles = {"Handover": (_("Vehicle Delivery Pass"), "Vehicle Delivery Pass"), "Return": (_("Vehicle Receipt Pass"), "Vehicle Receipt Pass"), "Transfer": (_("Vehicle Transfer Pass"), "Vehicle Transfer Pass")} %}
+{% set title = titles.get(doc.handover_type, titles["Handover"]) %}
+{% set fuel = ["Empty", "1/4", "1/2", "3/4", "Full"] %}
+{% set fuel_at = fuel.index(inspection.fuel_level) if inspection and inspection.fuel_level in fuel else -1 %}
+{{ tp.style() }}
+<div class="tp">
+{{ tp.head(doc, title[0], title[1]) }}
+{{ tp.plate(vehicle.license_plate if vehicle else doc.vehicle) }}
+{{ tp.options([("Handover", _("Delivery", context="Handover Pass"), "Delivery"), ("Return", _("Receipt", context="Handover Pass"), "Receipt"), ("Transfer", _("Transfer"), "Transfer")], doc.handover_type) }}
+{{ tp.big(_("Time"), "Time", tp.dt(doc.handover_datetime)) }}
+{{ tp.kv([
+	(_("Vehicle"), "Vehicle", " ".join([vehicle.make or "", vehicle.model or ""]).strip() if vehicle else None),
+	(_("From Driver"), "From driver", from_driver.full_name if from_driver else None),
+	(_("Mobile"), "Mobile", from_driver.cell_number if from_driver else None, 1),
+	(_("To Driver"), "To driver", to_driver.full_name if to_driver else None),
+	(_("Mobile"), "Mobile", to_driver.cell_number if to_driver else None, 1),
+	(_("From Project"), "From project", doc.from_project if doc.handover_type == "Transfer" else None),
+	(_("Project"), "Project", project.project_name if project else None),
+	(_("Customer"), "Customer", project.customer if project else None),
+	(_("City"), "City", doc.city),
+	(_("Damages Found"), "Damages found", doc.damages_found | length if doc.damages_found else None),
+]) }}
+{{ tp.pair([(_("Odometer"), "Odometer km", tp.km(doc.odometer or (inspection.odometer if inspection else None))), (_("Fuel Level"), "Fuel", _(inspection.fuel_level) if inspection and inspection.fuel_level else None)]) }}
+<table class="tp-grid" style="direction:ltr"><tr>{% for label in ["E", "1/4", "1/2", "3/4", "F"] %}<td class="{{ 'tp-on' if loop.index0 <= fuel_at else '' }}" style="font-size:11pt">{{ label }}</td>{% endfor %}</tr></table>
+{% if checklist %}
+{{ tp.bar(_("Checklist"), "Items and accessories") }}
+<table class="tp-grid">
+<colgroup><col><col style="width:13mm"><col style="width:13mm"></colgroup>
+<tr class="tp-h"><td>{{ _("Item", context="Print Line") }}<i>Item</i></td><td>{{ _("Good") }}<i>OK</i></td><td>{{ _("Needs Repair") }}<i>Repair</i></td></tr>
+{% for r in checklist %}<tr><td class="tp-s">{{ _(r.item) }}</td><td>{{ tp.check(r.condition == "Good") }}</td><td>{{ tp.check(r.condition == "Needs Repair") }}</td></tr>{% endfor %}
+</table>
+{% endif %}
+{% if doc.handover_type == "Transfer" %}
+{{ tp.signatures([(_("Handing Over"), "Handing over", from_driver.full_name if from_driver else None, doc.from_signature), (_("Receiving"), "Receiving", to_driver.full_name if to_driver else None, doc.to_signature), (_("Supervisor"), "Supervisor", supervisor)]) }}
+{% elif doc.handover_type == "Return" %}
+{{ tp.signatures([(_("Driver"), "Driver", from_driver.full_name if from_driver else None, doc.from_signature), (_("Supervisor"), "Supervisor", supervisor, doc.to_signature)]) }}
+{% else %}
+{{ tp.signatures([(_("Driver"), "Driver", to_driver.full_name if to_driver else None, doc.to_signature), (_("Supervisor"), "Supervisor", supervisor, doc.from_signature)]) }}
+{% endif %}
+{{ tp.qr(doc) }}
+{{ tp.foot((vehicle.company if vehicle else None) or (project.company if project else None)) }}
+</div>

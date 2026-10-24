@@ -5,6 +5,7 @@
  "engine": "InnoDB",
  "field_order": [
   "rates_include_vat",
+  "vat_rate",
   "vehicle_required_fields",
   "component_items"
  ],
@@ -14,6 +15,13 @@
    "fieldname": "rates_include_vat",
    "fieldtype": "Check",
    "label": "Rental rates include VAT"
+  },
+  {
+   "default": "15",
+   "description": "Used on the maintenance invoice when the company has no default Sales Taxes and Charges Template.",
+   "fieldname": "vat_rate",
+   "fieldtype": "Percent",
+   "label": "VAT Rate"
   },
   {
    "default": "company\ncity\nmodel\nstatus",
@@ -32,7 +40,7 @@
  "index_web_pages_for_search": 0,
  "issingle": 1,
  "links": [],
- "modified": "2026-10-23 20:00:00.000000",
+ "modified": "2026-10-24 13:08:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Fleetix Settings",

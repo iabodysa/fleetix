@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import re
-from functools import lru_cache
+from functools import cache
 
 import frappe
 
@@ -16,6 +16,7 @@ HAIRLINE_MM = 0.5 * 0.3528
 VIEWS = ("left", "front", "rear", "right")
 BODIES = {
 	"Car": ("car-side", "car-front", "car-rear"),
+	"SUV": ("suv-side", "suv-front", "suv-rear"),
 	"Pickup Truck": ("pickup-side", "pickup-front", "pickup-rear"),
 	"Van": ("van-side", "van-front", "van-rear"),
 	"Bus": ("bus-side", "bus-front", "bus-rear"),
@@ -28,11 +29,18 @@ ANCHORS = {
 	"Right Side": ("right", 100, 46),
 	"Left Side": ("left", 100, 46),
 }
-ROOF = {"Car": (98, 19), "Pickup Truck": (112, 19), "Van": (100, 9), "Bus": (100, 9), "Truck": (76, 10)}
+ROOF = {
+	"Car": (98, 19),
+	"SUV": (126, 17),
+	"Pickup Truck": (112, 19),
+	"Van": (100, 9),
+	"Bus": (100, 9),
+	"Truck": (76, 10),
+}
 SVG = re.compile(r'<svg[^>]*viewBox="0 0 ([0-9.]+) ([0-9.]+)"[^>]*>(.*)</svg>', re.S)
 
 
-@lru_cache(maxsize=None)
+@cache
 def _icon(name):
 	path = frappe.get_app_path("fleetix", "public", "images", "vehicles", f"{name}.svg")
 	with open(path) as svg:
@@ -77,7 +85,11 @@ def vehicle_views(vehicle=None, damages=None):
 	step = MARKER_STEP_MM / UNIT_MM
 	marks = {view: [] for view in VIEWS}
 	for (view, cx, cy), numbers in spots.items():
-		marks[view] += [(no, round(cx + (i - (len(numbers) - 1) / 2) * step, 2), cy) for i, no in enumerate(numbers)]
+		marks[view] += [
+			(no, round(cx + (i - (len(numbers) - 1) / 2) * step, 2), cy) for i, no in enumerate(numbers)
+		]
 	icons = {"left": side, "front": front, "rear": rear, "right": side}
-	rendered = [(view, _view(icons[view], view, marks[view]), _icon(icons[view])[0] * UNIT_MM) for view in VIEWS]
+	rendered = [
+		(view, _view(icons[view], view, marks[view]), _icon(icons[view])[0] * UNIT_MM) for view in VIEWS
+	]
 	return {"body": body, "views": rendered, "unplaced": unplaced}

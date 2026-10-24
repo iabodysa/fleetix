@@ -9916,3 +9916,16 @@ Rate,السعر,Print Line
 Amount,المبلغ,Print Line
 Authorised By,المعتمد,Gate Pass
 Make,الشركة المصنعة,Vehicle Card
+Handing Over,المُسلِّم
+SUV,جيب
+Subtotal,المجموع الفرعي
+Supervisor,المشرف
+Total before VAT,الإجمالي قبل الضريبة
+Used on the maintenance invoice when the company has no default Sales Taxes and Charges Template.,تُستخدم في فاتورة الصيانة عندما لا يكون للشركة قالب ضرائب مبيعات افتراضي.
+VAT Rate,نسبة ضريبة القيمة المضافة
+VAT {0}%,ضريبة القيمة المضافة {0}%
+Vehicle Delivery Pass,تصريح تسليم مركبة
+Vehicle Receipt Pass,تصريح استلام مركبة
+Vehicle Transfer Pass,تصريح نقل مركبة
+Delivery,تسليم,Handover Pass
+Receipt,استلام,Handover Pass
