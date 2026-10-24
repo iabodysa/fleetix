@@ -33,7 +33,11 @@ function scanned(key) {
 			<BigButton icon="refresh" tone="quiet" :label="__('Refresh')" :busy="queue.loading" @press="queue.fetch()" />
 		</template>
 		<VehicleResults v-if="filter" :filter="filter" />
-		<QueueList v-else />
+		<template v-else>
+			<QueueList />
+			<h2 class="queue-heading">{{ __("All vehicles") }}</h2>
+			<VehicleResults filter="" />
+		</template>
 		<template #aside>
 			<div class="queue-find">
 				<BarcodeInput @scan="scanned" />
@@ -44,6 +48,11 @@ function scanned(key) {
 </template>
 
 <style>
+.queue-heading {
+	margin: var(--s5) 0 var(--s3);
+	font-size: var(--t-lg);
+	font-weight: 800;
+}
 .queue-find {
 	display: flex;
 	flex-direction: column;

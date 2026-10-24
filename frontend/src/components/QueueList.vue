@@ -3,6 +3,7 @@ import { computed, ref } from "vue"
 import { api, errorText } from "../api.js"
 import { problem, success } from "../composables/useFeedback.js"
 import { __, componentLabel, formatKm, reasonLabel, statusLabel } from "../i18n/index.js"
+import { printDocument } from "../native.js"
 import { openVisit, queue, stepForStatus, store } from "../store/index.js"
 import AppIcon from "./AppIcon.vue"
 import BigButton from "./BigButton.vue"
@@ -13,16 +14,33 @@ import PlateChip from "./PlateChip.vue"
 defineProps({ compact: Boolean })
 const rows = computed(() => queue.data || [])
 
+const EXIT_ACTION = "Complete"
+const EXIT_PASS = "Thermal Gate Exit Pass"
 const acting = ref("")
 const failed = ref("")
 
 async function act(row) {
+	const action = row.actions[0]
 	acting.value = row.maintenance
 	failed.value = ""
 	try {
-		await api.act(row.maintenance, row.actions[0])
+		await api.act(row.maintenance, action)
 		success()
+		if (action === EXIT_ACTION) {
+			store.exited = row
+			await printExit(row)
+		}
 		await queue.fetch()
+	} catch (e) {
+		failed.value = errorText(e)
+		problem()
+	}
+	acting.value = ""
+}
+async function printExit(row) {
+	acting.value = row.maintenance
+	try {
+		if (!(await printDocument("Maintenance", row.maintenance, EXIT_PASS))) failed.value = __("Printer not connected")
 	} catch (e) {
 		failed.value = errorText(e)
 		problem()
@@ -32,7 +50,7 @@ async function act(row) {
 function nextAction(row) {
 	return !stepForStatus(row) && row.actions && row.actions.length ? row.actions[0] : ""
 }
-const ACTION_LABELS = { Complete: __("Approve exit") }
+const ACTION_LABELS = { [EXIT_ACTION]: __("Approve exit") }
 function actionLabel(action) {
 	return ACTION_LABELS[action] || __(action)
 }
@@ -54,6 +72,14 @@ function late(row) {
 
 <template>
 	<div class="queue" :class="{ 'queue-compact': compact }">
+		<div v-if="store.exited && !compact" class="card visit">
+			<span class="visit-top">
+				<PlateChip :plate="store.exited.plate" size="md" />
+				<span class="pill tone-done">{{ __("Exit approved") }}</span>
+			</span>
+			<span class="visit-model">{{ store.exited.model }}</span>
+			<BigButton icon="printer" tone="quiet" :label="__('Gate Exit Pass')" :busy="acting === store.exited.maintenance" block @press="printExit(store.exited)" />
+		</div>
 		<p v-if="queue.loading && !rows.length" class="queue-loading">{{ __("Loading") }}</p>
 		<EmptyState v-else-if="!rows.length" :label="__('No vehicles waiting')" />
 		<component

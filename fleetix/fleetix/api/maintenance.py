@@ -77,15 +77,13 @@ def get_due_queue():
 
 
 @frappe.whitelist()
-def find_vehicles(plate):
+def find_vehicles(plate=None, start=0):
 	frappe.only_for(WORKER_ROLES)
 	from fleetix.fleetix.api.gate import PLATE_LETTERS
 
 	text = (plate or "").upper().translate(PLATE_LETTERS)
 	digits = "".join(re.findall(r"[0-9]", text))
 	letters = "".join(re.findall(r"[A-Z]", text))
-	if not digits and not letters:
-		return []
 	open_visits = dict(
 		frappe.get_all(
 			"Maintenance",
@@ -106,7 +104,8 @@ def find_vehicles(plate):
 			row["remaining_km"] if row["remaining_km"] is not None else 0,
 		)
 	)
-	return found[:FIND_LIMIT]
+	start = cint(start)
+	return {"rows": found[start : start + FIND_LIMIT], "total": len(found)}
 
 
 @frappe.whitelist(methods=["POST"])

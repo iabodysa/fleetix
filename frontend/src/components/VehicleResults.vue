@@ -5,6 +5,7 @@ import { problem, success } from "../composables/useFeedback.js"
 import { __, componentLabel, formatKm } from "../i18n/index.js"
 import { openVisit } from "../store/index.js"
 import AppIcon from "./AppIcon.vue"
+import BigButton from "./BigButton.vue"
 import EmptyState from "./EmptyState.vue"
 import ErrorCard from "./ErrorCard.vue"
 import PlateChip from "./PlateChip.vue"
@@ -13,19 +14,21 @@ const props = defineProps({ filter: { type: String, required: true } })
 const TONE = { overdue: "problem", soon: "wait", ok: "done", none: "quiet" }
 const SEARCH_MS = 250
 const rows = ref([])
+const total = ref(0)
 const loading = ref(false)
 const opening = ref("")
 const error = ref("")
 let timer = null
 let asked = 0
 
-function search() {
+function search(start) {
 	const ticket = ++asked
 	loading.value = true
-	api.findVehicles(props.filter).then(
+	api.findVehicles(props.filter, start || 0).then(
 		(found) => {
 			if (ticket !== asked) return
-			rows.value = found
+			rows.value = start ? rows.value.concat(found.rows) : found.rows
+			total.value = found.total
 			loading.value = false
 		},
 		(e) => {
@@ -57,7 +60,7 @@ watch(
 	() => props.filter,
 	() => {
 		clearTimeout(timer)
-		timer = setTimeout(search, SEARCH_MS)
+		timer = setTimeout(() => search(0), SEARCH_MS)
 	},
 	{ immediate: true },
 )
@@ -67,7 +70,7 @@ onBeforeUnmount(() => clearTimeout(timer))
 <template>
 	<div class="queue">
 		<p v-if="loading && !rows.length" class="queue-loading">{{ __("Loading") }}</p>
-		<EmptyState v-else-if="!rows.length" :label="__('No vehicle with this plate')" />
+		<EmptyState v-else-if="!rows.length" :label="filter ? __('No vehicle with this plate') : __('No vehicles')" />
 		<button
 			v-for="row in rows"
 			:key="row.vehicle"
@@ -91,11 +94,15 @@ onBeforeUnmount(() => clearTimeout(timer))
 			<span v-if="row.maintenance" class="muted">{{ __("Open visit") }}</span>
 			<span v-if="opening === row.vehicle" class="muted">{{ __("Opening") }}</span>
 		</button>
+		<BigButton v-if="rows.length < total" class="found-more" icon="down" tone="quiet" :label="__('Show more ({0} of {1})', [rows.length, total])" :busy="loading" block @press="search(rows.length)" />
 		<ErrorCard :error="error" @dismiss="error = ''" />
 	</div>
 </template>
 
 <style>
+.found-more {
+	grid-column: 1 / -1;
+}
 .found {
 	border-left-width: 0.5rem;
 }

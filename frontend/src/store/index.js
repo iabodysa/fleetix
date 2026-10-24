@@ -19,6 +19,7 @@ export const store = reactive({
 	result: null,
 	display: false,
 	printed: false,
+	exited: null,
 	walkin: null,
 })
 

@@ -23,7 +23,7 @@ export const api = {
 	diagram: (maintenance) => call(M + "get_vehicle_diagram", { maintenance }),
 	printSamples: () => call(M + "get_print_samples"),
 	saveMarks: (maintenance, damages) => call(M + "save_damage_marks", { maintenance, damages: JSON.stringify(damages) }),
-	findVehicles: (plate) => call(M + "find_vehicles", { plate }),
+	findVehicles: (plate, start) => call(M + "find_vehicles", { plate, start }),
 	openVehicle: (vehicle) => call(M + "open_vehicle_visit", { vehicle }),
 	status: (maintenance) =>
 		call("frappe.client.get_value", {
