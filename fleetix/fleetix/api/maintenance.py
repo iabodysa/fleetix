@@ -18,7 +18,6 @@ from fleetix.fleetix.doctype.maintenance.maintenance import (
 	manager_signable,
 	next_due,
 	photo_slots,
-	unpriced_items,
 )
 from fleetix.fleetix.document_qr import qr_data_url
 from fleetix.fleetix.print_samples import print_samples
@@ -236,7 +235,7 @@ def get_vehicle_checklist(maintenance, odometer=None):
 	replaced = {row.component: row for row in visit.components_replaced}
 	components = []
 	for row in component_states(vehicle, reading):
-		items = component_items(row["component"], vehicle.name, visit.company)
+		items = component_items(row["component"], vehicle.name)
 		chosen = replaced.get(row["component"])
 		row.update(
 			{
@@ -412,7 +411,6 @@ def send_for_approval(maintenance, odometer, components, driver_signature, inspe
 		max_qty = component_max_qty(row["component"])
 		if max_qty and flt(row["qty"]) > max_qty:
 			frappe.throw(_("{0} allows at most {1}").format(_(row["component"]), f"{max_qty:g}"))
-	throw_unpriced([row["item"] for row in components], visit.company)
 	missing = [row["label"] for row in get_photos(visit.name) if not row["photos"]]
 	if missing:
 		frappe.throw(_("Take the photo: {0}").format(", ".join(missing)))
@@ -493,7 +491,6 @@ def finish_maintenance(maintenance, final_check, findings=None):
 	visit.check_permission("write")
 	if visit.status not in FINISH_ACTIONS:
 		frappe.throw(_("This visit is not approved yet"))
-	throw_unpriced([row.item for row in visit.components_replaced if row.item], visit.company)
 	checked = checked_rows(
 		frappe.parse_json(final_check), [row.component for row in visit.components_replaced]
 	)
@@ -631,6 +628,9 @@ def get_vehicle_profile(vehicle):
 	return {
 		"vehicle": car,
 		"driver": driver_title(car.current_driver),
+		"project_name": frappe.db.get_value("Project", car.current_project, "project_name")
+		if car.current_project
+		else None,
 		"front_photo": front,
 		"odometer": dict(odometer, value=cint(car.last_odometer)),
 		"last_maintenance": profile_visit(done[-1], photos) if done else None,
@@ -685,12 +685,6 @@ def profile_prints(vehicle, visits, inspections):
 	]
 
 
-def throw_unpriced(item_codes, company):
-	missing = unpriced_items(item_codes, company)
-	if missing:
-		frappe.throw(_("The item has no valuation rate. Tell the store.") + " (" + ", ".join(missing) + ")")
-
-
 def component_states(vehicle, reading):
 	vehicle.last_odometer = reading
 	due = set(due_components(vehicle))
@@ -734,7 +728,7 @@ def worst_overdue(components, reading):
 	return None
 
 
-def component_items(component, vehicle, company):
+def component_items(component, vehicle):
 	rules = [
 		row for row in frappe.get_single("Fleetix Settings").component_items if row.component == component
 	]
@@ -766,10 +760,8 @@ def component_items(component, vehicle, company):
 		"item",
 		order_by="replacement_date desc, creation desc",
 	)
-	unpriced = set(unpriced_items([row.item_code for row in items], company))
 	for row in items:
 		stock = bins.get(row.item_code) or {}
 		row["stock"] = flt(stock.get("actual_qty"))
-		row["priced"] = row.item_code not in unpriced
 	items.sort(key=lambda row: row.item_code != last_item)
 	return unit_fields(items, component)

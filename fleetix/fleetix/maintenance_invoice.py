@@ -50,7 +50,14 @@ def maintenance_invoice(doc):
 	rows = []
 	if doc.items_issued:
 		rows = [
-			(row.item_code, row.item_name or row.item_code, row.qty, unit_label(row.stock_uom))
+			(
+				row.item_code,
+				f"{row.item_code} - {row.item_name}"
+				if row.item_name and row.item_name != row.item_code
+				else row.item_code,
+				row.qty,
+				unit_label(row.stock_uom),
+			)
 			for row in frappe.get_all(
 				"Stock Entry Detail",
 				filters={"parent": doc.items_issued, "parenttype": "Stock Entry"},

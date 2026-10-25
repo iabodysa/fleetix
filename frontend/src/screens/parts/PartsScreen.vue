@@ -31,13 +31,9 @@ function litresOf(row) {
 	return item && item.unit ? !!item.litres : row.component === "Oil"
 }
 const cards = computed(() =>
-	ticked.value.map((row) => ({ key: row.component, label: componentLabel(row.component), icon: row.component, done: !!row.item && row.qty > 0 && !unpriced(row) })),
+	ticked.value.map((row) => ({ key: row.component, label: componentLabel(row.component), icon: row.component, done: !!row.item && row.qty > 0 })),
 )
 const progress = useCardProgress(cards)
-function unpriced(row) {
-	const item = row.items.find((i) => i.item_code === row.item)
-	return item && item.priced === false
-}
 function dueLine(row) {
 	if (row.due_km) return __("Due at {0}", [formatKm(row.due_km)])
 	if (row.due_date) return __("Due on {0}", [isolate(row.due_date)])
@@ -68,9 +64,8 @@ function offRule(row) {
 	return !!row.item && !row.items.some((i) => i.item_code === row.item)
 }
 function rowTone(row) {
-	const item = chosen(row)
 	if (!row.item || !(row.qty > 0)) return "wait"
-	if (offRule(row) || unpriced(row) || (item && item.stock !== undefined && item.stock < row.qty)) return "problem"
+	if (offRule(row)) return "problem"
 	return "done"
 }
 function next() {
@@ -132,8 +127,7 @@ onMounted(async () => {
 						@click="row.item = item.item_code"
 					>
 						<span class="part-item-name">{{ item.item_name }}</span>
-						<span v-if="item.stock !== undefined" :class="item.stock > 0 ? 'muted' : 'pill tone-problem'">{{ __("Stock") }} <span class="ltr">{{ item.stock }}</span> {{ item.stock_uom }}</span>
-						<span v-if="item.priced === false" class="pill tone-problem">{{ __("No valuation rate") }}</span>
+						<span v-if="item.stock !== undefined" class="muted">{{ __("Stock") }} <span class="ltr">{{ item.stock }}</span> {{ item.stock_uom }}</span>
 					</button>
 				</div>
 				<BigButton v-if="row.items.length" icon="item" tone="quiet" :label="row.other ? __('Back') : __('Other item')" @press="row.other = !row.other" />

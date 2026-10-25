@@ -20,7 +20,7 @@ CORE_PERMISSIONS = {
 	"Company": {PS: READ, RM: READ, MS: READ, MTS: READ, AC: READ},
 	"Customer": {PS: READ, RM: READ, MS: READ, MTS: READ, AC: READ},
 	"Project": {RM: MANAGE, PS: READ, MS: READ, MTS: READ, AC: READ},
-	"Vehicle": {RM: MANAGE, MS: EDIT, PS: READ, MTS: READ, AC: READ, DR: READ},
+	"Vehicle": {RM: (*MANAGE, "print"), MS: (*EDIT, "print"), PS: READ, MTS: READ, AC: READ, DR: READ},
 	"Driver": {RM: MANAGE, PS: MANAGE, MS: READ, MTS: READ, AC: READ},
 	"Item": {AC: MANAGE, MS: READ, RM: READ},
 	"Item Group": {AC: READ, MS: READ},

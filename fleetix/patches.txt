@@ -8,3 +8,5 @@ fleetix.patches.photo_slots_by_side
 fleetix.patches.maintenance_inspector_signature
 fleetix.patches.worker_badge_off
 fleetix.patches.worker_badge_on
+fleetix.patches.allow_negative_stock
+fleetix.patches.vehicle_print_permission

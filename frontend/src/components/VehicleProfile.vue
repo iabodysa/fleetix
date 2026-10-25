@@ -45,7 +45,7 @@ const identity = computed(() => {
 		[__("Vehicle Type"), car.vehicle_type],
 		[__("Color"), car.color],
 		[__("Status"), car.status && __(car.status)],
-		[__("Project"), car.current_project],
+		[__("Project"), profile.value.project_name],
 		[__("Istimara No"), car.istimara_no],
 		[__("Registration Expiry"), car.registration_expiry && isolate(car.registration_expiry)],
 		[__("Chassis No"), car.chassis_no],

@@ -1,9 +1,7 @@
 # Copyright (c) 2026, Ittihad and contributors
 # For license information, please see license.txt
 
-import erpnext
 import frappe
-from erpnext.stock.stock_ledger import get_valuation_rate
 from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, flt, getdate, now_datetime, today
@@ -94,7 +92,10 @@ def issue_items(maintenance):
 			"company": maintenance.company,
 			"maintenance": maintenance.name,
 			"from_warehouse": warehouse,
-			"items": [{"item_code": row.item, "qty": row.qty, "s_warehouse": warehouse} for row in rows],
+			"items": [
+				{"item_code": row.item, "qty": row.qty, "s_warehouse": warehouse, "allow_zero_valuation_rate": 1}
+				for row in rows
+			],
 		}
 	).insert()
 	return entry.name
@@ -113,27 +114,6 @@ def photo_slots(visit):
 		label = " - ".join(_(part) for part in (mark["area"], mark.get("kind")) if part)
 		slots.append({"slot": f"damage-{no}", "label": f"{no}. {label}", "damage": no})
 	return slots
-
-
-def unpriced_items(item_codes, company):
-	if not cint(erpnext.is_perpetual_inventory_enabled(company)):
-		return []
-	warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
-	currency = erpnext.get_company_currency(company)
-	return [
-		item_code
-		for item_code in dict.fromkeys(item_codes)
-		if get_valuation_rate(
-			item_code,
-			warehouse,
-			"Stock Entry",
-			None,
-			currency=currency,
-			company=company,
-			raise_error_if_no_rate=False,
-		)
-		is None
-	]
 
 
 def next_due(vehicle, component):

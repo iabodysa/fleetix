@@ -10,11 +10,13 @@ from io import BytesIO
 
 import frappe
 from frappe import _
+from frappe.translate import print_language
 from frappe.utils import get_url
 from frappe.www.printview import get_html_and_style
 from PIL import Image
 
 DOTS = 576
+PRINT_LANGUAGE = "ar"
 SIDE_MARGIN = 8
 TOP_MARGIN = 8
 BOTTOM_MARGIN = 24
@@ -51,7 +53,8 @@ def localize(html):
 
 
 def page_html(doc, name, print_format):
-	page = get_html_and_style(doc, name, print_format=print_format, no_letterhead=1)
+	with print_language(PRINT_LANGUAGE):
+		page = get_html_and_style(doc, name, print_format=print_format, no_letterhead=1)
 	if not page.get("html"):
 		frappe.throw(_("Print format {0} not found").format(print_format))
 	return localize(
