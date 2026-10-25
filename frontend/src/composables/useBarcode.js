@@ -3,13 +3,7 @@ import { onBeforeUnmount, onMounted } from "vue"
 const KEY_GAP_MS = 60
 const MIN_LENGTH = 3
 
-const BADGE = /\/(desk|app)\/employee\//i
-
-export function isBadge(code) {
-	return BADGE.test(String(code || ""))
-}
-
-export function useBarcode(onScan, badges = false) {
+export function useBarcode(onScan) {
 	let buffer = ""
 	let last = 0
 
@@ -24,7 +18,7 @@ export function useBarcode(onScan, badges = false) {
 		if (now - last > KEY_GAP_MS) buffer = ""
 		last = now
 		if (event.key === "Enter") {
-			if (buffer.length >= MIN_LENGTH && isBadge(buffer) === badges) {
+			if (buffer.length >= MIN_LENGTH) {
 				event.preventDefault()
 				onScan(buffer)
 			}

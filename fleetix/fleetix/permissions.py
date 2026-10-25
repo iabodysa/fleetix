@@ -11,7 +11,6 @@ MTS = "Maintenance Supervisor"
 AC = "Accountant"
 DR = "Driver"
 
-SELECT = ("select",)
 READ = ("read",)
 EDIT = ("read", "write")
 MANAGE = ("read", "write", "create")
@@ -28,7 +27,6 @@ CORE_PERMISSIONS = {
 	"Warehouse": {AC: MANAGE, MS: READ},
 	"Stock Entry": {AC: SUBMIT, MS: MANAGE},
 	"Stock Ledger Entry": {AC: READ, RM: READ},
-	"Employee": {MS: SELECT, RM: SELECT},
 }
 
 
@@ -39,7 +37,7 @@ def grant_core_permissions():
 				"Custom DocPerm", {"parent": doctype, "role": role, "permlevel": 0, "if_owner": 0}
 			):
 				continue
-			add_permission(doctype, role, 0, ptypes[0])
+			add_permission(doctype, role, 0)
 			for ptype in ptypes[1:]:
 				update_permission_property(doctype, role, 0, ptype, 1)
 

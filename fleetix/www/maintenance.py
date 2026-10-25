@@ -7,7 +7,6 @@ from frappe.utils.jinja_globals import is_rtl
 
 import fleetix
 from fleetix.fleetix.api.maintenance import RTL_LANGUAGES, WORKER_ROLES
-from fleetix.fleetix.shift_worker import current_worker
 
 no_cache = 1
 
@@ -29,7 +28,6 @@ def get_boot():
 		lang=frappe.local.lang,
 		full_name=frappe.utils.get_fullname(frappe.session.user),
 		is_worker=bool(set(frappe.get_roles()) & set(WORKER_ROLES)),
-		worker=current_worker(),
 		app_version=fleetix.__version__,
 	)
 	load_translations(bootinfo)

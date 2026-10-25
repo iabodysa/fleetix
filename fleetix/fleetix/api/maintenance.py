@@ -23,7 +23,6 @@ from fleetix.fleetix.doctype.maintenance.maintenance import (
 from fleetix.fleetix.document_qr import qr_data_url
 from fleetix.fleetix.print_samples import print_samples
 from fleetix.fleetix.service_check import checked_rows, finding_rows, last_findings, service_checklist
-from fleetix.fleetix.shift_worker import end_shift, start_shift
 from fleetix.fleetix.track import SIGN_STATES, check_signature
 from fleetix.fleetix.units import unit_fields
 from fleetix.fleetix.vehicle_diagram import VIEWS, body_type, damage_zone, diagram_views
@@ -68,18 +67,6 @@ def set_language(lang):
 	if lang not in APP_LANGUAGES or not frappe.db.exists("Language", lang):
 		frappe.throw(_("This language is not available"))
 	frappe.db.set_value("User", frappe.session.user, "language", lang)
-
-
-@frappe.whitelist(methods=["POST"])
-def scan_badge(code):
-	frappe.only_for(WORKER_ROLES)
-	return start_shift(code)
-
-
-@frappe.whitelist(methods=["POST"])
-def leave_shift():
-	frappe.only_for(WORKER_ROLES)
-	end_shift()
 
 
 @frappe.whitelist()
