@@ -178,7 +178,6 @@ Review,समीक्षा
 Right Side,दाईं तरफ़
 Roof,छत
 Scan the vehicle barcode,गाड़ी का बारकोड स्कैन करें
-Scan with your phone to add photos,फ़ोटो जोड़ने के लिए फ़ोन से स्कैन करें
 Scratch,खरोंच
 Select at least one component,कम से कम एक पुर्ज़ा चुनें
 Send for approval,मंज़ूरी के लिए भेजें
@@ -224,8 +223,6 @@ Not enough stock for this item. Tell the store.,इस आइटम का स�
 This step could not be saved. Show the details to your supervisor.,यह चरण सेव नहीं हुआ। विवरण अपने सुपरवाइज़र को दिखाएँ।
 Mark the damage on the vehicle drawing,गाड़ी के चित्र पर नुकसान का निशान लगाएँ
 {0} allows at most {1},{0} अधिकतम {1}
-Take the photo: {0},फ़ोटो लें: {0}
-Choose which photo this is,चुनें यह कौन सी फ़ोटो है
 Print test,प्रिंट जाँच
 Damage sheet,नुकसान शीट
 Handover Pass,हैंडओवर पास
@@ -315,12 +312,7 @@ Exit approved,निकास स्वीकृत
 All vehicles,सभी वाहन
 Show more ({0} of {1}),और दिखाएँ ({1} में से {0})
 "The server is busy, try again","सर्वर व्यस्त है, फिर से कोशिश करें"
-Next photo: {0},अगली फ़ोटो: {0}
-Start photos,फ़ोटो शुरू करें
-Retake last,आख़िरी फ़ोटो फिर से लें
 Show list,सूची दिखाएँ
-Take photo,फ़ोटो लें
-Extra photo of the same side,इसी तरफ़ की अतिरिक्त फ़ोटो
 Front Side,आगे की तरफ़
 Rear Side,पीछे की तरफ़
 Odometer Photo,मीटर की फ़ोटो
@@ -358,3 +350,6 @@ Uploaded,अपलोड हो गया
 Upload failed,अपलोड विफल
 This photo was not taken by you,यह फ़ोटो आपने नहीं ली
 This photo is already attached to another record,यह फ़ोटो पहले से किसी दूसरे रिकॉर्ड से जुड़ी है
+Other photos,अन्य फ़ोटो
+Add photo,फ़ोटो जोड़ें
+No photos taken at the gate,गेट पर कोई फ़ोटो नहीं ली गई

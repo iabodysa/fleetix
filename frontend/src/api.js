@@ -20,7 +20,6 @@ export const api = {
 	driverSignature: (maintenance) => call("fleetix.fleetix.api.track.get_driver_signature", { maintenance }),
 	result: (maintenance) => call(M + "get_visit_result", { maintenance }),
 	photos: (maintenance) => call(M + "get_photos", { maintenance }),
-	photoLink: (maintenance) => call(M + "get_photo_link", { maintenance }),
 	trackCard: (maintenance) => call("fleetix.fleetix.api.track.get_track_card", { maintenance }),
 	diagram: (maintenance) => call(M + "get_vehicle_diagram", { maintenance }),
 	printSamples: () => call(M + "get_print_samples"),

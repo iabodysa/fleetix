@@ -11,12 +11,14 @@ from frappe.model.workflow import apply_workflow
 from frappe.utils import cint, get_url
 
 from fleetix.fleetix.api.maintenance import WORKER_ROLES
+from fleetix.fleetix.doctype.maintenance.maintenance import DEFAULT_PHOTO_SLOTS
 from fleetix.fleetix.vehicle import odometer_limit
 
 GATE_APK = {"version_code": 3, "version_name": "1.2", "file": "fleetix-gate.apk"}
 LANGUAGES = ("ar", "en", "ur", "hi", "bn")
 ARRIVAL_STATES = ("Due Alert", "Driver Arrived")
 ROUTES = ("maintenance", "handover")
+GATE_SLOTS = dict(zip(("front", "back", "right", "left"), DEFAULT_PHOTO_SLOTS))
 PLATE_LETTERS = str.maketrans(
 	"\u0627\u0623\u0625\u0622\u0628\u062d\u062f\u0631\u0633\u0635\u0637\u0639\u0642\u0643\u0644\u0645\u0646\u0647\u0648\u0649\u064a"
 	"\u0660\u0661\u0662\u0663\u0664\u0665\u0666\u0667\u0668\u0669",
@@ -92,8 +94,8 @@ def record_entry(vehicle, odometer, route, photos=None):
 	doc = arrive_for_maintenance(vehicle) if route == "maintenance" else start_handover(vehicle)
 	doc.odometer = odometer
 	doc.odometer_flagged = 1 if limit and odometer > limit else 0
-	doc.save()
 	attach_photos(doc, frappe.parse_json(photos) if isinstance(photos, str) else photos or [])
+	doc.save()
 	return {"doctype": doc.doctype, "name": doc.name, "status": doc.status}
 
 
@@ -113,8 +115,10 @@ def upload_photo(vehicle):
 	return {"name": photo.name, "file_url": photo.file_url}
 
 
-def attach_photos(doc, names):
-	for name in names:
+def attach_photos(doc, photos):
+	keeps_rows = doc.meta.get_field("photos")
+	for entry in photos:
+		name, side = (entry, None) if isinstance(entry, str) else (entry["name"], entry.get("slot"))
 		photo = frappe.get_doc("File", name)
 		if photo.owner != frappe.session.user:
 			frappe.throw(_("This photo was not taken by you"))
@@ -125,6 +129,10 @@ def attach_photos(doc, names):
 		photo.attached_to_doctype = doc.doctype
 		photo.attached_to_name = doc.name
 		photo.save()
+		if keeps_rows:
+			slot = GATE_SLOTS.get(side, "")
+			caption = _(slot) if slot else _("Damage") if (side or "").startswith("damage") else None
+			doc.append("photos", {"attachment": photo.file_url, "slot": slot, "caption": caption})
 
 
 def arrive_for_maintenance(vehicle):

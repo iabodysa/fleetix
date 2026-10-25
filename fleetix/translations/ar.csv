@@ -9508,11 +9508,9 @@ Fleetix Settings,إعدادات الأسطول
 Rental rates include VAT,أسعار التأجير شاملة ضريبة القيمة المضافة
 Photo {0},صورة {0}
 Photos added,الصور المضافة
-Scan with your phone to add photos,امسح الرمز بجوالك لإضافة الصور
 Take photos,التقط الصور
 Upload failed,تعذر الرفع
 Uploading,جارٍ الرفع
-Vehicle photos,صور المركبة
 Trainer,المدرب
 App version,إصدار التطبيق
 "Check the network cable or Wi-Fi, then try again.",تأكد من كابل الشبكة أو الواي فاي، ثم أعد المحاولة.
@@ -9944,8 +9942,6 @@ front,الأمام
 rear,الخلف
 left,الجانب الأيسر
 right,الجانب الأيمن
-Take the photo: {0},التقط الصورة: {0}
-Choose which photo this is,اختر نوع هذه الصورة
 Print test,اختبار الطباعة
 Damage sheet,كشف الأضرار
 Handover Pass,إذن التسليم
@@ -10049,11 +10045,6 @@ Exit approved,تم اعتماد الخروج
 All vehicles,كل المركبات
 Show more ({0} of {1}),عرض المزيد ({0} من {1})
 "The server is busy, try again",الخادم مشغول، حاول مرة ثانية
-Next photo: {0},الصورة التالية: {0}
-Start photos,ابدأ التصوير
-Retake last,أعد آخر صورة
-Take photo,التقط صورة
-Extra photo of the same side,صورة إضافية لنفس الجهة
 Front Side,الجهة الأمامية
 Rear Side,الجهة الخلفية
 Odometer Photo,صورة العداد
@@ -10093,3 +10084,6 @@ Last maintenance,آخر صيانة
 Previous visits,الزيارات السابقة
 This photo was not taken by you,هذه الصورة لم تلتقطها أنت
 This photo is already attached to another record,هذه الصورة مرفقة بسجل آخر
+Other photos,صور أخرى
+Add photo,إضافة صورة
+No photos taken at the gate,لم تُلتقط صور عند البوابة

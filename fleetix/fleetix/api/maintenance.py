@@ -318,47 +318,25 @@ def save_damage_marks(maintenance, damages):
 	return get_photos(visit.name)
 
 
-@frappe.whitelist(methods=["POST"])
-def upload_photo(maintenance, slot):
-	frappe.only_for(WORKER_ROLES)
-	visit = frappe.get_doc("Maintenance", maintenance)
-	visit.check_permission("write")
-	labels = {row["slot"]: row["label"] for row in photo_slots(visit)}
-	if slot not in labels:
-		frappe.throw(_("Choose which photo this is"))
-	upload = frappe.request.files["file"]
-	photo = frappe.get_doc(
-		{
-			"doctype": "File",
-			"file_name": upload.filename,
-			"attached_to_doctype": "Maintenance",
-			"attached_to_name": visit.name,
-			"is_private": 1,
-			"content": upload.stream.read(),
-		}
-	).insert()
-	visit.append("photos", {"attachment": photo.file_url, "slot": slot, "caption": labels[slot]})
-	visit.save()
-	return {"name": photo.name, "file_url": photo.file_url, "slot": slot}
-
-
 @frappe.whitelist()
 def get_photos(maintenance):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
 	visit.check_permission("read")
+	slots = photo_slots(visit) + [{"slot": "", "label": _("Other photos")}]
+	known = {row["slot"] for row in slots}
 	taken = {}
 	for row in visit.photos:
-		taken.setdefault(row.slot, []).append(row.attachment)
-	return [dict(row, photos=taken.get(row["slot"], [])) for row in photo_slots(visit)]
-
-
-@frappe.whitelist()
-def get_photo_link(maintenance):
-	frappe.only_for(WORKER_ROLES)
-	frappe.get_doc("Maintenance", maintenance).check_permission("read")
-	url = get_host_name_from_request() + "/maintenance/photos/" + quote(maintenance)
-	return {"url": url, "qr": qr_data_url(url)}
+		taken.setdefault(row.slot if row.slot in known else "", []).append(row.attachment)
+	listed = {row.attachment for row in visit.photos}
+	attached = frappe.get_all(
+		"File",
+		filters={"attached_to_doctype": "Maintenance", "attached_to_name": visit.name},
+		pluck="file_url",
+		order_by="creation asc",
+	)
+	taken.setdefault("", []).extend(url for url in attached if url not in listed)
+	return [dict(row, photos=taken.get(row["slot"], [])) for row in slots]
 
 
 @frappe.whitelist()
@@ -411,9 +389,6 @@ def send_for_approval(maintenance, odometer, components, driver_signature, inspe
 		max_qty = component_max_qty(row["component"])
 		if max_qty and flt(row["qty"]) > max_qty:
 			frappe.throw(_("{0} allows at most {1}").format(_(row["component"]), f"{max_qty:g}"))
-	missing = [row["label"] for row in get_photos(visit.name) if not row["photos"]]
-	if missing:
-		frappe.throw(_("Take the photo: {0}").format(", ".join(missing)))
 	damages = frappe.parse_json(visit.damage_marks) or []
 	if visit.status == "Driver Arrived":
 		visit = apply_workflow(visit, "Start Inspection")

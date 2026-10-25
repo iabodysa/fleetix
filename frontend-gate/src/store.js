@@ -15,7 +15,7 @@ let retryDelay = FIRST_RETRY_MS
 const DRAFT_KEY = "fleetix.gate.draft." + ((window.frappe && window.frappe.boot && window.frappe.boot.user) || "")
 
 function emptyPhotos() {
-	return { front: null, back: null, left: null, right: null, damage: [] }
+	return { front: null, back: null, left: null, right: null, damage: [], extra: [] }
 }
 
 export const store = reactive({
@@ -44,6 +44,7 @@ function draft() {
 			left: photoMeta(store.photos.left),
 			right: photoMeta(store.photos.right),
 			damage: store.photos.damage.map(photoMeta),
+			extra: store.photos.extra.map(photoMeta),
 		},
 	}
 }
@@ -80,9 +81,11 @@ export async function restoreDraft() {
 	const photos = emptyPhotos()
 	const kept = saved.photos || {}
 	for (const side of SIDES) photos[side] = await revive(kept[side])
-	for (const meta of kept.damage || []) {
-		const photo = await revive(meta)
-		if (photo) photos.damage.push(photo)
+	for (const list of ["damage", "extra"]) {
+		for (const meta of kept[list] || []) {
+			const photo = await revive(meta)
+			if (photo) photos[list].push(photo)
+		}
 	}
 	Object.assign(store, { step: saved.step, vehicle: saved.vehicle, odometer: saved.odometer || "", route: saved.route || null, photos })
 	pump()
@@ -121,14 +124,14 @@ export async function lookUp(code) {
 
 export function photoList() {
 	const rows = SIDES.filter((side) => store.photos[side]).map((side) => ({ name: side, photo: store.photos[side] }))
-	store.photos.damage.forEach((photo) => rows.push({ name: photo.slot, photo }))
+	store.photos.damage.concat(store.photos.extra).forEach((photo) => rows.push({ name: photo.slot, photo }))
 	return rows
 }
 
 export async function addPhoto(slot, shrunk) {
 	const photo = reactive({ id: slot + "-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8), slot, url: shrunk.url, state: "saving", file: null })
 	blobs.set(photo.id, shrunk.blob)
-	if (slot.indexOf("damage") === 0) store.photos.damage.push(photo)
+	if (SIDES.indexOf(slot) === -1) store.photos[slot.indexOf("damage") === 0 ? "damage" : "extra"].push(photo)
 	else {
 		const old = store.photos[slot]
 		if (old) {
@@ -196,7 +199,7 @@ export async function sendEntry() {
 	const failure = await pump()
 	if (failure) throw failure
 	const rows = photoList()
-	store.result = await api.record(store.vehicle.vehicle, store.odometer, store.route, rows.map((row) => row.photo.file))
+	store.result = await api.record(store.vehicle.vehicle, store.odometer, store.route, rows.map((row) => ({ name: row.photo.file, slot: row.photo.slot })))
 	go("done")
 	forgetPhotos()
 }

@@ -1,74 +1,35 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { __ } from "../../i18n/index.js"
-import { api, errorText, isBusy } from "../../api.js"
-import { useCardProgress } from "../../composables/useCardProgress.js"
+import { api, errorText } from "../../api.js"
 import { go, store } from "../../store/index.js"
 import AppIcon from "../../components/AppIcon.vue"
 import BigButton from "../../components/BigButton.vue"
-import CardProgress from "../../components/CardProgress.vue"
 import ScreenFrame from "../../components/ScreenFrame.vue"
 
-const POLL_MS = 5000
 const error = ref("")
-const link = ref(null)
-const checking = ref(false)
-let timer = null
-const filled = computed(() => store.photos.filter((slot) => slot.photos.length).length)
-const cards = computed(() => store.photos.map((slot) => ({ key: slot.slot, label: slot.label, icon: slot.damage ? "damage" : "photos", done: slot.photos.length > 0 })))
-const progress = useCardProgress(cards)
+const tiles = computed(() => store.photos.flatMap((group) => group.photos.map((url) => ({ url, label: group.slot ? group.label : "" }))))
 
-async function poll() {
-	try {
-		store.photos = await api.photos(store.visit.maintenance)
-	} catch (e) {
-		if (!isBusy(e)) error.value = errorText(e)
-	}
-}
-async function next() {
-	checking.value = true
-	try {
-		store.photos = await api.photos(store.visit.maintenance)
-	} catch (e) {
-		if (!progress.guard()) error.value = Object.assign(errorText(e), { retry: next })
-		return
-	} finally {
-		checking.value = false
-	}
-	if (progress.guard()) return
-	go("signatures")
-}
 onMounted(async () => {
-	poll()
-	timer = setInterval(poll, POLL_MS)
 	try {
-		link.value = await api.photoLink(store.visit.maintenance)
+		store.photos = await api.photos(store.visit.maintenance)
 	} catch (e) {
 		error.value = errorText(e)
 	}
 })
-onBeforeUnmount(() => clearInterval(timer))
 </script>
 
 <template>
 	<ScreenFrame :title="__('Photos')" v-model:error="error">
-		<CardProgress :items="cards" @show="progress.show" />
 		<div class="photos">
-			<div class="card photos-qr">
-				<img v-if="link" class="photos-qr-code" :src="link.qr" alt="" />
-				<p class="photos-qr-text"><AppIcon name="photos" size="lg" />{{ __("Scan with your phone to add photos") }}</p>
-			</div>
-			<div class="photos-landed">
-				<p class="photos-count">
-					<span class="pill" :class="filled === store.photos.length ? 'tone-done' : 'tone-wait'">{{ __("Photos added") }} <span class="ltr">{{ filled }} / {{ store.photos.length }}</span></span>
-				</p>
-				<div class="photos-slots">
-					<div v-for="slot in store.photos" :key="slot.slot" class="card photos-slot" :class="{ 'photos-slot-done': slot.photos.length }" :data-card="slot.slot">
-						<img v-if="slot.photos.length" class="photos-thumb" :src="slot.photos[0]" alt="" />
-						<span v-if="slot.photos.length > 1" class="pill tone-done photos-count-badge ltr">{{ slot.photos.length }}</span>
-						<span v-else class="photos-empty"><AppIcon :name="slot.damage ? 'damage' : 'photos'" size="lg" /></span>
-						<span class="photos-label">{{ slot.label }}</span>
-					</div>
+			<p class="photos-count">
+				<span class="pill" :class="tiles.length ? 'tone-done' : 'tone-wait'">{{ __("Photos added") }} <span class="ltr">{{ tiles.length }}</span></span>
+			</p>
+			<p v-if="!tiles.length" class="photos-none"><AppIcon name="photos" size="lg" />{{ __("No photos taken at the gate") }}</p>
+			<div v-else class="photos-slots">
+				<div v-for="tile in tiles" :key="tile.url" class="card photos-slot">
+					<img class="photos-thumb" :src="tile.url" alt="" />
+					<span v-if="tile.label" class="photos-label">{{ tile.label }}</span>
 				</div>
 			</div>
 		</div>
@@ -76,78 +37,38 @@ onBeforeUnmount(() => clearInterval(timer))
 			<BigButton icon="back" tone="quiet" :label="__('Back')" @press="go('damage')" />
 		</template>
 		<template #primary>
-			<BigButton icon="next" :label="progress.nextLabel(__('Next'))" :busy="checking" @press="next" />
+			<BigButton icon="next" :label="__('Next')" @press="go('signatures')" />
 		</template>
 	</ScreenFrame>
 </template>
 
 <style>
 .photos {
-	display: grid;
-	grid-template-columns: minmax(14rem, 20rem) minmax(0, 1fr);
-	gap: var(--s5);
-	align-items: start;
-}
-.photos-qr {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: var(--s3);
-	padding: var(--s4);
-}
-.photos-qr-code {
-	width: 100%;
-	max-width: 15rem;
-	aspect-ratio: 1;
-	background: var(--plate);
-	border-radius: var(--r-sm);
-}
-.photos-qr-text {
-	display: flex;
-	align-items: center;
-	gap: var(--s2);
-	font-weight: 700;
-}
-.photos-landed {
 	display: flex;
 	flex-direction: column;
 	gap: var(--s3);
 	min-width: 0;
+}
+.photos-none {
+	display: flex;
+	align-items: center;
+	gap: var(--s2);
+	color: var(--ink-2);
+	font-weight: 700;
 }
 .photos-slots {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
 	gap: var(--s2);
 }
-.photos-count-badge {
-	position: absolute;
-	top: var(--s1);
-	right: var(--s1);
-}
-html[dir="rtl"] .photos-count-badge {
-	right: auto;
-	left: var(--s1);
-}
 .photos-slot {
-	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: var(--s1);
 	padding: var(--s2);
-	border: 2px dashed var(--line);
-	text-align: center;
-}
-.photos-slot-done {
 	border: 2px solid var(--done);
-}
-.photos-empty {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	height: 5rem;
-	color: var(--ink-2);
+	text-align: center;
 }
 .photos-label {
 	font-weight: 700;
@@ -157,10 +78,5 @@ html[dir="rtl"] .photos-count-badge {
 	height: 5rem;
 	object-fit: cover;
 	border-radius: var(--r-md);
-}
-@media (max-width: 760px) {
-	.photos {
-		grid-template-columns: minmax(0, 1fr);
-	}
 }
 </style>

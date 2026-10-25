@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from "vue"
 import { __ } from "../i18n.js"
 import { hasCamera } from "../native.js"
 import { shrink } from "../photos.js"
-import { SIDES, addPhoto, go, retryNow, store } from "../store.js"
+import { SIDES, addPhoto, go, photoList, retryNow, store } from "../store.js"
 import BigButton from "../components/BigButton.vue"
 import GateIcon from "../components/GateIcon.vue"
 import PhotoSlot from "../components/PhotoSlot.vue"
@@ -12,13 +12,13 @@ const LABELS = { front: __("Front"), back: __("Rear"), left: __("Left side"), ri
 const camera = ref(true)
 const error = ref("")
 const ready = computed(
-	() => !camera.value || (SIDES.every((side) => store.photos[side]) && !store.photos.damage.concat(SIDES.map((side) => store.photos[side])).some((photo) => photo.state === "saving")),
+	() => !photoList().some((row) => row.photo.state === "saving"),
 )
 
 async function take(file, side) {
 	error.value = ""
 	try {
-		await addPhoto(side === "damage" ? "damage-" + (store.photos.damage.length + 1) : side, await shrink(file))
+		await addPhoto(side === "damage" || side === "extra" ? side + "-" + (store.photos[side].length + 1) : side, await shrink(file))
 	} catch (e) {
 		error.value = __("The photo could not be read. Take it again.")
 	}
@@ -50,10 +50,15 @@ onMounted(async () => {
 					/>
 					<PhotoSlot :label="__('Add damage photo')" @pick="take($event, 'damage')" />
 				</div>
+				<h2 class="sub">{{ __("Other photos") }}</h2>
+				<div class="grid">
+					<PhotoSlot v-for="photo in store.photos.extra" :key="photo.id" :label="__('Other photos')" :photo="photo" @pick="take($event, 'extra')" @retry="retryNow" />
+					<PhotoSlot :label="__('Add photo')" @pick="take($event, 'extra')" />
+				</div>
 			</template>
 		</div>
 		<div class="dock">
-			<BigButton icon="next" :label="camera ? __('Next') : __('Continue without photos')" :disabled="!ready" @press="go('route')" />
+			<BigButton icon="next" :label="photoList().length ? __('Next') : __('Continue without photos')" :disabled="!ready" @press="go('route')" />
 		</div>
 	</div>
 </template>
