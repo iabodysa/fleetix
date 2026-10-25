@@ -10,6 +10,7 @@ export const store = reactive({
 	step: "home",
 	flow: "next",
 	drawer: false,
+	profile: false,
 	visit: null,
 	odometer: "",
 	checklist: null,
@@ -70,7 +71,7 @@ export async function restoreDraft() {
 	if (!draft || queue.error || ["home", "queue"].indexOf(store.step) === -1) return
 	const row = (rows || []).find((r) => r.maintenance === draft.visit.maintenance)
 	if (row && row.status === draft.visit.status) {
-		Object.assign(store, draft, { damages: (draft.damages || []).filter((spot) => spot.view), drawer: false, flow: "next" })
+		Object.assign(store, draft, { damages: (draft.damages || []).filter((spot) => spot.view), drawer: false, profile: false, flow: "next" })
 	}
 	else saveDraft()
 }
@@ -101,6 +102,7 @@ export async function openVisit(row) {
 	store.printed = false
 	store.display = false
 	store.drawer = false
+	store.profile = true
 	if (step === "review") store.checklist = await api.checklist(row.maintenance)
 	go(step)
 }
@@ -122,8 +124,9 @@ const PREVIOUS_STEP = {
 }
 
 export function stepBack() {
-	if (store.drawer) {
+	if (store.drawer || store.profile) {
 		store.drawer = false
+		store.profile = false
 		return true
 	}
 	const previous = PREVIOUS_STEP[store.step]
@@ -139,6 +142,7 @@ export function backToQueue() {
 	store.flow = "back"
 	store.step = "queue"
 	store.drawer = false
+	store.profile = false
 	queue.fetch()
 }
 

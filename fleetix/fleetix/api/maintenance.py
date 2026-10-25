@@ -8,7 +8,7 @@ from urllib.parse import quote
 import frappe
 from frappe import _
 from frappe.model.workflow import apply_workflow, get_transitions
-from frappe.utils import cint, date_diff, flt, get_host_name_from_request, get_url, getdate, today
+from frappe.utils import cint, date_diff, flt, get_fullname, get_host_name_from_request, get_url, getdate, today
 
 from fleetix.fleetix.doctype.maintenance.maintenance import (
 	COMPONENT_FIELDS,
@@ -46,6 +46,25 @@ VEHICLE_FIELDS = [
 	"next_battery_due_date",
 	*NEXT_DUE_FIELDS.values(),
 ]
+PROFILE_FIELDS = [
+	"name",
+	"license_plate",
+	"make",
+	"model",
+	"model_year",
+	"vehicle_type",
+	"color",
+	"chassis_no",
+	"istimara_no",
+	"registration_expiry",
+	"status",
+	"current_project",
+	"current_driver",
+	"last_odometer",
+]
+PROFILE_LIMIT = 20
+FRONT_SLOT = "Front Side"
+ASSIGNED_STATES = ("Active", "Expiring")
 MAINTENANCE_APK = {"version_code": 10, "version_name": "1.9", "file": "fleetix-maintenance.apk"}
 
 
@@ -536,6 +555,134 @@ def get_history(vehicle):
 			limit=50,
 		),
 	}
+
+
+@frappe.whitelist()
+def get_vehicle_profile(vehicle):
+	frappe.only_for(WORKER_ROLES)
+	frappe.has_permission("Vehicle", "read", vehicle, throw=True)
+	car = frappe.db.get_value("Vehicle", vehicle, PROFILE_FIELDS, as_dict=True)
+	visits = frappe.get_list(
+		"Maintenance",
+		filters={"vehicle": vehicle, "docstatus": ("<", 2)},
+		fields=["name", "maintenance_type", "status", "docstatus", "odometer", "visit_datetime", "creation"],
+		order_by="creation desc",
+		limit=PROFILE_LIMIT,
+	)
+	inspections = frappe.get_list(
+		"Vehicle Inspection",
+		filters={"vehicle": vehicle},
+		fields=["name", "odometer", "inspection_datetime", "creation"],
+		order_by="creation desc",
+		limit=PROFILE_LIMIT,
+	)
+	handovers = frappe.get_list(
+		"Vehicle Handover",
+		filters={"vehicle": vehicle, "docstatus": ("<", 2), "odometer": (">", 0)},
+		fields=["name", "odometer", "handover_datetime", "creation"],
+		order_by="creation desc",
+		limit=PROFILE_LIMIT,
+	)
+	photos = {}
+	for row in frappe.get_all(
+		"Vehicle Inspection Photo",
+		filters={
+			"parenttype": ("in", ("Maintenance", "Vehicle Inspection")),
+			"parent": ("in", [row.name for row in visits + inspections] or [""]),
+			"attachment": ("is", "set"),
+		},
+		fields=["parent", "slot", "attachment"],
+		order_by="idx asc",
+	):
+		photos.setdefault(row.parent, []).append(row)
+	readings = [
+		(row.visit_datetime or row.creation, "Maintenance", row) for row in visits
+	] + [
+		(row.inspection_datetime or row.creation, "Vehicle Inspection", row) for row in inspections
+	] + [(row.handover_datetime or row.creation, "Vehicle Handover", row) for row in handovers]
+	readings.sort(key=lambda reading: reading[0], reverse=True)
+	front = next(
+		(
+			photo.attachment
+			for _when, _doctype, row in readings
+			for photo in photos.get(row.name, [])
+			if photo.slot == FRONT_SLOT
+		),
+		None,
+	)
+	odometer = next(
+		(
+			{"date": str(getdate(when)), "doctype": doctype, "name": row.name}
+			for when, doctype, row in readings
+			if cint(row.odometer) and cint(row.odometer) == cint(car.last_odometer)
+		),
+		{},
+	)
+	done = sorted(
+		(row for row in visits if row.docstatus == 1), key=lambda row: row.visit_datetime or row.creation
+	)
+	assignment = frappe.get_list(
+		"Vehicle Assignment",
+		filters={"vehicle": vehicle, "docstatus": 1, "status": ("in", ASSIGNED_STATES)},
+		fields=["name", "driver", "approved_by", "assignment_type", "from_datetime", "to_datetime"],
+		order_by="from_datetime desc",
+		limit=1,
+	)
+	return {
+		"vehicle": car,
+		"driver": driver_title(car.current_driver),
+		"front_photo": front,
+		"odometer": dict(odometer, value=cint(car.last_odometer)),
+		"last_maintenance": profile_visit(done[-1], photos) if done else None,
+		"assignment": profile_assignment(assignment[0]) if assignment else None,
+		"visits": [profile_visit(row, photos) for row in visits],
+		"prints": profile_prints(vehicle, visits, inspections),
+	}
+
+
+def driver_title(driver):
+	return frappe.db.get_value("Driver", driver, "full_name") if driver else None
+
+
+def profile_visit(row, photos):
+	return {
+		"name": row.name,
+		"date": str(getdate(row.visit_datetime or row.creation)),
+		"type": row.maintenance_type,
+		"status": row.status,
+		"odometer": cint(row.odometer),
+		"photos": [{"slot": photo.slot, "url": photo.attachment} for photo in photos.get(row.name, [])],
+	}
+
+
+def profile_assignment(row):
+	return {
+		"name": row.name,
+		"driver": driver_title(row.driver),
+		"approved_by": get_fullname(row.approved_by) if row.approved_by else None,
+		"type": row.assignment_type,
+		"from_date": str(getdate(row.from_datetime)) if row.from_datetime else None,
+		"to_date": str(getdate(row.to_datetime)) if row.to_datetime else None,
+	}
+
+
+def profile_prints(vehicle, visits, inspections):
+	targets = [
+		("Vehicle", vehicle, "Thermal Vehicle Card"),
+		("Vehicle", vehicle, "Thermal Vehicle Label"),
+	]
+	if visits:
+		targets += [
+			("Maintenance", visits[0].name, "Thermal Gate Entry Pass"),
+			("Maintenance", visits[0].name, "Thermal Gate Exit Pass"),
+		]
+	if inspections:
+		targets.append(("Vehicle Inspection", inspections[0].name, "Thermal Damage Sheet"))
+	return [
+		{"doctype": doctype, "name": name, "format": print_format}
+		for doctype, name, print_format in targets
+		if frappe.has_permission(doctype, "print", name)
+	]
 
 
 def throw_unpriced(item_codes, company):

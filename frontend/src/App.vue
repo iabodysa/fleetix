@@ -13,6 +13,7 @@ import PrintTest from "./components/PrintTest.vue"
 import QueueList from "./components/QueueList.vue"
 import StepBar from "./components/StepBar.vue"
 import UndoToast from "./components/UndoToast.vue"
+import VehicleProfile from "./components/VehicleProfile.vue"
 import AwaitScreen from "./screens/await/AwaitScreen.vue"
 import CustomerScreen from "./screens/customer/CustomerScreen.vue"
 import DamageScreen from "./screens/damage/DamageScreen.vue"
@@ -140,6 +141,7 @@ onBeforeUnmount(() => {
 				@close="walkin ? backHome() : backToQueue()"
 				@language="picking = true"
 				@menu="menu = !menu"
+				@profile="store.profile = true"
 			/>
 			<div v-if="menu" class="card app-menu">
 				<p class="app-menu-name">{{ boot.full_name }}</p>
@@ -162,6 +164,12 @@ onBeforeUnmount(() => {
 				</div>
 				<QueueList compact />
 			</aside>
+			<template v-if="store.profile && !walkin && store.visit">
+				<div class="drawer-veil" @click="store.profile = false"></div>
+				<aside class="drawer drawer-wide open">
+					<VehicleProfile :vehicle="store.visit.vehicle" @close="store.profile = false" />
+				</aside>
+			</template>
 		</template>
 		<UndoToast />
 	</div>

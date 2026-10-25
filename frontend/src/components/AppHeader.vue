@@ -11,13 +11,14 @@ defineProps({
 	language: { type: String, required: true },
 	user: { type: String, default: "" },
 })
-defineEmits(["vehicles", "close", "language", "menu"])
+defineEmits(["vehicles", "close", "language", "menu", "profile"])
 </script>
 
 <template>
 	<header class="app-header">
 		<div class="app-header-start">
-			<PlateChip v-if="plate" :plate="plate" size="sm" />
+			<button v-if="plate && inVisit" class="app-header-plate" type="button" :aria-label="__('Vehicle')" @click="$emit('profile')"><PlateChip :plate="plate" size="sm" /></button>
+			<PlateChip v-else-if="plate" :plate="plate" size="sm" />
 			<img v-else class="app-header-brand" src="/assets/fleetix/images/fleetix-logo.svg" alt="Fleetix" />
 			<span v-if="user" class="app-header-user" :title="user"><AppIcon name="user" /><span class="app-header-user-name">{{ user }}</span></span>
 		</div>
@@ -48,6 +49,11 @@ defineEmits(["vehicles", "close", "language", "menu"])
 </template>
 
 <style>
+.app-header-plate {
+	padding: 0;
+	border: 0;
+	background: none;
+}
 .app-header {
 	display: flex;
 	align-items: center;
