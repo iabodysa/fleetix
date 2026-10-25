@@ -197,8 +197,10 @@
   {
    "fieldname": "cost",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "Cost (SAR)",
-   "non_negative": 1
+   "non_negative": 1,
+   "print_hide": 1
   },
   {
    "fieldname": "related_accident",

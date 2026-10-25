@@ -133,7 +133,6 @@ onMounted(async () => {
 					>
 						<span class="part-item-name">{{ item.item_name }}</span>
 						<span v-if="item.stock !== undefined" :class="item.stock > 0 ? 'muted' : 'pill tone-problem'">{{ __("Stock") }} <span class="ltr">{{ item.stock }}</span> {{ item.stock_uom }}</span>
-						<span v-if="item.rate" class="muted">{{ __("Price") }} <span class="ltr">{{ item.rate.toFixed(2) }}</span></span>
 						<span v-if="item.priced === false" class="pill tone-problem">{{ __("No valuation rate") }}</span>
 					</button>
 				</div>

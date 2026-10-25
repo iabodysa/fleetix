@@ -5,7 +5,7 @@ from urllib.parse import urlencode
 
 import frappe
 from frappe import _
-from frappe.utils import cint, fmt_money
+from frappe.utils import cint
 from frappe.utils.jinja_globals import is_rtl
 
 from fleetix.fleetix.maintenance_invoice import maintenance_invoice
@@ -26,7 +26,6 @@ def get_context(context):
 		"Vehicle", visit.vehicle, ["license_plate", "make", "model", "last_odometer"], as_dict=True
 	)
 	bill = maintenance_invoice(visit)
-	currency = frappe.get_cached_value("Company", bill.company, "default_currency") if bill.company else None
 	current = STAGES.index(visit.status) if visit.status in STAGES else -1
 	context.lang = frappe.local.lang
 	context.direction = "rtl" if is_rtl() else "ltr"
@@ -40,12 +39,8 @@ def get_context(context):
 		{"label": _(stage), "state": "done" if index < current else "current" if index == current else ""}
 		for index, stage in enumerate(STAGES)
 	]
-	context.parts = [money_row(row, currency) for row in bill.parts]
-	context.labour = [money_row(row, currency) for row in bill.labour]
-	context.subtotal = fmt_money(bill.subtotal, currency=currency)
-	context.vat_rate = "{:g}".format(bill.vat_rate)
-	context.vat = fmt_money(bill.vat, currency=currency)
-	context.total = fmt_money(bill.total, currency=currency)
+	context.parts = [line_row(row) for row in bill.parts]
+	context.labour = [line_row(row) for row in bill.labour]
 	context.findings = findings(visit)
 	context.visit = visit.name
 	context.key = key
@@ -71,13 +66,8 @@ def get_context(context):
 	return context
 
 
-def money_row(row, currency):
-	label, qty, amount = row[0], row[1], row[3]
-	return {
-		"label": label,
-		"qty": "{:g}".format(qty or 0),
-		"amount": fmt_money(amount, currency=currency) if amount is not None else "",
-	}
+def line_row(row):
+	return {"label": row[0], "qty": "{:g}".format(row[1] or 0)}
 
 
 def findings(visit):

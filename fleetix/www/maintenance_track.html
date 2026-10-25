@@ -52,18 +52,13 @@
   {% endif %}
   {% if parts or labour %}
   <section class="mt-card">
-    <h2>{{ _("Cost") }}</h2>
+    <h2>{{ _("Items") }}</h2>
     {% for group, rows in ((_("Parts"), parts), (_("Labour"), labour)) if rows %}
     <h3>{{ group }}</h3>
     <ul class="mt-lines">
-      {% for row in rows %}<li><span>{{ row.label|e }} <bdi>× {{ row.qty }}</bdi></span><bdi>{{ row.amount }}</bdi></li>{% endfor %}
+      {% for row in rows %}<li><span>{{ row.label|e }}</span><bdi>× {{ row.qty }}</bdi></li>{% endfor %}
     </ul>
     {% endfor %}
-    <ul class="mt-lines mt-sum">
-      <li><span>{{ _("Subtotal") }}</span><bdi>{{ subtotal }}</bdi></li>
-      <li><span>{{ _("VAT") }} <bdi>{{ vat_rate }}%</bdi></span><bdi>{{ vat }}</bdi></li>
-      <li class="mt-total"><span>{{ _("Total") }}</span><bdi>{{ total }}</bdi></li>
-    </ul>
   </section>
   {% endif %}
   {% if photos %}

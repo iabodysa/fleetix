@@ -50,18 +50,11 @@ def maintenance_invoice(doc):
 	rows = []
 	if doc.items_issued:
 		rows = [
-			(
-				row.item_code,
-				row.item_name or row.item_code,
-				row.qty,
-				row.basic_rate,
-				row.amount,
-				unit_label(row.stock_uom),
-			)
+			(row.item_code, row.item_name or row.item_code, row.qty, unit_label(row.stock_uom))
 			for row in frappe.get_all(
 				"Stock Entry Detail",
 				filters={"parent": doc.items_issued, "parenttype": "Stock Entry"},
-				fields=["item_code", "item_name", "qty", "basic_rate", "amount", "stock_uom"],
+				fields=["item_code", "item_name", "qty", "stock_uom"],
 				order_by="idx asc",
 			)
 		]
@@ -71,8 +64,6 @@ def maintenance_invoice(doc):
 				row.item,
 				_(row.component) + (f" - {row.item}" if row.item else ""),
 				row.qty or 1,
-				None,
-				None,
 				unit_label(
 					frappe.get_cached_value("Item", row.item, "stock_uom") if row.item else None,
 					row.component,
@@ -85,28 +76,13 @@ def maintenance_invoice(doc):
 	labour = [row[1:] for row in rows if row[0] in labour_codes]
 	if doc.related_damage:
 		labour += [
-			(row.description, row.qty, row.rate, flt(row.qty) * flt(row.rate))
+			(row.description, row.qty, None)
 			for row in frappe.get_all(
 				"Damage Cost Item",
 				filters={"parent": doc.related_damage, "parenttype": "Damage", "item_type": "Labour"},
-				fields=["description", "qty", "rate"],
+				fields=["description", "qty"],
 				order_by="idx asc",
 			)
 		]
-	parts_total = sum(flt(row[3]) for row in parts)
-	labour_total = sum(flt(row[3]) for row in labour)
-	subtotal = parts_total + labour_total or flt(doc.cost)
 	company = doc.company or (frappe.db.get_value("Vehicle", doc.vehicle, "company") if doc.vehicle else None)
-	rate = vat_rate(company)
-	vat = flt(subtotal * rate / 100, 2)
-	return frappe._dict(
-		company=company,
-		parts=parts,
-		labour=labour,
-		parts_total=parts_total,
-		labour_total=labour_total,
-		subtotal=subtotal,
-		vat_rate=rate,
-		vat=vat,
-		total=subtotal + vat,
-	)
+	return frappe._dict(company=company, parts=parts, labour=labour)

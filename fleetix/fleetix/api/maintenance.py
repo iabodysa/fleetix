@@ -610,7 +610,7 @@ def component_items(component, vehicle, company):
 		for row in frappe.get_all(
 			"Bin",
 			filters={"warehouse": warehouse, "item_code": ("in", [row.item_code for row in items] or [""])},
-			fields=["item_code", "actual_qty", "valuation_rate"],
+			fields=["item_code", "actual_qty"],
 		)
 	}
 	last_item = frappe.db.get_value(
@@ -623,7 +623,6 @@ def component_items(component, vehicle, company):
 	for row in items:
 		stock = bins.get(row.item_code) or {}
 		row["stock"] = flt(stock.get("actual_qty"))
-		row["rate"] = flt(stock.get("valuation_rate"))
 		row["priced"] = row.item_code not in unpriced
 	items.sort(key=lambda row: row.item_code != last_item)
 	return unit_fields(items, component)
