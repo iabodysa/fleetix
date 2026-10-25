@@ -23,7 +23,7 @@ async function pollDriver() {
 		if (!signature || store.signatures.driver) return
 		store.signatures.driver = signature
 		onPhone.value = false
-		if (store.signatures.inspector) await send()
+		await send()
 	} catch (e) {
 		if (!isBusy(e)) error.value = errorText(e)
 	}
@@ -36,8 +36,8 @@ onMounted(async () => {
 onBeforeUnmount(() => clearInterval(timer))
 
 async function send() {
-	if (!store.signatures.driver || !store.signatures.inspector) {
-		error.value = __("Both signatures are required")
+	if (!store.signatures.driver) {
+		error.value = __("Driver signature is required")
 		return
 	}
 	busy.value = true
@@ -46,16 +46,16 @@ async function send() {
 		const components = store.checklist.components
 			.filter((row) => row.ticked)
 			.map((row) => ({ component: row.component, item: row.item, qty: row.qty }))
-		const response = await api.send({
+		const response = await api.save({
 			maintenance: store.visit.maintenance,
 			odometer: Number(store.odometer),
 			components: JSON.stringify(components),
 			driver_signature: store.signatures.driver,
-			inspector_signature: store.signatures.inspector,
 		})
 		store.visit = Object.assign({}, store.visit, { status: response.status, inspection: response.inspection, odometer: Number(store.odometer) })
+		store.checklist = await api.checklist(store.visit.maintenance)
 		success()
-		go("await")
+		go("review")
 	} catch (e) {
 		error.value = errorText(e)
 	}
@@ -64,7 +64,7 @@ async function send() {
 </script>
 
 <template>
-	<ScreenFrame :title="__('Signatures')" v-model:error="error">
+	<ScreenFrame :title="__('Driver signature')" v-model:error="error">
 		<div class="signs">
 			<div v-if="onPhone && !store.signatures.driver" class="card signs-phone">
 				<span class="sign-label"><AppIcon name="signature" />{{ __("Driver signature") }}</span>
@@ -73,13 +73,12 @@ async function send() {
 				<BigButton icon="signature" tone="quiet" :label="__('Sign on this device')" @press="onPhone = false" />
 			</div>
 			<SignaturePad v-else :label="__('Driver signature')" :value="store.signatures.driver" @change="store.signatures.driver = $event" />
-			<SignaturePad :label="__('Inspector signature')" :value="store.signatures.inspector" @change="store.signatures.inspector = $event" />
 		</div>
 		<template #back>
 			<BigButton icon="back" tone="quiet" :label="__('Back')" @press="go('photos')" />
 		</template>
 		<template #primary>
-			<BigButton icon="send" :label="busy ? __('Sending') : __('Send for approval')" :busy="busy" @press="send" />
+			<BigButton icon="send" :label="busy ? __('Saving') : __('Continue')" :busy="busy" @press="send" />
 		</template>
 	</ScreenFrame>
 </template>

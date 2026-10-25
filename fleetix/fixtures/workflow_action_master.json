@@ -1,11 +1,6 @@
 [
  {
   "doctype": "Workflow Action Master",
-  "name": "Arrive",
-  "workflow_action_name": "Arrive"
- },
- {
-  "doctype": "Workflow Action Master",
   "name": "Assign",
   "workflow_action_name": "Assign"
  },
@@ -46,11 +41,6 @@
  },
  {
   "doctype": "Workflow Action Master",
-  "name": "Finish Service",
-  "workflow_action_name": "Finish Service"
- },
- {
-  "doctype": "Workflow Action Master",
   "name": "Inspect",
   "workflow_action_name": "Inspect"
  },
@@ -78,11 +68,6 @@
   "doctype": "Workflow Action Master",
   "name": "Start Inspection",
   "workflow_action_name": "Start Inspection"
- },
- {
-  "doctype": "Workflow Action Master",
-  "name": "Start Service",
-  "workflow_action_name": "Start Service"
  },
  {
   "doctype": "Workflow Action Master",

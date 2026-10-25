@@ -6,7 +6,7 @@ const C = "fleetix.fleetix.api.customer_visit."
 
 export const api = {
 	checklist: (maintenance, odometer) => call(M + "get_vehicle_checklist", { maintenance, odometer }),
-	send: (args) => call(M + "send_for_approval", args),
+	save: (args) => call(M + "save_inspection", args),
 	finish: (maintenance, finalCheck, findings) =>
 		call(M + "finish_maintenance", { maintenance, final_check: JSON.stringify(finalCheck), findings: JSON.stringify(findings) }),
 	searchItems: (txt, stock = 1) => call("frappe.desk.search.search_link", { doctype: "Item", txt, filters: { disabled: 0, is_stock_item: stock }, page_length: 20 }),
@@ -15,7 +15,6 @@ export const api = {
 	itemRates: (items) => call(C + "get_item_rates", { items: JSON.stringify(items) }),
 	plateFindings: (plate) => call(C + "get_plate_findings", { plate }),
 	finishWalkin: (args) => call(C + "finish_customer_visit", args),
-	act: (maintenance, action) => call("frappe.model.workflow.apply_workflow", { doc: { doctype: "Maintenance", name: maintenance }, action }),
 	saveOdometer: (maintenance, odometer) => call(M + "save_odometer", { maintenance, odometer }),
 	driverSignature: (maintenance) => call("fleetix.fleetix.api.track.get_driver_signature", { maintenance }),
 	result: (maintenance) => call(M + "get_visit_result", { maintenance }),

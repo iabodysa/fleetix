@@ -3,32 +3,28 @@
 
 import os
 import re
-from urllib.parse import quote
 
 import frappe
 from frappe import _
-from frappe.model.workflow import apply_workflow, get_transitions
-from frappe.utils import cint, date_diff, flt, get_fullname, get_host_name_from_request, get_url, getdate, today
+from frappe.utils import cint, date_diff, flt, get_fullname, get_url, getdate, today
 
 from fleetix.fleetix.doctype.maintenance.maintenance import (
 	COMPONENT_FIELDS,
 	NEXT_DUE_FIELDS,
 	component_max_qty,
 	due_components,
-	manager_signable,
 	next_due,
 	photo_slots,
 )
-from fleetix.fleetix.document_qr import qr_data_url
 from fleetix.fleetix.print_samples import print_samples
 from fleetix.fleetix.service_check import checked_rows, finding_rows, last_findings, service_checklist
-from fleetix.fleetix.track import SIGN_STATES, check_signature
+from fleetix.fleetix.track import SIGN_STATES
 from fleetix.fleetix.units import unit_fields
 from fleetix.fleetix.vehicle_diagram import VIEWS, body_type, damage_zone, diagram_views
 
 WORKER_ROLES = ("Movement Supervisor", "Rental Manager", "System Manager")
 OPEN_STATES = ("Due Alert", "Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
-FINISH_ACTIONS = {"Approved": "Start Service", "Service": "Finish Service"}
+FINISH_STATES = ("Full Inspection", "Approved", "Service", "Final Check")
 SOON_KM = 1000
 SOON_DAYS = 14
 APP_LANGUAGES = ("ar", "en", "ur", "hi", "bn")
@@ -161,7 +157,8 @@ def open_vehicle_visit(vehicle):
 			{"doctype": "Maintenance", "maintenance_type": "Periodic", "vehicle": vehicle}
 		).insert()
 	if visit.status == "Due Alert":
-		visit = apply_workflow(visit, "Arrive")
+		visit.status = "Driver Arrived"
+		visit.save()
 	return queue_row(visit, frappe.get_doc("Vehicle", visit.vehicle))
 
 
@@ -190,7 +187,6 @@ def queue_row(visit, vehicle):
 		"last_odometer": cint(vehicle.last_odometer),
 		"due": [row["component"] for row in components if row["state"] == "overdue"],
 		"worst": worst_overdue(components, cint(vehicle.last_odometer)),
-		"actions": [t.action for t in get_transitions(frappe.get_doc("Maintenance", visit.name))],
 		"findings": visit_findings(visit.name) if visit.status == "Final Check" else [],
 	}
 
@@ -339,24 +335,6 @@ def get_photos(maintenance):
 	return [dict(row, photos=taken.get(row["slot"], [])) for row in slots]
 
 
-@frappe.whitelist()
-def get_sign_link(maintenance):
-	manager_signable(maintenance)
-	url = get_host_name_from_request() + "/maintenance/sign/" + quote(maintenance)
-	return {"url": url, "qr": qr_data_url(url)}
-
-
-@frappe.whitelist(methods=["POST"])
-def sign_as_manager(visit, signature):
-	visit = manager_signable(visit)
-	if visit.manager_signature:
-		frappe.throw(_("This visit is already signed"))
-	check_signature(signature)
-	visit.manager_signature = signature
-	visit.save()
-	return {"signed": 1}
-
-
 @frappe.whitelist(methods=["POST"])
 def save_odometer(maintenance, odometer):
 	frappe.only_for(WORKER_ROLES)
@@ -372,7 +350,7 @@ def save_odometer(maintenance, odometer):
 
 
 @frappe.whitelist(methods=["POST"])
-def send_for_approval(maintenance, odometer, components, driver_signature, inspector_signature):
+def save_inspection(maintenance, odometer, components, driver_signature):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
 	visit.check_permission("write")
@@ -390,9 +368,7 @@ def send_for_approval(maintenance, odometer, components, driver_signature, inspe
 		if max_qty and flt(row["qty"]) > max_qty:
 			frappe.throw(_("{0} allows at most {1}").format(_(row["component"]), f"{max_qty:g}"))
 	damages = frappe.parse_json(visit.damage_marks) or []
-	if visit.status == "Driver Arrived":
-		visit = apply_workflow(visit, "Start Inspection")
-	if visit.status != "Full Inspection":
+	if visit.status not in SIGN_STATES or visit.inspection:
 		frappe.throw(_("This visit is not waiting for inspection"))
 	ticked = {row["component"] for row in components}
 	inspection = frappe.get_doc(
@@ -411,7 +387,6 @@ def send_for_approval(maintenance, odometer, components, driver_signature, inspe
 				for row in visit.photos
 			],
 			"driver_signature": driver_signature,
-			"inspector_signature": inspector_signature,
 		}
 	).insert()
 	for photo in frappe.get_all(
@@ -426,6 +401,7 @@ def send_for_approval(maintenance, odometer, components, driver_signature, inspe
 				"attached_to_field": "photos",
 			},
 		)
+	visit.status = "Service"
 	visit.odometer = odometer
 	visit.inspection = inspection.name
 	visit.set(
@@ -464,16 +440,14 @@ def finish_maintenance(maintenance, final_check, findings=None):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
 	visit.check_permission("write")
-	if visit.status not in FINISH_ACTIONS:
-		frappe.throw(_("This visit is not approved yet"))
+	if visit.status not in FINISH_STATES or not visit.inspection:
+		frappe.throw(_("This visit has no inspection yet"))
 	checked = checked_rows(
 		frappe.parse_json(final_check), [row.component for row in visit.components_replaced]
 	)
 	visit.set("final_check", checked)
 	visit.set("findings", finding_rows(frappe.parse_json(findings), checked))
-	visit.save()
-	while visit.status in FINISH_ACTIONS:
-		visit = apply_workflow(visit, FINISH_ACTIONS[visit.status])
+	visit.submit()
 	return get_visit_result(visit.name)
 
 

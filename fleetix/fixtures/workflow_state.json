@@ -61,26 +61,6 @@
  },
  {
   "doctype": "Workflow State",
-  "name": "Driver Arrived",
-  "workflow_state_name": "Driver Arrived"
- },
- {
-  "doctype": "Workflow State",
-  "name": "Due Alert",
-  "workflow_state_name": "Due Alert"
- },
- {
-  "doctype": "Workflow State",
-  "name": "Final Check",
-  "workflow_state_name": "Final Check"
- },
- {
-  "doctype": "Workflow State",
-  "name": "Full Inspection",
-  "workflow_state_name": "Full Inspection"
- },
- {
-  "doctype": "Workflow State",
   "name": "Inspection",
   "workflow_state_name": "Inspection"
  },
@@ -133,10 +113,5 @@
   "doctype": "Workflow State",
   "name": "Sent to Project",
   "workflow_state_name": "Sent to Project"
- },
- {
-  "doctype": "Workflow State",
-  "name": "Service",
-  "workflow_state_name": "Service"
  }
 ]

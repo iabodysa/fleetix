@@ -10,3 +10,4 @@ fleetix.patches.worker_badge_off
 fleetix.patches.worker_badge_on
 fleetix.patches.allow_negative_stock
 fleetix.patches.vehicle_print_permission
+fleetix.patches.retire_maintenance_workflow

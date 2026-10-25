@@ -18,7 +18,7 @@
 	(_("Status"), "Status", _(doc.status) if doc.status else None),
 ]) }}
 {{ tp.pair([(_("Odometer In"), "Km in", tp.km(doc.odometer)), (_("Odometer Out"), "Km out", tp.km(vehicle.last_odometer if vehicle else None))]) }}
-{{ tp.signatures([(_("Authorised By", context="Gate Pass"), "Authorised by", frappe.db.get_value("User", doc.approved_by, "full_name") if doc.approved_by else None), (_("Gate Supervisor"), "Gate supervisor", frappe.db.get_value("User", frappe.session.user, "full_name")), (_("Driver"), "Driver", driver.full_name if driver else None)]) }}
+{{ tp.signatures(([(_("Authorised By", context="Gate Pass"), "Authorised by", frappe.db.get_value("User", doc.approved_by, "full_name"))] if doc.approved_by else []) + [(_("Gate Supervisor"), "Gate supervisor", frappe.db.get_value("User", frappe.session.user, "full_name")), (_("Driver"), "Driver", driver.full_name if driver else None)]) }}
 {{ tp.qr(doc) }}
 {{ tp.foot(doc.company or (vehicle.company if vehicle else None)) }}
 </div>

@@ -9448,8 +9448,6 @@ How it works,آلية العمل
 Our clients,عملاؤنا
 Our services,خدماتنا
 "Number of vehicles, type and project duration.",عدد المركبات ونوعها ومدة المشروع.
-Both signatures are required,التوقيعان مطلوبان
-Check now,تحقق الآن
 Confirm reading,تأكيد القراءة
 Customer screen not connected,شاشة العميل غير متصلة
 "Difference is above 20,000 km","الفرق أكثر من 20,000 كم"
@@ -9463,7 +9461,6 @@ Final check,الفحص النهائي
 Finish maintenance,إنهاء الصيانة
 Finishing,جارٍ الإنهاء
 Fleetix Maintenance,صيانة فليتكس
-Inspector signature,توقيع الفاحص
 Items and parts,البنود والقطع
 Last reading,آخر قراءة
 Late by {0},متأخرة {0}
@@ -9479,7 +9476,6 @@ Odometer reading is below the last reading {0},قراءة العداد أقل م
 Offline,غير متصل
 On customer screen,على شاشة العميل
 Online,متصل
-Other vehicle,سيارة أخرى
 Photos and signatures,الصور والتواقيع
 Plate number,رقم اللوحة
 Print again,طباعة مرة أخرى
@@ -9487,16 +9483,10 @@ Printer not connected,الطابعة غير متصلة
 Receipt printed,طُبع الإيصال
 Replaced today,تم التغيير اليوم
 Select at least one component,اختر بنداً واحداً على الأقل
-Send for approval,إرسال للاعتماد
-Sent for approval,أُرسلت للاعتماد
 This account cannot use the maintenance app,هذا الحساب لا يملك صلاحية تطبيق الصيانة
-This visit is not approved yet,الزيارة لم تُعتمد بعد
 This visit is not waiting for inspection,الزيارة ليست بانتظار الفحص
 Vehicles due,السيارات المستحقة
-Waiting for approval,بانتظار الاعتماد
 Waiting for driver,بانتظار السائق
-Waiting for the rental manager signature,بانتظار توقيع مدير التأجير
-Waiting for the rental manager to approve,بانتظار اعتماد مدير التأجير
 km,كم
 Photo {0} does not belong to this visit,الصورة {0} لا تخص هذه الزيارة
 No connection to the server,لا يوجد اتصال بالخادم
@@ -9964,7 +9954,6 @@ Low Level,المستوى ناقص
 Damaged,تالف
 Needs Replacement,يحتاج تغيير
 {0} left: {1},باقي {0}: {1}
-Approve exit,اعتماد الخروج
 Etihad fleet maintenance,صيانة سيارات شركة اتحاد
 Customer maintenance,صيانة العملاء
 {0} vehicles waiting,{0} سيارات بالانتظار
@@ -10041,7 +10030,6 @@ The file must be 5 MB or smaller,يجب ألا يتجاوز حجم الملف خ
 Upload Token,رمز الرفع
 Uploaded,تم الرفع
 Uploading...,جارٍ الرفع...
-Exit approved,تم اعتماد الخروج
 All vehicles,كل المركبات
 Show more ({0} of {1}),عرض المزيد ({0} من {1})
 "The server is busy, try again",الخادم مشغول، حاول مرة ثانية
@@ -10063,7 +10051,6 @@ Waiting for the driver to sign,بانتظار توقيع المندوب
 More Details,تفاصيل إضافية
 Photo Gallery,معرض الصور
 Rental Manager Signature,توقيع مدير التأجير
-Sign by phone,التوقيع بالجوال
 Signed By,الموقّع
 Vehicle Label,ملصق المركبة
 Worker,العامل
@@ -10087,3 +10074,5 @@ This photo is already attached to another record,هذه الصورة مرفقة 
 Other photos,صور أخرى
 Add photo,إضافة صورة
 No photos taken at the gate,لم تُلتقط صور عند البوابة
+Driver signature is required,توقيع السائق مطلوب
+This visit has no inspection yet,لم يُسجَّل فحص لهذه الزيارة بعد

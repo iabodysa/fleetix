@@ -107,9 +107,7 @@ Approval,منظوری
 Approved,منظور شدہ
 Battery,بیٹری
 Body damage,باڈی کا نقصان
-Both signatures are required,دونوں دستخط ضروری ہیں
 Broken,ٹوٹا ہوا
-Check now,ابھی چیک کریں
 Choose a body part and a damage type,باڈی کا حصہ اور نقصان کی قسم چنیں
 Clear,صاف کریں
 Completed,مکمل
@@ -133,7 +131,6 @@ Finishing,ختم ہو رہا ہے
 Front Tires,اگلے ٹائر
 Full Inspection,مکمل معائنہ
 Good,ٹھیک
-Inspector signature,معائنہ کار کے دستخط
 Items and parts,آئٹمز اور پرزے
 Late by {0},{0} کی تاخیر
 Late by {0} days,{0} دن کی تاخیر
@@ -158,7 +155,6 @@ Oil,تیل
 Oil Filter,آئل فلٹر
 On customer screen,کسٹمر اسکرین پر
 Online,آن لائن
-Other vehicle,دوسری گاڑی
 Overdue,تاخیر
 Parts,پرزے
 Photo {0},تصویر {0}
@@ -180,9 +176,7 @@ Roof,چھت
 Scan the vehicle barcode,گاڑی کا بارکوڈ اسکین کریں
 Scratch,خراش
 Select at least one component,کم از کم ایک پرزہ چنیں
-Send for approval,منظوری کے لیے بھیجیں
 Sending,بھیجا جا رہا ہے
-Sent for approval,منظوری کے لیے بھیج دیا
 Service,سروس
 Signature cleared,دستخط صاف
 Signatures,دستخط
@@ -196,9 +190,7 @@ Vehicle,گاڑی
 Vehicle body,گاڑی کی باڈی
 Vehicles,گاڑیاں
 Vehicles due,واجب گاڑیاں
-Waiting for approval,منظوری کا انتظار
 Waiting for driver,ڈرائیور کا انتظار
-Waiting for the rental manager to approve,رینٹل مینیجر کی منظوری کا انتظار
 Worn,گھسا ہوا
 {0} removed,{0} ہٹا دیا گیا
 Sign-in did not stick on this device. Try again.,اس ڈیوائس پر سائن اِن برقرار نہیں رہا۔ دوبارہ کوشش کریں۔
@@ -256,7 +248,6 @@ Low Level,سطح کم
 Damaged,خراب
 Needs Replacement,بدلنے کی ضرورت
 {0} left: {1},{0} باقی: {1}
-Approve exit,روانگی کی منظوری
 Etihad fleet maintenance,اتحاد کمپنی کی گاڑیوں کی مرمت
 Customer maintenance,کسٹمر کی گاڑی کی مرمت
 {0} vehicles waiting,{0} گاڑیاں انتظار میں
@@ -318,7 +309,6 @@ Mada,مدی
 Call the workshop,ورکشاپ کو کال کریں
 Download invoice,انوائس ڈاؤن لوڈ کریں
 Your vehicle,آپ کی گاڑی
-Exit approved,اخراج کی منظوری ہو گئی
 All vehicles,تمام گاڑیاں
 Show more ({0} of {1}),مزید دکھائیں ({1} میں سے {0})
 "The server is busy, try again",سرور مصروف ہے، دوبارہ کوشش کریں
@@ -374,3 +364,5 @@ This photo is already attached to another record,یہ تصویر پہلے سے �
 Other photos,دیگر تصاویر
 Add photo,تصویر شامل کریں
 No photos taken at the gate,گیٹ پر کوئی تصویر نہیں لی گئی
+Driver signature is required,ڈرائیور کے دستخط ضروری ہیں
+This visit has no inspection yet,اس وزٹ کا ابھی معائنہ نہیں ہوا

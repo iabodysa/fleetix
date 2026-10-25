@@ -53,6 +53,6 @@
 </table>
 <table class="fx-g"><tr><th class="fx-bar">{{ _("Driver Observations / Fleet Coordinator") }}<span class="en">Driver observations / Fleet coordinator</span></th></tr>
 <tr><td style="padding:0 2mm 1.5mm">{{ fx.lines((doc.notes or "").split("\n"), 3) }}</td></tr></table>
-{{ fx.signatures([(_("Employee Signature"), "Employee signature", frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None, doc.inspector_signature), (_("Driver Signature"), "Driver signature", driver.full_name if driver else None, doc.driver_signature), (_("Fleet Supervisor"), "Fleet supervisor", None), (_("Transport Officer"), "Transport officer", None)]) }}
+{{ fx.signatures(([(_("Employee Signature"), "Employee signature", frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None, doc.inspector_signature)] if doc.inspector_signature and "signature-placeholder" not in doc.inspector_signature else []) + [(_("Driver Signature"), "Driver signature", driver.full_name if driver else None, doc.driver_signature), (_("Fleet Supervisor"), "Fleet supervisor", None), (_("Transport Officer"), "Transport officer", None)]) }}
 {{ fx.footer(vehicle.company if vehicle else None) }}
 </div>

@@ -49,7 +49,6 @@ fixtures = [
 				[
 					"Vehicle Request",
 					"Vehicle Handover",
-					"Maintenance",
 					"Accident",
 					"Damage",
 					"Project Claim",
@@ -76,10 +75,6 @@ fixtures = [
 					"Documentation and Signatures",
 					"Documented",
 					"Draft",
-					"Driver Arrived",
-					"Due Alert",
-					"Final Check",
-					"Full Inspection",
 					"Inspection",
 					"New",
 					"Paid",
@@ -91,7 +86,6 @@ fixtures = [
 					"Requested",
 					"Responsibility Set",
 					"Sent to Project",
-					"Service",
 				],
 			]
 		],
@@ -103,7 +97,6 @@ fixtures = [
 				"name",
 				"in",
 				[
-					"Arrive",
 					"Assign",
 					"Cancel",
 					"Charge",
@@ -112,14 +105,12 @@ fixtures = [
 					"Complete",
 					"Document",
 					"Estimate Cost",
-					"Finish Service",
 					"Inspect",
 					"Pay",
 					"Select Vehicle",
 					"Send",
 					"Set Responsibility",
 					"Start Inspection",
-					"Start Service",
 					"Submit",
 				],
 			]
@@ -175,7 +166,6 @@ jinja = {
 
 website_route_rules = [
 	{"from_route": "/maintenance/track/<visit>", "to_route": "maintenance_track"},
-	{"from_route": "/maintenance/sign/<visit>", "to_route": "maintenance_sign"},
 	{"from_route": "/maintenance/<path:app_path>", "to_route": "maintenance"},
 	{"from_route": "/gate/<path:app_path>", "to_route": "gate"},
 ]

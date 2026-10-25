@@ -6,7 +6,6 @@ from frappe import _
 
 FLAGGED = "Odometer Flagged"
 SOURCES = (
-	("Maintenance", {"docstatus": 0, "status": "Full Inspection", "inspection": ("is", "set")}, "status"),
 	("Vehicle Request", {"workflow_state": ("in", ("New", "Pending Vehicle Selection"))}, "workflow_state"),
 	("Damage", {"docstatus": ("<", 2), "status": "Detected"}, "status"),
 	("Accident", {"docstatus": ("<", 2), "status": ("!=", "Closed")}, "status"),

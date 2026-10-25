@@ -13,7 +13,7 @@ from fleetix.fleetix.track import SIGN_STATES, keyed_visit
 
 no_cache = 1
 
-STAGES = ("Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check", "Completed")
+STAGES = ("Driver Arrived", "Service", "Completed")
 INVOICE_FORMAT = "Thermal Maintenance Invoice"
 
 

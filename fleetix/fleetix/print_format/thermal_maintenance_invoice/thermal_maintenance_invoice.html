@@ -24,7 +24,7 @@
 {% if bill.parts %}{{ lines(_("Spare Parts"), "Parts", bill.parts) }}{% endif %}
 {% if bill.labour %}{{ lines(_("Labour"), "Labour", bill.labour) }}{% endif %}
 {{ tp.findings(doc.findings) }}
-{{ tp.signatures([(_("Workshop"), "Workshop", frappe.db.get_value("User", doc.approved_by, "full_name") if doc.approved_by else None), (_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None)]) }}
+{{ tp.signatures(([(_("Workshop"), "Workshop", frappe.db.get_value("User", doc.approved_by, "full_name"))] if doc.approved_by else []) + [(_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None)]) }}
 {{ tp.qr(doc) }}
 {{ tp.foot(bill.company) }}
 </div>

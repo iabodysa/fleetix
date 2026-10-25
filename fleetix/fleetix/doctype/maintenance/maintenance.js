@@ -12,7 +12,6 @@ frappe.ui.form.on("Maintenance", {
 	refresh(frm) {
 		fleetix.vehicle_type.show(frm, "vehicle");
 		render_photo_gallery(frm);
-		add_sign_by_phone(frm);
 	},
 	vehicle(frm) {
 		fleetix.vehicle_type.show(frm, "vehicle");
@@ -73,26 +72,5 @@ function open_lightbox(items, index) {
 			closeOnScroll: false,
 		});
 		gallery.init();
-	});
-}
-
-function add_sign_by_phone(frm) {
-	if (frm.is_new() || frm.doc.docstatus !== 0 || frm.doc.manager_signature) return;
-	if (!frm.perm[1] || !frm.perm[1].write) return;
-	frm.add_custom_button(__("Sign by phone"), () => {
-		frappe
-			.call({
-				method: "fleetix.fleetix.api.maintenance.get_sign_link",
-				args: { maintenance: frm.doc.name },
-			})
-			.then(({ message }) => {
-				const dialog = new frappe.ui.Dialog({
-					title: __("Sign by phone"),
-					fields: [{ fieldtype: "HTML", fieldname: "qr" }],
-				});
-				$('<img class="mnt-sign-qr" alt="">').attr("src", message.qr).appendTo(dialog.fields_dict.qr.$wrapper);
-				dialog.show();
-				dialog.$wrapper.one("hidden.bs.modal", () => frm.reload_doc());
-			});
 	});
 }

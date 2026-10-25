@@ -14,7 +14,6 @@ import QueueList from "./components/QueueList.vue"
 import StepBar from "./components/StepBar.vue"
 import UndoToast from "./components/UndoToast.vue"
 import VehicleProfile from "./components/VehicleProfile.vue"
-import AwaitScreen from "./screens/await/AwaitScreen.vue"
 import CustomerScreen from "./screens/customer/CustomerScreen.vue"
 import DamageScreen from "./screens/damage/DamageScreen.vue"
 import DoneScreen from "./screens/done/DoneScreen.vue"
@@ -44,11 +43,10 @@ const SCREENS = {
 	damage: DamageScreen,
 	photos: PhotosScreen,
 	signatures: SignaturesScreen,
-	await: AwaitScreen,
 	review: ReviewScreen,
 	done: DoneScreen,
 }
-const STEP_LABELS = [__("Vehicle"), __("Odometer"), __("Parts"), __("Damage"), __("Photos"), __("Signatures"), __("Approval"), __("Review")]
+const STEP_LABELS = [__("Vehicle"), __("Odometer"), __("Parts"), __("Damage"), __("Photos"), __("Signatures"), __("Review")]
 const WALKIN_LABELS = [__("Customer"), __("Items"), __("Final check"), __("Invoice")]
 
 const boot = window.frappe.boot
@@ -101,7 +99,7 @@ watch(
 		if (walkin.value) return publishToCustomer({ plate, status: WALKIN_LABELS[WALKIN_STEPS.indexOf(step)], tone: "quiet" })
 		if (step === "home") return publishToCustomer({ plate: "", status: "", tone: "quiet" })
 		const status = step === "photos" || step === "signatures" ? __("Photos and signatures") : STEP_LABELS[STEPS.indexOf(step)]
-		publishToCustomer({ plate: step === "queue" ? "" : plate, maintenance, status, tone: step === "await" ? "wait" : "quiet" })
+		publishToCustomer({ plate: step === "queue" ? "" : plate, maintenance, status, tone: "quiet" })
 	},
 )
 onShellBack(shellBack)

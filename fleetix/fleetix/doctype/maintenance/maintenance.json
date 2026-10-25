@@ -252,7 +252,8 @@
    "fieldname": "inspector_signature",
    "fieldtype": "Signature",
    "label": "Inspector Signature",
-   "read_only": 1
+   "read_only": 1,
+   "depends_on": "eval:doc.inspector_signature"
   },
   {
    "fieldname": "column_break_signature_manager",
@@ -262,27 +263,31 @@
    "fieldname": "manager_signature",
    "fieldtype": "Signature",
    "label": "Rental Manager Signature",
-   "permlevel": 1
+   "permlevel": 1,
+   "depends_on": "eval:doc.manager_signature"
   },
   {
    "fieldname": "manager_signed_by",
    "fieldtype": "Link",
    "label": "Signed By",
    "options": "User",
-   "read_only": 1
+   "read_only": 1,
+   "depends_on": "eval:doc.manager_signature"
   },
   {
    "fieldname": "manager_signed_on",
    "fieldtype": "Datetime",
    "label": "Signed On",
-   "read_only": 1
+   "read_only": 1,
+   "depends_on": "eval:doc.manager_signature"
   },
   {
    "fieldname": "approved_by",
    "fieldtype": "Link",
    "label": "Approved By",
    "options": "User",
-   "read_only": 1
+   "read_only": 1,
+   "depends_on": "eval:doc.approved_by"
   },
   {
    "collapsible": 1,
@@ -318,7 +323,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-25 17:43:00.000000",
+ "modified": "2026-10-25 18:56:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Maintenance",

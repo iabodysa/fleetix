@@ -107,9 +107,7 @@ Approval,অনুমোদন
 Approved,অনুমোদিত
 Battery,ব্যাটারি
 Body damage,বডির ক্ষতি
-Both signatures are required,দুটি স্বাক্ষরই প্রয়োজন
 Broken,ভাঙা
-Check now,এখন দেখুন
 Choose a body part and a damage type,বডির অংশ ও ক্ষতির ধরন বাছুন
 Clear,মুছুন
 Completed,সম্পন্ন
@@ -133,7 +131,6 @@ Finishing,শেষ হচ্ছে
 Front Tires,সামনের টায়ার
 Full Inspection,সম্পূর্ণ পরিদর্শন
 Good,ভালো
-Inspector signature,পরিদর্শকের স্বাক্ষর
 Items and parts,আইটেম ও যন্ত্রাংশ
 Late by {0},{0} দেরি
 Late by {0} days,{0} দিন দেরি
@@ -158,7 +155,6 @@ Oil,তেল
 Oil Filter,অয়েল ফিল্টার
 On customer screen,গ্রাহক স্ক্রিনে
 Online,অনলাইন
-Other vehicle,অন্য গাড়ি
 Overdue,মেয়াদ পেরিয়েছে
 Parts,যন্ত্রাংশ
 Photo {0},ছবি {0}
@@ -180,9 +176,7 @@ Roof,ছাদ
 Scan the vehicle barcode,গাড়ির বারকোড স্ক্যান করুন
 Scratch,আঁচড়
 Select at least one component,অন্তত একটি যন্ত্রাংশ বাছুন
-Send for approval,অনুমোদনের জন্য পাঠান
 Sending,পাঠানো হচ্ছে
-Sent for approval,অনুমোদনের জন্য পাঠানো হয়েছে
 Service,সার্ভিস
 Signature cleared,স্বাক্ষর মুছে গেছে
 Signatures,স্বাক্ষর
@@ -196,9 +190,7 @@ Vehicle,গাড়ি
 Vehicle body,গাড়ির বডি
 Vehicles,গাড়িগুলো
 Vehicles due,বাকি গাড়িগুলো
-Waiting for approval,অনুমোদনের অপেক্ষা
 Waiting for driver,চালকের অপেক্ষা
-Waiting for the rental manager to approve,রেন্টাল ম্যানেজারের অনুমোদনের অপেক্ষা
 Worn,ক্ষয়ে গেছে
 {0} removed,{0} সরানো হয়েছে
 Sign-in did not stick on this device. Try again.,এই ডিভাইসে সাইন-ইন টিকেনি। আবার চেষ্টা করুন।
@@ -256,7 +248,6 @@ Low Level,লেভেল কম
 Damaged,ক্ষতিগ্রস্ত
 Needs Replacement,বদলাতে হবে
 {0} left: {1},{0} বাকি: {1}
-Approve exit,বের হওয়া অনুমোদন
 Etihad fleet maintenance,ইত্তিহাদ কোম্পানির গাড়ি রক্ষণাবেক্ষণ
 Customer maintenance,গ্রাহকের গাড়ি রক্ষণাবেক্ষণ
 {0} vehicles waiting,{0}টি গাড়ি অপেক্ষায়
@@ -318,7 +309,6 @@ Mada,মাদা
 Call the workshop,ওয়ার্কশপে কল করুন
 Download invoice,ইনভয়েস ডাউনলোড করুন
 Your vehicle,আপনার গাড়ি
-Exit approved,বের হওয়া অনুমোদিত
 All vehicles,সব গাড়ি
 Show more ({0} of {1}),আরও দেখান ({1} এর মধ্যে {0})
 "The server is busy, try again","সার্ভার ব্যস্ত, আবার চেষ্টা করুন"
@@ -374,3 +364,5 @@ This photo is already attached to another record,এই ছবিটি ইত�
 Other photos,অন্যান্য ছবি
 Add photo,ছবি যোগ করুন
 No photos taken at the gate,গেটে কোনো ছবি তোলা হয়নি
+Driver signature is required,চালকের স্বাক্ষর প্রয়োজন
+This visit has no inspection yet,এই ভিজিটের এখনও পরিদর্শন হয়নি

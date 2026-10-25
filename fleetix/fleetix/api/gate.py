@@ -151,7 +151,8 @@ def arrive_for_maintenance(vehicle):
 		visit = frappe.get_doc({"doctype": "Maintenance", "maintenance_type": "Emergency", "vehicle": vehicle}).insert()
 	visit.check_permission("write")
 	if visit.status == "Due Alert":
-		visit = apply_workflow(visit, "Arrive")
+		visit.status = "Driver Arrived"
+		visit.save()
 	return visit
 
 

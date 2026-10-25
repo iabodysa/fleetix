@@ -107,9 +107,7 @@ Approval,मंज़ूरी
 Approved,मंज़ूर
 Battery,बैटरी
 Body damage,बॉडी का नुकसान
-Both signatures are required,दोनों हस्ताक्षर ज़रूरी हैं
 Broken,टूटा हुआ
-Check now,अभी जाँचें
 Choose a body part and a damage type,बॉडी का हिस्सा और नुकसान का प्रकार चुनें
 Clear,साफ़ करें
 Completed,पूरा
@@ -133,7 +131,6 @@ Finishing,पूरा हो रहा है
 Front Tires,आगे के टायर
 Full Inspection,पूरी जाँच
 Good,ठीक
-Inspector signature,जाँचकर्ता के हस्ताक्षर
 Items and parts,आइटम और पुर्ज़े
 Late by {0},{0} की देरी
 Late by {0} days,{0} दिन की देरी
@@ -158,7 +155,6 @@ Oil,तेल
 Oil Filter,ऑयल फ़िल्टर
 On customer screen,ग्राहक स्क्रीन पर
 Online,ऑनलाइन
-Other vehicle,दूसरी गाड़ी
 Overdue,देर हो गई
 Parts,पुर्ज़े
 Photo {0},फ़ोटो {0}
@@ -180,9 +176,7 @@ Roof,छत
 Scan the vehicle barcode,गाड़ी का बारकोड स्कैन करें
 Scratch,खरोंच
 Select at least one component,कम से कम एक पुर्ज़ा चुनें
-Send for approval,मंज़ूरी के लिए भेजें
 Sending,भेजा जा रहा है
-Sent for approval,मंज़ूरी के लिए भेजा गया
 Service,सर्विस
 Signature cleared,हस्ताक्षर साफ़
 Signatures,हस्ताक्षर
@@ -196,9 +190,7 @@ Vehicle,गाड़ी
 Vehicle body,गाड़ी की बॉडी
 Vehicles,गाड़ियाँ
 Vehicles due,देय गाड़ियाँ
-Waiting for approval,मंज़ूरी का इंतज़ार
 Waiting for driver,ड्राइवर का इंतज़ार
-Waiting for the rental manager to approve,रेंटल मैनेजर की मंज़ूरी का इंतज़ार
 Worn,घिसा हुआ
 {0} removed,{0} हटाया गया
 Sign-in did not stick on this device. Try again.,इस डिवाइस पर साइन-इन नहीं टिका। फिर से कोशिश करें।
@@ -253,7 +245,6 @@ Low Level,स्तर कम
 Damaged,खराब
 Needs Replacement,बदलना ज़रूरी
 {0} left: {1},{0} बाकी: {1}
-Approve exit,निकास मंज़ूर करें
 Etihad fleet maintenance,इत्तिहाद कंपनी की गाड़ियों का रखरखाव
 Customer maintenance,ग्राहक की गाड़ी का रखरखाव
 {0} vehicles waiting,{0} गाड़ियाँ इंतज़ार में
@@ -308,7 +299,6 @@ Mada,मदा
 Call the workshop,वर्कशॉप को कॉल करें
 Download invoice,इनवॉइस डाउनलोड करें
 Your vehicle,आपकी गाड़ी
-Exit approved,निकास स्वीकृत
 All vehicles,सभी वाहन
 Show more ({0} of {1}),और दिखाएँ ({1} में से {0})
 "The server is busy, try again","सर्वर व्यस्त है, फिर से कोशिश करें"
@@ -353,3 +343,5 @@ This photo is already attached to another record,यह फ़ोटो पह�
 Other photos,अन्य फ़ोटो
 Add photo,फ़ोटो जोड़ें
 No photos taken at the gate,गेट पर कोई फ़ोटो नहीं ली गई
+Driver signature is required,ड्राइवर के हस्ताक्षर ज़रूरी हैं
+This visit has no inspection yet,इस विज़िट की अभी जाँच नहीं हुई

@@ -2,7 +2,7 @@ import { reactive, watch } from "vue"
 import { createResource } from "frappe-ui/src/resources/resources.js"
 import { api, QUEUE_METHOD } from "../api.js"
 
-export const STEPS = ["queue", "odometer", "parts", "damage", "photos", "signatures", "await", "review"]
+export const STEPS = ["queue", "odometer", "parts", "damage", "photos", "signatures", "review"]
 export const WALKIN_STEPS = ["walkin", "walkinItems", "walkinCheck", "walkinInvoice"]
 const ORDER = ["home"].concat(STEPS, ["done"], WALKIN_STEPS)
 
@@ -16,11 +16,10 @@ export const store = reactive({
 	checklist: null,
 	damages: [],
 	photos: [],
-	signatures: { driver: null, inspector: null },
+	signatures: { driver: null },
 	result: null,
 	display: false,
 	printed: false,
-	exited: null,
 	walkin: null,
 })
 
@@ -78,9 +77,8 @@ export async function restoreDraft() {
 
 export function stepForStatus(row) {
 	if (row.status === "Driver Arrived") return "odometer"
-	if (row.status === "Full Inspection") return row.inspection ? "await" : "odometer"
-	if (["Approved", "Service"].indexOf(row.status) !== -1) return "review"
-	if (row.status === "Final Check") return "await"
+	if (row.status === "Full Inspection") return row.inspection ? "review" : "odometer"
+	if (["Approved", "Service", "Final Check"].indexOf(row.status) !== -1) return "review"
 	return null
 }
 
@@ -97,7 +95,7 @@ export async function openVisit(row) {
 	store.checklist = null
 	store.damages = []
 	store.photos = []
-	store.signatures = { driver: null, inspector: null }
+	store.signatures = { driver: null }
 	store.result = null
 	store.printed = false
 	store.display = false
@@ -118,7 +116,6 @@ const PREVIOUS_STEP = {
 	damage: "parts",
 	photos: "damage",
 	signatures: "photos",
-	await: "queue",
 	review: "queue",
 	done: "queue",
 }

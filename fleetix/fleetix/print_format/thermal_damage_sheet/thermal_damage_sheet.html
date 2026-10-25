@@ -52,7 +52,7 @@
 </table>
 {% set visit = frappe.db.get_value("Maintenance", {"inspection": doc.name}, "name") if doc.name else None %}
 {{ tp.findings(frappe.get_all("Maintenance Finding", filters={"parent": visit, "parenttype": "Maintenance"}, fields=["part", "reason", "note"], order_by="idx asc") if visit else []) }}
-{{ tp.signatures([(_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None, doc.driver_signature), (_("Inspector"), "Inspector", frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None, doc.inspector_signature)]) }}
+{{ tp.signatures([(_("Driver"), "Driver", frappe.db.get_value("Driver", doc.driver, "full_name") if doc.driver else None, doc.driver_signature)] + ([(_("Inspector"), "Inspector", frappe.db.get_value("User", doc.inspector, "full_name") if doc.inspector else None, doc.inspector_signature)] if doc.inspector_signature and "signature-placeholder" not in doc.inspector_signature else [])) }}
 {{ tp.qr(doc) }}
 {{ tp.foot(vehicle.company if vehicle else None) }}
 </div>

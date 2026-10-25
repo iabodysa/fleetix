@@ -3,7 +3,6 @@ import { computed, ref } from "vue"
 import { api, errorText } from "../api.js"
 import { problem, success } from "../composables/useFeedback.js"
 import { __, componentLabel, formatKm, reasonLabel, statusLabel } from "../i18n/index.js"
-import { printDocument } from "../native.js"
 import { openVisit, queue, stepForStatus, store } from "../store/index.js"
 import AppIcon from "./AppIcon.vue"
 import BigButton from "./BigButton.vue"
@@ -14,22 +13,15 @@ import PlateChip from "./PlateChip.vue"
 defineProps({ compact: Boolean })
 const rows = computed(() => queue.data || [])
 
-const EXIT_ACTION = "Complete"
-const EXIT_PASS = "Thermal Gate Exit Pass"
 const acting = ref("")
 const failed = ref("")
 
-async function act(row) {
-	const action = row.actions[0]
+async function arrive(row) {
 	acting.value = row.maintenance
 	failed.value = ""
 	try {
-		await api.act(row.maintenance, action)
+		await api.openVehicle(row.vehicle)
 		success()
-		if (action === EXIT_ACTION) {
-			store.exited = row
-			await printExit(row)
-		}
 		await queue.fetch()
 	} catch (e) {
 		failed.value = errorText(e)
@@ -37,33 +29,14 @@ async function act(row) {
 	}
 	acting.value = ""
 }
-async function printExit(row) {
-	acting.value = row.maintenance
-	try {
-		if (!(await printDocument("Maintenance", row.maintenance, EXIT_PASS))) failed.value = __("Printer not connected")
-	} catch (e) {
-		failed.value = errorText(e)
-		problem()
-	}
-	acting.value = ""
-}
-function nextAction(row) {
-	return !stepForStatus(row) && row.actions && row.actions.length ? row.actions[0] : ""
-}
-const ACTION_LABELS = { [EXIT_ACTION]: __("Approve exit") }
-function actionLabel(action) {
-	return ACTION_LABELS[action] || __(action)
-}
 function stageText(row) {
 	if (row.status === "Due Alert") return __("Waiting for driver")
-	if (row.status === "Full Inspection" && row.inspection) return __("Waiting for approval")
 	return statusLabel(row.status)
 }
 function stageTone(row) {
-	if (!stepForStatus(row)) return "quiet"
-	if (row.status === "Full Inspection" && row.inspection) return "wait"
-	if (["Approved", "Service", "Final Check"].indexOf(row.status) !== -1) return "done"
-	return "wait"
+	const step = stepForStatus(row)
+	if (!step) return "quiet"
+	return step === "review" ? "done" : "wait"
 }
 function late(row) {
 	return row.worst.km ? __("Late by {0}", [formatKm(row.worst.km)]) : __("Late by {0} days", [row.worst.days])
@@ -72,14 +45,6 @@ function late(row) {
 
 <template>
 	<div class="queue" :class="{ 'queue-compact': compact }">
-		<div v-if="store.exited && !compact" class="card visit">
-			<span class="visit-top">
-				<PlateChip :plate="store.exited.plate" size="md" />
-				<span class="pill tone-done">{{ __("Exit approved") }}</span>
-			</span>
-			<span class="visit-model">{{ store.exited.model }}</span>
-			<BigButton icon="printer" tone="quiet" :label="__('Gate Exit Pass')" :busy="acting === store.exited.maintenance" block @press="printExit(store.exited)" />
-		</div>
 		<p v-if="queue.loading && !rows.length" class="queue-loading">{{ __("Loading") }}</p>
 		<EmptyState v-else-if="!rows.length" :label="__('No vehicles waiting')" />
 		<component
@@ -110,7 +75,7 @@ function late(row) {
 					<span v-if="finding.note" class="muted">{{ finding.note }}</span>
 				</span>
 			</span>
-			<BigButton v-if="nextAction(row) && !compact" :label="actionLabel(nextAction(row))" :busy="acting === row.maintenance" block @press="act(row)" />
+			<BigButton v-if="row.status === 'Due Alert' && !compact" :label="__('Arrive')" :busy="acting === row.maintenance" block @press="arrive(row)" />
 		</component>
 		<ErrorCard :error="failed" @dismiss="failed = ''" />
 	</div>
