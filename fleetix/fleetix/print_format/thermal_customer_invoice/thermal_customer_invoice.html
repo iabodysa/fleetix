@@ -19,7 +19,7 @@
 </table>
 <table class="tp-sum">
 <tr><td><b>{{ _("Total before VAT") }}</b> <i>Subtotal</i></td><td class="tp-n">{{ tp.money(doc.net_total) }}</td></tr>
-<tr><td><b>{{ _("VAT {0}%").format("{:g}".format(doc.vat_rate or 0)) }}</b> <i>VAT {{ "{:g}".format(doc.vat_rate or 0) }}%</i></td><td class="tp-n">{{ tp.money(doc.vat_amount) }}</td></tr>
+<tr><td><b>{{ ltr_runs(_("VAT {0}%").format("{:g}".format(doc.vat_rate or 0))) }}</b> <i>VAT {{ "{:g}".format(doc.vat_rate or 0) }}%</i></td><td class="tp-n">{{ tp.money(doc.vat_amount) }}</td></tr>
 <tr class="tp-grand"><td>{{ _("Total") }}<i>Total incl. VAT</i></td><td class="tp-n">{{ tp.money(doc.grand_total) }}</td></tr>
 {% if doc.paid and doc.mode_of_payment %}<tr><td><b>{{ _(doc.mode_of_payment) }}</b> <i>{{ doc.mode_of_payment }}</i></td><td class="tp-n">{{ tp.money(doc.grand_total) }}</td></tr>{% endif %}
 </table>

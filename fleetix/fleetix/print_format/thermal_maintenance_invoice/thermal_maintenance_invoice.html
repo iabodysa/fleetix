@@ -26,7 +26,7 @@
 {% if bill.labour %}{{ lines(_("Labour"), "Labour", bill.labour, bill.labour_total) }}{% endif %}
 <table class="tp-sum">
 <tr><td><b>{{ _("Total before VAT") }}</b> <i>Subtotal</i></td><td class="tp-n">{{ tp.money(bill.subtotal) }}</td></tr>
-<tr><td><b>{{ _("VAT {0}%").format("{:g}".format(bill.vat_rate)) }}</b> <i>VAT {{ "{:g}".format(bill.vat_rate) }}%</i></td><td class="tp-n">{{ tp.money(bill.vat) }}</td></tr>
+<tr><td><b>{{ ltr_runs(_("VAT {0}%").format("{:g}".format(bill.vat_rate))) }}</b> <i>VAT {{ "{:g}".format(bill.vat_rate) }}%</i></td><td class="tp-n">{{ tp.money(bill.vat) }}</td></tr>
 <tr class="tp-grand"><td>{{ _("Total") }}<i>Total incl. VAT</i></td><td class="tp-n">{{ tp.money(bill.total) }}</td></tr>
 </table>
 {{ tp.findings(doc.findings) }}
