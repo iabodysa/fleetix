@@ -18,10 +18,10 @@
     <string name="error_ssl_text">تعذر التحقق من شهادة الخادم.</string>
     <string name="error_timeout_title">الصفحة تأخرت في التحميل</string>
     <string name="error_timeout_text">لم يستجب الخادم خلال 30 ثانية.</string>
-    <string name="error_blank_title">لم تفتح الصفحة</string>
-    <string name="error_blank_text">تعذر على التطبيق عرض هذه الصفحة. أعد المحاولة.</string>
     <string name="error_unreachable_title">تعذر الوصول إلى الخادم</string>
     <string name="error_unreachable_text">تأكد من الشبكة، ثم أعد المحاولة.</string>
+    <string name="error_blank_title">لم تفتح الصفحة</string>
+    <string name="error_blank_text">تعذر على التطبيق عرض هذه الصفحة. أعد المحاولة.</string>
     <string name="update_title">يتوفر إصدار جديد</string>
     <string name="update_text">الإصدار {0} جاهز للتثبيت.</string>
     <string name="update_get">تحديث</string>

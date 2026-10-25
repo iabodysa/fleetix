@@ -18,10 +18,10 @@
     <string name="error_ssl_text">The server certificate could not be verified.</string>
     <string name="error_timeout_title">The page is taking too long</string>
     <string name="error_timeout_text">The server did not answer within 30 seconds.</string>
-    <string name="error_blank_title">The page did not open</string>
-    <string name="error_blank_text">The app could not show this page. Try again.</string>
     <string name="error_unreachable_title">The server could not be reached</string>
     <string name="error_unreachable_text">Check the network, then try again.</string>
+    <string name="error_blank_title">The page did not open</string>
+    <string name="error_blank_text">The app could not show this page. Try again.</string>
     <string name="update_title">New version available</string>
     <string name="update_text">Version {0} is ready to install.</string>
     <string name="update_get">Update</string>

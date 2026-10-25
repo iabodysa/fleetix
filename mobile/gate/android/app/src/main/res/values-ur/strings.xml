@@ -18,10 +18,10 @@
     <string name="error_ssl_text">سرور کا سرٹیفکیٹ تصدیق نہیں ہو سکا۔</string>
     <string name="error_timeout_title">صفحہ بہت دیر لگا رہا ہے</string>
     <string name="error_timeout_text">سرور نے 30 سیکنڈ میں جواب نہیں دیا۔</string>
-    <string name="error_blank_title">صفحہ نہیں کھلا</string>
-    <string name="error_blank_text">ایپ یہ صفحہ نہیں دکھا سکی۔ دوبارہ کوشش کریں۔</string>
     <string name="error_unreachable_title">سرور تک رسائی نہیں ہو سکی</string>
     <string name="error_unreachable_text">نیٹ ورک چیک کریں، پھر دوبارہ کوشش کریں۔</string>
+    <string name="error_blank_title">صفحہ نہیں کھلا</string>
+    <string name="error_blank_text">ایپ یہ صفحہ نہیں دکھا سکی۔ دوبارہ کوشش کریں۔</string>
     <string name="update_title">نیا ورژن دستیاب ہے</string>
     <string name="update_text">ورژن {0} انسٹال کے لیے تیار ہے۔</string>
     <string name="update_get">اپ ڈیٹ کریں</string>

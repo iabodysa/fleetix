@@ -50,4 +50,5 @@ module.exports = {
 	printer_error: __("Printer error"),
 	printer_sample: __("Printer test page"),
 	idle_welcome: __("Welcome"),
+	idle_track: __("Scan the code to follow your vehicle"),
 }

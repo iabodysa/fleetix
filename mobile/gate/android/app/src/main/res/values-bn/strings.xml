@@ -18,10 +18,10 @@
     <string name="error_ssl_text">সার্ভারের সার্টিফিকেট যাচাই করা যায়নি।</string>
     <string name="error_timeout_title">পেজ লোড হতে অনেক সময় লাগছে</string>
     <string name="error_timeout_text">সার্ভার ৩০ সেকেন্ডের মধ্যে উত্তর দেয়নি।</string>
-    <string name="error_blank_title">পেজ খোলেনি</string>
-    <string name="error_blank_text">অ্যাপ এই পেজ দেখাতে পারেনি। আবার চেষ্টা করুন।</string>
     <string name="error_unreachable_title">সার্ভারে পৌঁছানো যায়নি</string>
     <string name="error_unreachable_text">নেটওয়ার্ক দেখুন, তারপর আবার চেষ্টা করুন।</string>
+    <string name="error_blank_title">পেজ খোলেনি</string>
+    <string name="error_blank_text">অ্যাপ এই পেজ দেখাতে পারেনি। আবার চেষ্টা করুন।</string>
     <string name="update_title">নতুন সংস্করণ আছে</string>
     <string name="update_text">সংস্করণ {0} ইনস্টলের জন্য প্রস্তুত।</string>
     <string name="update_get">আপডেট করুন</string>

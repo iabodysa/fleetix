@@ -21,6 +21,8 @@ module.exports = {
 	error_timeout_text: __("The server did not answer within 30 seconds."),
 	error_unreachable_title: __("The server could not be reached"),
 	error_unreachable_text: __("Check the network, then try again."),
+	error_blank_title: __("The page did not open"),
+	error_blank_text: __("The app could not show this page. Try again."),
 	update_title: __("New version available"),
 	update_text: __("Version {0} is ready to install."),
 	update_get: __("Update"),

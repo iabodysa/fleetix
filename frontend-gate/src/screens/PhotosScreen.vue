@@ -8,7 +8,7 @@ import BigButton from "../components/BigButton.vue"
 import GateIcon from "../components/GateIcon.vue"
 import PhotoSlot from "../components/PhotoSlot.vue"
 
-const LABELS = { front: __("Front"), back: __("Back"), left: __("Left side"), right: __("Right side") }
+const LABELS = { front: __("Front"), back: __("Rear"), left: __("Left side"), right: __("Right side") }
 const camera = ref(true)
 const error = ref("")
 const ready = computed(() => !camera.value || SIDES.every((side) => store.photos[side]))
