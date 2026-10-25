@@ -10,6 +10,7 @@
 .tp table{width:100%;border-collapse:collapse;table-layout:fixed}
 .tp td{padding:0;vertical-align:middle;word-wrap:break-word;overflow-wrap:break-word;overflow:hidden}
 .tp .ltr{direction:ltr;unicode-bidi:embed;display:inline-block;white-space:nowrap}
+.tp-lr{direction:ltr;unicode-bidi:embed}
 .tp-logo{text-align:center;padding:8px 0 14px}
 .tp-logo img{height:96px;max-width:480px;filter:grayscale(1) contrast(4);-webkit-filter:grayscale(1) contrast(4)}
 .tp-title{background:#000;color:#FFF;text-align:center;padding:12px 8px 10px}
@@ -98,7 +99,7 @@
 {%- endmacro %}
 
 {% macro kv(rows) -%}
-<table class="tp-kv">{% for r in rows if r[2] is not none and r[2] != "" %}<tr><td class="tp-k"><b>{{ r[0] }}</b><i>{{ r[1] }}</i></td><td class="tp-v">{% if r | length > 3 and r[3] %}<bdi dir="ltr" class="ltr">{{ r[2] }}</bdi>{% else %}{{ r[2] }}{% endif %}</td></tr>{% endfor %}</table>
+<table class="tp-kv">{% for r in rows if r[2] is not none and r[2] != "" %}<tr><td class="tp-k"><b>{{ r[0] }}</b><i>{{ r[1] }}</i></td><td class="tp-v">{% if r | length > 3 and r[3] %}<bdi dir="ltr" class="ltr">{{ r[2] }}</bdi>{% else %}{{ ltr_runs(r[2]) }}{% endif %}</td></tr>{% endfor %}</table>
 {%- endmacro %}
 
 {% macro big(ar, en, value) -%}
@@ -153,7 +154,7 @@
 <table class="tp-grid">
 <colgroup><col style="width:190px"><col></colgroup>
 <tr class="tp-h"><td>{{ _("Part") }}<i>Part</i></td><td>{{ _("Note") }}<i>Note</i></td></tr>
-{% for r in rows %}<tr><td class="tp-s">{{ _(r.part) }}</td><td class="tp-s">{{ _(r.reason) if r.reason else "" }}{% if r.note %} · {{ r.note }}{% endif %}</td></tr>{% endfor %}
+{% for r in rows %}<tr><td class="tp-s">{{ ltr_runs(_(r.part)) }}</td><td class="tp-s">{{ ltr_runs(_(r.reason)) if r.reason else "" }}{% if r.note %} · {{ ltr_runs(r.note) }}{% endif %}</td></tr>{% endfor %}
 </table>{% endif %}
 {%- endmacro %}
 

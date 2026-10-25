@@ -15,7 +15,7 @@
 <table class="tp-grid">
 <colgroup><col><col style="width:96px"><col style="width:112px"><col style="width:128px"></colgroup>
 <tr class="tp-h"><td>{{ _("Item", context="Print Line") }}<i>Item</i></td><td>{{ _("Qty", context="Print Line") }}<i>Qty</i></td><td>{{ _("Rate", context="Print Line") }}<i>Rate</i></td><td>{{ _("Amount", context="Print Line") }}<i>Amount</i></td></tr>
-{% for r in doc.items %}<tr><td class="tp-s">{{ r.description }}</td><td class="tp-q">{{ tp.qty(r.qty, unit_label(r.uom)) }}</td><td class="tp-n">{{ tp.money(r.rate) }}</td><td class="tp-n">{{ tp.money(r.amount) }}</td></tr>{% endfor %}
+{% for r in doc.items %}<tr><td class="tp-s">{{ ltr_runs(r.description) }}</td><td class="tp-q">{{ tp.qty(r.qty, unit_label(r.uom)) }}</td><td class="tp-n">{{ tp.money(r.rate) }}</td><td class="tp-n">{{ tp.money(r.amount) }}</td></tr>{% endfor %}
 </table>
 <table class="tp-sum">
 <tr><td><b>{{ _("Total before VAT") }}</b> <i>Subtotal</i></td><td class="tp-n">{{ tp.money(doc.net_total) }}</td></tr>

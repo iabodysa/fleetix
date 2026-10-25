@@ -47,7 +47,7 @@
 <colgroup><col style="width:56px"><col style="width:80px"><col></colgroup>
 <tr class="tp-h"><td>#</td><td>{{ _("Zone") }}<i>Zone</i></td><td>{{ _("Description") }}<i>Description</i></td></tr>
 {% for n in range([damages | length, 4] | max) %}{% set d = damages[n] if n < damages | length else None %}
-<tr><td class="tp-n" style="height:52px">{{ n + 1 }}</td><td class="tp-n">{{ zone_no.get(d.area, "") if d else "" }}</td><td class="tp-s">{% if d %}{{ d.description or _(d.area or "") }}{% set shots = frappe.db.count("Vehicle Inspection Photo", {"parent": d.name, "parenttype": "Damage"}) %}{% if shots %} · {{ _("Photos") }} {{ shots }}{% endif %}{% endif %}</td></tr>
+<tr><td class="tp-n" style="height:52px">{{ n + 1 }}</td><td class="tp-n">{{ zone_no.get(d.area, "") if d else "" }}</td><td class="tp-s">{% if d %}{{ ltr_runs(d.description or _(d.area or "")) }}{% set shots = frappe.db.count("Vehicle Inspection Photo", {"parent": d.name, "parenttype": "Damage"}) %}{% if shots %} · {{ _("Photos") }} {{ shots }}{% endif %}{% endif %}</td></tr>
 {% endfor %}
 </table>
 {% set visit = frappe.db.get_value("Maintenance", {"inspection": doc.name}, "name") if doc.name else None %}

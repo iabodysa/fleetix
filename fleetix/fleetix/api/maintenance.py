@@ -12,6 +12,7 @@ from frappe.utils import cint, date_diff, flt, get_host_name_from_request, get_u
 
 from fleetix.fleetix.doctype.maintenance.maintenance import (
 	COMPONENT_FIELDS,
+	NEXT_DUE_FIELDS,
 	component_max_qty,
 	due_components,
 	manager_signable,
@@ -37,6 +38,15 @@ RTL_LANGUAGES = ("ar", "ur")
 DAMAGE_KINDS = ("Scratch", "Dent", "Broken", "Missing")
 FIND_LIMIT = 30
 FIND_ORDER = {"overdue": 0, "soon": 1, "ok": 2, "none": 3}
+VEHICLE_FIELDS = [
+	"name",
+	"license_plate",
+	"make",
+	"model",
+	"last_odometer",
+	"next_battery_due_date",
+	*NEXT_DUE_FIELDS.values(),
+]
 MAINTENANCE_APK = {"version_code": 10, "version_name": "1.9", "file": "fleetix-maintenance.apk"}
 
 
@@ -88,7 +98,13 @@ def get_due_queue():
 		fields=["name", "vehicle", "status", "driver", "project", "inspection", "odometer", "modified"],
 		order_by="modified desc",
 	)
-	return [queue_row(visit) for visit in visits]
+	vehicles = {
+		row.name: row
+		for row in frappe.get_all(
+			"Vehicle", filters={"name": ("in", [visit.vehicle for visit in visits])}, fields=VEHICLE_FIELDS
+		)
+	}
+	return [queue_row(visit, vehicles[visit.vehicle]) for visit in visits]
 
 
 @frappe.whitelist()
@@ -109,10 +125,10 @@ def find_vehicles(plate=None, start=0):
 		)
 	)
 	found = []
-	for row in frappe.get_list("Vehicle", fields=["name", "license_plate"], limit_page_length=0):
+	for row in frappe.get_list("Vehicle", fields=VEHICLE_FIELDS, limit_page_length=0):
 		key = (row.license_plate or "").upper().translate(PLATE_LETTERS)
 		if digits in "".join(re.findall(r"[0-9]", key)) and letters in "".join(re.findall(r"[A-Z]", key)):
-			found.append(vehicle_row(frappe.get_doc("Vehicle", row.name), open_visits.get(row.name)))
+			found.append(vehicle_row(row, open_visits.get(row.name)))
 	found.sort(
 		key=lambda row: (
 			FIND_ORDER[row["state"]],
@@ -141,7 +157,7 @@ def open_vehicle_visit(vehicle):
 		).insert()
 	if visit.status == "Due Alert":
 		visit = apply_workflow(visit, "Arrive")
-	return queue_row(visit)
+	return queue_row(visit, frappe.get_doc("Vehicle", visit.vehicle))
 
 
 @frappe.whitelist(methods=["POST"])
@@ -154,8 +170,7 @@ def open_scanned_visit(code):
 	return open_vehicle_visit(vehicle)
 
 
-def queue_row(visit):
-	vehicle = frappe.get_doc("Vehicle", visit.vehicle)
+def queue_row(visit, vehicle):
 	components = component_states(vehicle, cint(vehicle.last_odometer))
 	return {
 		"maintenance": visit.name,

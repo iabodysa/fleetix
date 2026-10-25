@@ -6,7 +6,7 @@
 <table class="tp-grid">
 <colgroup><col><col style="width:96px"><col style="width:112px"><col style="width:128px"></colgroup>
 <tr class="tp-h"><td>{{ _("Item", context="Print Line") }}<i>Item</i></td><td>{{ _("Qty", context="Print Line") }}<i>Qty</i></td><td>{{ _("Rate", context="Print Line") }}<i>Rate</i></td><td>{{ _("Amount", context="Print Line") }}<i>Amount</i></td></tr>
-{% for r in rows %}<tr><td class="tp-s">{{ r[0] }}</td><td class="tp-q">{{ tp.qty(r[1], r[4] if r | length > 4 else None) }}</td><td class="tp-n">{{ tp.money(r[2]) if r[2] is not none else "" }}</td><td class="tp-n">{{ tp.money(r[3]) if r[3] is not none else "" }}</td></tr>{% endfor %}
+{% for r in rows %}<tr><td class="tp-s">{{ ltr_runs(r[0]) }}</td><td class="tp-q">{{ tp.qty(r[1], r[4] if r | length > 4 else None) }}</td><td class="tp-n">{{ tp.money(r[2]) if r[2] is not none else "" }}</td><td class="tp-n">{{ tp.money(r[3]) if r[3] is not none else "" }}</td></tr>{% endfor %}
 {% if subtotal %}<tr class="tp-sub"><td class="tp-s" colspan="3"><b>{{ _("Subtotal") }}</b> <i>{{ title_en }} subtotal</i></td><td class="tp-n">{{ tp.money(subtotal) }}</td></tr>{% endif %}
 </table>
 {%- endmacro %}

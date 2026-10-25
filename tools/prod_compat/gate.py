@@ -2,6 +2,7 @@
 # Copyright (c) 2026, iabodysa
 
 import ast
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -157,6 +158,74 @@ def scan_file(py_file, indexes):
 	return findings
 
 
+HOOK_PATH = re.compile(r"^[a-z_]\w*(\.\w+)+$")
+
+
+def hook_paths(hooks_file):
+	tree = ast.parse(hooks_file.read_text())
+	jinja = set()
+	for node in tree.body:
+		if isinstance(node, ast.Assign) and any(
+			isinstance(target, ast.Name) and target.id == "jinja" for target in node.targets
+		):
+			jinja = {n.value for n in ast.walk(node.value) if isinstance(n, ast.Constant)}
+	paths = {
+		(n.lineno, n.value)
+		for n in ast.walk(tree)
+		if isinstance(n, ast.Constant) and isinstance(n.value, str) and HOOK_PATH.match(n.value)
+	}
+	return sorted((lineno, path, path in jinja) for lineno, path in paths)
+
+
+def scan_hooks(root, indexes):
+	hooks_file = root / "fleetix" / "hooks.py"
+	findings = []
+	for lineno, path, is_jinja in hook_paths(hooks_file):
+		module, name = path.rsplit(".", 1)
+		index = indexes.get(module.split(".")[0])
+		if index is None:
+			continue
+		if name.startswith("_"):
+			findings.append((hooks_file, lineno, module, name, "hook names a private name"))
+		elif not index.has_name(module, name):
+			findings.append((hooks_file, lineno, module, name, "hook target absent"))
+		elif is_jinja:
+			findings.extend(private_imports(root, module))
+	return findings
+
+
+def private_imports(root, dotted_module):
+	py_file = root.joinpath(*dotted_module.split(".")).with_suffix(".py")
+	findings = []
+	for node in ast.walk(ast.parse(py_file.read_text())):
+		if isinstance(node, ast.ImportFrom):
+			for alias in node.names:
+				if alias.name.startswith("_") and alias.name not in SymbolIndex.SANCTIONED_PRIVATE_NAMES:
+					target = node.module or "." * node.level
+					findings.append(
+						(py_file, node.lineno, target, alias.name, "jinja module imports a private name")
+					)
+	return findings
+
+
+def pinned_version(clone_dir, package_dir):
+	init = (clone_dir / package_dir / "__init__.py").read_text()
+	match = re.search(r"^__version__\s*=\s*[\"']([^\"']+)", init, re.M)
+	return match.group(1) if match else None
+
+
+def stale_clones(cache_root, specs):
+	findings = []
+	for name, spec in specs.items():
+		ref = spec["ref"]
+		if not re.fullmatch(r"v\d+(\.\d+)+", ref):
+			continue
+		found = pinned_version(cache_root / name, spec["package_dir"])
+		if found != ref[1:]:
+			findings.append((VERSIONS_FILE, 0, name, found or "", f"clone does not match pinned {ref}"))
+	return findings
+
+
 def iter_fleetix_py_files(root):
 	fleetix_dir = root / "fleetix"
 	if not fleetix_dir.is_dir():
@@ -174,15 +243,19 @@ def main():
 		clone_dir = ensure_clone(cache_root, name, spec)
 		indexes[name] = SymbolIndex(clone_dir, spec["package_dir"])
 
-	all_findings = []
-	for py_file in iter_fleetix_py_files(REPO_ROOT):
+	all_findings = stale_clones(cache_root, specs)
+	indexes["fleetix"] = SymbolIndex(REPO_ROOT, "fleetix")
+	all_findings.extend(scan_hooks(REPO_ROOT, indexes))
+	py_files = list(iter_fleetix_py_files(REPO_ROOT))
+	for py_file in py_files:
 		all_findings.extend(scan_file(py_file, indexes))
+	scanned = f"{len(py_files)} file(s), {len(hook_paths(REPO_ROOT / 'fleetix' / 'hooks.py'))} hook path(s)"
 
 	if not all_findings:
-		print("prod-compat: 0 finding(s) against pinned frappe/erpnext/hrms")
+		print(f"prod-compat: 0 finding(s) in {scanned} against pinned frappe/erpnext/hrms")
 		return 0
 
-	print(f"prod-compat: {len(all_findings)} finding(s) against pinned frappe/erpnext/hrms")
+	print(f"prod-compat: {len(all_findings)} finding(s) in {scanned} against pinned frappe/erpnext/hrms")
 	for py_file, lineno, module, name, reason in all_findings:
 		rel = py_file.relative_to(REPO_ROOT)
 		target = f"{module}.{name}" if name else module

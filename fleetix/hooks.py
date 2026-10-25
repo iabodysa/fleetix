@@ -169,6 +169,7 @@ jinja = {
 		"fleetix.fleetix.doctype.maintenance.maintenance.next_due",
 		"fleetix.fleetix.maintenance_invoice.maintenance_invoice",
 		"fleetix.fleetix.units.unit_label",
+		"fleetix.fleetix.print_text.ltr_runs",
 	]
 }
 
