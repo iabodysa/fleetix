@@ -9,11 +9,13 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import flt, now_datetime, today
 
+from fleetix.fleetix.shift_worker import stamp_worker
 from fleetix.fleetix.units import unit_fields
 
 
 class CustomerVisit(Document):
-	pass
+	def validate(self):
+		stamp_worker(self, ("checklist", "findings"))
 
 
 def mobile_digits(mobile):

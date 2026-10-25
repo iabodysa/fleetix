@@ -5,15 +5,18 @@ import { api } from "./api.js"
 import { hasPrinter, hasShell, onShellBack, openSettings } from "./native.js"
 import { reloadOnNewVersion } from "./freshness.js"
 import { useLanguage } from "./composables/useLanguage.js"
+import { useShift } from "./composables/useShift.js"
 import { publishToCustomer } from "./composables/useCustomerDisplay.js"
 import { STEPS, WALKIN_STEPS, backHome, backToQueue, queue, restoreDraft, stepBack, store } from "./store/index.js"
 import AppHeader from "./components/AppHeader.vue"
 import AppIcon from "./components/AppIcon.vue"
+import ErrorCard from "./components/ErrorCard.vue"
 import PrintTest from "./components/PrintTest.vue"
 import QueueList from "./components/QueueList.vue"
 import StepBar from "./components/StepBar.vue"
 import UndoToast from "./components/UndoToast.vue"
 import AwaitScreen from "./screens/await/AwaitScreen.vue"
+import BadgeScreen from "./screens/badge/BadgeScreen.vue"
 import CustomerScreen from "./screens/customer/CustomerScreen.vue"
 import DamageScreen from "./screens/damage/DamageScreen.vue"
 import DoneScreen from "./screens/done/DoneScreen.vue"
@@ -53,6 +56,9 @@ const WALKIN_LABELS = [__("Customer"), __("Items"), __("Final check"), __("Invoi
 const boot = window.frappe.boot
 const customerView = new URLSearchParams(window.location.search).get("view") === "customer"
 const language = useLanguage()
+const shift = useShift()
+const shiftError = shift.error
+const shiftBusy = shift.busy
 language.applyDocument()
 const redirecting = !customerView && language.followDevice()
 const picking = ref(!customerView && !language.chosen())
@@ -86,6 +92,10 @@ function setOnline() {
 function openDrawer() {
 	queue.fetch()
 	store.drawer = true
+}
+function endShift() {
+	menu.value = false
+	shift.end()
 }
 async function logout() {
 	await api.logout()
@@ -135,7 +145,7 @@ onBeforeUnmount(() => {
 				:online="online"
 				:printer="printer"
 				:language="language.current.name"
-				:user="boot.full_name"
+				:user="store.worker ? store.worker.employee_name : boot.full_name"
 				@vehicles="openDrawer"
 				@close="walkin ? backHome() : backToQueue()"
 				@language="picking = true"
@@ -143,14 +153,16 @@ onBeforeUnmount(() => {
 			/>
 			<div v-if="menu" class="card app-menu">
 				<p class="app-menu-name">{{ boot.full_name }}</p>
+				<button v-if="store.worker" class="app-header-button" type="button" @click="endShift">{{ __("End shift") }}</button>
 				<button class="app-header-button" type="button" @click="(printTest = true), (menu = false)">{{ __("Print test") }}</button>
 				<button v-if="shell" class="app-header-button" type="button" @click="openSettings">{{ __("Settings") }}</button>
 				<button class="app-header-button" type="button" @click="logout">{{ __("Log out") }}</button>
 			</div>
 			<PrintTest v-if="printTest" @close="printTest = false" />
-			<StepBar v-if="inVisit" :steps="walkin ? WALKIN_LABELS : STEP_LABELS" :current="stepIndex" />
+			<StepBar v-if="inVisit && store.worker" :steps="walkin ? WALKIN_LABELS : STEP_LABELS" :current="stepIndex" />
 			<main class="app-body">
-				<Transition :name="'slide-' + store.flow" mode="out-in">
+				<BadgeScreen v-if="!store.worker" :busy="shiftBusy" />
+				<Transition v-else :name="'slide-' + store.flow" mode="out-in">
 					<component :is="SCREENS[store.step]" :key="store.step" />
 				</Transition>
 			</main>
@@ -163,6 +175,7 @@ onBeforeUnmount(() => {
 				<QueueList compact />
 			</aside>
 		</template>
+		<ErrorCard :error="shiftError" @dismiss="shiftError = ''" />
 		<UndoToast />
 	</div>
 </template>

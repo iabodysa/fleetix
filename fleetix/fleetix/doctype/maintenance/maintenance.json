@@ -16,6 +16,7 @@
   "column_break_maintenance",
   "status",
   "visit_datetime",
+  "worker",
   "odometer",
   "inspection",
   "photos_section",
@@ -126,6 +127,13 @@
    "fieldtype": "Datetime",
    "label": "Visit Date and Time",
    "mandatory_depends_on": "eval:['Driver Arrived', 'Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)"
+  },
+  {
+   "fieldname": "worker",
+   "fieldtype": "Link",
+   "label": "Worker",
+   "options": "Employee",
+   "read_only": 1
   },
   {
    "depends_on": "eval:['Driver Arrived', 'Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
@@ -298,7 +306,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-24 22:00:00.000000",
+ "modified": "2026-10-25 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Maintenance",

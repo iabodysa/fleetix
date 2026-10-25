@@ -10082,3 +10082,10 @@ Rental Manager Signature,توقيع مدير التأجير
 Sign by phone,التوقيع بالجوال
 Signed By,الموقّع
 Vehicle Label,ملصق المركبة
+Worker,العامل
+Worker Badge,بطاقة العامل
+This is not a worker badge,هذه ليست بطاقة عامل
+This badge belongs to an inactive worker,هذه البطاقة لعامل غير نشط
+This worker is not allowed on this device,هذا العامل غير مسموح له على هذا الجهاز
+Scan your badge,امسح بطاقتك
+End shift,إنهاء المناوبة

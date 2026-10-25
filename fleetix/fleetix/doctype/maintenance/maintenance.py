@@ -8,6 +8,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, flt, getdate, now_datetime, today
 
+from fleetix.fleetix.shift_worker import stamp_worker
 from fleetix.fleetix.vehicle import due_odometer, parse_fieldnames, set_next_due
 
 COMPONENT_FIELDS = {
@@ -24,11 +25,13 @@ NEXT_DUE_FIELDS = {
 }
 ISSUE_STATES = ("Service", "Final Check")
 DEFAULT_PHOTO_SLOTS = ("Front Side", "Rear Side", "Right Side", "Left Side", "Odometer Photo")
+WORKER_TABLES = ("components_replaced", "final_check", "findings")
 DEFAULT_MAX_QTY = {"Oil Filter": 1, "Battery": 1, "Front Tires": 2, "Rear Tires": 2}
 
 
 class Maintenance(Document):
 	def validate(self):
+		stamp_worker(self, WORKER_TABLES)
 		if self.status == "Driver Arrived" and not self.visit_datetime:
 			self.visit_datetime = now_datetime()
 		if self.status == "Approved" and not self.approved_by:

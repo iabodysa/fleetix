@@ -12,6 +12,7 @@
   "column_break_visit",
   "company",
   "visit_datetime",
+  "worker",
   "odometer",
   "checklist_section",
   "checklist",
@@ -67,6 +68,13 @@
    "label": "Visit Date and Time"
   },
   {
+   "fieldname": "worker",
+   "fieldtype": "Link",
+   "label": "Worker",
+   "options": "Employee",
+   "read_only": 1
+  },
+  {
    "fieldname": "odometer",
    "fieldtype": "Int",
    "label": "Odometer (km)"
@@ -91,7 +99,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-24 22:00:00.000000",
+ "modified": "2026-10-25 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Customer Visit",

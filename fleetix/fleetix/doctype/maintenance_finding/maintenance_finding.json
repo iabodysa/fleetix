@@ -7,7 +7,8 @@
  "field_order": [
   "part",
   "reason",
-  "note"
+  "note",
+  "worker"
  ],
  "fields": [
   {
@@ -29,12 +30,19 @@
    "fieldtype": "Small Text",
    "in_list_view": 1,
    "label": "Note"
+  },
+  {
+   "fieldname": "worker",
+   "fieldtype": "Link",
+   "label": "Worker",
+   "options": "Employee",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 0,
  "istable": 1,
  "links": [],
- "modified": "2026-10-24 18:00:00.000000",
+ "modified": "2026-10-25 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Maintenance Finding",

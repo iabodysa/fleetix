@@ -1,21 +1,50 @@
 (function () {
 	var box = document.querySelector(".mt-sign")
 	if (!box) return
+	var sheet = box.querySelector("[data-sheet]")
 	var pad = box.querySelector("[data-pad]")
 	var error = box.querySelector("[data-error]")
 	var save = box.querySelector("[data-save]")
 	var ctx = pad.getContext("2d")
-	var drawing = false
-	var drawn = false
+	var strokes = []
+	var current = null
+	var size = [0, 0]
 
-	function fit() {
-		pad.width = pad.clientWidth
-		pad.height = pad.clientHeight
+	function paint() {
+		var ratio = window.devicePixelRatio || 1
+		ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
+		ctx.clearRect(0, 0, size[0], size[1])
 		ctx.lineWidth = 3
 		ctx.lineCap = "round"
 		ctx.lineJoin = "round"
 		ctx.strokeStyle = "#0d1317"
-		drawn = false
+		strokes.forEach(function (line) {
+			ctx.beginPath()
+			line.forEach(function (at, i) {
+				if (i) ctx.lineTo(at[0], at[1])
+				else ctx.moveTo(at[0], at[1])
+			})
+			if (line.length === 1) ctx.lineTo(line[0][0] + 0.1, line[0][1])
+			ctx.stroke()
+		})
+	}
+	function fit() {
+		var width = pad.clientWidth
+		var height = pad.clientHeight
+		if (!width || !height) return
+		if (size[0] && size[1] && (width !== size[0] || height !== size[1])) {
+			var scale = Math.min(width / size[0], height / size[1])
+			strokes = strokes.map(function (line) {
+				return line.map(function (at) {
+					return [at[0] * scale, at[1] * scale]
+				})
+			})
+		}
+		var ratio = window.devicePixelRatio || 1
+		pad.width = Math.round(width * ratio)
+		pad.height = Math.round(height * ratio)
+		size = [width, height]
+		paint()
 	}
 	function point(event) {
 		var rect = pad.getBoundingClientRect()
@@ -24,22 +53,34 @@
 	}
 	function begin(event) {
 		event.preventDefault()
-		var at = point(event)
-		drawing = true
-		ctx.beginPath()
-		ctx.moveTo(at[0], at[1])
+		current = [point(event)]
+		strokes.push(current)
+		error.textContent = ""
+		paint()
 	}
 	function move(event) {
-		if (!drawing) return
+		if (!current) return
 		event.preventDefault()
-		var at = point(event)
-		ctx.lineTo(at[0], at[1])
-		ctx.stroke()
-		drawn = true
-		error.textContent = ""
+		current.push(point(event))
+		paint()
 	}
 	function end() {
-		drawing = false
+		current = null
+	}
+	function clear() {
+		strokes = []
+		paint()
+	}
+	function open() {
+		sheet.hidden = false
+		document.documentElement.classList.add("mt-sign-lock")
+		if (sheet.requestFullscreen) sheet.requestFullscreen().catch(function () {})
+		requestAnimationFrame(fit)
+	}
+	function close() {
+		sheet.hidden = true
+		document.documentElement.classList.remove("mt-sign-lock")
+		if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(function () {})
 	}
 	function serverMessage(body) {
 		try {
@@ -49,7 +90,7 @@
 		}
 	}
 	function send() {
-		if (!drawn) {
+		if (!strokes.length) {
 			error.textContent = box.dataset.empty
 			return
 		}
@@ -63,6 +104,7 @@
 			.then(function (response) {
 				return response.json().then(function (body) {
 					if (!response.ok) throw new Error(serverMessage(body) || box.dataset.failed)
+					close()
 					box.hidden = true
 					document.querySelector("[data-signed]").hidden = false
 				})
@@ -73,13 +115,17 @@
 			})
 	}
 
-	fit()
 	pad.addEventListener("mousedown", begin)
 	pad.addEventListener("mousemove", move)
 	window.addEventListener("mouseup", end)
 	pad.addEventListener("touchstart", begin, { passive: false })
 	pad.addEventListener("touchmove", move, { passive: false })
 	pad.addEventListener("touchend", end)
-	box.querySelector("[data-clear]").addEventListener("click", fit)
+	window.addEventListener("resize", function () {
+		if (!sheet.hidden) fit()
+	})
+	box.querySelector("[data-open]").addEventListener("click", open)
+	box.querySelector("[data-close]").addEventListener("click", close)
+	box.querySelector("[data-clear]").addEventListener("click", clear)
 	save.addEventListener("click", send)
 })()

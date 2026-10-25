@@ -37,6 +37,8 @@ export const api = {
 	login: (usr, pwd) => call("login", { usr, pwd }),
 	logout: () => call("logout"),
 	boot: () => call(M + "get_boot"),
+	scanBadge: (code) => call(M + "scan_badge", { code }),
+	leaveShift: () => call(M + "leave_shift"),
 }
 
 export const QUEUE_METHOD = M + "get_due_queue"

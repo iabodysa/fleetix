@@ -21,6 +21,7 @@ export const store = reactive({
 	printed: false,
 	exited: null,
 	walkin: null,
+	worker: (window.frappe && window.frappe.boot && window.frappe.boot.worker) || null,
 })
 
 export function newWalkin() {

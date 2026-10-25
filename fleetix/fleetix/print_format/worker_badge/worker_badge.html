@@ -1,0 +1,12 @@
+{% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
+{{ tp.style() }}
+<div class="tp">
+{{ tp.head(doc, _("Worker Badge"), "Worker Badge") }}
+{{ tp.kv([
+	(_("Worker"), "Worker", doc.employee_name),
+	(_("Designation"), "Designation", doc.designation),
+	(_("Department"), "Department", doc.department),
+]) }}
+{{ tp.qr(doc) }}
+{{ tp.foot(doc.company) }}
+</div>
