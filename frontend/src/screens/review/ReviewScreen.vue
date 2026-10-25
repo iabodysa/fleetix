@@ -32,6 +32,10 @@ const check = useFinalCheck(checks, findings)
 const busy = ref(false)
 const error = ref("")
 
+const DONE = { part: "Installed", service: "Done" }
+function allDone() {
+	checks.filter((row) => !row.condition).forEach((row) => check.answer(row, DONE[row.kind]))
+}
 async function finish() {
 	if (check.progress.guard()) return
 	busy.value = true
@@ -59,6 +63,7 @@ async function finish() {
 				</div>
 			</div>
 			<CardProgress :items="check.cards.value" @show="check.progress.show" />
+			<BigButton v-if="check.open.value" icon="done" tone="done" :label="__('All done')" block @press="allDone" />
 			<ServiceChecklist :rows="checks" @answer="check.answer" />
 			<FindingsTable :findings="findings" :parts="check.parts.value" />
 		</div>

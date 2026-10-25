@@ -186,6 +186,7 @@ after_sync = ["fleetix.fleetix.permissions.grant_core_permissions"]
 after_migrate = [
 	"fleetix.fleetix.permissions.grant_core_permissions",
 	"fleetix.fleetix.branding.set_navbar_logo",
+	"fleetix.fleetix.doctype.maintenance_policy.maintenance_policy.insert_default_policies",
 ]
 before_uninstall = ["fleetix.fleetix.permissions.revoke_core_permissions"]
 

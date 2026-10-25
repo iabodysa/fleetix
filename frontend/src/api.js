@@ -27,6 +27,7 @@ export const api = {
 	saveMarks: (maintenance, damages) => call(M + "save_damage_marks", { maintenance, damages: JSON.stringify(damages) }),
 	findVehicles: (plate, start) => call(M + "find_vehicles", { plate, start }),
 	openVehicle: (vehicle) => call(M + "open_vehicle_visit", { vehicle }),
+	openScanned: (code) => call(M + "open_scanned_visit", { code }),
 	status: (maintenance) =>
 		call("frappe.client.get_value", {
 			doctype: "Maintenance",

@@ -8,6 +8,7 @@ import VehicleCard from "../components/VehicleCard.vue"
 
 const reading = computed(() => Number(store.odometer || 0))
 const below = computed(() => store.odometer !== "" && reading.value < store.vehicle.last_odometer)
+const high = computed(() => !!store.vehicle.odometer_limit && reading.value > store.vehicle.odometer_limit)
 </script>
 
 <template>
@@ -15,7 +16,7 @@ const below = computed(() => store.odometer !== "" && reading.value < store.vehi
 		<div class="screen">
 			<VehicleCard :vehicle="store.vehicle" />
 			<h1 class="screen-title">{{ __("Odometer") }}</h1>
-			<output class="reading" dir="ltr">{{ store.odometer ? formatKm(store.odometer) : "-" }}</output>
+			<output class="reading" :class="{ 'reading-high': high }" dir="ltr">{{ store.odometer ? formatKm(store.odometer) : "-" }}</output>
 			<p v-if="below" class="banner banner-bad" role="alert">
 				{{ __("Odometer reading is below the last reading {0}", [formatKm(store.vehicle.last_odometer)]) }}
 			</p>
@@ -41,6 +42,11 @@ const below = computed(() => store.odometer !== "" && reading.value < store.vehi
 	border-radius: var(--radius);
 	background: var(--surface);
 	border: 1px solid var(--line);
+}
+.reading-high {
+	border: 2px solid var(--warn);
+	background: var(--warn-bg);
+	color: var(--warn-ink);
 }
 .last {
 	color: var(--ink-2);

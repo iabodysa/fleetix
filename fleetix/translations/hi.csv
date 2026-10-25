@@ -151,7 +151,6 @@ Needs Repair,मरम्मत चाहिए
 Next service,अगली सर्विस
 Next vehicle,अगली गाड़ी
 No damage,कोई नुकसान नहीं
-No open visit for this vehicle,इस गाड़ी की कोई खुली विज़िट नहीं
 No schedule,कोई समय तय नहीं
 No vehicles waiting,कोई गाड़ी इंतज़ार में नहीं
 Noise,आवाज़
@@ -335,3 +334,8 @@ This badge belongs to an inactive worker,यह बैज एक निष्क
 This worker is not allowed on this device,इस कर्मचारी को इस डिवाइस पर अनुमति नहीं है
 Scan your badge,अपना बैज स्कैन करें
 End shift,शिफ्ट समाप्त करें
+All done,सब पूरा
+Odometer Flagged,असामान्य मीटर रीडिंग
+Other item,दूसरा आइटम
+Waiting Since,कब से प्रतीक्षा में
+Waiting for Me,मेरी प्रतीक्षा में

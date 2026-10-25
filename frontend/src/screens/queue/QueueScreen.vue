@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue"
-import { __ } from "../../i18n/index.js"
+import { api, errorText } from "../../api.js"
 import { problem, success } from "../../composables/useFeedback.js"
 import { scanKey } from "../../composables/useBarcode.js"
 import { openVisit, queue, stepForStatus } from "../../store/index.js"
@@ -14,16 +14,17 @@ import VehicleResults from "../../components/VehicleResults.vue"
 const filter = ref("")
 const error = ref("")
 
-function scanned(key) {
+async function scanned(key) {
 	const row = (queue.data || []).find((r) => [r.plate, r.vehicle, r.maintenance].some((value) => scanKey(value) === key))
-	if (row && stepForStatus(row)) {
-		error.value = ""
+	error.value = ""
+	try {
+		const visit = row && stepForStatus(row) ? row : await api.openScanned(key)
 		success()
-		openVisit(row)
-		return
+		await openVisit(visit)
+	} catch (e) {
+		error.value = errorText(e)
+		problem()
 	}
-	error.value = __("No open visit for this vehicle")
-	problem()
 }
 </script>
 

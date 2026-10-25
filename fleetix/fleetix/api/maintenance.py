@@ -144,6 +144,16 @@ def open_vehicle_visit(vehicle):
 	return queue_row(visit)
 
 
+@frappe.whitelist(methods=["POST"])
+def open_scanned_visit(code):
+	from fleetix.fleetix.api.gate import vehicle_name
+
+	vehicle = vehicle_name(code)
+	if not vehicle:
+		frappe.throw(_("No vehicle with this plate"))
+	return open_vehicle_visit(vehicle)
+
+
 def queue_row(visit):
 	vehicle = frappe.get_doc("Vehicle", visit.vehicle)
 	components = component_states(vehicle, cint(vehicle.last_odometer))
@@ -593,14 +603,14 @@ def component_items(component, vehicle, company):
 		fields=["item_code", "item_name", "stock_uom"],
 		order_by="item_name asc",
 	)
-	stock = dict(
-		frappe.get_all(
+	bins = {
+		row.item_code: row
+		for row in frappe.get_all(
 			"Bin",
 			filters={"warehouse": warehouse, "item_code": ("in", [row.item_code for row in items] or [""])},
-			fields=["item_code", "actual_qty"],
-			as_list=True,
+			fields=["item_code", "actual_qty", "valuation_rate"],
 		)
-	)
+	}
 	last_item = frappe.db.get_value(
 		"Component Replacement Log",
 		{"vehicle": vehicle, "component": component},
@@ -609,7 +619,9 @@ def component_items(component, vehicle, company):
 	)
 	unpriced = set(unpriced_items([row.item_code for row in items], company))
 	for row in items:
-		row["stock"] = flt(stock.get(row.item_code))
+		stock = bins.get(row.item_code) or {}
+		row["stock"] = flt(stock.get("actual_qty"))
+		row["rate"] = flt(stock.get("valuation_rate"))
 		row["priced"] = row.item_code not in unpriced
 	items.sort(key=lambda row: row.item_code != last_item)
 	return unit_fields(items, component)

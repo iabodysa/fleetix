@@ -62,7 +62,16 @@ async function findItems(row, txt) {
 	}
 }
 function choices(row) {
-	return row.items.length ? row.items : row.found || []
+	return row.items.length && !row.other ? row.items : row.found || []
+}
+function offRule(row) {
+	return !!row.item && !row.items.some((i) => i.item_code === row.item)
+}
+function rowTone(row) {
+	const item = chosen(row)
+	if (!row.item || !(row.qty > 0)) return "wait"
+	if (offRule(row) || unpriced(row) || (item && item.stock !== undefined && item.stock < row.qty)) return "problem"
+	return "done"
 }
 function next() {
 	if (!ticked.value.length) {
@@ -103,9 +112,9 @@ onMounted(async () => {
 				</IconTile>
 			</div>
 			<div v-for="row in ticked" :key="row.component" class="card part" :data-card="row.component">
-				<h2 class="part-name"><AppIcon :name="row.component" />{{ componentLabel(row.component) }}</h2>
+				<h2 class="part-name"><span class="part-dot" :class="'tone-' + rowTone(row)"></span><AppIcon :name="row.component" />{{ componentLabel(row.component) }}</h2>
 				<input
-					v-if="!row.items.length"
+					v-if="!row.items.length || row.other"
 					class="part-search"
 					type="search"
 					:placeholder="__('Search items')"
@@ -117,16 +126,18 @@ onMounted(async () => {
 						v-for="item in choices(row)"
 						:key="item.item_code"
 						class="part-item"
-						:class="{ pressed: row.item === item.item_code }"
+						:class="{ pressed: row.item === item.item_code, 'part-item-other': row.items.length && row.other }"
 						type="button"
 						:aria-pressed="row.item === item.item_code ? 'true' : 'false'"
 						@click="row.item = item.item_code"
 					>
 						<span class="part-item-name">{{ item.item_name }}</span>
-						<span v-if="item.stock !== undefined" class="muted">{{ __("Stock") }} <span class="ltr">{{ item.stock }}</span> {{ item.stock_uom }}</span>
+						<span v-if="item.stock !== undefined" :class="item.stock > 0 ? 'muted' : 'pill tone-problem'">{{ __("Stock") }} <span class="ltr">{{ item.stock }}</span> {{ item.stock_uom }}</span>
+						<span v-if="item.rate" class="muted">{{ __("Price") }} <span class="ltr">{{ item.rate.toFixed(2) }}</span></span>
 						<span v-if="item.priced === false" class="pill tone-problem">{{ __("No valuation rate") }}</span>
 					</button>
 				</div>
+				<BigButton v-if="row.items.length" icon="item" tone="quiet" :label="row.other ? __('Back') : __('Other item')" @press="row.other = !row.other" />
 				<QtyStepper v-if="row.max_qty !== 1" v-model="row.qty" :unit="unitOf(row)" :litres="litresOf(row)" :packs="(chosen(row) || {}).packs || []" :max="row.max_qty || 0" :min="litresOf(row) ? 0.5 : 1" />
 			</div>
 		</template>
@@ -181,6 +192,18 @@ onMounted(async () => {
 .part-item.pressed {
 	border-color: var(--primary);
 	box-shadow: inset 0 0 0 2px var(--primary);
+}
+.part-item-other,
+.part-item-other.pressed {
+	border-color: var(--problem);
+	box-shadow: inset 0 0 0 2px var(--problem);
+}
+.part-dot {
+	width: 1rem;
+	height: 1rem;
+	flex: none;
+	border-radius: 50%;
+	background: currentColor;
 }
 .part-item-name {
 	font-weight: 800;

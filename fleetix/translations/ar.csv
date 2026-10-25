@@ -9874,7 +9874,6 @@ Damage marked,تم تحديد الأضرار
 Leak,تسريب
 Loose,مرتخٍ
 No damage,لا توجد أضرار
-No open visit for this vehicle,لا توجد زيارة مفتوحة لهذه المركبة
 Noise,صوت غير طبيعي
 Parts,القطع
 Plate number cleared,تم مسح رقم اللوحة
@@ -10089,3 +10088,8 @@ This badge belongs to an inactive worker,هذه البطاقة لعامل غير
 This worker is not allowed on this device,هذا العامل غير مسموح له على هذا الجهاز
 Scan your badge,امسح بطاقتك
 End shift,إنهاء المناوبة
+All done,تم الكل
+Odometer Flagged,قراءة عداد غير معتادة
+Other item,صنف آخر
+Waiting Since,في الانتظار منذ
+Waiting for Me,بانتظاري

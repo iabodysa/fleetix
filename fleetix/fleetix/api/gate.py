@@ -11,6 +11,7 @@ from frappe.model.workflow import apply_workflow
 from frappe.utils import cint, get_url
 
 from fleetix.fleetix.api.maintenance import WORKER_ROLES
+from fleetix.fleetix.vehicle import odometer_limit
 
 GATE_APK = {"version_code": 3, "version_name": "1.2", "file": "fleetix-gate.apk"}
 LANGUAGES = ("ar", "en", "ur", "hi", "bn")
@@ -66,6 +67,7 @@ def find_vehicle(code):
 		"plate": vehicle.license_plate,
 		"model": " ".join(filter(None, (vehicle.make, vehicle.model))),
 		"last_odometer": cint(vehicle.last_odometer),
+		"odometer_limit": odometer_limit(name),
 		"driver_name": frappe.db.get_value("Driver", vehicle.current_driver, "full_name")
 		if vehicle.get("current_driver")
 		else None,
@@ -87,8 +89,10 @@ def record_entry(vehicle, odometer, route):
 	last_odometer = cint(frappe.db.get_value("Vehicle", vehicle, "last_odometer"))
 	if odometer < last_odometer:
 		frappe.throw(_("Odometer reading is below the last reading {0}").format(last_odometer))
+	limit = odometer_limit(vehicle)
 	doc = arrive_for_maintenance(vehicle) if route == "maintenance" else start_handover(vehicle)
 	doc.odometer = odometer
+	doc.odometer_flagged = 1 if limit and odometer > limit else 0
 	doc.save()
 	return {"doctype": doc.doctype, "name": doc.name, "status": doc.status}
 

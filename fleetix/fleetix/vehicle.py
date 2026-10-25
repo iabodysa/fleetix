@@ -3,7 +3,7 @@
 
 import frappe
 from erpnext.setup.doctype.vehicle.vehicle import Vehicle
-from frappe.utils import add_months, cint, getdate
+from frappe.utils import add_months, cint, date_diff, getdate, today
 
 from fleetix.fleetix.doctype.maintenance_policy.maintenance_policy import get_policy
 
@@ -18,6 +18,16 @@ POLICY_DEFAULTS = (
 	("tire_interval_km", "Front Tires", None, "interval_km"),
 	("battery_interval_months", "Battery", None, "interval_months"),
 )
+SCHEDULE_FIELDS = (
+	*(row[0] for row in POLICY_DEFAULTS),
+	"next_oil_due_odometer",
+	"next_front_tires_due_odometer",
+	"next_rear_tires_due_odometer",
+	"next_battery_due_date",
+)
+JUMP_FACTOR = 3
+MIN_JUMP_KM = 1000
+JUMP_READINGS = 10
 
 
 class VehicleService(Vehicle):
@@ -29,16 +39,25 @@ class VehicleService(Vehicle):
 		self.update(missing_data(self, parse_fieldnames(settings.vehicle_required_fields)))
 
 	def set_policy_intervals(self):
-		region = frappe.db.get_value("City", self.city, "region") if self.city else None
-		for fieldname, value in policy_intervals(region).items():
-			if not self.get(fieldname):
-				self.set(fieldname, value)
+		region, tire_interval = (
+			frappe.db.get_value("City", self.city, ["region", "default_tire_interval_km"])
+			if self.city
+			else None
+		) or (None, None)
+		intervals = policy_intervals(region)
+		if cint(tire_interval):
+			intervals["tire_interval_km"] = cint(tire_interval)
+		self.update(intervals)
+
+
+def current_season():
+	return SUMMER if getdate().month in SUMMER_MONTHS else WINTER
 
 
 def policy_intervals(region):
 	intervals = {}
 	for fieldname, component, season, unit in POLICY_DEFAULTS:
-		policy = get_policy(component, region, season)
+		policy = get_policy(component, region, season or current_season())
 		if policy:
 			intervals[fieldname] = policy[unit]
 	return intervals
@@ -59,6 +78,31 @@ def set_next_due(vehicle):
 		if vehicle.battery_install_date and cint(vehicle.battery_interval_months)
 		else None
 	)
+
+
+def refresh_schedule(vehicle):
+	before = [str(vehicle.get(fieldname) or "") for fieldname in SCHEDULE_FIELDS]
+	vehicle.set_policy_intervals()
+	set_next_due(vehicle)
+	return [str(vehicle.get(fieldname) or "") for fieldname in SCHEDULE_FIELDS] != before
+
+
+def odometer_limit(vehicle):
+	readings = frappe.get_all(
+		"Maintenance",
+		filters={"vehicle": vehicle, "docstatus": 1, "odometer": (">", 0), "visit_datetime": ("is", "set")},
+		fields=["odometer", "visit_datetime"],
+		order_by="visit_datetime desc",
+		limit=JUMP_READINGS,
+	)
+	if len(readings) < 2:
+		return None
+	newest, oldest = readings[0], readings[-1]
+	days = max(date_diff(newest.visit_datetime, oldest.visit_datetime), 1)
+	daily = max(cint(newest.odometer) - cint(oldest.odometer), 0) / days
+	elapsed = max(date_diff(today(), newest.visit_datetime), 1)
+	base = max(cint(newest.odometer), cint(frappe.db.get_value("Vehicle", vehicle, "last_odometer")))
+	return base + max(cint(daily * elapsed * JUMP_FACTOR), MIN_JUMP_KM)
 
 
 def due_odometer(last_odometer, interval):

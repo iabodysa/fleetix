@@ -18,6 +18,7 @@
   "visit_datetime",
   "worker",
   "odometer",
+  "odometer_flagged",
   "inspection",
   "photos_section",
   "photo_gallery",
@@ -144,6 +145,16 @@
    "label": "Odometer (km)",
    "mandatory_depends_on": "eval:['Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",
    "non_negative": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.odometer_flagged",
+   "fieldname": "odometer_flagged",
+   "fieldtype": "Check",
+   "in_standard_filter": 1,
+   "label": "Odometer Flagged",
+   "no_copy": 1,
+   "read_only": 1
   },
   {
    "depends_on": "eval:['Driver Arrived', 'Full Inspection', 'Approved', 'Service', 'Final Check', 'Completed'].includes(doc.status)",

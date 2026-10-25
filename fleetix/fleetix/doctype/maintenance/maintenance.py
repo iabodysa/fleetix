@@ -9,7 +9,7 @@ from frappe.model.document import Document
 from frappe.utils import cint, flt, getdate, now_datetime, today
 
 from fleetix.fleetix.shift_worker import stamp_worker
-from fleetix.fleetix.vehicle import due_odometer, parse_fieldnames, set_next_due
+from fleetix.fleetix.vehicle import due_odometer, parse_fieldnames, refresh_schedule, set_next_due
 
 COMPONENT_FIELDS = {
 	"Oil": ("last_oil_change_date", "last_oil_change_odometer"),
@@ -166,9 +166,7 @@ def create_due_alerts():
 	)
 	for name in assigned:
 		vehicle = frappe.get_doc("Vehicle", name)
-		stored_oil_due = vehicle.next_oil_due_odometer
-		set_next_due(vehicle)
-		if vehicle.next_oil_due_odometer != stored_oil_due:
+		if refresh_schedule(vehicle):
 			vehicle.flags.ignore_mandatory = True
 			vehicle.save()
 		due = due_components(vehicle)
