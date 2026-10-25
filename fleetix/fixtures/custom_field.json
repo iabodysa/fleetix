@@ -526,9 +526,21 @@
  {
   "doctype": "Custom Field",
   "dt": "Vehicle",
+  "fieldname": "next_filter_due_odometer",
+  "fieldtype": "Int",
+  "insert_after": "next_oil_due_odometer",
+  "is_system_generated": 0,
+  "label": "Next Oil Filter Due (km)",
+  "module": "Fleetix",
+  "name": "Vehicle-next_filter_due_odometer",
+  "read_only": 1
+ },
+ {
+  "doctype": "Custom Field",
+  "dt": "Vehicle",
   "fieldname": "next_battery_due_date",
   "fieldtype": "Date",
-  "insert_after": "next_oil_due_odometer",
+  "insert_after": "next_filter_due_odometer",
   "is_system_generated": 0,
   "label": "Next Battery Due Date",
   "module": "Fleetix",

@@ -9,7 +9,7 @@ from frappe.model.document import Document
 from frappe.utils import cint, flt, getdate, now_datetime, today
 
 from fleetix.fleetix.shift_worker import stamp_worker
-from fleetix.fleetix.vehicle import due_odometer, parse_fieldnames, refresh_schedule, set_next_due
+from fleetix.fleetix.vehicle import parse_fieldnames, refresh_schedule, set_next_due
 
 COMPONENT_FIELDS = {
 	"Oil": ("last_oil_change_date", "last_oil_change_odometer"),
@@ -20,6 +20,7 @@ COMPONENT_FIELDS = {
 }
 NEXT_DUE_FIELDS = {
 	"Oil": "next_oil_due_odometer",
+	"Oil Filter": "next_filter_due_odometer",
 	"Front Tires": "next_front_tires_due_odometer",
 	"Rear Tires": "next_rear_tires_due_odometer",
 }
@@ -141,8 +142,6 @@ def unpriced_items(item_codes, company):
 def next_due(vehicle, component):
 	if component == "Battery":
 		return None, vehicle.next_battery_due_date
-	if component == "Oil Filter":
-		return due_odometer(vehicle.last_filter_change_odometer, vehicle.filter_interval_km), None
 	return vehicle.get(NEXT_DUE_FIELDS[component]), None
 
 
@@ -159,18 +158,23 @@ def due_components(vehicle):
 
 def create_due_alerts():
 	open_vehicles = set(frappe.get_all("Maintenance", filters={"docstatus": 0}, pluck="vehicle"))
-	assigned = frappe.get_all(
-		"Vehicle",
-		filters={"active": 1, "current_driver": ("is", "set"), "current_project": ("is", "set")},
-		pluck="name",
+	assigned = set(
+		frappe.get_all(
+			"Vehicle",
+			filters={"active": 1, "current_driver": ("is", "set"), "current_project": ("is", "set")},
+			pluck="name",
+		)
 	)
-	for name in assigned:
+	with_odometer = frappe.get_all("Vehicle", filters={"last_odometer": (">", 0)}, pluck="name")
+	for name in sorted(assigned.union(with_odometer)):
 		vehicle = frappe.get_doc("Vehicle", name)
 		if refresh_schedule(vehicle):
 			vehicle.flags.ignore_mandatory = True
 			vehicle.save()
+		if name not in assigned or name in open_vehicles:
+			continue
 		due = due_components(vehicle)
-		if name in open_vehicles or not due:
+		if not due:
 			continue
 		frappe.get_doc(
 			{

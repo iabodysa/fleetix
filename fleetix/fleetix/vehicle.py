@@ -21,6 +21,7 @@ POLICY_DEFAULTS = (
 SCHEDULE_FIELDS = (
 	*(row[0] for row in POLICY_DEFAULTS),
 	"next_oil_due_odometer",
+	"next_filter_due_odometer",
 	"next_front_tires_due_odometer",
 	"next_rear_tires_due_odometer",
 	"next_battery_due_date",
@@ -66,18 +67,21 @@ def policy_intervals(region):
 def set_next_due(vehicle):
 	in_summer = getdate().month in SUMMER_MONTHS
 	oil_interval = vehicle.oil_interval_summer_km if in_summer else vehicle.oil_interval_winter_km
-	vehicle.next_oil_due_odometer = due_odometer(vehicle.last_oil_change_odometer, oil_interval)
-	vehicle.next_front_tires_due_odometer = due_odometer(
-		vehicle.last_front_tires_odometer, vehicle.tire_interval_km
-	)
-	vehicle.next_rear_tires_due_odometer = due_odometer(
-		vehicle.last_rear_tires_odometer, vehicle.tire_interval_km
-	)
-	vehicle.next_battery_due_date = (
-		add_months(vehicle.battery_install_date, cint(vehicle.battery_interval_months))
-		if vehicle.battery_install_date and cint(vehicle.battery_interval_months)
-		else None
-	)
+	for recorded, interval, fieldname in (
+		(vehicle.last_oil_change_odometer, oil_interval, "next_oil_due_odometer"),
+		(vehicle.last_filter_change_odometer, vehicle.filter_interval_km, "next_filter_due_odometer"),
+		(vehicle.last_front_tires_odometer, vehicle.tire_interval_km, "next_front_tires_due_odometer"),
+		(vehicle.last_rear_tires_odometer, vehicle.tire_interval_km, "next_rear_tires_due_odometer"),
+	):
+		if cint(recorded):
+			vehicle.set(fieldname, due_odometer(recorded, interval))
+		elif not cint(vehicle.get(fieldname)):
+			vehicle.set(fieldname, due_odometer(vehicle.last_odometer, interval))
+	months = cint(vehicle.battery_interval_months)
+	if vehicle.battery_install_date:
+		vehicle.next_battery_due_date = add_months(vehicle.battery_install_date, months) if months else None
+	elif not vehicle.next_battery_due_date and months:
+		vehicle.next_battery_due_date = add_months(today(), months)
 
 
 def refresh_schedule(vehicle):

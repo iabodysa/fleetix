@@ -7,10 +7,10 @@ from frappe.utils import getdate, nowdate
 
 ANY = (None, "", "All")
 DEFAULT_POLICIES = (
-	("Oil", "All", "Summer (Apr-Sep)", 5000, None),
-	("Oil", "All", "Winter (Oct-Mar)", 7500, None),
-	("Oil Filter", "All", "Summer (Apr-Sep)", 10000, None),
-	("Oil Filter", "All", "Winter (Oct-Mar)", 15000, None),
+	("Oil", "All", "Summer (Apr-Sep)", 8000, None),
+	("Oil", "All", "Winter (Oct-Mar)", 10000, None),
+	("Oil Filter", "All", "Summer (Apr-Sep)", 16000, None),
+	("Oil Filter", "All", "Winter (Oct-Mar)", 20000, None),
 	("Front Tires", "Eastern", "All", 55000, None),
 	("Front Tires", "Western", "All", 55000, None),
 	("Front Tires", "All", "All", 70000, None),
