@@ -1,0 +1,8 @@
+{% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
+{% set p = saudi_plate(doc.license_plate) %}
+{{ tp.style() }}
+<div class="tp">
+<div class="tp-line"><bdi dir="ltr" class="ltr">{% if p %}{{ p.digits | replace(" ", "") }} {{ p.letters | replace(" ", "") }}{% else %}{{ doc.license_plate or doc.name }}{% endif %}</bdi></div>
+{{ tp.qr(doc) }}
+<div class="tp-cap">{{ [doc.make, doc.model, doc.model_year] | select | join(" ") }}</div>
+</div>

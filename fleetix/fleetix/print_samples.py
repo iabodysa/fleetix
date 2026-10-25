@@ -29,6 +29,7 @@ def print_samples():
 	if not vehicle_name:
 		return []
 	vehicle = frappe.get_doc("Vehicle", vehicle_name)
+	card = vehicle.as_dict(no_default_fields=True)
 	now = now_datetime()
 	samples = []
 	for body in DAMAGE_BODIES:
@@ -63,7 +64,8 @@ def print_samples():
 		sample(_("Maintenance Invoice"), "Maintenance", "Thermal Maintenance Invoice", visit),
 		sample(_("Gate Entry Pass"), "Maintenance", "Thermal Gate Entry Pass", visit),
 		sample(_("Gate Exit Pass"), "Maintenance", "Thermal Gate Exit Pass", visit),
-		sample(_("Vehicle Card"), "Vehicle", "Thermal Vehicle Card", vehicle.as_dict(no_default_fields=True)),
+		sample(_("Vehicle Card"), "Vehicle", "Thermal Vehicle Card", card),
+		sample(_("Vehicle Label"), "Vehicle", "Thermal Vehicle Label", card),
 	]
 	for handover_type in HANDOVER_TYPES:
 		samples.append(

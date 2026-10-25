@@ -150,7 +150,7 @@ def start_handover(vehicle):
 
 def vehicle_name(code):
 	code = (code or "").strip()
-	if "/app/vehicle/" in code:
+	if re.search(r"/(app|desk)/vehicle/", code):
 		code = unquote(urlparse(code).path.rstrip("/").rsplit("/", 1)[-1])
 	if code and frappe.db.exists("Vehicle", code):
 		return code
