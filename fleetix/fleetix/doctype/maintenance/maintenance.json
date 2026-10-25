@@ -73,8 +73,7 @@
    "fieldtype": "Link",
    "label": "Driver",
    "link_filters": "[[\"Driver\", \"active\", \"=\", 1]]",
-   "options": "Driver",
-   "reqd": 1
+   "options": "Driver"
   },
   {
    "fetch_from": "vehicle.current_project",
@@ -82,8 +81,7 @@
    "fieldname": "project",
    "fieldtype": "Link",
    "label": "Project",
-   "options": "Project",
-   "reqd": 1
+   "options": "Project"
   },
   {
    "fetch_from": "vehicle.company",
@@ -320,7 +318,7 @@
  "index_web_pages_for_search": 0,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-25 18:00:00.000000",
+ "modified": "2026-10-25 17:43:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Maintenance",

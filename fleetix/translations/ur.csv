@@ -33,14 +33,12 @@ Next car,اگلی گاڑی
 Next stop,اگلی منزل
 No car with this plate,اس نمبر پلیٹ کی کوئی گاڑی نہیں
 No connection to the server,سرور سے رابطہ نہیں
-No driver or project on this car,اس گاڑی پر کوئی ڈرائیور یا پروجیکٹ نہیں
 No handover request for this car,اس گاڑی کی حوالگی کی کوئی درخواست نہیں
 Odometer,میٹر ریڈنگ
 Odometer reading is below the last reading {0},میٹر ریڈنگ آخری ریڈنگ {0} سے کم ہے
 Password,پاس ورڈ
 Photo {0} of {1},تصویر {0} از {1}
 Photos,تصاویر
-Photos can only be added to a maintenance visit or a handover,تصاویر صرف مرمت یا حوالگی میں شامل ہو سکتی ہیں
 Project,پروجیکٹ
 Return,واپسی
 Right side,دائیں طرف
@@ -374,3 +372,10 @@ Assigned,حوالے شدہ
 In Maintenance,مرمت میں
 Suspended,معطل
 Manufacturer,بنانے والی کمپنی
+Saving,محفوظ ہو رہا ہے
+Saved,محفوظ
+Uploading,اپ لوڈ ہو رہا ہے
+Uploaded,اپ لوڈ ہو گیا
+Upload failed,اپ لوڈ ناکام
+This photo was not taken by you,یہ تصویر آپ نے نہیں لی
+This photo is already attached to another record,یہ تصویر پہلے سے کسی اور ریکارڈ سے منسلک ہے

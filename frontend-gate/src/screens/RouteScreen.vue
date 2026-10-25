@@ -20,15 +20,9 @@ const routes = computed(() => {
 			key: "maintenance",
 			icon: "wrench",
 			title: __("Maintenance"),
-			tone: inWorkshop || (!visit && !vehicle.can_open_maintenance) ? "bad" : visit ? "ok" : "warn",
-			value: inWorkshop
-				? __("Already in the workshop")
-				: visit
-					? STATES[visit.status]
-					: vehicle.can_open_maintenance
-						? __("New emergency visit")
-						: __("No driver or project on this car"),
-			open: !inWorkshop && (!!visit || vehicle.can_open_maintenance),
+			tone: inWorkshop ? "bad" : visit ? "ok" : "warn",
+			value: inWorkshop ? __("Already in the workshop") : visit ? STATES[visit.status] : __("New emergency visit"),
+			open: !inWorkshop,
 		},
 		{
 			key: "handover",
@@ -43,7 +37,11 @@ const routes = computed(() => {
 const label = computed(() =>
 	store.route === "maintenance" ? __("Send to maintenance") : store.route === "handover" ? __("Send to handover") : __("Send"),
 )
-const progress = computed(() => (store.result ? __("Photo {0} of {1}", [store.sent, photoList().length]) : ""))
+const progress = computed(() => {
+	const rows = photoList()
+	const done = rows.filter((row) => row.photo.file).length
+	return done < rows.length ? __("Photo {0} of {1}", [done, rows.length]) : ""
+})
 
 async function send() {
 	busy.value = true
@@ -82,7 +80,7 @@ async function send() {
 					<span class="mark"><GateIcon v-if="store.route === route.key" name="check" /></span>
 				</button>
 			</div>
-			<p v-if="busy && progress" class="banner banner-warn" aria-live="polite">{{ progress }}</p>
+			<p v-if="progress" class="banner banner-warn" aria-live="polite">{{ progress }}</p>
 			<p v-if="error" class="banner banner-bad" role="alert">{{ error }}</p>
 		</div>
 		<div class="dock">

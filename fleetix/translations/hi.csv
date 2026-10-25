@@ -33,14 +33,12 @@ Next car,अगली गाड़ी
 Next stop,अगला पड़ाव
 No car with this plate,इस नंबर प्लेट की कोई गाड़ी नहीं
 No connection to the server,सर्वर से कनेक्शन नहीं
-No driver or project on this car,इस गाड़ी पर कोई ड्राइवर या प्रोजेक्ट नहीं
 No handover request for this car,इस गाड़ी को सौंपने का कोई अनुरोध नहीं
 Odometer,मीटर रीडिंग
 Odometer reading is below the last reading {0},मीटर रीडिंग पिछली रीडिंग {0} से कम है
 Password,पासवर्ड
 Photo {0} of {1},फ़ोटो {0} / {1}
 Photos,फ़ोटो
-Photos can only be added to a maintenance visit or a handover,फ़ोटो केवल मरम्मत या सौंपने में जोड़ी जा सकती हैं
 Project,प्रोजेक्ट
 Return,वापसी
 Right side,दायाँ हिस्सा
@@ -353,3 +351,10 @@ Vehicle Handover,वाहन हस्तांतरण
 Model,मॉडल
 Vehicle Type,वाहन प्रकार
 In Maintenance,रखरखाव में
+Saving,सहेजा जा रहा है
+Saved,सहेजा गया
+Uploading,अपलोड हो रहा है
+Uploaded,अपलोड हो गया
+Upload failed,अपलोड विफल
+This photo was not taken by you,यह फ़ोटो आपने नहीं ली
+This photo is already attached to another record,यह फ़ोटो पहले से किसी दूसरे रिकॉर्ड से जुड़ी है

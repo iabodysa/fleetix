@@ -1,9 +1,17 @@
 import { reactive, watch } from "vue"
 import { api } from "./api.js"
+import { __ } from "./i18n.js"
+import { dropPhotos, keepPhoto, loadPhoto } from "./photos.js"
 
 export const STEPS = ["plate", "odometer", "photos", "route"]
 export const SIDES = ["front", "back", "left", "right"]
 const PREVIOUS = { odometer: "plate", photos: "odometer", route: "photos" }
+const FIRST_RETRY_MS = 2000
+const MAX_RETRY_MS = 60000
+const blobs = new Map()
+const inflight = new Map()
+let retryTimer = null
+let retryDelay = FIRST_RETRY_MS
 const DRAFT_KEY = "fleetix.gate.draft." + ((window.frappe && window.frappe.boot && window.frappe.boot.user) || "")
 
 function emptyPhotos() {
@@ -18,11 +26,26 @@ export const store = reactive({
 	photos: emptyPhotos(),
 	route: null,
 	result: null,
-	sent: 0,
 })
 
+function photoMeta(photo) {
+	return photo && { id: photo.id, slot: photo.slot, file: photo.file }
+}
+
 function draft() {
-	return { step: store.step, vehicle: store.vehicle, odometer: store.odometer }
+	return {
+		step: store.step,
+		vehicle: store.vehicle,
+		odometer: store.odometer,
+		route: store.route,
+		photos: {
+			front: photoMeta(store.photos.front),
+			back: photoMeta(store.photos.back),
+			left: photoMeta(store.photos.left),
+			right: photoMeta(store.photos.right),
+			damage: store.photos.damage.map(photoMeta),
+		},
+	}
 }
 
 watch(
@@ -38,14 +61,31 @@ watch(
 	{ deep: true },
 )
 
-export function restoreDraft() {
+async function revive(meta) {
+	if (!meta || !meta.id) return null
+	const blob = blobs.get(meta.id) || (await loadPhoto(meta.id).catch(() => null))
+	if (!blob && !meta.file) return null
+	if (blob) blobs.set(meta.id, blob)
+	return { ...meta, url: blob ? URL.createObjectURL(blob) : null, state: meta.file ? "uploaded" : "saved" }
+}
+
+export async function restoreDraft() {
+	let saved = null
 	try {
-		const saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null")
-		if (!saved || !saved.vehicle || STEPS.indexOf(saved.step) === -1) return
-		Object.assign(store, saved, { step: saved.step === "route" ? "photos" : saved.step })
+		saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null")
 	} catch (e) {
 		return
 	}
+	if (!saved || !saved.vehicle || STEPS.indexOf(saved.step) === -1) return
+	const photos = emptyPhotos()
+	const kept = saved.photos || {}
+	for (const side of SIDES) photos[side] = await revive(kept[side])
+	for (const meta of kept.damage || []) {
+		const photo = await revive(meta)
+		if (photo) photos.damage.push(photo)
+	}
+	Object.assign(store, { step: saved.step, vehicle: saved.vehicle, odometer: saved.odometer || "", route: saved.route || null, photos })
+	pump()
 }
 
 export function go(step) {
@@ -61,38 +101,108 @@ export function stepBack() {
 	return true
 }
 
+function forgetPhotos() {
+	const rows = photoList()
+	rows.forEach((row) => {
+		if (row.photo.url) URL.revokeObjectURL(row.photo.url)
+		blobs.delete(row.photo.id)
+	})
+	dropPhotos(rows.map((row) => row.photo.id))
+}
+
 export async function lookUp(code) {
 	const vehicle = await api.find(code)
 	if (!vehicle) return false
-	store.vehicle = vehicle
-	store.odometer = ""
-	store.photos = emptyPhotos()
-	store.route = null
+	forgetPhotos()
+	Object.assign(store, { vehicle, odometer: "", photos: emptyPhotos(), route: null, result: null })
 	go("odometer")
 	return true
 }
 
 export function photoList() {
 	const rows = SIDES.filter((side) => store.photos[side]).map((side) => ({ name: side, photo: store.photos[side] }))
-	store.photos.damage.forEach((photo, index) => rows.push({ name: "damage-" + (index + 1), photo }))
+	store.photos.damage.forEach((photo) => rows.push({ name: photo.slot, photo }))
 	return rows
 }
 
+export async function addPhoto(slot, shrunk) {
+	const photo = reactive({ id: slot + "-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8), slot, url: shrunk.url, state: "saving", file: null })
+	blobs.set(photo.id, shrunk.blob)
+	if (slot.indexOf("damage") === 0) store.photos.damage.push(photo)
+	else {
+		const old = store.photos[slot]
+		if (old) {
+			if (old.url) URL.revokeObjectURL(old.url)
+			blobs.delete(old.id)
+			dropPhotos([old.id])
+		}
+		store.photos[slot] = photo
+	}
+	await keepPhoto(photo.id, shrunk.blob).catch(() => null)
+	photo.state = "saved"
+	pump()
+	return photo
+}
+
+function uploadOne(photo, vehicle) {
+	if (photo.file) return Promise.resolve()
+	if (inflight.has(photo.id)) return inflight.get(photo.id)
+	const job = (async () => {
+		photo.state = "uploading"
+		try {
+			const blob = blobs.get(photo.id) || (await loadPhoto(photo.id))
+			if (!blob) throw new Error(__("The photo could not be read. Take it again."))
+			const saved = await api.upload(vehicle, blob, photo.slot + ".jpg")
+			photo.file = saved.name
+			photo.state = "uploaded"
+		} catch (error) {
+			photo.state = navigator.onLine === false ? "saved" : "failed"
+			throw error
+		} finally {
+			inflight.delete(photo.id)
+		}
+	})()
+	inflight.set(photo.id, job)
+	return job
+}
+
+export async function pump() {
+	clearTimeout(retryTimer)
+	if (!store.vehicle) return null
+	const vehicle = store.vehicle.vehicle
+	let failure = null
+	for (const row of photoList()) {
+		try {
+			await uploadOne(row.photo, vehicle)
+		} catch (error) {
+			failure = error
+		}
+	}
+	if (failure) {
+		retryTimer = setTimeout(pump, retryDelay)
+		retryDelay = Math.min(retryDelay * 2, MAX_RETRY_MS)
+	} else retryDelay = FIRST_RETRY_MS
+	return failure
+}
+
+export function retryNow() {
+	retryDelay = FIRST_RETRY_MS
+	return pump()
+}
+
+window.addEventListener("online", retryNow)
+
 export async function sendEntry() {
-	if (!store.result) {
-		store.result = await api.record(store.vehicle.vehicle, store.odometer, store.route)
-		store.sent = 0
-	}
+	const failure = await pump()
+	if (failure) throw failure
 	const rows = photoList()
-	for (let index = store.sent; index < rows.length; index++) {
-		await api.upload(store.result.doctype, store.result.name, rows[index].photo.blob, rows[index].name + ".jpg")
-		store.sent = index + 1
-	}
+	store.result = await api.record(store.vehicle.vehicle, store.odometer, store.route, rows.map((row) => row.photo.file))
 	go("done")
+	forgetPhotos()
 }
 
 export function nextCar() {
-	photoList().forEach((row) => URL.revokeObjectURL(row.photo.url))
-	Object.assign(store, { vehicle: null, odometer: "", photos: emptyPhotos(), route: null, result: null, sent: 0 })
+	forgetPhotos()
+	Object.assign(store, { vehicle: null, odometer: "", photos: emptyPhotos(), route: null, result: null })
 	go("plate")
 }

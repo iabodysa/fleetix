@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from "vue"
-import { PLATE_LETTERS } from "../plate.js"
+import { PLATE_LETTERS, plateDigit, plateLetter } from "../plate.js"
 import { __ } from "../i18n.js"
 import GateIcon from "./GateIcon.vue"
 
@@ -17,6 +17,7 @@ const pad = ref("digits")
 const digits = computed(() => (props.modelValue.match(/[0-9]/g) || []).join(""))
 const letters = computed(() => (props.modelValue.match(/[A-Z]/g) || []).join(""))
 const showLetters = computed(() => props.mode === "plate" && pad.value === "letters")
+const digitLabel = (digit) => (props.mode === "plate" ? plateDigit(digit) : digit)
 
 function compose(nextDigits, nextLetters) {
 	emit("update:modelValue", props.mode === "plate" ? (nextDigits + " " + nextLetters).trim() : nextDigits)
@@ -42,22 +43,22 @@ function erase() {
 	<div class="keypad">
 		<div v-if="mode === 'plate'" class="switch" role="tablist">
 			<button type="button" role="tab" :aria-selected="pad === 'digits'" :class="{ on: pad === 'digits' }" @click="pad = 'digits'">
-				123
+				{{ ["1", "2", "3"].map(plateDigit).join("") }}
 			</button>
 			<button type="button" role="tab" :aria-selected="pad === 'letters'" :class="{ on: pad === 'letters' }" @click="pad = 'letters'">
 				{{ __("Letters") }}
 			</button>
 		</div>
 		<div v-if="showLetters" class="grid letters" dir="ltr">
-			<button v-for="[latin, arabic] in PLATE_LETTERS" :key="latin" type="button" class="key" @click="addLetter(latin)">
-				<span class="ar">{{ arabic }}</span><span class="lat">{{ latin }}</span>
+			<button v-for="[latin] in PLATE_LETTERS" :key="latin" type="button" class="key" @click="addLetter(latin)">
+				{{ plateLetter(latin) }}
 			</button>
 			<button type="button" class="key key-soft" :aria-label="__('Erase')" @click="erase"><GateIcon name="erase" /></button>
 		</div>
 		<div v-else class="grid digits" dir="ltr">
-			<button v-for="digit in DIGITS" :key="digit" type="button" class="key" @click="addDigit(digit)">{{ digit }}</button>
+			<button v-for="digit in DIGITS" :key="digit" type="button" class="key" @click="addDigit(digit)">{{ digitLabel(digit) }}</button>
 			<span></span>
-			<button type="button" class="key" @click="addDigit('0')">0</button>
+			<button type="button" class="key" @click="addDigit('0')">{{ digitLabel("0") }}</button>
 			<button type="button" class="key key-soft" :aria-label="__('Erase')" @click="erase"><GateIcon name="erase" /></button>
 		</div>
 	</div>
@@ -119,12 +120,8 @@ function erase() {
 	background: var(--surface-2);
 }
 .letters .key {
-	font-size: 20px;
+	font-size: 24px;
 	min-height: 60px;
-}
-.lat {
-	font-size: 14px;
-	color: var(--ink-2);
 }
 .key-soft {
 	background: var(--surface-2);

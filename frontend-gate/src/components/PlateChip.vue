@@ -1,20 +1,19 @@
 <script setup>
 import { computed } from "vue"
-import { parsePlate } from "../plate.js"
+import { arabicPlate, parsePlate } from "../plate.js"
 
 const props = defineProps({ plate: { type: String, default: "" }, size: { type: String, default: "md" } })
 const parts = computed(() => parsePlate(props.plate))
+const lettersDir = arabicPlate() ? "rtl" : "ltr"
 </script>
 
 <template>
 	<div class="plate" :class="'plate-' + size" dir="ltr">
 		<div class="block">
-			<div class="row ar"><span v-for="(d, i) in parts.digits" :key="'da' + i">{{ d.arabic }}</span></div>
-			<div class="row"><span v-for="(d, i) in parts.digits" :key="'dl' + i">{{ d.latin }}</span></div>
+			<bdi class="row" dir="ltr">{{ parts.digits }}</bdi>
 		</div>
 		<div class="block">
-			<div class="row ar"><span v-for="(l, i) in parts.letters" :key="'la' + i">{{ l.arabic }}</span></div>
-			<div class="row"><span v-for="(l, i) in parts.letters" :key="'ll' + i">{{ l.latin }}</span></div>
+			<bdi class="row" :dir="lettersDir">{{ parts.letters }}</bdi>
 		</div>
 		<div class="strip">KSA</div>
 	</div>
@@ -43,15 +42,13 @@ const parts = computed(() => parsePlate(props.plate))
 	border-left: 2px solid var(--plate-ink);
 }
 .row {
-	display: flex;
-	justify-content: center;
-	gap: 6px;
-	font-size: 20px;
+	display: block;
+	text-align: center;
+	white-space: nowrap;
+	letter-spacing: 2px;
+	font-size: 26px;
 	line-height: 1.2;
-	min-height: 24px;
-}
-.ar {
-	direction: rtl;
+	min-height: 32px;
 }
 .strip {
 	writing-mode: vertical-rl;
@@ -64,8 +61,8 @@ const parts = computed(() => parsePlate(props.plate))
 	letter-spacing: 2px;
 }
 .plate-lg .row {
-	font-size: 28px;
-	min-height: 34px;
+	font-size: 36px;
+	min-height: 44px;
 }
 .plate-lg .block {
 	min-width: 96px;
@@ -75,9 +72,9 @@ const parts = computed(() => parsePlate(props.plate))
 	border-width: 2px;
 }
 .plate-sm .row {
-	font-size: 13px;
-	min-height: 16px;
-	gap: 3px;
+	font-size: 17px;
+	min-height: 22px;
+	letter-spacing: 1px;
 }
 .plate-sm .block {
 	min-width: 44px;

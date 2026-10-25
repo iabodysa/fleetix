@@ -33,14 +33,12 @@ Next car,পরের গাড়ি
 Next stop,পরের গন্তব্য
 No car with this plate,এই নম্বর প্লেটের কোনো গাড়ি নেই
 No connection to the server,সার্ভারের সাথে সংযোগ নেই
-No driver or project on this car,এই গাড়িতে কোনো চালক বা প্রকল্প নেই
 No handover request for this car,এই গাড়ির হস্তান্তরের কোনো অনুরোধ নেই
 Odometer,মিটার রিডিং
 Odometer reading is below the last reading {0},মিটার রিডিং শেষ রিডিং {0} এর চেয়ে কম
 Password,পাসওয়ার্ড
 Photo {0} of {1},ছবি {0} / {1}
 Photos,ছবি
-Photos can only be added to a maintenance visit or a handover,ছবি শুধু মেরামত বা হস্তান্তরে যোগ করা যায়
 Project,প্রকল্প
 Return,ফেরত
 Right side,ডান পাশ
@@ -374,3 +372,10 @@ Assigned,হস্তান্তরিত
 In Maintenance,রক্ষণাবেক্ষণে
 Suspended,স্থগিত
 Manufacturer,নির্মাতা
+Saving,সংরক্ষণ হচ্ছে
+Saved,সংরক্ষিত
+Uploading,আপলোড হচ্ছে
+Uploaded,আপলোড হয়েছে
+Upload failed,আপলোড ব্যর্থ
+This photo was not taken by you,এই ছবিটি আপনি তোলেননি
+This photo is already attached to another record,এই ছবিটি ইতিমধ্যে অন্য রেকর্ডে যুক্ত

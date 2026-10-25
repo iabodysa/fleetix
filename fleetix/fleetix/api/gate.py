@@ -75,13 +75,12 @@ def find_vehicle(code):
 		if vehicle.get("current_project")
 		else None,
 		"maintenance": visit[0] if visit else None,
-		"can_open_maintenance": bool(vehicle.get("current_driver") and vehicle.get("current_project")),
 		"handover": handover[0] if handover else None,
 	}
 
 
 @frappe.whitelist(methods=["POST"])
-def record_entry(vehicle, odometer, route):
+def record_entry(vehicle, odometer, route, photos=None):
 	frappe.only_for(WORKER_ROLES)
 	if route not in ROUTES:
 		frappe.throw(_("Choose where the car goes next"))
@@ -94,27 +93,38 @@ def record_entry(vehicle, odometer, route):
 	doc.odometer = odometer
 	doc.odometer_flagged = 1 if limit and odometer > limit else 0
 	doc.save()
+	attach_photos(doc, frappe.parse_json(photos) if isinstance(photos, str) else photos or [])
 	return {"doctype": doc.doctype, "name": doc.name, "status": doc.status}
 
 
 @frappe.whitelist(methods=["POST"])
-def upload_photo(doctype, name):
+def upload_photo(vehicle):
 	frappe.only_for(WORKER_ROLES)
-	if doctype not in ("Maintenance", "Vehicle Handover"):
-		frappe.throw(_("Photos can only be added to a maintenance visit or a handover"))
-	frappe.get_doc(doctype, name).check_permission("write")
+	frappe.get_doc("Vehicle", vehicle).check_permission("read")
 	upload = frappe.request.files["file"]
 	photo = frappe.get_doc(
 		{
 			"doctype": "File",
-			"file_name": upload.filename,
-			"attached_to_doctype": doctype,
-			"attached_to_name": name,
+			"file_name": vehicle + "-" + upload.filename,
 			"is_private": 1,
 			"content": upload.stream.read(),
 		}
 	).insert()
 	return {"name": photo.name, "file_url": photo.file_url}
+
+
+def attach_photos(doc, names):
+	for name in names:
+		photo = frappe.get_doc("File", name)
+		if photo.owner != frappe.session.user:
+			frappe.throw(_("This photo was not taken by you"))
+		if photo.attached_to_name == doc.name and photo.attached_to_doctype == doc.doctype:
+			continue
+		if photo.attached_to_name:
+			frappe.throw(_("This photo is already attached to another record"))
+		photo.attached_to_doctype = doc.doctype
+		photo.attached_to_name = doc.name
+		photo.save()
 
 
 def arrive_for_maintenance(vehicle):

@@ -2980,7 +2980,7 @@ You need write permissions to add attachments to this record.,تحتاج إلى 
 Your login attempt is invalid or has expired. Please try again.,محاولة تسجيل الدخول غير صالحة أو منتهية الصلاحية. يرجى المحاولة مرة أخرى.
 {0} {1} cannot be a leaf node as it has children,{0} {1} لا يمكن أن يكون عقدة طرفية لأن لديه عناصر فرعية
 {} Invalid python code on line {},{} رمز Python غير صالح في السطر {}
-"""Company History""","""تاريخ الشركة"""
+Company History,تاريخ الشركة
 &lt;head&gt; HTML,HTML لقسم &lt;head&gt;
 About Us Team Member,عضو فريق صفحة من نحن
 Access Control,التحكم في الوصول
@@ -3011,7 +3011,6 @@ Checking this will publish the page on your website and it'll be visible to ever
 Checking this will show a text area where you can write custom javascript that will run on this page.,تحديد هذا الخيار يظهر مربع نص لكتابة JavaScript مخصص يعمل في هذه الصفحة.
 "Clearing end date, as it cannot be in the past for published pages.",مسح تاريخ الانتهاء، لأنه لا يمكن أن يكون في الماضي للصفحات المنشورة.
 Client script,برنامج نصي للعميل
-Company History,تاريخ الشركة
 Compiled Successfully,تم التجميع بنجاح
 Condition description,وصف الشرط
 Condition JSON,JSON الشرط
@@ -9849,10 +9848,8 @@ Next,التالي
 Next car,السيارة التالية
 Next stop,الوجهة التالية
 No car with this plate,لا توجد سيارة بهذه اللوحة
-No driver or project on this car,لا يوجد سائق أو مشروع لهذه السيارة
 No handover request for this car,لا يوجد طلب تسليم لهذه السيارة
 Photo {0} of {1},الصورة {0} من {1}
-Photos can only be added to a maintenance visit or a handover,تضاف الصور إلى زيارة صيانة أو تسليم فقط
 Right side,الجانب الأيمن
 Scan code,امسح الرمز
 Send,إرسال
@@ -10096,3 +10093,5 @@ Authorized by,فوّضها
 Damage Sheet,ورقة الأضرار
 Last maintenance,آخر صيانة
 Previous visits,الزيارات السابقة
+This photo was not taken by you,هذه الصورة لم تلتقطها أنت
+This photo is already attached to another record,هذه الصورة مرفقة بسجل آخر

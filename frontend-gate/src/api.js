@@ -2,6 +2,7 @@ import { __ } from "./i18n.js"
 
 const M = "fleetix.fleetix.api.gate."
 const TIMEOUT_MS = 30000
+const UPLOAD_TIMEOUT_MS = 120000
 
 function headers(json) {
 	const out = { Accept: "application/json", "X-Frappe-CSRF-Token": window.csrf_token || "" }
@@ -19,9 +20,9 @@ function serverMessage(data) {
 	return data.exception || data.message || ""
 }
 
-async function send(path, body, json) {
+async function send(path, body, json, timeout) {
 	const controller = window.AbortController ? new AbortController() : null
-	const timer = controller && setTimeout(() => controller.abort(), TIMEOUT_MS)
+	const timer = controller && setTimeout(() => controller.abort(), timeout || TIMEOUT_MS)
 	try {
 		const response = await fetch(path, {
 			method: "POST",
@@ -43,14 +44,13 @@ async function send(path, body, json) {
 
 export const api = {
 	find: (code) => send("/api/method/" + M + "find_vehicle", { code }, true),
-	record: (vehicle, odometer, route) => send("/api/method/" + M + "record_entry", { vehicle, odometer, route }, true),
+	record: (vehicle, odometer, route, photos) => send("/api/method/" + M + "record_entry", { vehicle, odometer, route, photos }, true),
 	setLanguage: (lang) => send("/api/method/" + M + "set_language", { lang }, true),
-	upload(doctype, name, blob, filename) {
+	upload(vehicle, blob, filename) {
 		const form = new FormData()
-		form.append("doctype", doctype)
-		form.append("name", name)
+		form.append("vehicle", vehicle)
 		form.append("file", blob, filename)
-		return send("/api/method/" + M + "upload_photo", form, false)
+		return send("/api/method/" + M + "upload_photo", form, false, UPLOAD_TIMEOUT_MS)
 	},
 	login: (usr, pwd) => send("/api/method/login", { usr, pwd }, true),
 	logout: () => send("/api/method/logout", {}, true),
