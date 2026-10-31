@@ -33,5 +33,33 @@
     "role": "Rental Manager"
    }
   ]
+ },
+ {
+  "doctype": "Role Profile",
+  "name": "Fleetix Store Keeper",
+  "role_profile": "Fleetix Store Keeper",
+  "roles": [
+   {
+    "doctype": "Has Role",
+    "parent": "Fleetix Store Keeper",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock User"
+   },
+   {
+    "doctype": "Has Role",
+    "parent": "Fleetix Store Keeper",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock Manager"
+   },
+   {
+    "doctype": "Has Role",
+    "parent": "Fleetix Store Keeper",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Item Manager"
+   }
+  ]
  }
 ]

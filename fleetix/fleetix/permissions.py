@@ -25,7 +25,7 @@ CORE_PERMISSIONS = {
 	"Item": {AC: MANAGE, MS: READ, RM: READ},
 	"Item Group": {AC: READ, MS: READ},
 	"Warehouse": {AC: MANAGE, MS: READ},
-	"Stock Entry": {AC: SUBMIT, MS: MANAGE},
+	"Stock Entry": {AC: SUBMIT, MS: MANAGE, RM: SUBMIT},
 	"Stock Ledger Entry": {AC: READ, RM: READ},
 }
 

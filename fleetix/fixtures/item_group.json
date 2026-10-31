@@ -28,5 +28,29 @@
   "is_group": 0,
   "item_group_name": "Spare Parts",
   "name": "Spare Parts"
+ },
+ {
+  "doctype": "Item Group",
+  "is_group": 0,
+  "item_group_name": "Brake Parts",
+  "name": "Brake Parts"
+ },
+ {
+  "doctype": "Item Group",
+  "is_group": 0,
+  "item_group_name": "Spark Plugs",
+  "name": "Spark Plugs"
+ },
+ {
+  "doctype": "Item Group",
+  "is_group": 0,
+  "item_group_name": "Bulbs",
+  "name": "Bulbs"
+ },
+ {
+  "doctype": "Item Group",
+  "is_group": 0,
+  "item_group_name": "Filters",
+  "name": "Filters"
  }
 ]

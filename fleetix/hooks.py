@@ -36,7 +36,10 @@ fixtures = [
 			]
 		],
 	},
-	{"dt": "Role Profile", "filters": [["name", "in", ["Fleetix Accountant", "Fleetix Rental Manager"]]]},
+	{
+		"dt": "Role Profile",
+		"filters": [["name", "in", ["Fleetix Accountant", "Fleetix Rental Manager", "Fleetix Store Keeper"]]],
+	},
 	{"dt": "Module Profile", "filters": [["name", "in", ["Fleetix Field", "Fleetix Finance"]]]},
 	{"dt": "Custom Field", "filters": [["module", "=", "Fleetix"]]},
 	{"dt": "Property Setter", "filters": [["module", "=", "Fleetix"]]},
@@ -168,6 +171,7 @@ website_route_rules = [
 	{"from_route": "/maintenance/track/<visit>", "to_route": "maintenance_track"},
 	{"from_route": "/maintenance/<path:app_path>", "to_route": "maintenance"},
 	{"from_route": "/gate/<path:app_path>", "to_route": "gate"},
+	{"from_route": "/store/<path:app_path>", "to_route": "store"},
 ]
 
 after_request = ["fleetix.fleetix.kiosk.revalidate_kiosk_pages"]
@@ -177,6 +181,7 @@ after_migrate = [
 	"fleetix.fleetix.permissions.grant_core_permissions",
 	"fleetix.fleetix.branding.set_navbar_logo",
 	"fleetix.fleetix.doctype.maintenance_policy.maintenance_policy.insert_default_policies",
+	"fleetix.fleetix.stock_import.spare_parts.run_pending",
 ]
 before_uninstall = ["fleetix.fleetix.permissions.revoke_core_permissions"]
 
