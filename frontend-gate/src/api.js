@@ -1,6 +1,8 @@
 import { __ } from "./i18n.js"
 
 const M = "fleetix.fleetix.api.gate."
+const T = "fleetix.fleetix.api.store."
+const S = "fleetix.fleetix.api.stock."
 const TIMEOUT_MS = 30000
 const UPLOAD_TIMEOUT_MS = 120000
 
@@ -52,6 +54,14 @@ export const api = {
 		form.append("file", blob, filename)
 		return send("/api/method/" + M + "upload_photo", form, false, UPLOAD_TIMEOUT_MS)
 	},
+	storeBoot: () => send("/api/method/" + T + "get_boot", {}, true),
+	pendingIssues: (start) => send("/api/method/" + T + "pending_issues", { start }, true),
+	approveIssue: (stock_entry) => send("/api/method/" + T + "approve_issue", { stock_entry }, true),
+	storeScan: (code) => send("/api/method/" + T + "scan", { code }, true),
+	suggestItems: (txt, model) => send("/api/method/" + T + "suggest_items", { txt, model }, true),
+	receive: (receipt) => send("/api/method/" + T + "receive", receipt, true),
+	newPart: (part) => send("/api/method/" + T + "new_part", part, true),
+	stockSearch: (txt, start) => send("/api/method/" + S + "search_stock", { txt, start }, true),
 	login: (usr, pwd) => send("/api/method/login", { usr, pwd }, true),
 	logout: () => send("/api/method/logout", {}, true),
 }

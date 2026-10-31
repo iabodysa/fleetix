@@ -12,6 +12,8 @@ const PATHS = {
 	back: "M15 6l-6 6 6 6",
 	erase: "M20 6H9l-6 6 6 6h11zM12 9l6 6M18 9l-6 6",
 	globe: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18",
+	box: "M3 7l9-4 9 4v10l-9 4-9-4zM3 7l9 4 9-4M12 11v10",
+	list: "M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1",
 	nocamera: "M3 3l18 18M9 5h6l2 3h3v10M4 8h3M4 8v11h13",
 }
 defineProps({ name: { type: String, required: true }, flip: { type: Boolean, default: false } })

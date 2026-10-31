@@ -1,0 +1,29 @@
+.store-list {
+	display: grid;
+	gap: 10px;
+}
+.store-field {
+	display: grid;
+	gap: 6px;
+	font-weight: 700;
+}
+.store-input {
+	min-height: 56px;
+	width: 100%;
+	padding: 0 12px;
+	border: 2px solid var(--line);
+	border-radius: var(--radius);
+	background: var(--surface);
+	color: var(--ink);
+	font: inherit;
+}
+.store-serials {
+	display: grid;
+	gap: 4px;
+	margin: 0;
+	padding-inline-start: 32px;
+}
+.store-hint {
+	color: var(--ink-2);
+	text-align: center;
+}

@@ -5,6 +5,7 @@ import { __, chooseLanguage, storedLanguage } from "./i18n.js"
 import { hasShell, onShellBack, openSettings } from "./native.js"
 import { reloadOnNewVersion } from "../../frontend/src/freshness.js"
 import { STEPS, restoreDraft, stepBack, store } from "./store.js"
+import { desk, openStore, storeBack } from "./storekeeper.js"
 import BigButton from "./components/BigButton.vue"
 import GateIcon from "./components/GateIcon.vue"
 import LanguagePicker from "./components/LanguagePicker.vue"
@@ -17,8 +18,24 @@ import OdometerScreen from "./screens/OdometerScreen.vue"
 import PhotosScreen from "./screens/PhotosScreen.vue"
 import PlateScreen from "./screens/PlateScreen.vue"
 import RouteScreen from "./screens/RouteScreen.vue"
+import ApprovalScreen from "./screens/store/ApprovalScreen.vue"
+import ApprovalsScreen from "./screens/store/ApprovalsScreen.vue"
+import HubScreen from "./screens/store/HubScreen.vue"
+import MatchScreen from "./screens/store/MatchScreen.vue"
+import NewPartScreen from "./screens/store/NewPartScreen.vue"
+import PartsScreen from "./screens/store/PartsScreen.vue"
+import ReceiveScreen from "./screens/store/ReceiveScreen.vue"
 
 const SCREENS = { plate: PlateScreen, odometer: OdometerScreen, photos: PhotosScreen, route: RouteScreen, done: DoneScreen }
+const STORE_SCREENS = {
+	hub: HubScreen,
+	approvals: ApprovalsScreen,
+	approval: ApprovalScreen,
+	parts: PartsScreen,
+	receive: ReceiveScreen,
+	match: MatchScreen,
+	newPart: NewPartScreen,
+}
 const boot = window.frappe.boot
 const shell = hasShell()
 const sheet = ref(null)
@@ -26,6 +43,9 @@ const firstRun = !storedLanguage()
 const stepLabels = [__("Car"), __("Odometer"), __("Photos"), __("Next stop")]
 const stepIndex = computed(() => (store.step === "done" ? STEPS.length : STEPS.indexOf(store.step)))
 const transition = computed(() => (store.forward ? "slide-fwd" : "slide-back"))
+const screen = computed(() => (desk.view ? STORE_SCREENS[desk.view] : SCREENS[store.step]))
+const canBack = computed(() => (desk.view ? desk.view !== "hub" || boot.is_worker : store.step !== "plate" && store.step !== "done"))
+const storeEntry = computed(() => boot.is_store && boot.is_worker && !desk.view && store.step === "plate")
 
 async function pickLanguage(code) {
 	if (boot.user !== "Guest") await api.setLanguage(code).catch(() => null)
@@ -40,34 +60,43 @@ function shellBack() {
 		sheet.value = null
 		return true
 	}
-	return stepBack()
+	return desk.view ? storeBack() : stepBack()
+}
+function back() {
+	if (desk.view) storeBack()
+	else stepBack()
 }
 onShellBack(shellBack)
 onMounted(() => {
 	if (boot.is_worker) restoreDraft()
-	reloadOnNewVersion(() => store.step === "plate" && !store.vehicle)
+	else openStore("hub")
+	reloadOnNewVersion(() => (desk.view ? desk.view === "hub" : store.step === "plate" && !store.vehicle))
 })
 </script>
 
 <template>
 	<LanguageScreen v-if="firstRun" />
-	<LoginScreen v-else-if="!boot.is_worker" @language="sheet = 'language'" />
+	<LoginScreen v-else-if="!boot.is_worker && !boot.is_store" @language="sheet = 'language'" />
 	<div v-else class="app">
 		<header class="head">
-			<button v-if="store.step !== 'plate' && store.step !== 'done'" type="button" class="icon-btn" :aria-label="__('Back')" @click="stepBack">
+			<button v-if="canBack" type="button" class="icon-btn" :aria-label="__('Back')" @click="back">
 				<GateIcon name="back" flip />
 			</button>
-			<PlateChip v-if="store.vehicle && store.step !== 'plate'" :plate="store.vehicle.plate" size="sm" />
+			<PlateChip v-if="!desk.view && store.vehicle && store.step !== 'plate'" :plate="store.vehicle.plate" size="sm" />
 			<img v-else class="brand" src="/assets/fleetix/images/fleetix-logo.svg" alt="Fleetix" />
 			<span class="grow"></span>
+			<button v-if="storeEntry" type="button" class="icon-btn" @click="openStore('hub')">
+				<GateIcon name="box" />
+				<span class="who">{{ __("Store") }}</span>
+			</button>
 			<button type="button" class="icon-btn" :aria-label="__('Menu')" @click="sheet = 'menu'">
 				<span class="who">{{ boot.full_name }}</span>
 			</button>
 		</header>
-		<StepBar v-if="store.step !== 'done'" :steps="stepLabels" :current="stepIndex" />
+		<StepBar v-if="!desk.view && store.step !== 'done'" :steps="stepLabels" :current="stepIndex" />
 		<main class="body">
 			<Transition :name="transition" mode="out-in">
-				<component :is="SCREENS[store.step]" :key="store.step" />
+				<component :is="screen" :key="desk.view || store.step" />
 			</Transition>
 		</main>
 	</div>
