@@ -46,6 +46,9 @@ export const ICONS = {
 	note: "file-text",
 	phone: "phone",
 	labour: "tool",
+	approvals: "clipboard",
+	receive: "download",
+	camera: "camera",
 }
 
 export const MIRRORED = ["next", "back", "send", "logout"]

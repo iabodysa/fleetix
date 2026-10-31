@@ -28,6 +28,11 @@ import ReviewScreen from "./screens/review/ReviewScreen.vue"
 import SignaturesScreen from "./screens/signatures/SignaturesScreen.vue"
 import StockItemScreen from "./screens/stock/StockItemScreen.vue"
 import StockScreen from "./screens/stock/StockScreen.vue"
+import ApprovalScreen from "./screens/store/ApprovalScreen.vue"
+import ApprovalsScreen from "./screens/store/ApprovalsScreen.vue"
+import MatchScreen from "./screens/store/MatchScreen.vue"
+import NewPartScreen from "./screens/store/NewPartScreen.vue"
+import ReceiveScreen from "./screens/store/ReceiveScreen.vue"
 import WalkinCheck from "./screens/walkin/WalkinCheck.vue"
 import WalkinDetails from "./screens/walkin/WalkinDetails.vue"
 import WalkinInvoice from "./screens/walkin/WalkinInvoice.vue"
@@ -49,6 +54,11 @@ const SCREENS = {
 	done: DoneScreen,
 	stock: StockScreen,
 	stockItem: StockItemScreen,
+	approvals: ApprovalsScreen,
+	approval: ApprovalScreen,
+	receive: ReceiveScreen,
+	match: MatchScreen,
+	newPart: NewPartScreen,
 }
 const STEP_LABELS = [__("Vehicle"), __("Odometer"), __("Parts"), __("Damage"), __("Photos"), __("Signatures"), __("Review")]
 const WALKIN_LABELS = [__("Customer"), __("Items"), __("Final check"), __("Invoice")]

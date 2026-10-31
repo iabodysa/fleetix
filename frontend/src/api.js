@@ -4,6 +4,7 @@ import { __ } from "./i18n/index.js"
 const M = "fleetix.fleetix.api.maintenance."
 const C = "fleetix.fleetix.api.customer_visit."
 const S = "fleetix.fleetix.api.stock."
+const T = "fleetix.fleetix.api.store."
 
 export const api = {
 	checklist: (maintenance, odometer) => call(M + "get_vehicle_checklist", { maintenance, odometer }),
@@ -38,6 +39,12 @@ export const api = {
 	stockModels: () => call(S + "stock_models"),
 	stockItem: (item_code) => call(S + "stock_item", { item_code }),
 	stockScan: (code) => call(S + "scan_item", { code }),
+	pendingIssues: (start) => call(T + "pending_issues", { start }),
+	approveIssue: (stock_entry) => call(T + "approve_issue", { stock_entry }),
+	storeScan: (code) => call(T + "scan", { code }),
+	suggestItems: (txt, model) => call(T + "suggest_items", { txt, model }),
+	receive: (args) => call(T + "receive", args),
+	newPart: (args) => call(T + "new_part", args),
 	setLanguage: (lang) => call(M + "set_language", { lang }),
 	login: (usr, pwd) => call("login", { usr, pwd }),
 	logout: () => call("logout"),
@@ -45,6 +52,7 @@ export const api = {
 }
 
 export const QUEUE_METHOD = M + "get_due_queue"
+export const STORE_BOOT_METHOD = T + "get_boot"
 
 const LONG_MESSAGE = 160
 

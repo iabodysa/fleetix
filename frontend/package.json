@@ -9,6 +9,8 @@
 		"copy-html-entry": "cp ../fleetix/public/maintenance/index.html ../fleetix/www/maintenance.html"
 	},
 	"dependencies": {
+		"@zxing/browser": "^0.1.5",
+		"@zxing/library": "^0.21.3",
 		"frappe-ui": "0.1.105",
 		"vue": "^3.5.12"
 	},
