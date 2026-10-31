@@ -4,7 +4,8 @@ import { api, QUEUE_METHOD } from "../api.js"
 
 export const STEPS = ["queue", "odometer", "parts", "damage", "photos", "signatures", "review"]
 export const WALKIN_STEPS = ["walkin", "walkinItems", "walkinCheck", "walkinInvoice"]
-const ORDER = ["home"].concat(STEPS, ["done"], WALKIN_STEPS)
+export const STOCK_STEPS = ["stock", "stockItem"]
+const ORDER = ["home"].concat(STEPS, ["done"], WALKIN_STEPS, STOCK_STEPS)
 
 export const store = reactive({
 	step: "home",
@@ -21,6 +22,7 @@ export const store = reactive({
 	display: false,
 	printed: false,
 	walkin: null,
+	stock: { query: "", model: "", item: "" },
 })
 
 export function newWalkin() {
@@ -118,6 +120,8 @@ const PREVIOUS_STEP = {
 	signatures: "photos",
 	review: "queue",
 	done: "queue",
+	stock: "home",
+	stockItem: "stock",
 }
 
 export function stepBack() {

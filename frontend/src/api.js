@@ -3,6 +3,7 @@ import { __ } from "./i18n/index.js"
 
 const M = "fleetix.fleetix.api.maintenance."
 const C = "fleetix.fleetix.api.customer_visit."
+const S = "fleetix.fleetix.api.stock."
 
 export const api = {
 	checklist: (maintenance, odometer) => call(M + "get_vehicle_checklist", { maintenance, odometer }),
@@ -33,6 +34,10 @@ export const api = {
 			filters: maintenance,
 			fieldname: ["status", "inspection", "docstatus"],
 		}),
+	stockSearch: (txt, model, start) => call(S + "search_stock", { txt, model, start }),
+	stockModels: () => call(S + "stock_models"),
+	stockItem: (item_code) => call(S + "stock_item", { item_code }),
+	stockScan: (code) => call(S + "scan_item", { code }),
 	setLanguage: (lang) => call(M + "set_language", { lang }),
 	login: (usr, pwd) => call("login", { usr, pwd }),
 	logout: () => call("logout"),

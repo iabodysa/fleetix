@@ -5,6 +5,7 @@ import AppIcon from "./AppIcon.vue"
 
 const READY_MS = 10000
 const READ_MS = 1500
+defineProps({ idleText: { type: String, default: "" }, readyText: { type: String, default: "" } })
 const emit = defineEmits(["scan"])
 const state = ref("idle")
 let timer = 0
@@ -20,7 +21,7 @@ function arm(event) {
 }
 useBarcode((code) => {
 	settle("read", READ_MS)
-	emit("scan", scanKey(code))
+	emit("scan", scanKey(code), code)
 })
 onBeforeUnmount(() => clearTimeout(timer))
 </script>
@@ -29,7 +30,7 @@ onBeforeUnmount(() => clearTimeout(timer))
 	<button class="barcode-input" :class="'barcode-input-' + state" type="button" @click="arm">
 		<span class="barcode-input-mark"><AppIcon :name="state === 'read' ? 'done' : 'scan'" size="lg" /></span>
 		<span class="barcode-input-text" aria-live="polite">
-			{{ state === "ready" ? __("Ready to scan. Point the scanner at the vehicle barcode") : __("Scan the vehicle barcode") }}
+			{{ state === "ready" ? readyText || __("Ready to scan. Point the scanner at the vehicle barcode") : idleText || __("Scan the vehicle barcode") }}
 		</span>
 	</button>
 </template>

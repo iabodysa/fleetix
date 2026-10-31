@@ -6,7 +6,7 @@ import { hasPrinter, hasShell, onShellBack, openSettings } from "./native.js"
 import { reloadOnNewVersion } from "./freshness.js"
 import { useLanguage } from "./composables/useLanguage.js"
 import { publishToCustomer } from "./composables/useCustomerDisplay.js"
-import { STEPS, WALKIN_STEPS, backHome, backToQueue, queue, restoreDraft, stepBack, store } from "./store/index.js"
+import { STEPS, STOCK_STEPS, WALKIN_STEPS, backHome, backToQueue, go, queue, restoreDraft, stepBack, store } from "./store/index.js"
 import AppHeader from "./components/AppHeader.vue"
 import AppIcon from "./components/AppIcon.vue"
 import PrintTest from "./components/PrintTest.vue"
@@ -26,6 +26,8 @@ import PhotosScreen from "./screens/photos/PhotosScreen.vue"
 import QueueScreen from "./screens/queue/QueueScreen.vue"
 import ReviewScreen from "./screens/review/ReviewScreen.vue"
 import SignaturesScreen from "./screens/signatures/SignaturesScreen.vue"
+import StockItemScreen from "./screens/stock/StockItemScreen.vue"
+import StockScreen from "./screens/stock/StockScreen.vue"
 import WalkinCheck from "./screens/walkin/WalkinCheck.vue"
 import WalkinDetails from "./screens/walkin/WalkinDetails.vue"
 import WalkinInvoice from "./screens/walkin/WalkinInvoice.vue"
@@ -45,6 +47,8 @@ const SCREENS = {
 	signatures: SignaturesScreen,
 	review: ReviewScreen,
 	done: DoneScreen,
+	stock: StockScreen,
+	stockItem: StockItemScreen,
 }
 const STEP_LABELS = [__("Vehicle"), __("Odometer"), __("Parts"), __("Damage"), __("Photos"), __("Signatures"), __("Review")]
 const WALKIN_LABELS = [__("Customer"), __("Items"), __("Final check"), __("Invoice")]
@@ -65,7 +69,7 @@ const stepIndex = computed(() => {
 	if (walkin.value) return WALKIN_STEPS.indexOf(store.step)
 	return store.step === "done" ? STEPS.length - 1 : STEPS.indexOf(store.step)
 })
-const inVisit = computed(() => ["home", "queue"].indexOf(store.step) === -1)
+const inVisit = computed(() => ["home", "queue"].concat(STOCK_STEPS).indexOf(store.step) === -1)
 const plate = computed(() => (walkin.value ? store.walkin.plate : store.visit ? store.visit.plate : ""))
 
 function shellBack() {
@@ -82,6 +86,10 @@ function shellBack() {
 function setOnline() {
 	online.value = navigator.onLine
 }
+function openStock() {
+	menu.value = false
+	go("stock")
+}
 function openDrawer() {
 	queue.fetch()
 	store.drawer = true
@@ -97,7 +105,7 @@ watch(
 		const maintenance = !walkin.value && store.visit ? store.visit.maintenance : null
 		if (step === "done" || step === "walkinInvoice") return publishToCustomer({ plate, maintenance, status: __("Completed"), tone: "done" })
 		if (walkin.value) return publishToCustomer({ plate, status: WALKIN_LABELS[WALKIN_STEPS.indexOf(step)], tone: "quiet" })
-		if (step === "home") return publishToCustomer({ plate: "", status: "", tone: "quiet" })
+		if (step === "home" || STOCK_STEPS.indexOf(step) !== -1) return publishToCustomer({ plate: "", status: "", tone: "quiet" })
 		const status = step === "photos" || step === "signatures" ? __("Photos and signatures") : STEP_LABELS[STEPS.indexOf(step)]
 		publishToCustomer({ plate: step === "queue" ? "" : plate, maintenance, status, tone: "quiet" })
 	},
@@ -143,6 +151,7 @@ onBeforeUnmount(() => {
 			/>
 			<div v-if="menu" class="card app-menu">
 				<p class="app-menu-name">{{ boot.full_name }}</p>
+				<button v-if="!inVisit" class="app-header-button" type="button" @click="openStock">{{ __("Stock") }}</button>
 				<button class="app-header-button" type="button" @click="(printTest = true), (menu = false)">{{ __("Print test") }}</button>
 				<button v-if="shell" class="app-header-button" type="button" @click="openSettings">{{ __("Settings") }}</button>
 				<button class="app-header-button" type="button" @click="logout">{{ __("Log out") }}</button>
