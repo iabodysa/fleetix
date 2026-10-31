@@ -9,8 +9,6 @@ import frappe
 from erpnext.stock.utils import scan_barcode
 from frappe.utils import cint, flt
 
-from fleetix.fleetix.doctype.maintenance.maintenance import unpriced_items
-
 STORE_ROLES = ("Stock Manager", "Stock User", "Rental Manager", "System Manager")
 PAGE_SIZE = 20
 SUGGESTIONS = 5
@@ -97,11 +95,6 @@ def approve_issue(stock_entry):
 	return {"name": entry.name, "docstatus": entry.docstatus}
 
 
-def rate_known(item_code):
-	company = erpnext.get_default_company()
-	return not unpriced_items([item_code], company)
-
-
 @frappe.whitelist()
 def scan(code):
 	frappe.only_for(STORE_ROLES)
@@ -122,7 +115,6 @@ def scan(code):
 		"image": item.image,
 		"has_serial_no": item.has_serial_no,
 		"serial_no": found.get("serial_no"),
-		"rate_known": rate_known(item.name),
 		"available": available(item.name, default_warehouse()),
 	}
 
@@ -160,15 +152,13 @@ def link_barcode(item_code, code):
 
 
 @frappe.whitelist(methods=["POST"])
-def receive(item_code, qty, code="", serials="", rate=None):
+def receive(item_code, qty, code="", serials=""):
 	frappe.only_for(STORE_ROLES)
 	link_barcode(item_code, code)
 	warehouse = default_warehouse()
-	row = {"item_code": item_code, "qty": flt(qty), "t_warehouse": warehouse}
+	row = {"item_code": item_code, "qty": flt(qty), "t_warehouse": warehouse, "allow_zero_valuation_rate": 1}
 	if cint(frappe.get_cached_value("Item", item_code, "has_serial_no")):
 		row.update(use_serial_batch_fields=1, serial_no=serials)
-	if flt(rate):
-		row.update(basic_rate=flt(rate), set_basic_rate_manually=1)
 	entry = frappe.get_doc(
 		{
 			"doctype": "Stock Entry",

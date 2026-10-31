@@ -5,7 +5,7 @@ const ORDER = ["pending", "detail", "receive", "match", "newpart"]
 const PREVIOUS = { detail: "pending", match: "receive", newpart: "match" }
 
 function emptyReceipt() {
-	return { item: null, qty: 0, code: "", serials: [], rate: "" }
+	return { item: null, qty: 0, code: "", serials: [] }
 }
 
 export const store = reactive({
@@ -35,7 +35,7 @@ export function resetReceipt() {
 }
 
 export function startReceipt(item, code) {
-	store.receipt = { item, qty: item.has_serial_no ? 0 : 1, code: code || "", serials: [], rate: "" }
+	store.receipt = { item, qty: item.has_serial_no ? 0 : 1, code: code || "", serials: [] }
 	store.unknown = null
 	go("receive")
 }

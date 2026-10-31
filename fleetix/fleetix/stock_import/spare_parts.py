@@ -7,7 +7,6 @@ from pathlib import Path
 
 import erpnext
 import frappe
-from erpnext.stock.stock_ledger import get_valuation_rate
 from erpnext.stock.utils import get_stock_balance
 from frappe.utils import cint, flt
 
@@ -62,13 +61,8 @@ def existing_items():
 	return items
 
 
-def plan_part(part, item, warehouse, company, currency, perpetual):
-	row = {
-		"part": part,
-		"item": item,
-		"item_code": item.name if item else part["item_code"],
-		"rate": part.get("rate"),
-	}
+def plan_part(part, item, warehouse):
+	row = {"part": part, "item": item, "item_code": item.name if item else part["item_code"]}
 	if flt(part["qty"]) < 0:
 		row["negative"] = True
 		return row
@@ -78,18 +72,6 @@ def plan_part(part, item, warehouse, company, currency, perpetual):
 	current = flt(get_stock_balance(item.name, warehouse)) if item else 0
 	row["delta"] = flt(part["qty"]) - current
 	row["changed"] = bool(row["delta"])
-	if row["changed"] and flt(part["qty"]) > 0 and row["rate"] is None:
-		if item:
-			row["rate"] = get_valuation_rate(
-				item.name,
-				warehouse,
-				"Stock Reconciliation",
-				None,
-				currency=currency,
-				company=company,
-				raise_error_if_no_rate=False,
-			)
-		row["unpriced"] = not row["rate"] and perpetual
 	return row
 
 
@@ -98,8 +80,6 @@ def run(dry_run=0):
 	revision = data["revision"]
 	company = erpnext.get_default_company()
 	warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
-	currency = erpnext.get_company_currency(company)
-	perpetual = cint(erpnext.is_perpetual_inventory_enabled(company))
 	if not warehouse:
 		return {"revision": revision, "warehouse": None, "reco": None}
 
@@ -115,7 +95,7 @@ def run(dry_run=0):
 			ITEM_FIELDS,
 			as_dict=True,
 		) or by_name.get(normalise(part["name_ar"]))
-		rows.append(plan_part(part, item, warehouse, company, currency, perpetual))
+		rows.append(plan_part(part, item, warehouse))
 
 	changed = [r for r in rows if r.get("changed")]
 	result = {
@@ -128,12 +108,11 @@ def run(dry_run=0):
 		"reco_rows_changed": len(changed),
 		"qty_in": sum(r["delta"] for r in changed if r["delta"] > 0),
 		"qty_out": -sum(r["delta"] for r in changed if r["delta"] < 0),
-		"unpriced": [r["item_code"] for r in rows if r.get("unpriced")],
 		"skipped": [r["item_code"] for r in rows if r.get("skip")],
 		"negative": [r["item_code"] for r in rows if r.get("negative")],
 		"reco": None,
 	}
-	if cint(dry_run) or result["unpriced"]:
+	if cint(dry_run):
 		return result
 
 	for group in groups_new:
@@ -160,7 +139,6 @@ def write_item(row):
 				"is_stock_item": 1,
 				"fleetix_vehicle_models": models,
 				"image": part["image"],
-				"valuation_rate": part.get("rate"),
 			}
 		).insert()
 		return doc.name
@@ -174,14 +152,15 @@ def write_item(row):
 
 
 def write_reco(changed, revision, company, warehouse):
-	items = []
-	for row in changed:
-		line = {"item_code": row["item_code"], "warehouse": warehouse, "qty": flt(row["part"]["qty"])}
-		if row["rate"]:
-			line["valuation_rate"] = flt(row["rate"])
-		elif line["qty"]:
-			line["allow_zero_valuation_rate"] = 1
-		items.append(line)
+	items = [
+		{
+			"item_code": row["item_code"],
+			"warehouse": warehouse,
+			"qty": flt(row["part"]["qty"]),
+			"allow_zero_valuation_rate": 1,
+		}
+		for row in changed
+	]
 	doc = frappe.get_doc(
 		{
 			"doctype": "Stock Reconciliation",

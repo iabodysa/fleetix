@@ -36,7 +36,6 @@ async function save() {
 			qty: receipt.qty,
 			code: receipt.code,
 			serials: receipt.serials.join("\n"),
-			rate: receipt.rate || null,
 		})
 		resetReceipt()
 		store.notice = __("Received")
@@ -84,10 +83,6 @@ useBarcode(run)
 						<li v-for="serial in store.receipt.serials" :key="serial">{{ serial }}</li>
 					</ol>
 				</div>
-				<label v-if="!store.receipt.item.rate_known" class="field">
-					<span>{{ __("Unit cost") }}</span>
-					<input v-model="store.receipt.rate" type="number" min="0" step="0.01" inputmode="decimal" dir="ltr" />
-				</label>
 			</template>
 			<CameraScan v-if="camera" @code="fromCamera" @close="camera = false" />
 		</div>
