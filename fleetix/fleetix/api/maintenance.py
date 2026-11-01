@@ -9,6 +9,7 @@ import frappe
 from frappe import _
 from frappe.model.workflow import apply_workflow
 from frappe.utils import cint, date_diff, flt, get_fullname, get_url, getdate, today
+from werkzeug.wrappers import Response
 
 from fleetix.fleetix.doctype.maintenance.maintenance import (
 	COMPONENT_FIELDS,
@@ -75,6 +76,17 @@ def app_version():
 		"version_name": MAINTENANCE_APK["version_name"],
 		"url": url,
 	}
+
+
+@frappe.whitelist(allow_guest=True, methods=["GET"])
+def service_worker():
+	with open(frappe.get_app_path("fleetix", "public", "maintenance", "sw.js")) as script:
+		body = script.read()
+	return Response(
+		body,
+		content_type="application/javascript",
+		headers={"Service-Worker-Allowed": "/maintenance", "Cache-Control": "no-cache"},
+	)
 
 
 @frappe.whitelist(methods=["POST"])

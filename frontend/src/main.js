@@ -20,7 +20,6 @@ app.mount("#app")
 
 if ("serviceWorker" in navigator) {
 	navigator.serviceWorker
-		.register("/assets/fleetix/maintenance/sw.js", { scope: "/maintenance" })
-		.catch(() => navigator.serviceWorker.register("/assets/fleetix/maintenance/sw.js"))
+		.register("/api/method/fleetix.fleetix.api.maintenance.service_worker", { scope: "/maintenance" })
 		.catch(() => null)
 }
