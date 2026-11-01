@@ -1,8 +1,8 @@
 {% import "fleetix/templates/print/fleetix_thermal.html" as tp with context %}
 {% set vehicle = frappe.db.get_value("Vehicle", doc.vehicle, ["license_plate", "make", "model", "company", "last_odometer"], as_dict=True) if doc.vehicle else None %}
 {% set driver = frappe.db.get_value("Driver", doc.driver, ["full_name", "cell_number", "customer"], as_dict=True) if doc.driver else None %}
-{% set work = [] %}
-{% for r in doc.components_replaced %}{% set _x = work.append(_(r.component)) %}{% endfor %}
+{% set parts = {} %}
+{% for r in doc.components_replaced %}{% set label = r.item_name or (frappe.db.get_value("Item", r.item, "item_name") if r.item else None) or _(r.component) %}{% set _x = parts.update({label: (parts.get(label) or 0) + (r.qty or 1)}) %}{% endfor %}
 {{ tp.style() }}
 <div class="tp">
 {{ tp.head(doc, _("Gate Exit Pass"), "Gate Exit Pass") }}
@@ -14,10 +14,15 @@
 	(_("Driver"), "Driver", driver.full_name if driver else None),
 	(_("Customer"), "Customer", driver.customer if driver else None),
 	(_("Time In"), "Time in", tp.dt(doc.visit_datetime)),
-	(_("Work Done"), "Work done", " / ".join(work) if work else None),
 	(_("Status"), "Status", _(doc.status) if doc.status else None),
 ]) }}
-{{ tp.pair([(_("Odometer In"), "Km in", tp.km(doc.odometer)), (_("Odometer Out"), "Km out", tp.km(vehicle.last_odometer if vehicle else None))]) }}
+{% if parts %}{{ tp.bar(_("Spare Parts"), "Parts") }}
+<table class="tp-grid">
+<colgroup><col><col style="width:128px"></colgroup>
+<tr class="tp-h"><td>{{ _("Item", context="Print Line") }}<i>Item</i></td><td>{{ _("Qty", context="Print Line") }}<i>Qty</i></td></tr>
+{% for label, qty in parts.items() %}<tr><td class="tp-s">{{ ltr_runs(label) }}</td><td class="tp-q">{{ tp.qty(qty) }}</td></tr>{% endfor %}
+</table>{% endif %}
+{{ tp.pair([(_("Previous Reading"), "Previous", tp.km(doc.previous_odometer)), (_("Current Reading"), "Current", tp.km(doc.odometer)), (_("Distance"), "Distance km", tp.km(doc.odometer - doc.previous_odometer) if doc.previous_odometer and doc.odometer and doc.odometer > doc.previous_odometer else None)]) }}
 {{ tp.signatures(([(_("Authorised By", context="Gate Pass"), "Authorised by", frappe.db.get_value("User", doc.approved_by, "full_name"))] if doc.approved_by else []) + [(_("Gate Supervisor"), "Gate supervisor", frappe.db.get_value("User", frappe.session.user, "full_name")), (_("Driver"), "Driver", driver.full_name if driver else None)]) }}
 {{ tp.qr(doc) }}
 {{ tp.foot(doc.company or (vehicle.company if vehicle else None)) }}

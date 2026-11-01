@@ -9,6 +9,7 @@ import BigButton from "../../components/BigButton.vue"
 		<div class="screen">
 			<h1 class="screen-title">{{ __("Store") }}</h1>
 			<BigButton icon="check" tone="soft" :label="__('Approvals')" @press="openStore('approvals')" />
+			<BigButton icon="list" tone="soft" :label="__('Purchase requests')" @press="openStore('purchases')" />
 			<BigButton icon="box" tone="soft" :label="__('Spare parts')" @press="openStore('parts')" />
 			<BigButton icon="plus" tone="soft" :label="__('Receive')" @press="openStore('receive')" />
 		</div>

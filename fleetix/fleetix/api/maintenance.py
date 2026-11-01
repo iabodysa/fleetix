@@ -4,8 +4,10 @@
 import os
 import re
 
+import erpnext
 import frappe
 from frappe import _
+from frappe.model.workflow import apply_workflow
 from frappe.utils import cint, date_diff, flt, get_fullname, get_url, getdate, today
 
 from fleetix.fleetix.doctype.maintenance.maintenance import (
@@ -24,7 +26,7 @@ from fleetix.fleetix.vehicle_diagram import VIEWS, body_type, damage_zone, diagr
 
 WORKER_ROLES = ("Movement Supervisor", "Rental Manager", "System Manager")
 OPEN_STATES = ("Due Alert", "Driver Arrived", "Full Inspection", "Approved", "Service", "Final Check")
-FINISH_STATES = ("Full Inspection", "Approved", "Service", "Final Check")
+FINISH_ACTIONS = {"Approved": "Start Service", "Service": "Finish Service", "Final Check": "Complete"}
 SOON_KM = 1000
 SOON_DAYS = 14
 APP_LANGUAGES = ("ar", "en", "ur", "hi", "bn")
@@ -96,7 +98,33 @@ def get_due_queue():
 	visits = frappe.get_list(
 		"Maintenance",
 		filters={"docstatus": 0, "status": ("in", OPEN_STATES)},
-		fields=["name", "vehicle", "status", "driver", "project", "inspection", "odometer", "modified"],
+		fields=[
+			"name",
+			"vehicle",
+			"status",
+			"driver",
+			"project",
+			"inspection",
+			"odometer",
+			"items_issued",
+			"docstatus",
+		],
+		order_by="modified desc",
+	)
+	visits += frappe.get_list(
+		"Maintenance",
+		filters={"docstatus": 1, "modified": (">=", today())},
+		fields=[
+			"name",
+			"vehicle",
+			"status",
+			"driver",
+			"project",
+			"inspection",
+			"odometer",
+			"items_issued",
+			"docstatus",
+		],
 		order_by="modified desc",
 	)
 	vehicles = {
@@ -157,8 +185,7 @@ def open_vehicle_visit(vehicle):
 			{"doctype": "Maintenance", "maintenance_type": "Periodic", "vehicle": vehicle}
 		).insert()
 	if visit.status == "Due Alert":
-		visit.status = "Driver Arrived"
-		visit.save()
+		visit = apply_workflow(visit, "Arrive")
 	return queue_row(visit, frappe.get_doc("Vehicle", visit.vehicle))
 
 
@@ -177,6 +204,7 @@ def queue_row(visit, vehicle):
 	return {
 		"maintenance": visit.name,
 		"status": visit.status,
+		"stage": visit_stage(visit),
 		"vehicle": vehicle.name,
 		"plate": vehicle.license_plate,
 		"model": " ".join(filter(None, (vehicle.make, vehicle.model))),
@@ -189,6 +217,19 @@ def queue_row(visit, vehicle):
 		"worst": worst_overdue(components, cint(vehicle.last_odometer)),
 		"findings": visit_findings(visit.name) if visit.status == "Final Check" else [],
 	}
+
+
+def visit_stage(visit):
+	if visit.docstatus == 1:
+		return "exit"
+	if visit.status == "Full Inspection" and visit.inspection:
+		return "approval"
+	if visit.status in FINISH_ACTIONS:
+		issued = (
+			frappe.db.get_value("Stock Entry", visit.items_issued, "docstatus") if visit.items_issued else 1
+		)
+		return "work" if issued == 1 else "parts"
+	return "inspection" if visit.status in SIGN_STATES else "arrival"
 
 
 def visit_findings(maintenance):
@@ -260,6 +301,14 @@ def get_vehicle_checklist(maintenance, odometer=None):
 			else None,
 		},
 		"components": components,
+		"parts": [
+			dict(part_stock(row.item), qty=flt(row.qty))
+			for row in visit.components_replaced
+			if row.item and not row.component
+		],
+		"lines": [
+			dict(part_stock(row.item), qty=flt(row.qty)) for row in visit.components_replaced if row.item
+		],
 		"final_check": [
 			{"item": row.item, "condition": row.condition, "notes": row.notes} for row in visit.final_check
 		],
@@ -364,13 +413,13 @@ def save_inspection(maintenance, odometer, components, driver_signature):
 	if any(not row.get("item") or flt(row.get("qty")) <= 0 for row in components):
 		frappe.throw(_("Every selected component needs an item and a quantity"))
 	for row in components:
-		max_qty = component_max_qty(row["component"])
+		max_qty = component_max_qty(row["component"]) if row.get("component") else 0
 		if max_qty and flt(row["qty"]) > max_qty:
 			frappe.throw(_("{0} allows at most {1}").format(_(row["component"]), f"{max_qty:g}"))
 	damages = frappe.parse_json(visit.damage_marks) or []
 	if visit.status not in SIGN_STATES or visit.inspection:
 		frappe.throw(_("This visit is not waiting for inspection"))
-	ticked = {row["component"] for row in components}
+	ticked = {row.get("component") for row in components}
 	inspection = frappe.get_doc(
 		{
 			"doctype": "Vehicle Inspection",
@@ -401,14 +450,18 @@ def save_inspection(maintenance, odometer, components, driver_signature):
 				"attached_to_field": "photos",
 			},
 		)
-	visit.status = "Service"
 	visit.odometer = odometer
 	visit.inspection = inspection.name
 	visit.set(
 		"components_replaced",
-		[{"component": row["component"], "item": row["item"], "qty": flt(row["qty"])} for row in components],
+		[
+			{"component": row.get("component"), "item": row["item"], "qty": flt(row["qty"])}
+			for row in components
+		],
 	)
 	visit.save()
+	if visit.status == "Driver Arrived":
+		visit = apply_workflow(visit, "Start Inspection")
 	record_language = frappe.get_system_settings("language")
 	for no, row in enumerate(damages, start=1):
 		frappe.get_doc(
@@ -440,15 +493,66 @@ def finish_maintenance(maintenance, final_check, findings=None):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
 	visit.check_permission("write")
-	if visit.status not in FINISH_STATES or not visit.inspection:
-		frappe.throw(_("This visit has no inspection yet"))
+	if visit.status not in FINISH_ACTIONS or not visit.inspection:
+		frappe.throw(_("This visit is not approved yet"))
+	if visit_stage(visit) != "work":
+		frappe.throw(_("The parts are not issued yet"))
 	checked = checked_rows(
-		frappe.parse_json(final_check), [row.component for row in visit.components_replaced]
+		frappe.parse_json(final_check), [row.component for row in visit.components_replaced if row.component]
 	)
 	visit.set("final_check", checked)
 	visit.set("findings", finding_rows(frappe.parse_json(findings), checked))
-	visit.submit()
+	visit.save()
+	while visit.status in FINISH_ACTIONS:
+		visit = apply_workflow(visit, FINISH_ACTIONS[visit.status])
 	return get_visit_result(visit.name)
+
+
+@frappe.whitelist(methods=["POST"])
+def request_purchase(maintenance, item_code, qty):
+	frappe.only_for(WORKER_ROLES)
+	visit = frappe.get_doc("Maintenance", maintenance)
+	visit.check_permission("write")
+	warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
+	name = frappe.db.get_value(
+		"Material Request", {"maintenance": visit.name, "docstatus": 0, "material_request_type": "Purchase"}
+	)
+	request = (
+		frappe.get_doc("Material Request", name)
+		if name
+		else frappe.get_doc(
+			{
+				"doctype": "Material Request",
+				"material_request_type": "Purchase",
+				"maintenance": visit.name,
+				"company": visit.company or erpnext.get_default_company(),
+				"transaction_date": today(),
+				"schedule_date": today(),
+				"set_warehouse": warehouse,
+			}
+		)
+	)
+	item = frappe.get_cached_value("Item", item_code, ["item_name", "stock_uom"], as_dict=True)
+	row = next((row for row in request.items if row.item_code == item_code), None)
+	if row:
+		row.qty = flt(qty)
+	else:
+		request.append(
+			"items",
+			{
+				"item_code": item_code,
+				"item_name": item.item_name,
+				"description": item.item_name,
+				"qty": flt(qty),
+				"uom": item.stock_uom,
+				"stock_uom": item.stock_uom,
+				"conversion_factor": 1,
+				"schedule_date": today(),
+				"warehouse": warehouse,
+			},
+		)
+	request.save()
+	return {"name": request.name, "item_code": item_code, "qty": flt(qty)}
 
 
 @frappe.whitelist()
@@ -541,11 +645,11 @@ def get_vehicle_profile(vehicle):
 		order_by="idx asc",
 	):
 		photos.setdefault(row.parent, []).append(row)
-	readings = [
-		(row.visit_datetime or row.creation, "Maintenance", row) for row in visits
-	] + [
-		(row.inspection_datetime or row.creation, "Vehicle Inspection", row) for row in inspections
-	] + [(row.handover_datetime or row.creation, "Vehicle Handover", row) for row in handovers]
+	readings = (
+		[(row.visit_datetime or row.creation, "Maintenance", row) for row in visits]
+		+ [(row.inspection_datetime or row.creation, "Vehicle Inspection", row) for row in inspections]
+		+ [(row.handover_datetime or row.creation, "Vehicle Handover", row) for row in handovers]
+	)
 	readings.sort(key=lambda reading: reading[0], reverse=True)
 	front = next(
 		(
@@ -677,6 +781,19 @@ def worst_overdue(components, reading):
 	return None
 
 
+def part_stock(item_code):
+	item = frappe.get_cached_value("Item", item_code, ["item_name", "image"], as_dict=True) or {}
+	warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
+	return {
+		"item_code": item_code,
+		"item_name": item.get("item_name") or item_code,
+		"image": item.get("image"),
+		"stock": flt(
+			frappe.db.get_value("Bin", {"item_code": item_code, "warehouse": warehouse}, "actual_qty")
+		),
+	}
+
+
 def component_items(component, vehicle):
 	rules = [
 		row for row in frappe.get_single("Fleetix Settings").component_items if row.component == component
@@ -692,7 +809,7 @@ def component_items(component, vehicle):
 		"Item",
 		filters={"disabled": 0, "is_stock_item": 1},
 		or_filters=matches,
-		fields=["item_code", "item_name", "stock_uom"],
+		fields=["item_code", "item_name", "stock_uom", "image"],
 		order_by="item_name asc",
 	)
 	bins = {

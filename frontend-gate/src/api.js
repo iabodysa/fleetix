@@ -57,6 +57,7 @@ export const api = {
 	storeBoot: () => send("/api/method/" + T + "get_boot", {}, true),
 	pendingIssues: (start) => send("/api/method/" + T + "pending_issues", { start }, true),
 	approveIssue: (stock_entry) => send("/api/method/" + T + "approve_issue", { stock_entry }, true),
+	purchaseRequests: (start) => send("/api/method/" + T + "purchase_requests", { start }, true),
 	storeScan: (code) => send("/api/method/" + T + "scan", { code }, true),
 	suggestItems: (txt, model) => send("/api/method/" + T + "suggest_items", { txt, model }, true),
 	receive: (receipt) => send("/api/method/" + T + "receive", receipt, true),

@@ -364,7 +364,6 @@ This photo is already attached to another record,এই ছবিটি ইত�
 Other photos,অন্যান্য ছবি
 Add photo,ছবি যোগ করুন
 No photos taken at the gate,গেটে কোনো ছবি তোলা হয়নি
-Driver signature is required,চালকের স্বাক্ষর প্রয়োজন
 This visit has no inspection yet,এই ভিজিটের এখনও পরিদর্শন হয়নি
 Vehicle Models,গাড়ির মডেল
 Import Revision,ইমপোর্ট সংস্করণ
@@ -406,3 +405,20 @@ Receive,গ্রহণ করুন
 Spare Parts,খুচরা যন্ত্রাংশ
 Store,স্টোর
 Search,খুঁজুন
+Continue without signature,স্বাক্ষর ছাড়া চালিয়ে যান
+Current Reading,বর্তমান রিডিং
+In work,কাজ চলছে
+No purchase requests,কোনো ক্রয় অনুরোধ নেই
+Other parts,অন্যান্য যন্ত্রাংশ
+Parts issued,যন্ত্রাংশ দেওয়া হয়েছে
+Previous Reading,আগের রিডিং
+Purchase request,ক্রয় অনুরোধ
+Purchase requested,ক্রয় অনুরোধ পাঠানো হয়েছে
+Purchase requests,ক্রয় অনুরোধসমূহ
+Ready to exit,বের হওয়ার জন্য প্রস্তুত
+Send for approval,অনুমোদনের জন্য পাঠান
+The exit pass prints after the visit is approved and its parts are issued,ভিজিট অনুমোদন ও যন্ত্রাংশ দেওয়ার পরই এক্সিট পাস প্রিন্ট হয়
+The parts are not issued yet,যন্ত্রাংশ এখনও দেওয়া হয়নি
+This visit is not approved yet,এই ভিজিট এখনও অনুমোদিত হয়নি
+Waiting for approval,অনুমোদনের অপেক্ষায়
+Waiting for parts,যন্ত্রাংশের অপেক্ষায়

@@ -1,8 +1,9 @@
 <script setup>
-import { computed, onMounted, ref } from "vue"
+import { computed, onMounted, reactive, ref } from "vue"
 import { __, componentLabel, formatKm, isolate } from "../../i18n/index.js"
 import { api, errorText } from "../../api.js"
 import { offerUndo } from "../../composables/useUndo.js"
+import { success } from "../../composables/useFeedback.js"
 import { useCardProgress } from "../../composables/useCardProgress.js"
 import { go, store } from "../../store/index.js"
 import AppIcon from "../../components/AppIcon.vue"
@@ -10,10 +11,13 @@ import CardProgress from "../../components/CardProgress.vue"
 import BigButton from "../../components/BigButton.vue"
 import IconTile from "../../components/IconTile.vue"
 import LastFindings from "../../components/LastFindings.vue"
+import OtherParts from "../../components/OtherParts.vue"
+import StockChoice from "../../components/StockChoice.vue"
 import QtyStepper from "../../components/QtyStepper.vue"
 import ScreenFrame from "../../components/ScreenFrame.vue"
 
 const error = ref("")
+const requested = reactive({})
 const TONE = { overdue: "problem", soon: "wait", ok: "done" }
 const STATE_TEXT = { overdue: __("Overdue"), soon: __("Due soon"), ok: __("Good") }
 const ticked = computed(() => (store.checklist ? store.checklist.components.filter((row) => row.ticked) : []))
@@ -51,8 +55,8 @@ function toggle(row) {
 async function findItems(row, txt) {
 	if (txt.trim().length < 2) return (row.found = [])
 	try {
-		const found = await api.searchItems(txt.trim())
-		row.found = found.map((r) => ({ item_code: r.value, item_name: r.description || r.value }))
+		const found = await api.stockSearch(txt.trim(), "", 0)
+		row.found = found.map((r) => ({ item_code: r.item_code, item_name: r.item_name, image: r.image, stock: r.qty }))
 	} catch (e) {
 		error.value = errorText(e)
 	}
@@ -68,8 +72,18 @@ function rowTone(row) {
 	if (offRule(row)) return "problem"
 	return "done"
 }
+async function request(item, qty) {
+	error.value = ""
+	try {
+		await api.requestPurchase(store.visit.maintenance, item.item_code, qty || 1)
+		requested[item.item_code] = true
+		success()
+	} catch (e) {
+		error.value = errorText(e)
+	}
+}
 function next() {
-	if (!ticked.value.length) {
+	if (!ticked.value.length && !(store.checklist.parts || []).length) {
 		error.value = __("Select at least one component")
 		return
 	}
@@ -117,22 +131,21 @@ onMounted(async () => {
 					@input="findItems(row, $event.target.value)"
 				/>
 				<div class="part-items">
-					<button
+					<StockChoice
 						v-for="item in choices(row)"
 						:key="item.item_code"
-						class="part-item"
-						:class="{ pressed: row.item === item.item_code, 'part-item-other': row.items.length && row.other }"
-						type="button"
-						:aria-pressed="row.item === item.item_code ? 'true' : 'false'"
-						@click="row.item = item.item_code"
-					>
-						<span class="part-item-name">{{ item.item_name }}</span>
-						<span v-if="item.stock !== undefined" class="muted">{{ __("Stock") }} <span class="ltr">{{ item.stock }}</span> {{ item.stock_uom }}</span>
-					</button>
+						:item="item"
+						:pressed="row.item === item.item_code"
+						:other="!!(row.items.length && row.other)"
+						:requested="!!requested[item.item_code]"
+						@pick="row.item = item.item_code"
+						@request="request(item, row.qty)"
+					/>
 				</div>
 				<BigButton v-if="row.items.length" icon="item" tone="quiet" :label="row.other ? __('Back') : __('Other item')" @press="row.other = !row.other" />
 				<QtyStepper v-if="row.max_qty !== 1" v-model="row.qty" :unit="unitOf(row)" :litres="litresOf(row)" :packs="(chosen(row) || {}).packs || []" :max="row.max_qty || 0" :min="litresOf(row) ? 0.5 : 1" />
 			</div>
+			<OtherParts :requested="requested" @request="request($event, 1)" @error="error = $event" />
 		</template>
 		<template #back>
 			<BigButton icon="back" tone="quiet" :label="__('Back')" @press="go('odometer')" />

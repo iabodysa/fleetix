@@ -47,14 +47,14 @@ async function approve() {
 				</div>
 			</dl>
 			<div class="store-list">
-				<PartRow v-for="(row, index) in issue.items" :key="index" :name="row.item_name" :code="row.item_code" :image="row.image || ''" :facts="facts(row)" />
+				<PartRow v-for="(row, index) in issue.items" :key="index" :name="row.item_name" :image="row.image || ''" :facts="facts(row)" />
 			</div>
 		</div>
 		<template #back>
 			<BigButton icon="back" tone="quiet" :label="__('Back')" @press="go('approvals')" />
 		</template>
 		<template #primary>
-			<BigButton v-if="issue" icon="done" :label="__('Approve')" :busy="busy" @press="approve" />
+			<BigButton v-if="issue" icon="done" :label="__('Parts issued')" :busy="busy" @press="approve" />
 		</template>
 	</ScreenFrame>
 </template>

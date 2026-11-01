@@ -52,9 +52,7 @@ def maintenance_invoice(doc):
 		rows = [
 			(
 				row.item_code,
-				f"{row.item_code} - {row.item_name}"
-				if row.item_name and row.item_name != row.item_code
-				else row.item_code,
+				row.item_name or row.item_code,
 				row.qty,
 				unit_label(row.stock_uom),
 			)
@@ -69,7 +67,7 @@ def maintenance_invoice(doc):
 		rows = [
 			(
 				row.item,
-				_(row.component) + (f" - {row.item}" if row.item else ""),
+				row.item_name or (_(row.component) if row.component else row.item),
 				row.qty or 1,
 				unit_label(
 					frappe.get_cached_value("Item", row.item, "stock_uom") if row.item else None,

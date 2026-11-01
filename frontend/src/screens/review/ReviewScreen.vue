@@ -7,6 +7,7 @@ import { backToQueue, go, store } from "../../store/index.js"
 import BigButton from "../../components/BigButton.vue"
 import CardProgress from "../../components/CardProgress.vue"
 import FindingsTable from "../../components/FindingsTable.vue"
+import PartRow from "../../components/PartRow.vue"
 import PlateChip from "../../components/PlateChip.vue"
 import ScreenFrame from "../../components/ScreenFrame.vue"
 import ServiceChecklist from "../../components/ServiceChecklist.vue"
@@ -62,6 +63,7 @@ async function finish() {
 					<p class="muted">{{ formatKm(store.checklist.odometer) }}</p>
 				</div>
 			</div>
+			<PartRow v-for="line in store.checklist.lines || []" :key="line.item_code" :name="line.item_name" :image="line.image || ''" :facts="[{ label: __('Qty'), value: line.qty, ltr: true }]" />
 			<CardProgress :items="check.cards.value" @show="check.progress.show" />
 			<BigButton v-if="check.open.value" icon="done" tone="done" :label="__('All done')" block @press="allDone" />
 			<ServiceChecklist :rows="checks" @answer="check.answer" />

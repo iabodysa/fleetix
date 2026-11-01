@@ -55,7 +55,6 @@ async function pick(item_code) {
 						<img v-if="item.image" :src="item.image" alt="" />
 						<span class="grow">
 							<strong>{{ item.item_name }}</strong>
-							<span dir="ltr">{{ item.item_code }}</span>
 						</span>
 					</button>
 				</div>

@@ -87,6 +87,48 @@ def pending_issues(start=0):
 	]
 
 
+@frappe.whitelist()
+def purchase_requests(start=0):
+	frappe.only_for(STORE_ROLES)
+	requests = frappe.get_list(
+		"Material Request",
+		filters={"docstatus": 0, "material_request_type": "Purchase", "maintenance": ("is", "set")},
+		fields=["name", "maintenance", "creation"],
+		order_by="creation asc",
+		start=cint(start),
+		limit_page_length=PAGE_SIZE,
+	)
+	rows = frappe.get_list(
+		"Material Request Item",
+		parent_doctype="Material Request",
+		filters={"parent": ("in", [request.name for request in requests])},
+		fields=["parent", "item_code", "item_name", "image", "qty"],
+		order_by="idx asc",
+	)
+	plates = dict(
+		frappe.get_all(
+			"Maintenance",
+			filters={"name": ("in", [request.maintenance for request in requests])},
+			fields=["name", "vehicle.license_plate"],
+			as_list=True,
+		)
+	)
+	return [
+		{
+			"name": request.name,
+			"maintenance": request.maintenance,
+			"plate": plates.get(request.maintenance),
+			"creation": request.creation,
+			"items": [
+				{"item_name": row.item_name, "image": row.image, "qty": row.qty}
+				for row in rows
+				if row.parent == request.name
+			],
+		}
+		for request in requests
+	]
+
+
 @frappe.whitelist(methods=["POST"])
 def approve_issue(stock_entry):
 	frappe.only_for(STORE_ROLES)

@@ -1,7 +1,7 @@
 import { reactive } from "vue"
 import { api } from "./api.js"
 
-const PREVIOUS = { approvals: "hub", parts: "hub", receive: "hub", approval: "approvals", match: "receive", newPart: "match" }
+const PREVIOUS = { approvals: "hub", purchases: "hub", parts: "hub", receive: "hub", approval: "approvals", match: "receive", newPart: "match" }
 
 function emptyReceipt() {
 	return { item: null, qty: 0, code: "", serials: [] }

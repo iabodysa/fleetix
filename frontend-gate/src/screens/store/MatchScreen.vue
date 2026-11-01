@@ -48,7 +48,7 @@ async function pick(itemCode) {
 			</label>
 			<p v-if="suggestions.length" class="store-field">{{ __("Suggested parts") }}</p>
 			<div class="store-list">
-				<PartRow v-for="item in suggestions" :key="item.item_code" :name="item.item_name" :code="item.item_code" :image="item.image || ''" pressable @press="pick(item.item_code)" />
+				<PartRow v-for="item in suggestions" :key="item.item_code" :name="item.item_name" :image="item.image || ''" pressable @press="pick(item.item_code)" />
 			</div>
 		</div>
 		<div class="dock">

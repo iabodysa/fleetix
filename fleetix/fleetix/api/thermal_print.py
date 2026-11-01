@@ -8,6 +8,8 @@ from fleetix.fleetix.api.maintenance import WORKER_ROLES
 from fleetix.fleetix.print_samples import print_samples
 from fleetix.fleetix.thermal_image import thermal_png
 
+EXIT_PASS = "Thermal Gate Exit Pass"
+
 
 def thermal_format(doctype, print_format):
 	if frappe.db.get_value("Print Format", print_format, "doc_type") != doctype:
@@ -19,6 +21,8 @@ def get_print_image(doctype, name, print_format):
 	thermal_format(doctype, print_format)
 	doc = frappe.get_doc(doctype, name)
 	doc.check_permission("print")
+	if print_format == EXIT_PASS and doc.docstatus != 1:
+		frappe.throw(_("The exit pass prints after the visit is approved and its parts are issued"))
 	return thermal_png(doctype, name, print_format)
 
 

@@ -56,7 +56,7 @@ onMounted(async () => {
 			<p v-if="desk.notice" class="banner banner-ok" role="status">{{ desk.notice }}</p>
 			<p v-if="error" class="banner banner-bad" role="alert">{{ error }}</p>
 			<template v-if="item">
-				<PartRow :name="item.item_name" :code="item.item_code" :image="item.image || ''" :facts="facts" />
+				<PartRow :name="item.item_name" :image="item.image || ''" :facts="facts" />
 				<label class="store-field">
 					<span>{{ __("Qty") }}</span>
 					<input v-model.number="desk.receipt.qty" class="store-input" dir="ltr" type="number" min="1" inputmode="numeric" :readonly="!!item.has_serial_no" />

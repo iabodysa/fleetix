@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue"
+import { onBeforeUnmount, onMounted, ref } from "vue"
 import { api, errorText } from "../../api.js"
 import { problem, success } from "../../composables/useFeedback.js"
 import { scanKey } from "../../composables/useBarcode.js"
@@ -11,8 +11,15 @@ import QueueList from "../../components/QueueList.vue"
 import ScreenFrame from "../../components/ScreenFrame.vue"
 import VehicleResults from "../../components/VehicleResults.vue"
 
+const REFRESH_MS = 15000
 const filter = ref("")
 const error = ref("")
+let timer = null
+
+onMounted(() => {
+	timer = setInterval(() => queue.fetch(), REFRESH_MS)
+})
+onBeforeUnmount(() => clearInterval(timer))
 
 async function scanned(key) {
 	const row = (queue.data || []).find((r) => [r.plate, r.vehicle, r.maintenance].some((value) => scanKey(value) === key))

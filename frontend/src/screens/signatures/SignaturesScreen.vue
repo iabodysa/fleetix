@@ -3,7 +3,7 @@ import { onBeforeUnmount, onMounted, ref } from "vue"
 import { __ } from "../../i18n/index.js"
 import { api, errorText, isBusy } from "../../api.js"
 import { success } from "../../composables/useFeedback.js"
-import { go, store } from "../../store/index.js"
+import { backToQueue, go, store } from "../../store/index.js"
 import AppIcon from "../../components/AppIcon.vue"
 import BigButton from "../../components/BigButton.vue"
 import ScreenFrame from "../../components/ScreenFrame.vue"
@@ -36,26 +36,21 @@ onMounted(async () => {
 onBeforeUnmount(() => clearInterval(timer))
 
 async function send() {
-	if (!store.signatures.driver) {
-		error.value = __("Driver signature is required")
-		return
-	}
 	busy.value = true
 	error.value = ""
 	try {
 		const components = store.checklist.components
 			.filter((row) => row.ticked)
 			.map((row) => ({ component: row.component, item: row.item, qty: row.qty }))
-		const response = await api.save({
+			.concat((store.checklist.parts || []).map((row) => ({ item: row.item_code, qty: row.qty })))
+		await api.save({
 			maintenance: store.visit.maintenance,
 			odometer: Number(store.odometer),
 			components: JSON.stringify(components),
 			driver_signature: store.signatures.driver,
 		})
-		store.visit = Object.assign({}, store.visit, { status: response.status, inspection: response.inspection, odometer: Number(store.odometer) })
-		store.checklist = await api.checklist(store.visit.maintenance)
 		success()
-		go("review")
+		backToQueue()
 	} catch (e) {
 		error.value = errorText(e)
 	}
@@ -78,7 +73,7 @@ async function send() {
 			<BigButton icon="back" tone="quiet" :label="__('Back')" @press="go('photos')" />
 		</template>
 		<template #primary>
-			<BigButton icon="send" :label="busy ? __('Saving') : __('Continue')" :busy="busy" @press="send" />
+			<BigButton icon="send" :label="busy ? __('Saving') : store.signatures.driver ? __('Send for approval') : __('Continue without signature')" :busy="busy" @press="send" />
 		</template>
 	</ScreenFrame>
 </template>

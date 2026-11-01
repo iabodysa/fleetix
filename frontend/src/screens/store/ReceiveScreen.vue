@@ -61,7 +61,7 @@ async function save() {
 			<span v-if="desk.notice" class="pill tone-done" role="status">{{ desk.notice }}</span>
 		</template>
 		<div v-if="item" class="store-stack">
-			<PartRow :name="item.item_name" :code="item.item_code" :image="item.image || ''" :facts="facts" />
+			<PartRow :name="item.item_name" :image="item.image || ''" :facts="facts" />
 			<label class="store-field">
 				<span>{{ __("Qty") }}</span>
 				<input v-model.number="desk.receipt.qty" class="store-input ltr" type="number" min="1" inputmode="numeric" :readonly="!!item.has_serial_no" />

@@ -77,11 +77,10 @@ export async function restoreDraft() {
 	else saveDraft()
 }
 
+const STAGE_STEP = { inspection: "odometer", work: "review", exit: "done" }
+
 export function stepForStatus(row) {
-	if (row.status === "Driver Arrived") return "odometer"
-	if (row.status === "Full Inspection") return row.inspection ? "review" : "odometer"
-	if (["Approved", "Service", "Final Check"].indexOf(row.status) !== -1) return "review"
-	return null
+	return STAGE_STEP[row.stage] || null
 }
 
 export function go(step) {
@@ -102,8 +101,12 @@ export async function openVisit(row) {
 	store.printed = false
 	store.display = false
 	store.drawer = false
-	store.profile = true
+	store.profile = step !== "done"
 	if (step === "review") store.checklist = await api.checklist(row.maintenance)
+	if (step === "done") {
+		store.result = await api.result(row.maintenance)
+		store.printed = true
+	}
 	go(step)
 }
 

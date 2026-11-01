@@ -77,7 +77,6 @@ onBeforeUnmount(() => clearTimeout(timer))
 				<img v-if="row.image" class="stock-thumb" :src="row.image" :alt="row.item_name" loading="lazy" />
 				<span class="stock-row-text">
 					<span class="stock-row-name">{{ row.item_name }}</span>
-					<span class="muted ltr">{{ row.item_code }}</span>
 					<dl class="facts stock-row-facts">
 						<div>
 							<dt>{{ __("Qty") }}</dt>

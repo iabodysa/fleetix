@@ -41,11 +41,11 @@ async function approve() {
 			<PartRow :name="__('Maintenance')" :code="issue.maintenance" />
 			<p v-if="error" class="banner banner-bad" role="alert">{{ error }}</p>
 			<div class="store-list">
-				<PartRow v-for="(row, index) in issue.items" :key="index" :name="row.item_name" :code="row.item_code" :image="row.image || ''" :facts="facts(row)" />
+				<PartRow v-for="(row, index) in issue.items" :key="index" :name="row.item_name" :image="row.image || ''" :facts="facts(row)" />
 			</div>
 		</div>
 		<div v-if="issue" class="dock">
-			<BigButton icon="check" tone="ok" :label="__('Approve')" :busy="busy" @press="approve" />
+			<BigButton icon="check" tone="ok" :label="__('Parts issued')" :busy="busy" @press="approve" />
 		</div>
 	</div>
 </template>

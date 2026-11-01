@@ -364,7 +364,6 @@ This photo is already attached to another record,یہ تصویر پہلے سے �
 Other photos,دیگر تصاویر
 Add photo,تصویر شامل کریں
 No photos taken at the gate,گیٹ پر کوئی تصویر نہیں لی گئی
-Driver signature is required,ڈرائیور کے دستخط ضروری ہیں
 This visit has no inspection yet,اس وزٹ کا ابھی معائنہ نہیں ہوا
 Vehicle Models,گاڑیوں کے ماڈل
 Import Revision,امپورٹ ورژن
@@ -406,3 +405,20 @@ Receive,وصول کریں
 Spare Parts,اسپیئر پارٹس
 Store,اسٹور
 Search,تلاش
+Continue without signature,دستخط کے بغیر جاری رکھیں
+Current Reading,موجودہ ریڈنگ
+In work,کام جاری ہے
+No purchase requests,خریداری کی کوئی درخواست نہیں
+Other parts,دیگر پرزے
+Parts issued,پرزے جاری کر دیے
+Previous Reading,پچھلی ریڈنگ
+Purchase request,خریداری کی درخواست
+Purchase requested,خریداری کی درخواست بھیج دی
+Purchase requests,خریداری کی درخواستیں
+Ready to exit,نکلنے کے لیے تیار
+Send for approval,منظوری کے لیے بھیجیں
+The exit pass prints after the visit is approved and its parts are issued,گاڑی کی منظوری اور پرزے جاری ہونے کے بعد ہی خروج پاس پرنٹ ہوتا ہے
+The parts are not issued yet,پرزے ابھی جاری نہیں ہوئے
+This visit is not approved yet,اس وزٹ کی ابھی منظوری نہیں ہوئی
+Waiting for approval,منظوری کا انتظار
+Waiting for parts,پرزوں کا انتظار

@@ -9,6 +9,7 @@ SOURCES = (
 	("Vehicle Request", {"workflow_state": ("in", ("New", "Pending Vehicle Selection"))}, "workflow_state"),
 	("Damage", {"docstatus": ("<", 2), "status": "Detected"}, "status"),
 	("Accident", {"docstatus": ("<", 2), "status": ("!=", "Closed")}, "status"),
+	("Maintenance", {"docstatus": 0, "status": "Full Inspection", "inspection": ("is", "set")}, "status"),
 	("Maintenance", {"docstatus": 0, "odometer_flagged": 1}, None),
 	("Vehicle Handover", {"docstatus": 0, "odometer_flagged": 1}, None),
 )

@@ -115,8 +115,8 @@
    "fieldname": "photos",
    "fieldtype": "Table",
    "label": "Photos",
-   "options": "Vehicle Inspection Photo",
-   "mandatory_depends_on": "eval:doc.reference_type != 'Maintenance'"
+   "mandatory_depends_on": "eval:doc.reference_type != 'Maintenance'",
+   "options": "Vehicle Inspection Photo"
   },
   {
    "fieldname": "documents",
@@ -133,7 +133,7 @@
    "fieldname": "driver_signature",
    "fieldtype": "Signature",
    "label": "Driver Signature",
-   "reqd": 1
+   "mandatory_depends_on": "eval:doc.reference_type != 'Maintenance'"
   },
   {
    "fieldname": "column_break_signatures",
@@ -153,7 +153,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-10-25 18:56:00.000000",
+ "modified": "2026-11-01 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Fleetix",
  "name": "Vehicle Inspection",

@@ -17,6 +17,7 @@ export const api = {
 	itemRates: (items) => call(C + "get_item_rates", { items: JSON.stringify(items) }),
 	plateFindings: (plate) => call(C + "get_plate_findings", { plate }),
 	finishWalkin: (args) => call(C + "finish_customer_visit", args),
+	requestPurchase: (maintenance, item_code, qty) => call(M + "request_purchase", { maintenance, item_code, qty }),
 	saveOdometer: (maintenance, odometer) => call(M + "save_odometer", { maintenance, odometer }),
 	driverSignature: (maintenance) => call("fleetix.fleetix.api.track.get_driver_signature", { maintenance }),
 	result: (maintenance) => call(M + "get_visit_result", { maintenance }),

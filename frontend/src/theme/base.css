@@ -89,6 +89,10 @@ img {
 	background: var(--wait-bg);
 	color: var(--wait-ink);
 }
+.tone-work {
+	background: var(--primary);
+	color: var(--surface);
+}
 .tone-problem {
 	background: var(--problem-bg);
 	color: var(--problem-ink);

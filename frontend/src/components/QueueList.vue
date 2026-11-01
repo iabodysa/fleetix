@@ -29,14 +29,18 @@ async function arrive(row) {
 	}
 	acting.value = ""
 }
+const STAGES = {
+	arrival: { text: __("Waiting for driver"), tone: "quiet" },
+	approval: { text: __("Waiting for approval"), tone: "wait" },
+	parts: { text: __("Waiting for parts"), tone: "problem" },
+	work: { text: __("In work"), tone: "work" },
+	exit: { text: __("Ready to exit"), tone: "done" },
+}
 function stageText(row) {
-	if (row.status === "Due Alert") return __("Waiting for driver")
-	return statusLabel(row.status)
+	return STAGES[row.stage] ? STAGES[row.stage].text : statusLabel(row.status)
 }
 function stageTone(row) {
-	const step = stepForStatus(row)
-	if (!step) return "quiet"
-	return step === "review" ? "done" : "wait"
+	return STAGES[row.stage] ? STAGES[row.stage].tone : "quiet"
 }
 function late(row) {
 	return row.worst.km ? __("Late by {0}", [formatKm(row.worst.km)]) : __("Late by {0} days", [row.worst.days])

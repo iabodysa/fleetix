@@ -343,7 +343,6 @@ This photo is already attached to another record,यह फ़ोटो पह�
 Other photos,अन्य फ़ोटो
 Add photo,फ़ोटो जोड़ें
 No photos taken at the gate,गेट पर कोई फ़ोटो नहीं ली गई
-Driver signature is required,ड्राइवर के हस्ताक्षर ज़रूरी हैं
 This visit has no inspection yet,इस विज़िट की अभी जाँच नहीं हुई
 Vehicle Models,वाहन मॉडल
 Import Revision,आयात संस्करण
@@ -374,3 +373,20 @@ No pending approvals,कोई लंबित स्वीकृति नह�
 Spare parts,स्पेयर पार्ट्स
 Spare Parts,स्पेयर पार्ट्स
 Store,स्टोर
+Continue without signature,हस्ताक्षर के बिना जारी रखें
+Current Reading,वर्तमान रीडिंग
+In work,काम जारी
+No purchase requests,कोई खरीद अनुरोध नहीं
+Other parts,अन्य पुर्जे
+Parts issued,पुर्जे जारी किए
+Previous Reading,पिछली रीडिंग
+Purchase request,खरीद अनुरोध
+Purchase requested,खरीद अनुरोध भेजा गया
+Purchase requests,खरीद अनुरोध
+Ready to exit,निकलने के लिए तैयार
+Send for approval,स्वीकृति के लिए भेजें
+The exit pass prints after the visit is approved and its parts are issued,विज़िट स्वीकृत होने और पुर्जे जारी होने के बाद ही निकास पास छपता है
+The parts are not issued yet,पुर्जे अभी जारी नहीं हुए
+This visit is not approved yet,इस विज़िट को अभी स्वीकृति नहीं मिली
+Waiting for approval,स्वीकृति की प्रतीक्षा
+Waiting for parts,पुर्जों की प्रतीक्षा

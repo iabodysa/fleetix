@@ -91,7 +91,6 @@ function next() {
 				<input v-model="text" class="walkin-input" type="search" :placeholder="__('Search items')" autocomplete="off" @input="search" />
 				<button v-for="item in found" :key="item.item_code" type="button" class="part-item" @click="pick(item)">
 					<span class="part-item-name">{{ item.item_name }}</span>
-					<span class="muted ltr">{{ item.item_code }}</span>
 				</button>
 			</div>
 		</template>

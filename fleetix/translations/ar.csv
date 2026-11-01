@@ -10073,7 +10073,6 @@ This photo is already attached to another record,هذه الصورة مرفقة 
 Other photos,صور أخرى
 Add photo,إضافة صورة
 No photos taken at the gate,لم تُلتقط صور عند البوابة
-Driver signature is required,توقيع السائق مطلوب
 This visit has no inspection yet,لم يُسجَّل فحص لهذه الزيارة بعد
 Vehicle Models,موديلات المركبات
 Import Revision,نسخة الاستيراد
@@ -10100,3 +10099,20 @@ Approvals,الموافقات
 No pending approvals,لا توجد موافقات معلقة
 Spare parts,قطع الغيار
 Store,المستودع
+Continue without signature,متابعة بدون توقيع
+Current Reading,القراءة الحالية
+In work,قيد العمل
+No purchase requests,لا توجد طلبات شراء
+Other parts,قطع أخرى
+Parts issued,صرفت
+Previous Reading,القراءة السابقة
+Purchase request,طلب شراء
+Purchase requested,تم طلب الشراء
+Purchase requests,طلبات الشراء
+Ready to exit,جاهزة للخروج
+Send for approval,إرسال للموافقة
+The exit pass prints after the visit is approved and its parts are issued,يطبع تصريح الخروج بعد اعتماد الزيارة وصرف قطعها
+The parts are not issued yet,لم تصرف القطع بعد
+This visit is not approved yet,هذه الزيارة لم تعتمد بعد
+Waiting for approval,بانتظار الموافقة
+Waiting for parts,بانتظار القطع

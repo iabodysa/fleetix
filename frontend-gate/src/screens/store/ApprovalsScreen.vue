@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue"
+import { onBeforeUnmount, onMounted, ref } from "vue"
 import { api, errorText } from "../../api.js"
 import { __ } from "../../i18n.js"
 import { desk, show } from "../../storekeeper.js"
@@ -8,6 +8,8 @@ import PartRow from "../../components/PartRow.vue"
 import "./store.css"
 
 const PAGE = 20
+const REFRESH_MS = 15000
+let timer = null
 const issues = ref([])
 const loading = ref(false)
 const more = ref(false)
@@ -36,7 +38,11 @@ function open(issue) {
 	desk.notice = ""
 	show("approval")
 }
-onMounted(() => load(0))
+onMounted(() => {
+	load(0)
+	timer = setInterval(() => issues.value.length <= PAGE && load(0), REFRESH_MS)
+})
+onBeforeUnmount(() => clearInterval(timer))
 </script>
 
 <template>

@@ -21,6 +21,7 @@ import RouteScreen from "./screens/RouteScreen.vue"
 import ApprovalScreen from "./screens/store/ApprovalScreen.vue"
 import ApprovalsScreen from "./screens/store/ApprovalsScreen.vue"
 import HubScreen from "./screens/store/HubScreen.vue"
+import PurchasesScreen from "./screens/store/PurchasesScreen.vue"
 import MatchScreen from "./screens/store/MatchScreen.vue"
 import NewPartScreen from "./screens/store/NewPartScreen.vue"
 import PartsScreen from "./screens/store/PartsScreen.vue"
@@ -31,6 +32,7 @@ const STORE_SCREENS = {
 	hub: HubScreen,
 	approvals: ApprovalsScreen,
 	approval: ApprovalScreen,
+	purchases: PurchasesScreen,
 	parts: PartsScreen,
 	receive: ReceiveScreen,
 	match: MatchScreen,

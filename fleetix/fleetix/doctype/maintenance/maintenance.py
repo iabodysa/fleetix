@@ -21,7 +21,7 @@ NEXT_DUE_FIELDS = {
 	"Front Tires": "next_front_tires_due_odometer",
 	"Rear Tires": "next_rear_tires_due_odometer",
 }
-ISSUE_STATES = ("Service", "Final Check", "Completed")
+ISSUE_STATES = ("Approved", "Service", "Final Check", "Completed")
 DEFAULT_PHOTO_SLOTS = ("Front Side", "Rear Side", "Right Side", "Left Side", "Odometer Photo")
 DEFAULT_MAX_QTY = {"Oil Filter": 1, "Battery": 1, "Front Tires": 2, "Rear Tires": 2}
 
@@ -32,6 +32,8 @@ class Maintenance(Document):
 			self.status = "Completed"
 		if self.status == "Driver Arrived" and not self.visit_datetime:
 			self.visit_datetime = now_datetime()
+		if self.status == "Approved" and not self.approved_by:
+			self.approved_by = frappe.session.user
 		if self.status in ISSUE_STATES and not self.items_issued:
 			self.items_issued = issue_items(self)
 		if cint(self.odometer) > cint(frappe.db.get_value("Vehicle", self.vehicle, "last_odometer")):
@@ -43,7 +45,8 @@ class Maintenance(Document):
 		vehicle = frappe.get_doc("Vehicle", self.vehicle)
 		replaced_on = getdate(self.visit_datetime)
 		vehicle.last_odometer = max(cint(vehicle.last_odometer), cint(self.odometer))
-		for row in self.components_replaced:
+		components = [row for row in self.components_replaced if row.component]
+		for row in components:
 			date_field, odometer_field = COMPONENT_FIELDS[row.component]
 			vehicle.set(date_field, replaced_on)
 			if odometer_field:
@@ -51,7 +54,7 @@ class Maintenance(Document):
 		set_next_due(vehicle)
 		vehicle.flags.ignore_mandatory = True
 		vehicle.save()
-		for row in self.components_replaced:
+		for row in components:
 			next_due_odometer, next_due_date = next_due(vehicle, row.component)
 			frappe.get_doc(
 				{
@@ -71,6 +74,9 @@ def issue_items(maintenance):
 	rows = [row for row in maintenance.components_replaced if row.item]
 	if not rows:
 		return None
+	quantities = {}
+	for row in rows:
+		quantities[row.item] = quantities.get(row.item, 0) + flt(row.qty)
 	warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
 	entry = frappe.get_doc(
 		{
@@ -78,10 +84,11 @@ def issue_items(maintenance):
 			"stock_entry_type": "Material Issue",
 			"company": maintenance.company,
 			"maintenance": maintenance.name,
+			"vehicle": maintenance.vehicle,
 			"from_warehouse": warehouse,
 			"items": [
-				{"item_code": row.item, "qty": row.qty, "s_warehouse": warehouse, "allow_zero_valuation_rate": 1}
-				for row in rows
+				{"item_code": item, "qty": qty, "s_warehouse": warehouse, "allow_zero_valuation_rate": 1}
+				for item, qty in quantities.items()
 			],
 		}
 	).insert()

@@ -56,7 +56,7 @@ onBeforeUnmount(() => clearTimeout(timer))
 			<p v-if="loading && !rows.length" class="store-hint">{{ __("Loading") }}</p>
 			<p v-else-if="!rows.length" class="store-hint">{{ __("No parts found") }}</p>
 			<div class="store-list">
-				<PartRow v-for="row in rows" :key="row.item_code" :name="row.item_name" :code="row.item_code" :image="row.image || ''" :facts="facts(row)" />
+				<PartRow v-for="row in rows" :key="row.item_code" :name="row.item_name" :image="row.image || ''" :facts="facts(row)" />
 			</div>
 			<BigButton v-if="more" icon="plus" tone="soft" :label="__('Load more')" :busy="loading" @press="search(rows.length)" />
 		</div>
