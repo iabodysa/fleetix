@@ -36,6 +36,7 @@ class Maintenance(Document):
 			self.approved_by = frappe.session.user
 		if self.status in ISSUE_STATES and not self.items_issued:
 			self.items_issued = issue_items(self)
+		sync_purchase_request(self)
 		if cint(self.odometer) > cint(frappe.db.get_value("Vehicle", self.vehicle, "last_odometer")):
 			frappe.db.set_value(
 				"Vehicle", self.vehicle, "last_odometer", cint(self.odometer), update_modified=False
@@ -93,6 +94,56 @@ def issue_items(maintenance):
 		}
 	).insert()
 	return entry.name
+
+
+def purchase_request(maintenance):
+	name = frappe.db.get_value(
+		"Material Request",
+		{"maintenance": maintenance.name, "docstatus": 0, "material_request_type": "Purchase"},
+	)
+	return frappe.get_doc("Material Request", name) if name else None
+
+
+def purchase_row(item_code, qty, warehouse):
+	item = frappe.get_cached_value("Item", item_code, ["item_name", "stock_uom"], as_dict=True)
+	return {
+		"item_code": item_code,
+		"item_name": item.item_name,
+		"description": item.item_name,
+		"qty": flt(qty),
+		"uom": item.stock_uom,
+		"stock_uom": item.stock_uom,
+		"conversion_factor": 1,
+		"schedule_date": getdate(),
+		"warehouse": warehouse,
+	}
+
+
+def lacking_parts(maintenance, warehouse):
+	needed = {}
+	for row in maintenance.components_replaced:
+		if row.item:
+			needed[row.item] = needed.get(row.item, 0) + flt(row.qty)
+	stock = dict(
+		frappe.get_all(
+			"Bin",
+			filters={"warehouse": warehouse, "item_code": ("in", list(needed) or [""])},
+			fields=["item_code", "actual_qty"],
+			as_list=True,
+		)
+	)
+	return {item: qty - flt(stock.get(item)) for item, qty in needed.items() if qty > flt(stock.get(item))}
+
+
+def sync_purchase_request(maintenance):
+	request = purchase_request(maintenance)
+	if not request:
+		return
+	lacking = lacking_parts(maintenance, request.set_warehouse)
+	if not lacking or lacking == {row.item_code: flt(row.qty) for row in request.items}:
+		return
+	request.set("items", [purchase_row(item, qty, request.set_warehouse) for item, qty in lacking.items()])
+	request.save()
 
 
 def component_max_qty(component):

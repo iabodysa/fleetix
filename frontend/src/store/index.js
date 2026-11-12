@@ -1,6 +1,7 @@
 import { reactive, watch } from "vue"
 import { createResource } from "frappe-ui/src/resources/resources.js"
 import { api, QUEUE_METHOD } from "../api.js"
+import { openIssue } from "./storekeeper.js"
 
 export const STEPS = ["queue", "odometer", "parts", "damage", "photos", "signatures", "review"]
 export const WALKIN_STEPS = ["walkin", "walkinItems", "walkinCheck", "walkinInvoice"]
@@ -77,7 +78,7 @@ export async function restoreDraft() {
 	else saveDraft()
 }
 
-const STAGE_STEP = { inspection: "odometer", work: "review", exit: "done" }
+const STAGE_STEP = { inspection: "odometer", parts: "review", work: "review", exit: "done" }
 
 export function stepForStatus(row) {
 	return STAGE_STEP[row.stage] || null
@@ -91,6 +92,7 @@ export function go(step) {
 export async function openVisit(row) {
 	const step = stepForStatus(row)
 	if (!step) return
+	if (row.stage === "parts" && window.frappe.boot.is_store) return openIssue(row.maintenance)
 	store.visit = row
 	store.odometer = row.odometer ? String(row.odometer) : ""
 	store.checklist = null

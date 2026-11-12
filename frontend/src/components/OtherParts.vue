@@ -33,6 +33,10 @@ function add(item) {
 	if (line) line.qty = Math.min(line.qty + 1, item.stock)
 	else lines().push(Object.assign({}, item, { qty: 1 }))
 }
+function requestPart(item) {
+	if (!lines().some((row) => row.item_code === item.item_code)) lines().push(Object.assign({}, item, { qty: 1 }))
+	emit("request", item)
+}
 function remove(index) {
 	const [line] = lines().splice(index, 1)
 	offerUndo(__("{0} removed", [line.item_name]), () => lines().splice(index, 0, line))
@@ -50,7 +54,7 @@ function remove(index) {
 		</div>
 		<input class="part-search" type="search" :placeholder="__('Search items')" autocomplete="off" @input="search($event.target.value)" />
 		<div class="part-items">
-			<StockChoice v-for="item in found" :key="item.item_code" :item="item" :requested="!!requested[item.item_code]" @pick="add(item)" @request="$emit('request', item)" />
+			<StockChoice v-for="item in found" :key="item.item_code" :item="item" :requested="!!requested[item.item_code]" @pick="add(item)" @request="requestPart(item)" />
 		</div>
 	</section>
 </template>

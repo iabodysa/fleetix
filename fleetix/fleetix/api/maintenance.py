@@ -18,6 +18,8 @@ from fleetix.fleetix.doctype.maintenance.maintenance import (
 	due_components,
 	next_due,
 	photo_slots,
+	purchase_request,
+	purchase_row,
 )
 from fleetix.fleetix.print_samples import print_samples
 from fleetix.fleetix.service_check import checked_rows, finding_rows, last_findings, service_checklist
@@ -525,44 +527,22 @@ def request_purchase(maintenance, item_code, qty):
 	frappe.only_for(WORKER_ROLES)
 	visit = frappe.get_doc("Maintenance", maintenance)
 	visit.check_permission("write")
-	warehouse = frappe.db.get_single_value("Stock Settings", "default_warehouse")
-	name = frappe.db.get_value(
-		"Material Request", {"maintenance": visit.name, "docstatus": 0, "material_request_type": "Purchase"}
+	request = purchase_request(visit) or frappe.get_doc(
+		{
+			"doctype": "Material Request",
+			"material_request_type": "Purchase",
+			"maintenance": visit.name,
+			"company": visit.company or erpnext.get_default_company(),
+			"transaction_date": getdate(),
+			"schedule_date": getdate(),
+			"set_warehouse": frappe.db.get_single_value("Stock Settings", "default_warehouse"),
+		}
 	)
-	request = (
-		frappe.get_doc("Material Request", name)
-		if name
-		else frappe.get_doc(
-			{
-				"doctype": "Material Request",
-				"material_request_type": "Purchase",
-				"maintenance": visit.name,
-				"company": visit.company or erpnext.get_default_company(),
-				"transaction_date": today(),
-				"schedule_date": today(),
-				"set_warehouse": warehouse,
-			}
-		)
-	)
-	item = frappe.get_cached_value("Item", item_code, ["item_name", "stock_uom"], as_dict=True)
 	row = next((row for row in request.items if row.item_code == item_code), None)
 	if row:
 		row.qty = flt(qty)
 	else:
-		request.append(
-			"items",
-			{
-				"item_code": item_code,
-				"item_name": item.item_name,
-				"description": item.item_name,
-				"qty": flt(qty),
-				"uom": item.stock_uom,
-				"stock_uom": item.stock_uom,
-				"conversion_factor": 1,
-				"schedule_date": today(),
-				"warehouse": warehouse,
-			},
-		)
+		request.append("items", purchase_row(item_code, qty, request.set_warehouse))
 	request.save()
 	return {"name": request.name, "item_code": item_code, "qty": flt(qty)}
 

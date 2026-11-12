@@ -48,11 +48,15 @@ def get_boot():
 
 
 @frappe.whitelist()
-def pending_issues(start=0):
+def pending_issues(start=0, maintenance=None):
 	frappe.only_for(STORE_ROLES)
 	entries = frappe.get_list(
 		"Stock Entry",
-		filters={"docstatus": 0, "stock_entry_type": "Material Issue", "maintenance": ("is", "set")},
+		filters={
+			"docstatus": 0,
+			"stock_entry_type": "Material Issue",
+			"maintenance": maintenance or ("is", "set"),
+		},
 		fields=["name", "maintenance", "vehicle", "creation"],
 		order_by="creation asc",
 		start=cint(start),

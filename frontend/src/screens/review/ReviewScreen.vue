@@ -13,6 +13,7 @@ import ScreenFrame from "../../components/ScreenFrame.vue"
 import ServiceChecklist from "../../components/ServiceChecklist.vue"
 
 const vehicle = computed(() => store.checklist.vehicle)
+const waiting = store.visit.stage === "parts"
 const replaced = store.checklist.components.filter((row) => row.ticked)
 
 function itemName(row) {
@@ -33,6 +34,10 @@ const check = useFinalCheck(checks, findings)
 const busy = ref(false)
 const error = ref("")
 
+function lineFacts(line) {
+	const facts = [{ label: __("Qty"), value: line.qty, ltr: true }]
+	return waiting ? facts.concat({ label: __("Stock"), value: line.stock, ltr: true }) : facts
+}
 const DONE = { part: "Installed", service: "Done" }
 function allDone() {
 	checks.filter((row) => !row.condition).forEach((row) => check.answer(row, DONE[row.kind]))
@@ -51,8 +56,8 @@ async function finish() {
 </script>
 
 <template>
-	<ScreenFrame :title="__('Final check')" v-model:error="error">
-		<template #meta>
+	<ScreenFrame :title="waiting ? __('Waiting for parts') : __('Final check')" v-model:error="error">
+		<template v-if="!waiting" #meta>
 			<span class="pill" :class="check.open.value ? 'tone-wait' : 'tone-done'">{{ check.open.value ? __("{0} left", [check.open.value]) : statusLabel(store.checklist.status) }}</span>
 		</template>
 		<div class="review">
@@ -63,16 +68,18 @@ async function finish() {
 					<p class="muted">{{ formatKm(store.checklist.odometer) }}</p>
 				</div>
 			</div>
-			<PartRow v-for="line in store.checklist.lines || []" :key="line.item_code" :name="line.item_name" :image="line.image || ''" :facts="[{ label: __('Qty'), value: line.qty, ltr: true }]" />
+			<PartRow v-for="line in store.checklist.lines || []" :key="line.item_code" :name="line.item_name" :image="line.image || ''" :facts="lineFacts(line)" />
+			<template v-if="!waiting">
 			<CardProgress :items="check.cards.value" @show="check.progress.show" />
 			<BigButton v-if="check.open.value" icon="done" tone="done" :label="__('All done')" block @press="allDone" />
 			<ServiceChecklist :rows="checks" @answer="check.answer" />
 			<FindingsTable :findings="findings" :parts="check.parts.value" />
+			</template>
 		</div>
 		<template #back>
 			<BigButton icon="back" tone="quiet" :label="__('Back')" @press="backToQueue" />
 		</template>
-		<template #primary>
+		<template v-if="!waiting" #primary>
 			<BigButton icon="done" tone="done" :label="busy ? __('Finishing') : check.progress.nextLabel(__('Finish maintenance'))" :busy="busy" @press="finish" />
 		</template>
 	</ScreenFrame>

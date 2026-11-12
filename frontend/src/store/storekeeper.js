@@ -22,6 +22,13 @@ export function openApprovals() {
 	go("approvals")
 }
 
+export async function openIssue(maintenance) {
+	const [issue] = await api.pendingIssues(0, maintenance)
+	desk.issue = issue || null
+	desk.notice = ""
+	go(issue ? "approval" : "approvals")
+}
+
 export function openReceive() {
 	resetReceipt()
 	desk.notice = ""

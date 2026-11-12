@@ -82,6 +82,10 @@ async function request(item, qty) {
 		error.value = errorText(e)
 	}
 }
+function requestFor(row, item) {
+	row.item = item.item_code
+	request(item, row.qty)
+}
 function next() {
 	if (!ticked.value.length && !(store.checklist.parts || []).length) {
 		error.value = __("Select at least one component")
@@ -139,7 +143,7 @@ onMounted(async () => {
 						:other="!!(row.items.length && row.other)"
 						:requested="!!requested[item.item_code]"
 						@pick="row.item = item.item_code"
-						@request="request(item, row.qty)"
+						@request="requestFor(row, item)"
 					/>
 				</div>
 				<BigButton v-if="row.items.length" icon="item" tone="quiet" :label="row.other ? __('Back') : __('Other item')" @press="row.other = !row.other" />
