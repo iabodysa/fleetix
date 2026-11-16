@@ -12,3 +12,4 @@ fleetix.patches.allow_negative_stock
 fleetix.patches.vehicle_print_permission
 fleetix.patches.retire_maintenance_workflow
 fleetix.patches.disable_maintenance_approval_notification
+fleetix.patches.enable_maintenance_approval_notification
