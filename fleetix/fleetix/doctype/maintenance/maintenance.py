@@ -34,9 +34,9 @@ class Maintenance(Document):
 			self.visit_datetime = now_datetime()
 		if self.status == "Approved" and not self.approved_by:
 			self.approved_by = frappe.session.user
+		sync_purchase_request(self)
 		if self.status in ISSUE_STATES and not self.items_issued:
 			self.items_issued = issue_items(self)
-		sync_purchase_request(self)
 		if cint(self.odometer) > cint(frappe.db.get_value("Vehicle", self.vehicle, "last_odometer")):
 			frappe.db.set_value(
 				"Vehicle", self.vehicle, "last_odometer", cint(self.odometer), update_modified=False
@@ -92,7 +92,7 @@ def issue_items(maintenance):
 				for item, qty in quantities.items()
 			],
 		}
-	).insert()
+	).submit()
 	return entry.name
 
 
@@ -132,12 +132,19 @@ def lacking_parts(maintenance, warehouse):
 			as_list=True,
 		)
 	)
-	return {item: qty - flt(stock.get(item)) for item, qty in needed.items() if qty > flt(stock.get(item))}
+	on_hand = {item: max(flt(stock.get(item)), 0) for item in needed}
+	return {item: qty - on_hand[item] for item, qty in needed.items() if qty > on_hand[item]}
+
+
+def parts_issued(maintenance):
+	return bool(maintenance.items_issued) and (
+		frappe.db.get_value("Stock Entry", maintenance.items_issued, "docstatus") == 1
+	)
 
 
 def sync_purchase_request(maintenance):
 	request = purchase_request(maintenance)
-	if not request:
+	if not request or parts_issued(maintenance):
 		return
 	lacking = lacking_parts(maintenance, request.set_warehouse)
 	if not lacking or lacking == {row.item_code: flt(row.qty) for row in request.items}:
